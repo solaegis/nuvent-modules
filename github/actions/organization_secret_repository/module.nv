@@ -1,0 +1,24 @@
+variables:
+  repository_id:
+    type: number
+    description: "The repository ID that can access the organization secret."
+  secret_name:
+    type: string
+    description: "Name of the existing secret."
+  id:
+    type: string
+    description: "Optional property for OrganizationSecretRepository"
+    default: null
+
+resources:
+  main:
+    type: github:actions:OrganizationSecretRepository
+    properties:
+      repository_id: ${var.repository_id}
+      secret_name: ${var.secret_name}
+      id: ${var.id}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

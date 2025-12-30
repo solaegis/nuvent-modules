@@ -1,0 +1,45 @@
+variables:
+  enterprise_slug:
+    type: string
+    description: "The slug of the enterprise."
+  advanced_security_enabled_for_new_repositories:
+    type: boolean
+    description: "Whether GitHub Advanced Security is automatically enabled for new repositories."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SecurityAnalysisSettings"
+    default: null
+  secret_scanning_enabled_for_new_repositories:
+    type: boolean
+    description: "Whether secret scanning is automatically enabled for new repositories."
+    default: null
+  secret_scanning_push_protection_custom_link:
+    type: string
+    description: "Custom URL for secret scanning push protection bypass instructions."
+    default: null
+  secret_scanning_push_protection_enabled_for_new_repositories:
+    type: boolean
+    description: "Whether secret scanning push protection is automatically enabled for new repositories."
+    default: null
+  secret_scanning_validity_checks_enabled:
+    type: boolean
+    description: "Whether secret scanning validity checks are enabled."
+    default: null
+
+resources:
+  main:
+    type: github:enterprise:SecurityAnalysisSettings
+    properties:
+      enterprise_slug: ${var.enterprise_slug}
+      advanced_security_enabled_for_new_repositories: ${var.advanced_security_enabled_for_new_repositories}
+      id: ${var.id}
+      secret_scanning_enabled_for_new_repositories: ${var.secret_scanning_enabled_for_new_repositories}
+      secret_scanning_push_protection_custom_link: ${var.secret_scanning_push_protection_custom_link}
+      secret_scanning_push_protection_enabled_for_new_repositories: ${var.secret_scanning_push_protection_enabled_for_new_repositories}
+      secret_scanning_validity_checks_enabled: ${var.secret_scanning_validity_checks_enabled}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

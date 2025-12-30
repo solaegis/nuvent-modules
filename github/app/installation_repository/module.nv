@@ -1,0 +1,27 @@
+variables:
+  installation_id:
+    type: string
+    description: "The GitHub app installation id."
+  repository:
+    type: string
+    description: "The repository to install the app on."
+  id:
+    type: string
+    description: "Optional property for InstallationRepository"
+    default: null
+
+resources:
+  main:
+    type: github:app:InstallationRepository
+    properties:
+      installation_id: ${var.installation_id}
+      repository: ${var.repository}
+      id: ${var.id}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  repo_id:
+    description: "Output: repo_id"
+    value: ${resources.main.repo_id}

@@ -1,0 +1,46 @@
+variables:
+  owner:
+    type: string
+    description: "The owner of the GitHub Repository."
+  repository:
+    type: string
+    description: "The name of the GitHub Repository."
+  title:
+    type: string
+    description: "The title of the milestone."
+  description:
+    type: string
+    description: "A description of the milestone."
+    default: null
+  due_date:
+    type: string
+    description: "The milestone due date. In 'yyyy-mm-dd' format."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Milestone"
+    default: null
+  state:
+    type: string
+    description: "The state of the milestone. Either 'open' or 'closed'. Default: 'open'."
+    default: null
+
+resources:
+  main:
+    type: github:repository:Milestone
+    properties:
+      owner: ${var.owner}
+      repository: ${var.repository}
+      title: ${var.title}
+      description: ${var.description}
+      due_date: ${var.due_date}
+      id: ${var.id}
+      state: ${var.state}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  number:
+    description: "The number of the milestone."
+    value: ${resources.main.number}

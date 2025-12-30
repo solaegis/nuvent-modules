@@ -1,0 +1,24 @@
+variables:
+  login:
+    type: string
+    description: "The login for the GitHub user account."
+  role_id:
+    type: number
+    description: "The unique identifier of the organization role."
+  id:
+    type: string
+    description: "Optional property for RoleUser"
+    default: null
+
+resources:
+  main:
+    type: github:organization:RoleUser
+    properties:
+      login: ${var.login}
+      role_id: ${var.role_id}
+      id: ${var.id}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

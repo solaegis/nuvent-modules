@@ -1,0 +1,44 @@
+variables:
+  environment:
+    type: string
+    description: "Name of the environment."
+  repository:
+    type: string
+    description: "Name of the repository."
+  secret_name:
+    type: string
+    description: "Name of the secret."
+  encrypted_value:
+    type: string
+    description: "Encrypted value of the secret using the GitHub public key in Base64 format."
+    default: null
+  id:
+    type: string
+    description: "Optional property for EnvironmentSecret"
+    default: null
+  plaintext_value:
+    type: string
+    description: "Plaintext value of the secret to be encrypted."
+    default: null
+
+resources:
+  main:
+    type: github:actions:EnvironmentSecret
+    properties:
+      environment: ${var.environment}
+      repository: ${var.repository}
+      secret_name: ${var.secret_name}
+      encrypted_value: ${var.encrypted_value}
+      id: ${var.id}
+      plaintext_value: ${var.plaintext_value}
+
+outputs:
+  created_at:
+    description: "Date of 'actions_environment_secret' creation."
+    value: ${resources.main.created_at}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  updated_at:
+    description: "Date of 'actions_environment_secret' update."
+    value: ${resources.main.updated_at}

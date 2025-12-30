@@ -1,0 +1,30 @@
+variables:
+  repository:
+    type: string
+    description: "The GitHub repository."
+  can_approve_pull_request_reviews:
+    type: boolean
+    description: "Whether GitHub Actions can approve pull requests. Enabling this can be a security risk."
+    default: null
+  default_workflow_permissions:
+    type: string
+    description: "The default workflow permissions granted to the GITHUB_TOKEN when running workflows."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RepositoryPermissions"
+    default: null
+
+resources:
+  main:
+    type: github:workflow:RepositoryPermissions
+    properties:
+      repository: ${var.repository}
+      can_approve_pull_request_reviews: ${var.can_approve_pull_request_reviews}
+      default_workflow_permissions: ${var.default_workflow_permissions}
+      id: ${var.id}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

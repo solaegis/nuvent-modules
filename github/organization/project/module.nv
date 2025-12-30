@@ -1,0 +1,31 @@
+variables:
+  name:
+    type: string
+    description: "The name of the project."
+  body:
+    type: string
+    description: "The body of the project."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Project"
+    default: null
+
+resources:
+  main:
+    type: github:organization:Project
+    properties:
+      name: ${var.name}
+      body: ${var.body}
+      id: ${var.id}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  url:
+    description: "URL of the project."
+    value: ${resources.main.url}

@@ -1,0 +1,36 @@
+variables:
+  key_prefix:
+    type: string
+    description: "This prefix appended by a number will generate a link any time it is found in an issue, pull request, or commit"
+  repository:
+    type: string
+    description: "The repository name"
+  target_url_template:
+    type: string
+    description: "The template of the target URL used for the links; must be a valid URL and contain `<num>` for the reference number"
+  id:
+    type: string
+    description: "Optional property for AutolinkReference"
+    default: null
+  is_alphanumeric:
+    type: boolean
+    description: "Whether this autolink reference matches alphanumeric characters. If false, this autolink reference only matches numeric characters."
+    default: null
+
+resources:
+  main:
+    type: github:repository:AutolinkReference
+    properties:
+      key_prefix: ${var.key_prefix}
+      repository: ${var.repository}
+      target_url_template: ${var.target_url_template}
+      id: ${var.id}
+      is_alphanumeric: ${var.is_alphanumeric}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

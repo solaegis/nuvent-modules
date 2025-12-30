@@ -1,0 +1,27 @@
+variables:
+  group_id:
+    type: number
+    description: "Integer corresponding to the external group ID to be linked."
+  team_slug:
+    type: string
+    description: "Slug of the GitHub team."
+  id:
+    type: string
+    description: "Optional property for GroupMapping"
+    default: null
+
+resources:
+  main:
+    type: github:emu:GroupMapping
+    properties:
+      group_id: ${var.group_id}
+      team_slug: ${var.team_slug}
+      id: ${var.id}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

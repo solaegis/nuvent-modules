@@ -1,0 +1,43 @@
+variables:
+  events:
+    type: list
+    description: "A list of events which should trigger the webhook."
+  active:
+    type: boolean
+    description: "Indicate if the webhook should receive events."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Webhook"
+    default: null
+  configuration:
+    type: list
+    description: "Nested block: configuration"
+    default: []
+
+resources:
+  main:
+    type: github:organization:Webhook
+    properties:
+      events: ${var.events}
+      active: ${var.active}
+      id: ${var.id}
+      dynamic:
+        configuration:
+          for_each: ${var.configuration}
+          content:
+            content_type: ${each.value.content_type}
+            insecure_ssl: ${each.value.insecure_ssl}
+            secret: ${each.value.secret}
+            url: ${each.value.url}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  url:
+    description: "URL of the webhook."
+    value: ${resources.main.url}

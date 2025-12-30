@@ -1,0 +1,20 @@
+variables:
+  team_slug:
+    type: string
+    description: "The slug of the team to manage."
+  id:
+    type: string
+    description: "Optional property for SecurityManager"
+    default: null
+
+resources:
+  main:
+    type: github:organization:SecurityManager
+    properties:
+      team_slug: ${var.team_slug}
+      id: ${var.id}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

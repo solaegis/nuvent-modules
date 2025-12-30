@@ -1,0 +1,24 @@
+variables:
+  secret_name:
+    type: string
+    description: "Name of the existing secret."
+  selected_repository_ids:
+    type: list
+    description: "An array of repository ids that can access the organization secret."
+  id:
+    type: string
+    description: "Optional property for OrganizationSecretRepositories"
+    default: null
+
+resources:
+  main:
+    type: github:dependabot:OrganizationSecretRepositories
+    properties:
+      secret_name: ${var.secret_name}
+      selected_repository_ids: ${var.selected_repository_ids}
+      id: ${var.id}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

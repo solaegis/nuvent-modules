@@ -1,0 +1,83 @@
+variables:
+  content:
+    type: string
+    description: "The file's content"
+  file:
+    type: string
+    description: "The file path to manage"
+  repository:
+    type: string
+    description: "The repository name"
+  autocreate_branch:
+    type: boolean
+    description: "Automatically create the branch if it could not be found. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'"
+    default: null
+  autocreate_branch_source_branch:
+    type: string
+    description: "The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'."
+    default: null
+  autocreate_branch_source_sha:
+    type: string
+    description: "The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored."
+    default: null
+  branch:
+    type: string
+    description: "The branch name, defaults to the repository's default branch"
+    default: null
+  commit_author:
+    type: string
+    description: "The commit author name, defaults to the authenticated user's name. GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App. "
+    default: null
+  commit_email:
+    type: string
+    description: "The commit author email address, defaults to the authenticated user's email address. GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App."
+    default: null
+  commit_message:
+    type: string
+    description: "The commit message when creating, updating or deleting the file"
+    default: null
+  id:
+    type: string
+    description: "Optional property for File"
+    default: null
+  overwrite_on_create:
+    type: boolean
+    description: "Enable overwriting existing files, defaults to \"false\""
+    default: null
+
+resources:
+  main:
+    type: github:repository:File
+    properties:
+      content: ${var.content}
+      file: ${var.file}
+      repository: ${var.repository}
+      autocreate_branch: ${var.autocreate_branch}
+      autocreate_branch_source_branch: ${var.autocreate_branch_source_branch}
+      autocreate_branch_source_sha: ${var.autocreate_branch_source_sha}
+      branch: ${var.branch}
+      commit_author: ${var.commit_author}
+      commit_email: ${var.commit_email}
+      commit_message: ${var.commit_message}
+      id: ${var.id}
+      overwrite_on_create: ${var.overwrite_on_create}
+
+outputs:
+  autocreate_branch_source_sha:
+    description: "The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored."
+    value: ${resources.main.autocreate_branch_source_sha}
+  commit_message:
+    description: "The commit message when creating, updating or deleting the file"
+    value: ${resources.main.commit_message}
+  commit_sha:
+    description: "The SHA of the commit that modified the file"
+    value: ${resources.main.commit_sha}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  ref:
+    description: "The name of the commit/branch/tag"
+    value: ${resources.main.ref}
+  sha:
+    description: "The blob SHA of the file"
+    value: ${resources.main.sha}

@@ -1,0 +1,92 @@
+variables:
+  repository:
+    type: string
+    description: "The name of the repository."
+  tag_name:
+    type: string
+    description: "The name of the tag."
+  body:
+    type: string
+    description: "Text describing the contents of the tag."
+    default: null
+  discussion_category_name:
+    type: string
+    description: "If specified, a discussion of the specified category is created and linked to the release. The value must be a category that already exists in the repository."
+    default: null
+  draft:
+    type: boolean
+    description: "Set to 'false' to create a published release."
+    default: null
+  generate_release_notes:
+    type: boolean
+    description: "Set to 'true' to automatically generate the name and body for this release. If 'name' is specified, the specified name will be used; otherwise, a name will be automatically generated. If 'body' is specified, the body will be pre-pended to the automatically generated notes."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Release"
+    default: null
+  name:
+    type: string
+    description: "The name of the release."
+    default: null
+  prerelease:
+    type: boolean
+    description: "Set to 'false' to identify the release as a full release."
+    default: null
+  target_commitish:
+    type: string
+    description: " The branch name or commit SHA the tag is created from."
+    default: null
+
+resources:
+  main:
+    type: github:Release
+    properties:
+      repository: ${var.repository}
+      tag_name: ${var.tag_name}
+      body: ${var.body}
+      discussion_category_name: ${var.discussion_category_name}
+      draft: ${var.draft}
+      generate_release_notes: ${var.generate_release_notes}
+      id: ${var.id}
+      name: ${var.name}
+      prerelease: ${var.prerelease}
+      target_commitish: ${var.target_commitish}
+
+outputs:
+  assets_url:
+    description: "The URL for the release assets."
+    value: ${resources.main.assets_url}
+  created_at:
+    description: "The date and time the release was created."
+    value: ${resources.main.created_at}
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  html_url:
+    description: "The HTML URL for the release."
+    value: ${resources.main.html_url}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  node_id:
+    description: "The node ID of the release."
+    value: ${resources.main.node_id}
+  published_at:
+    description: "The date and time the release was published."
+    value: ${resources.main.published_at}
+  release_id:
+    description: "The ID of the release."
+    value: ${resources.main.release_id}
+  tarball_url:
+    description: "The URL for the tarball of the release."
+    value: ${resources.main.tarball_url}
+  upload_url:
+    description: "The URL for the uploaded assets of release."
+    value: ${resources.main.upload_url}
+  url:
+    description: "The URL for the release."
+    value: ${resources.main.url}
+  zipball_url:
+    description: "The URL for the zipball of the release."
+    value: ${resources.main.zipball_url}

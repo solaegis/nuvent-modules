@@ -1,0 +1,41 @@
+variables:
+  column_id:
+    type: string
+    description: "The ID of the project column."
+  content_id:
+    type: number
+    description: "'github_issue.issue_id'."
+    default: null
+  content_type:
+    type: string
+    description: "Must be either 'Issue' or 'PullRequest'."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Card"
+    default: null
+  note:
+    type: string
+    description: "The note contents of the card. Markdown supported."
+    default: null
+
+resources:
+  main:
+    type: github:project:Card
+    properties:
+      column_id: ${var.column_id}
+      content_id: ${var.content_id}
+      content_type: ${var.content_type}
+      id: ${var.id}
+      note: ${var.note}
+
+outputs:
+  card_id:
+    description: "The ID of the card."
+    value: ${resources.main.card_id}
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

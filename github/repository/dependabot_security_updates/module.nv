@@ -1,0 +1,24 @@
+variables:
+  enabled:
+    type: boolean
+    description: "The state of the automated security fixes."
+  repository:
+    type: string
+    description: "The GitHub repository."
+  id:
+    type: string
+    description: "Optional property for DependabotSecurityUpdates"
+    default: null
+
+resources:
+  main:
+    type: github:repository:DependabotSecurityUpdates
+    properties:
+      enabled: ${var.enabled}
+      repository: ${var.repository}
+      id: ${var.id}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

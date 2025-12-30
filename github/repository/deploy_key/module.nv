@@ -1,0 +1,36 @@
+variables:
+  key:
+    type: string
+    description: "A SSH key."
+  repository:
+    type: string
+    description: "Name of the GitHub repository."
+  title:
+    type: string
+    description: "A title."
+  id:
+    type: string
+    description: "Optional property for DeployKey"
+    default: null
+  read_only:
+    type: boolean
+    description: "A boolean qualifying the key to be either read only or read/write."
+    default: null
+
+resources:
+  main:
+    type: github:repository:DeployKey
+    properties:
+      key: ${var.key}
+      repository: ${var.repository}
+      title: ${var.title}
+      id: ${var.id}
+      read_only: ${var.read_only}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

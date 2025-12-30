@@ -1,0 +1,33 @@
+variables:
+  base_role:
+    type: string
+    description: "The base role for the custom repository role."
+  name:
+    type: string
+    description: "The organization custom repository role to create."
+  permissions:
+    type: list
+    description: "The permissions for the custom repository role."
+  description:
+    type: string
+    description: "The description of the custom repository role."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CustomRole"
+    default: null
+
+resources:
+  main:
+    type: github:organization:CustomRole
+    properties:
+      base_role: ${var.base_role}
+      name: ${var.name}
+      permissions: ${var.permissions}
+      description: ${var.description}
+      id: ${var.id}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

@@ -1,0 +1,80 @@
+variables:
+  branch:
+    type: string
+    description: "The Git branch to protect."
+  repository:
+    type: string
+    description: "The GitHub repository name."
+  enforce_admins:
+    type: boolean
+    description: "Setting this to 'true' enforces status checks for repository administrators."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ProtectionV3"
+    default: null
+  require_conversation_resolution:
+    type: boolean
+    description: "Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged."
+    default: null
+  require_signed_commits:
+    type: boolean
+    description: "Setting this to 'true' requires all commits to be signed with GPG."
+    default: null
+  required_pull_request_reviews:
+    type: list
+    description: "Nested block: required_pull_request_reviews"
+    default: []
+  required_status_checks:
+    type: list
+    description: "Nested block: required_status_checks"
+    default: []
+  restrictions:
+    type: list
+    description: "Nested block: restrictions"
+    default: []
+
+resources:
+  main:
+    type: github:branch:ProtectionV3
+    properties:
+      branch: ${var.branch}
+      repository: ${var.repository}
+      enforce_admins: ${var.enforce_admins}
+      id: ${var.id}
+      require_conversation_resolution: ${var.require_conversation_resolution}
+      require_signed_commits: ${var.require_signed_commits}
+      dynamic:
+        required_pull_request_reviews:
+          for_each: ${var.required_pull_request_reviews}
+          content:
+            dismiss_stale_reviews: ${each.value.dismiss_stale_reviews}
+            dismissal_apps: ${each.value.dismissal_apps}
+            dismissal_teams: ${each.value.dismissal_teams}
+            dismissal_users: ${each.value.dismissal_users}
+            include_admins: ${each.value.include_admins}
+            require_code_owner_reviews: ${each.value.require_code_owner_reviews}
+            require_last_push_approval: ${each.value.require_last_push_approval}
+            required_approving_review_count: ${each.value.required_approving_review_count}
+            bypass_pull_request_allowances: ${each.value.bypass_pull_request_allowances}
+        required_status_checks:
+          for_each: ${var.required_status_checks}
+          content:
+            checks: ${each.value.checks}
+            contexts: ${each.value.contexts}
+            include_admins: ${each.value.include_admins}
+            strict: ${each.value.strict}
+        restrictions:
+          for_each: ${var.restrictions}
+          content:
+            apps: ${each.value.apps}
+            teams: ${each.value.teams}
+            users: ${each.value.users}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

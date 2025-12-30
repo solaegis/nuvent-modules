@@ -1,0 +1,51 @@
+variables:
+  branch:
+    type: string
+    description: "The repository branch to create."
+  repository:
+    type: string
+    description: "The GitHub repository name."
+  etag:
+    type: string
+    description: "An etag representing the Branch object."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Branch"
+    default: null
+  source_branch:
+    type: string
+    description: "The branch name to start from. Defaults to 'main'."
+    default: null
+  source_sha:
+    type: string
+    description: "The commit hash to start from. Defaults to the tip of 'source_branch'. If provided, 'source_branch' is ignored."
+    default: null
+
+resources:
+  main:
+    type: github:Branch
+    properties:
+      branch: ${var.branch}
+      repository: ${var.repository}
+      etag: ${var.etag}
+      id: ${var.id}
+      source_branch: ${var.source_branch}
+      source_sha: ${var.source_sha}
+
+outputs:
+  etag:
+    description: "An etag representing the Branch object."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  ref:
+    description: "A string representing a branch reference, in the form of 'refs/heads/<branch>'."
+    value: ${resources.main.ref}
+  sha:
+    description: "A string storing the reference's HEAD commit's SHA1."
+    value: ${resources.main.sha}
+  source_sha:
+    description: "The commit hash to start from. Defaults to the tip of 'source_branch'. If provided, 'source_branch' is ignored."
+    value: ${resources.main.source_sha}

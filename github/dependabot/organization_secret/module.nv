@@ -1,0 +1,45 @@
+variables:
+  secret_name:
+    type: string
+    description: "Name of the secret."
+  visibility:
+    type: string
+    description: "Configures the access that repositories have to the organization secret. Must be one of 'all', 'private' or 'selected'. 'selected_repository_ids' is required if set to 'selected'."
+  encrypted_value:
+    type: string
+    description: "Encrypted value of the secret using the GitHub public key in Base64 format."
+    default: null
+  id:
+    type: string
+    description: "Optional property for OrganizationSecret"
+    default: null
+  plaintext_value:
+    type: string
+    description: "Plaintext value of the secret to be encrypted."
+    default: null
+  selected_repository_ids:
+    type: list
+    description: "An array of repository ids that can access the organization secret."
+    default: null
+
+resources:
+  main:
+    type: github:dependabot:OrganizationSecret
+    properties:
+      secret_name: ${var.secret_name}
+      visibility: ${var.visibility}
+      encrypted_value: ${var.encrypted_value}
+      id: ${var.id}
+      plaintext_value: ${var.plaintext_value}
+      selected_repository_ids: ${var.selected_repository_ids}
+
+outputs:
+  created_at:
+    description: "Date of 'dependabot_secret' creation."
+    value: ${resources.main.created_at}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  updated_at:
+    description: "Date of 'dependabot_secret' update."
+    value: ${resources.main.updated_at}

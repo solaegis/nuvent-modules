@@ -1,0 +1,34 @@
+variables:
+  repository:
+    type: string
+    description: "Name of the repository."
+  value:
+    type: string
+    description: "Value of the variable."
+  variable_name:
+    type: string
+    description: "Name of the variable."
+  id:
+    type: string
+    description: "Optional property for Variable"
+    default: null
+
+resources:
+  main:
+    type: github:actions:Variable
+    properties:
+      repository: ${var.repository}
+      value: ${var.value}
+      variable_name: ${var.variable_name}
+      id: ${var.id}
+
+outputs:
+  created_at:
+    description: "Date of 'actions_variable' creation."
+    value: ${resources.main.created_at}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  updated_at:
+    description: "Date of 'actions_variable' update."
+    value: ${resources.main.updated_at}

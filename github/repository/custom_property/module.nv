@@ -1,0 +1,32 @@
+variables:
+  property_name:
+    type: string
+    description: "Name of the custom property."
+  property_type:
+    type: string
+    description: "Type of the custom property"
+  property_value:
+    type: list
+    description: "Value of the custom property."
+  repository:
+    type: string
+    description: "Name of the repository which the custom properties should be on."
+  id:
+    type: string
+    description: "Optional property for CustomProperty"
+    default: null
+
+resources:
+  main:
+    type: github:repository:CustomProperty
+    properties:
+      property_name: ${var.property_name}
+      property_type: ${var.property_type}
+      property_value: ${var.property_value}
+      repository: ${var.repository}
+      id: ${var.id}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

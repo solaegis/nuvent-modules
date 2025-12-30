@@ -1,0 +1,37 @@
+variables:
+  branch:
+    type: string
+    description: "The branch (e.g. 'main')."
+  repository:
+    type: string
+    description: "The GitHub repository."
+  etag:
+    type: string
+    description: "Optional property for Default"
+    default: null
+  id:
+    type: string
+    description: "Optional property for Default"
+    default: null
+  rename:
+    type: boolean
+    description: "Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'."
+    default: null
+
+resources:
+  main:
+    type: github:branch:Default
+    properties:
+      branch: ${var.branch}
+      repository: ${var.repository}
+      etag: ${var.etag}
+      id: ${var.id}
+      rename: ${var.rename}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

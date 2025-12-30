@@ -1,0 +1,37 @@
+variables:
+  repository:
+    type: string
+    description: "The GitHub repository"
+  username:
+    type: string
+    description: "The user to add to the repository as a collaborator."
+  id:
+    type: string
+    description: "Optional property for Collaborator"
+    default: null
+  permission:
+    type: string
+    description: "The permission of the outside collaborator for the repository. Must be one of 'pull', 'push', 'maintain', 'triage' or 'admin' or the name of an existing custom repository role within the organization for organization-owned repositories. Must be 'push' for personal repositories. Defaults to 'push'."
+    default: null
+  permission_diff_suppression:
+    type: boolean
+    description: "Suppress plan diffs for triage and maintain. Defaults to 'false'."
+    default: null
+
+resources:
+  main:
+    type: github:repository:Collaborator
+    properties:
+      repository: ${var.repository}
+      username: ${var.username}
+      id: ${var.id}
+      permission: ${var.permission}
+      permission_diff_suppression: ${var.permission_diff_suppression}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  invitation_id:
+    description: "ID of the invitation to be used in 'github_user_invitation_accepter'"
+    value: ${resources.main.invitation_id}

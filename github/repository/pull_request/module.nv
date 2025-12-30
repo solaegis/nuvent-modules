@@ -1,0 +1,74 @@
+variables:
+  base_ref:
+    type: string
+    description: "Name of the branch serving as the base of the Pull Request."
+  base_repository:
+    type: string
+    description: "Name of the base repository to retrieve the Pull Requests from."
+  head_ref:
+    type: string
+    description: "Name of the branch serving as the head of the Pull Request."
+  title:
+    type: string
+    description: "The title of the Pull Request."
+  body:
+    type: string
+    description: "Body of the Pull Request."
+    default: null
+  id:
+    type: string
+    description: "Optional property for PullRequest"
+    default: null
+  maintainer_can_modify:
+    type: boolean
+    description: "Controls whether the base repository maintainers can modify the Pull Request. Default: 'false'."
+    default: null
+  owner:
+    type: string
+    description: "Owner of the repository. If not provided, the provider's default owner is used."
+    default: null
+
+resources:
+  main:
+    type: github:repository:PullRequest
+    properties:
+      base_ref: ${var.base_ref}
+      base_repository: ${var.base_repository}
+      head_ref: ${var.head_ref}
+      title: ${var.title}
+      body: ${var.body}
+      id: ${var.id}
+      maintainer_can_modify: ${var.maintainer_can_modify}
+      owner: ${var.owner}
+
+outputs:
+  base_sha:
+    description: "Head commit SHA of the Pull Request base."
+    value: ${resources.main.base_sha}
+  draft:
+    description: "Indicates Whether this Pull Request is a draft."
+    value: ${resources.main.draft}
+  head_sha:
+    description: "Head commit SHA of the Pull Request head."
+    value: ${resources.main.head_sha}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  labels:
+    description: "List of names of labels on the PR"
+    value: ${resources.main.labels}
+  number:
+    description: "The number of the Pull Request within the repository."
+    value: ${resources.main.number}
+  opened_at:
+    description: "Unix timestamp indicating the Pull Request creation time."
+    value: ${resources.main.opened_at}
+  opened_by:
+    description: "Username of the PR creator"
+    value: ${resources.main.opened_by}
+  state:
+    description: "The current Pull Request state - can be 'open', 'closed' or 'merged'."
+    value: ${resources.main.state}
+  updated_at:
+    description: "The timestamp of the last Pull Request update."
+    value: ${resources.main.updated_at}

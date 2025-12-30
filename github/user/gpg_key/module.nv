@@ -1,0 +1,26 @@
+variables:
+  armored_public_key:
+    type: string
+    description: "Your public GPG key, generated in ASCII-armored format."
+  id:
+    type: string
+    description: "Optional property for GpgKey"
+    default: null
+
+resources:
+  main:
+    type: github:user:GpgKey
+    properties:
+      armored_public_key: ${var.armored_public_key}
+      id: ${var.id}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  key_id:
+    description: "The key ID of the GPG key."
+    value: ${resources.main.key_id}

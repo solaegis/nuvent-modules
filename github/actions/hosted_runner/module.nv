@@ -1,0 +1,80 @@
+variables:
+  name:
+    type: string
+    description: "Name of the hosted runner. Must be between 1 and 64 characters and may only contain upper and lowercase letters a-z, numbers 0-9, '.', '-', and '_'."
+  runner_group_id:
+    type: number
+    description: "The runner group ID."
+  size:
+    type: string
+    description: "Machine size (e.g., '4-core', '8-core'). Can be updated to scale the runner."
+  image_gen:
+    type: boolean
+    description: "Whether this runner should be used to generate custom images. Cannot be changed after creation."
+    default: null
+  image_version:
+    type: string
+    description: "The version of the runner image to deploy. This is relevant only for runners using custom images."
+    default: null
+  maximum_runners:
+    type: number
+    description: "Maximum number of runners to scale up to."
+    default: null
+  public_ip_enabled:
+    type: boolean
+    description: "Whether to enable static public IP."
+    default: null
+  image:
+    type: list
+    description: "Nested block: image"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: github:actions:HostedRunner
+    properties:
+      name: ${var.name}
+      runner_group_id: ${var.runner_group_id}
+      size: ${var.size}
+      image_gen: ${var.image_gen}
+      image_version: ${var.image_version}
+      maximum_runners: ${var.maximum_runners}
+      public_ip_enabled: ${var.public_ip_enabled}
+      dynamic:
+        image:
+          for_each: ${var.image}
+          content:
+            id: ${each.value.id}
+            size_gb: ${each.value.size_gb}
+            source: ${each.value.source}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            delete: ${each.value.delete}
+
+outputs:
+  id:
+    description: "The hosted runner ID."
+    value: ${resources.main.id}
+  last_active_on:
+    description: "Timestamp when the runner was last active."
+    value: ${resources.main.last_active_on}
+  machine_size_details:
+    description: "Detailed machine size specifications."
+    value: ${resources.main.machine_size_details}
+  maximum_runners:
+    description: "Maximum number of runners to scale up to."
+    value: ${resources.main.maximum_runners}
+  platform:
+    description: "Platform of the runner."
+    value: ${resources.main.platform}
+  public_ips:
+    description: "List of public IP ranges assigned to this runner."
+    value: ${resources.main.public_ips}
+  status:
+    description: "Current status of the runner."
+    value: ${resources.main.status}

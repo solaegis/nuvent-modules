@@ -1,0 +1,39 @@
+variables:
+  value:
+    type: string
+    description: "Value of the variable."
+  variable_name:
+    type: string
+    description: "Name of the variable."
+  visibility:
+    type: string
+    description: "Configures the access that repositories have to the organization variable. Must be one of 'all', 'private', or 'selected'. 'selected_repository_ids' is required if set to 'selected'."
+  id:
+    type: string
+    description: "Optional property for OrganizationVariable"
+    default: null
+  selected_repository_ids:
+    type: list
+    description: "An array of repository ids that can access the organization variable."
+    default: null
+
+resources:
+  main:
+    type: github:actions:OrganizationVariable
+    properties:
+      value: ${var.value}
+      variable_name: ${var.variable_name}
+      visibility: ${var.visibility}
+      id: ${var.id}
+      selected_repository_ids: ${var.selected_repository_ids}
+
+outputs:
+  created_at:
+    description: "Date of 'actions_variable' creation."
+    value: ${resources.main.created_at}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  updated_at:
+    description: "Date of 'actions_variable' update."
+    value: ${resources.main.updated_at}

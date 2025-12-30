@@ -1,0 +1,24 @@
+variables:
+  access_level:
+    type: string
+    description: "Where the actions or reusable workflows of the repository may be used. Possible values are 'none', 'user', 'organization', or 'enterprise'."
+  repository:
+    type: string
+    description: "The GitHub repository."
+  id:
+    type: string
+    description: "Optional property for RepositoryAccessLevel"
+    default: null
+
+resources:
+  main:
+    type: github:actions:RepositoryAccessLevel
+    properties:
+      access_level: ${var.access_level}
+      repository: ${var.repository}
+      id: ${var.id}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

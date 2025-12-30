@@ -1,0 +1,30 @@
+variables:
+  key:
+    type: string
+    description: "The public SSH key to add to your GitHub account."
+  title:
+    type: string
+    description: "A descriptive name for the new key."
+  id:
+    type: string
+    description: "Optional property for SshKey"
+    default: null
+
+resources:
+  main:
+    type: github:user:SshKey
+    properties:
+      key: ${var.key}
+      title: ${var.title}
+      id: ${var.id}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  url:
+    description: "The URL of the SSH key."
+    value: ${resources.main.url}

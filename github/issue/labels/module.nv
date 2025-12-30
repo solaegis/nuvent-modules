@@ -1,0 +1,32 @@
+variables:
+  repository:
+    type: string
+    description: "The GitHub repository."
+  id:
+    type: string
+    description: "Optional property for Labels"
+    default: null
+  label:
+    type: list
+    description: "Nested block: label"
+    default: []
+
+resources:
+  main:
+    type: github:issue:Labels
+    properties:
+      repository: ${var.repository}
+      id: ${var.id}
+      dynamic:
+        label:
+          for_each: ${var.label}
+          content:
+            color: ${each.value.color}
+            description: ${each.value.description}
+            name: ${each.value.name}
+            url: ${each.value.url}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

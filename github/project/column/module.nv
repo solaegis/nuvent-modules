@@ -1,0 +1,30 @@
+variables:
+  name:
+    type: string
+    description: "The name of the column."
+  project_id:
+    type: string
+    description: "The ID of an existing project that the column will be created in."
+  id:
+    type: string
+    description: "Optional property for Column"
+    default: null
+
+resources:
+  main:
+    type: github:project:Column
+    properties:
+      name: ${var.name}
+      project_id: ${var.project_id}
+      id: ${var.id}
+
+outputs:
+  column_id:
+    description: "The ID of the column."
+    value: ${resources.main.column_id}
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

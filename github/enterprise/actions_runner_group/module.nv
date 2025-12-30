@@ -1,0 +1,60 @@
+variables:
+  enterprise_slug:
+    type: string
+    description: "The slug of the enterprise."
+  name:
+    type: string
+    description: "Name of the runner group."
+  visibility:
+    type: string
+    description: "The visibility of the runner group."
+  allows_public_repositories:
+    type: boolean
+    description: "Whether public repositories can be added to the runner group."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ActionsRunnerGroup"
+    default: null
+  restricted_to_workflows:
+    type: boolean
+    description: "If 'true', the runner group will be restricted to running only the workflows specified in the 'selected_workflows' array. Defaults to 'false'."
+    default: null
+  selected_organization_ids:
+    type: list
+    description: "List of organization IDs that can access the runner group."
+    default: null
+  selected_workflows:
+    type: list
+    description: "List of workflows the runner group should be allowed to run. This setting will be ignored unless restricted_to_workflows is set to 'true'."
+    default: null
+
+resources:
+  main:
+    type: github:enterprise:ActionsRunnerGroup
+    properties:
+      enterprise_slug: ${var.enterprise_slug}
+      name: ${var.name}
+      visibility: ${var.visibility}
+      allows_public_repositories: ${var.allows_public_repositories}
+      id: ${var.id}
+      restricted_to_workflows: ${var.restricted_to_workflows}
+      selected_organization_ids: ${var.selected_organization_ids}
+      selected_workflows: ${var.selected_workflows}
+
+outputs:
+  default:
+    description: "Whether this is the default runner group."
+    value: ${resources.main.default}
+  etag:
+    description: "An etag representing the runner group object"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  runners_url:
+    description: "The GitHub API URL for the runner group's runners."
+    value: ${resources.main.runners_url}
+  selected_organizations_url:
+    description: "GitHub API URL for the runner group's organizations."
+    value: ${resources.main.selected_organizations_url}

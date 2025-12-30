@@ -1,0 +1,30 @@
+variables:
+  team_id:
+    type: string
+    description: "The GitHub team id or slug"
+  id:
+    type: string
+    description: "Optional property for Members"
+    default: null
+  members:
+    type: list
+    description: "Nested block: members"
+    default: []
+
+resources:
+  main:
+    type: github:team:Members
+    properties:
+      team_id: ${var.team_id}
+      id: ${var.id}
+      dynamic:
+        members:
+          for_each: ${var.members}
+          content:
+            role: ${each.value.role}
+            username: ${each.value.username}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

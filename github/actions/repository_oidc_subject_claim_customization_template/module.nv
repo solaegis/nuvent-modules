@@ -1,0 +1,29 @@
+variables:
+  repository:
+    type: string
+    description: "The name of the repository."
+  use_default:
+    type: boolean
+    description: "Whether to use the default template or not. If 'true', 'include_claim_keys' must not be set."
+  id:
+    type: string
+    description: "Optional property for RepositoryOidcSubjectClaimCustomizationTemplate"
+    default: null
+  include_claim_keys:
+    type: list
+    description: "A list of OpenID Connect claims."
+    default: null
+
+resources:
+  main:
+    type: github:actions:RepositoryOidcSubjectClaimCustomizationTemplate
+    properties:
+      repository: ${var.repository}
+      use_default: ${var.use_default}
+      id: ${var.id}
+      include_claim_keys: ${var.include_claim_keys}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

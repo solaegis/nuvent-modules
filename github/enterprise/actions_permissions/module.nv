@@ -1,0 +1,48 @@
+variables:
+  enabled_organizations:
+    type: string
+    description: "The policy that controls the organizations in the enterprise that are allowed to run GitHub Actions. Can be one of: 'all', 'none', or 'selected'."
+  enterprise_slug:
+    type: string
+    description: "The slug of the enterprise."
+  allowed_actions:
+    type: string
+    description: "The permissions policy that controls the actions that are allowed to run. Can be one of: 'all', 'local_only', or 'selected'."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ActionsPermissions"
+    default: null
+  allowed_actions_config:
+    type: list
+    description: "Nested block: allowed_actions_config"
+    default: []
+  enabled_organizations_config:
+    type: list
+    description: "Nested block: enabled_organizations_config"
+    default: []
+
+resources:
+  main:
+    type: github:enterprise:ActionsPermissions
+    properties:
+      enabled_organizations: ${var.enabled_organizations}
+      enterprise_slug: ${var.enterprise_slug}
+      allowed_actions: ${var.allowed_actions}
+      id: ${var.id}
+      dynamic:
+        allowed_actions_config:
+          for_each: ${var.allowed_actions_config}
+          content:
+            github_owned_allowed: ${each.value.github_owned_allowed}
+            patterns_allowed: ${each.value.patterns_allowed}
+            verified_allowed: ${each.value.verified_allowed}
+        enabled_organizations_config:
+          for_each: ${var.enabled_organizations_config}
+          content:
+            organization_ids: ${each.value.organization_ids}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

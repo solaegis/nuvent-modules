@@ -1,0 +1,282 @@
+variables:
+  name:
+    type: string
+    description: "The name of the repository."
+  allow_auto_merge:
+    type: boolean
+    description: "Set to 'true' to allow auto-merging pull requests on the repository."
+    default: null
+  allow_merge_commit:
+    type: boolean
+    description: "Set to 'false' to disable merge commits on the repository."
+    default: null
+  allow_rebase_merge:
+    type: boolean
+    description: "Set to 'false' to disable rebase merges on the repository."
+    default: null
+  allow_squash_merge:
+    type: boolean
+    description: "Set to 'false' to disable squash merges on the repository."
+    default: null
+  allow_update_branch:
+    type: boolean
+    description: " Set to 'true' to always suggest updating pull request branches."
+    default: null
+  archive_on_destroy:
+    type: boolean
+    description: "Set to 'true' to archive the repository instead of deleting on destroy."
+    default: null
+  archived:
+    type: boolean
+    description: "Specifies if the repository should be archived. Defaults to 'false'. NOTE Currently, the API does not support unarchiving."
+    default: null
+  auto_init:
+    type: boolean
+    description: "Set to 'true' to produce an initial commit in the repository."
+    default: null
+  default_branch:
+    type: string
+    description: "Can only be set after initial repository creation, and only if the target branch exists"
+    default: null
+  delete_branch_on_merge:
+    type: boolean
+    description: "Automatically delete head branch after a pull request is merged. Defaults to 'false'."
+    default: null
+  description:
+    type: string
+    description: "A description of the repository."
+    default: null
+  etag:
+    type: string
+    description: "Optional property for Repository"
+    default: null
+  fork:
+    type: string
+    description: "Set to 'true' to fork an existing repository."
+    default: null
+  gitignore_template:
+    type: string
+    description: "Use the name of the template without the extension. For example, 'Haskell'."
+    default: null
+  has_discussions:
+    type: boolean
+    description: "Set to 'true' to enable GitHub Discussions on the repository. Defaults to 'false'."
+    default: null
+  has_downloads:
+    type: boolean
+    description: "Set to 'true' to enable the (deprecated) downloads features on the repository."
+    default: null
+  has_issues:
+    type: boolean
+    description: "Set to 'true' to enable the GitHub Issues features on the repository"
+    default: null
+  has_projects:
+    type: boolean
+    description: "Set to 'true' to enable the GitHub Projects features on the repository. Per the GitHub documentation when in an organization that has disabled repository projects it will default to 'false' and will otherwise default to 'true'. If you specify 'true' when it has been disabled it will return an error."
+    default: null
+  has_wiki:
+    type: boolean
+    description: "Set to 'true' to enable the GitHub Wiki features on the repository."
+    default: null
+  homepage_url:
+    type: string
+    description: "URL of a page describing the project."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Repository"
+    default: null
+  ignore_vulnerability_alerts_during_read:
+    type: boolean
+    description: "Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read."
+    default: null
+  is_template:
+    type: boolean
+    description: "Set to 'true' to tell GitHub that this is a template repository."
+    default: null
+  license_template:
+    type: string
+    description: "Use the name of the template without the extension. For example, 'mit' or 'mpl-2.0'."
+    default: null
+  merge_commit_message:
+    type: string
+    description: "Can be 'PR_BODY', 'PR_TITLE', or 'BLANK' for a default merge commit message."
+    default: null
+  merge_commit_title:
+    type: string
+    description: "Can be 'PR_TITLE' or 'MERGE_MESSAGE' for a default merge commit title."
+    default: null
+  private:
+    type: boolean
+    description: "Optional property for Repository"
+    default: null
+  source_owner:
+    type: string
+    description: "The owner of the source repository to fork from."
+    default: null
+  source_repo:
+    type: string
+    description: "The name of the source repository to fork from."
+    default: null
+  squash_merge_commit_message:
+    type: string
+    description: "Can be 'PR_BODY', 'COMMIT_MESSAGES', or 'BLANK' for a default squash merge commit message."
+    default: null
+  squash_merge_commit_title:
+    type: string
+    description: "Can be 'PR_TITLE' or 'COMMIT_OR_PR_TITLE' for a default squash merge commit title."
+    default: null
+  topics:
+    type: list
+    description: "The list of topics of the repository."
+    default: null
+  visibility:
+    type: string
+    description: "Can be 'public' or 'private'. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be 'internal'."
+    default: null
+  vulnerability_alerts:
+    type: boolean
+    description: "Set to 'true' to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default). Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings."
+    default: null
+  web_commit_signoff_required:
+    type: boolean
+    description: "Require contributors to sign off on web-based commits. Defaults to 'false'."
+    default: null
+  pages:
+    type: list
+    description: "Nested block: pages"
+    default: []
+  security_and_analysis:
+    type: list
+    description: "Nested block: security_and_analysis"
+    default: []
+  template:
+    type: list
+    description: "Nested block: template"
+    default: []
+
+resources:
+  main:
+    type: github:Repository
+    properties:
+      name: ${var.name}
+      allow_auto_merge: ${var.allow_auto_merge}
+      allow_merge_commit: ${var.allow_merge_commit}
+      allow_rebase_merge: ${var.allow_rebase_merge}
+      allow_squash_merge: ${var.allow_squash_merge}
+      allow_update_branch: ${var.allow_update_branch}
+      archive_on_destroy: ${var.archive_on_destroy}
+      archived: ${var.archived}
+      auto_init: ${var.auto_init}
+      default_branch: ${var.default_branch}
+      delete_branch_on_merge: ${var.delete_branch_on_merge}
+      description: ${var.description}
+      etag: ${var.etag}
+      fork: ${var.fork}
+      gitignore_template: ${var.gitignore_template}
+      has_discussions: ${var.has_discussions}
+      has_downloads: ${var.has_downloads}
+      has_issues: ${var.has_issues}
+      has_projects: ${var.has_projects}
+      has_wiki: ${var.has_wiki}
+      homepage_url: ${var.homepage_url}
+      id: ${var.id}
+      ignore_vulnerability_alerts_during_read: ${var.ignore_vulnerability_alerts_during_read}
+      is_template: ${var.is_template}
+      license_template: ${var.license_template}
+      merge_commit_message: ${var.merge_commit_message}
+      merge_commit_title: ${var.merge_commit_title}
+      private: ${var.private}
+      source_owner: ${var.source_owner}
+      source_repo: ${var.source_repo}
+      squash_merge_commit_message: ${var.squash_merge_commit_message}
+      squash_merge_commit_title: ${var.squash_merge_commit_title}
+      topics: ${var.topics}
+      visibility: ${var.visibility}
+      vulnerability_alerts: ${var.vulnerability_alerts}
+      web_commit_signoff_required: ${var.web_commit_signoff_required}
+      dynamic:
+        pages:
+          for_each: ${var.pages}
+          content:
+            build_type: ${each.value.build_type}
+            cname: ${each.value.cname}
+            custom_404: ${each.value.custom_404}
+            html_url: ${each.value.html_url}
+            status: ${each.value.status}
+            url: ${each.value.url}
+            source: ${each.value.source}
+        security_and_analysis:
+          for_each: ${var.security_and_analysis}
+          content:
+            advanced_security: ${each.value.advanced_security}
+            code_security: ${each.value.code_security}
+            secret_scanning: ${each.value.secret_scanning}
+            secret_scanning_ai_detection: ${each.value.secret_scanning_ai_detection}
+            secret_scanning_non_provider_patterns: ${each.value.secret_scanning_non_provider_patterns}
+            secret_scanning_push_protection: ${each.value.secret_scanning_push_protection}
+        template:
+          for_each: ${var.template}
+          content:
+            include_all_branches: ${each.value.include_all_branches}
+            owner: ${each.value.owner}
+            repository: ${each.value.repository}
+
+outputs:
+  default_branch:
+    description: "Can only be set after initial repository creation, and only if the target branch exists"
+    value: ${resources.main.default_branch}
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  fork:
+    description: "Set to 'true' to fork an existing repository."
+    value: ${resources.main.fork}
+  full_name:
+    description: "A string of the form 'orgname/reponame'."
+    value: ${resources.main.full_name}
+  git_clone_url:
+    description: "URL that can be provided to 'git clone' to clone the repository anonymously via the git protocol."
+    value: ${resources.main.git_clone_url}
+  html_url:
+    description: "URL to the repository on the web."
+    value: ${resources.main.html_url}
+  http_clone_url:
+    description: "URL that can be provided to 'git clone' to clone the repository via HTTPS."
+    value: ${resources.main.http_clone_url}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  node_id:
+    description: "GraphQL global node id for use with v4 API."
+    value: ${resources.main.node_id}
+  primary_language:
+    description: "Output: primary_language"
+    value: ${resources.main.primary_language}
+  private:
+    description: "Output: private"
+    value: ${resources.main.private}
+  repo_id:
+    description: "GitHub ID for the repository."
+    value: ${resources.main.repo_id}
+  source_owner:
+    description: "The owner of the source repository to fork from."
+    value: ${resources.main.source_owner}
+  source_repo:
+    description: "The name of the source repository to fork from."
+    value: ${resources.main.source_repo}
+  ssh_clone_url:
+    description: "URL that can be provided to 'git clone' to clone the repository via SSH."
+    value: ${resources.main.ssh_clone_url}
+  svn_url:
+    description: "URL that can be provided to 'svn checkout' to check out the repository via GitHub's Subversion protocol emulation."
+    value: ${resources.main.svn_url}
+  topics:
+    description: "The list of topics of the repository."
+    value: ${resources.main.topics}
+  visibility:
+    description: "Can be 'public' or 'private'. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be 'internal'."
+    value: ${resources.main.visibility}
+  vulnerability_alerts:
+    description: "Set to 'true' to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default). Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings."
+    value: ${resources.main.vulnerability_alerts}

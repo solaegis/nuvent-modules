@@ -1,0 +1,26 @@
+variables:
+  allow_empty_id:
+    type: boolean
+    description: "Allow the ID to be unset. This will result in the resource being skipped when the ID is not set instead of returning an error."
+    default: null
+  id:
+    type: string
+    description: "Optional property for InvitationAccepter"
+    default: null
+  invitation_id:
+    type: string
+    description: "ID of the invitation to accept. Must be set when 'allow_empty_id' is 'false'."
+    default: null
+
+resources:
+  main:
+    type: github:user:InvitationAccepter
+    properties:
+      allow_empty_id: ${var.allow_empty_id}
+      id: ${var.id}
+      invitation_id: ${var.invitation_id}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

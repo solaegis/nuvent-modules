@@ -1,0 +1,73 @@
+variables:
+  name:
+    type: string
+    description: "The name of the team."
+  create_default_maintainer:
+    type: boolean
+    description: "Adds a default maintainer to the team. Adds the creating user to the team when 'true'."
+    default: null
+  description:
+    type: string
+    description: "A description of the team."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Team"
+    default: null
+  ldap_dn:
+    type: string
+    description: "The LDAP Distinguished Name of the group where membership will be synchronized. Only available in GitHub Enterprise Server."
+    default: null
+  parent_team_id:
+    type: string
+    description: "The ID or slug of the parent team, if this is a nested team."
+    default: null
+  parent_team_read_id:
+    type: string
+    description: "The id of the parent team read in Github."
+    default: null
+  parent_team_read_slug:
+    type: string
+    description: "The id of the parent team read in Github."
+    default: null
+  privacy:
+    type: string
+    description: "The level of privacy for the team. Must be one of 'secret' or 'closed'."
+    default: null
+
+resources:
+  main:
+    type: github:Team
+    properties:
+      name: ${var.name}
+      create_default_maintainer: ${var.create_default_maintainer}
+      description: ${var.description}
+      id: ${var.id}
+      ldap_dn: ${var.ldap_dn}
+      parent_team_id: ${var.parent_team_id}
+      parent_team_read_id: ${var.parent_team_read_id}
+      parent_team_read_slug: ${var.parent_team_read_slug}
+      privacy: ${var.privacy}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  members_count:
+    description: "Output: members_count"
+    value: ${resources.main.members_count}
+  node_id:
+    description: "The Node ID of the created team."
+    value: ${resources.main.node_id}
+  parent_team_read_id:
+    description: "The id of the parent team read in Github."
+    value: ${resources.main.parent_team_read_id}
+  parent_team_read_slug:
+    description: "The id of the parent team read in Github."
+    value: ${resources.main.parent_team_read_slug}
+  slug:
+    description: "The slug of the created team."
+    value: ${resources.main.slug}

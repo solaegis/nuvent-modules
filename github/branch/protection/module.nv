@@ -1,0 +1,97 @@
+variables:
+  pattern:
+    type: string
+    description: "Identifies the protection rule pattern."
+  repository_id:
+    type: string
+    description: "The name or node ID of the repository associated with this branch protection rule."
+  allows_deletions:
+    type: boolean
+    description: "Setting this to 'true' to allow the branch to be deleted."
+    default: null
+  allows_force_pushes:
+    type: boolean
+    description: "Setting this to 'true' to allow force pushes on the branch."
+    default: null
+  enforce_admins:
+    type: boolean
+    description: "Setting this to 'true' enforces status checks for repository administrators."
+    default: null
+  force_push_bypassers:
+    type: list
+    description: "The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Protection"
+    default: null
+  lock_branch:
+    type: boolean
+    description: "Setting this to 'true' will make the branch read-only and preventing any pushes to it."
+    default: null
+  require_conversation_resolution:
+    type: boolean
+    description: "Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged."
+    default: null
+  require_signed_commits:
+    type: boolean
+    description: "Setting this to 'true' requires all commits to be signed with GPG."
+    default: null
+  required_linear_history:
+    type: boolean
+    description: "Setting this to 'true' enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch."
+    default: null
+  required_pull_request_reviews:
+    type: list
+    description: "Nested block: required_pull_request_reviews"
+    default: []
+  required_status_checks:
+    type: list
+    description: "Nested block: required_status_checks"
+    default: []
+  restrict_pushes:
+    type: list
+    description: "Nested block: restrict_pushes"
+    default: []
+
+resources:
+  main:
+    type: github:branch:Protection
+    properties:
+      pattern: ${var.pattern}
+      repository_id: ${var.repository_id}
+      allows_deletions: ${var.allows_deletions}
+      allows_force_pushes: ${var.allows_force_pushes}
+      enforce_admins: ${var.enforce_admins}
+      force_push_bypassers: ${var.force_push_bypassers}
+      id: ${var.id}
+      lock_branch: ${var.lock_branch}
+      require_conversation_resolution: ${var.require_conversation_resolution}
+      require_signed_commits: ${var.require_signed_commits}
+      required_linear_history: ${var.required_linear_history}
+      dynamic:
+        required_pull_request_reviews:
+          for_each: ${var.required_pull_request_reviews}
+          content:
+            dismiss_stale_reviews: ${each.value.dismiss_stale_reviews}
+            dismissal_restrictions: ${each.value.dismissal_restrictions}
+            pull_request_bypassers: ${each.value.pull_request_bypassers}
+            require_code_owner_reviews: ${each.value.require_code_owner_reviews}
+            require_last_push_approval: ${each.value.require_last_push_approval}
+            required_approving_review_count: ${each.value.required_approving_review_count}
+            restrict_dismissals: ${each.value.restrict_dismissals}
+        required_status_checks:
+          for_each: ${var.required_status_checks}
+          content:
+            contexts: ${each.value.contexts}
+            strict: ${each.value.strict}
+        restrict_pushes:
+          for_each: ${var.restrict_pushes}
+          content:
+            blocks_creations: ${each.value.blocks_creations}
+            push_allowances: ${each.value.push_allowances}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

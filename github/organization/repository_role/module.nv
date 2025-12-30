@@ -1,0 +1,36 @@
+variables:
+  base_role:
+    type: string
+    description: "The base role for the organization repository role."
+  name:
+    type: string
+    description: "The name of the organization repository role."
+  permissions:
+    type: list
+    description: "The permissions for the organization repository role."
+  description:
+    type: string
+    description: "The description of the organization repository role."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RepositoryRole"
+    default: null
+
+resources:
+  main:
+    type: github:organization:RepositoryRole
+    properties:
+      base_role: ${var.base_role}
+      name: ${var.name}
+      permissions: ${var.permissions}
+      description: ${var.description}
+      id: ${var.id}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  role_id:
+    description: "The ID of the organization repository role."
+    value: ${resources.main.role_id}

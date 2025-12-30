@@ -1,0 +1,53 @@
+variables:
+  repository:
+    type: string
+    description: "The GitHub repository name."
+  title:
+    type: string
+    description: "Title of the issue."
+  assignees:
+    type: list
+    description: "List of Logins to assign to the issue."
+    default: null
+  body:
+    type: string
+    description: "Body of the issue."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Issue"
+    default: null
+  labels:
+    type: list
+    description: "List of labels to attach to the issue."
+    default: null
+  milestone_number:
+    type: number
+    description: "Milestone number to assign to the issue."
+    default: null
+
+resources:
+  main:
+    type: github:Issue
+    properties:
+      repository: ${var.repository}
+      title: ${var.title}
+      assignees: ${var.assignees}
+      body: ${var.body}
+      id: ${var.id}
+      labels: ${var.labels}
+      milestone_number: ${var.milestone_number}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  issue_id:
+    description: "The issue id."
+    value: ${resources.main.issue_id}
+  number:
+    description: "The issue number."
+    value: ${resources.main.number}

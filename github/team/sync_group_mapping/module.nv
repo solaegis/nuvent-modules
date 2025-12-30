@@ -1,0 +1,34 @@
+variables:
+  team_slug:
+    type: string
+    description: "Slug of the team."
+  id:
+    type: string
+    description: "Optional property for SyncGroupMapping"
+    default: null
+  group:
+    type: list
+    description: "Nested block: group"
+    default: []
+
+resources:
+  main:
+    type: github:team:SyncGroupMapping
+    properties:
+      team_slug: ${var.team_slug}
+      id: ${var.id}
+      dynamic:
+        group:
+          for_each: ${var.group}
+          content:
+            group_description: ${each.value.group_description}
+            group_id: ${each.value.group_id}
+            group_name: ${each.value.group_name}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

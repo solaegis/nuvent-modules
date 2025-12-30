@@ -1,0 +1,20 @@
+variables:
+  include_claim_keys:
+    type: list
+    description: "A list of OpenID Connect claims."
+  id:
+    type: string
+    description: "Optional property for OrganizationOidcSubjectClaimCustomizationTemplate"
+    default: null
+
+resources:
+  main:
+    type: github:actions:OrganizationOidcSubjectClaimCustomizationTemplate
+    properties:
+      include_claim_keys: ${var.include_claim_keys}
+      id: ${var.id}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

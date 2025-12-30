@@ -1,0 +1,44 @@
+variables:
+  enabled_repositories:
+    type: string
+    description: "The policy that controls the repositories in the organization that are allowed to run GitHub Actions. Can be one of: 'all', 'none', or 'selected'."
+  allowed_actions:
+    type: string
+    description: "The permissions policy that controls the actions that are allowed to run. Can be one of: 'all', 'local_only', or 'selected'."
+    default: null
+  id:
+    type: string
+    description: "Optional property for OrganizationPermissions"
+    default: null
+  allowed_actions_config:
+    type: list
+    description: "Nested block: allowed_actions_config"
+    default: []
+  enabled_repositories_config:
+    type: list
+    description: "Nested block: enabled_repositories_config"
+    default: []
+
+resources:
+  main:
+    type: github:actions:OrganizationPermissions
+    properties:
+      enabled_repositories: ${var.enabled_repositories}
+      allowed_actions: ${var.allowed_actions}
+      id: ${var.id}
+      dynamic:
+        allowed_actions_config:
+          for_each: ${var.allowed_actions_config}
+          content:
+            github_owned_allowed: ${each.value.github_owned_allowed}
+            patterns_allowed: ${each.value.patterns_allowed}
+            verified_allowed: ${each.value.verified_allowed}
+        enabled_repositories_config:
+          for_each: ${var.enabled_repositories_config}
+          content:
+            repository_ids: ${each.value.repository_ids}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

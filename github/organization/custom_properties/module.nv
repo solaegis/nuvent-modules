@@ -1,0 +1,62 @@
+variables:
+  property_name:
+    type: string
+    description: "The name of the custom property"
+  allowed_values:
+    type: list
+    description: "The allowed values of the custom property"
+    default: null
+  default_value:
+    type: string
+    description: "The default value of the custom property"
+    default: null
+  description:
+    type: string
+    description: "The description of the custom property"
+    default: null
+  id:
+    type: string
+    description: "Optional property for CustomProperties"
+    default: null
+  required:
+    type: boolean
+    description: "Whether the custom property is required"
+    default: null
+  value_type:
+    type: string
+    description: "The type of the custom property"
+    default: null
+  values_editable_by:
+    type: string
+    description: "Who can edit the values of the custom property. Can be one of 'org_actors' or 'org_and_repo_actors'. If not specified, the default is 'org_actors' (only organization owners can edit values)"
+    default: null
+
+resources:
+  main:
+    type: github:organization:CustomProperties
+    properties:
+      property_name: ${var.property_name}
+      allowed_values: ${var.allowed_values}
+      default_value: ${var.default_value}
+      description: ${var.description}
+      id: ${var.id}
+      required: ${var.required}
+      value_type: ${var.value_type}
+      values_editable_by: ${var.values_editable_by}
+
+outputs:
+  allowed_values:
+    description: "The allowed values of the custom property"
+    value: ${resources.main.allowed_values}
+  default_value:
+    description: "The default value of the custom property"
+    value: ${resources.main.default_value}
+  description:
+    description: "The description of the custom property"
+    value: ${resources.main.description}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  values_editable_by:
+    description: "Who can edit the values of the custom property. Can be one of 'org_actors' or 'org_and_repo_actors'. If not specified, the default is 'org_actors' (only organization owners can edit values)"
+    value: ${resources.main.values_editable_by}

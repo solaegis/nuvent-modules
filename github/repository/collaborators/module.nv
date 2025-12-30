@@ -1,0 +1,50 @@
+variables:
+  repository:
+    type: string
+    description: "Required property for Collaborators"
+  id:
+    type: string
+    description: "Optional property for Collaborators"
+    default: null
+  ignore_team:
+    type: list
+    description: "Nested block: ignore_team"
+    default: []
+  team:
+    type: list
+    description: "Nested block: team"
+    default: []
+  user:
+    type: list
+    description: "Nested block: user"
+    default: []
+
+resources:
+  main:
+    type: github:repository:Collaborators
+    properties:
+      repository: ${var.repository}
+      id: ${var.id}
+      dynamic:
+        ignore_team:
+          for_each: ${var.ignore_team}
+          content:
+            team_id: ${each.value.team_id}
+        team:
+          for_each: ${var.team}
+          content:
+            permission: ${each.value.permission}
+            team_id: ${each.value.team_id}
+        user:
+          for_each: ${var.user}
+          content:
+            permission: ${each.value.permission}
+            username: ${each.value.username}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  invitation_ids:
+    description: "Map of usernames to invitation ID for any users added"
+    value: ${resources.main.invitation_ids}

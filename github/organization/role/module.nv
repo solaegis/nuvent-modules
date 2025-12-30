@@ -1,0 +1,37 @@
+variables:
+  name:
+    type: string
+    description: "The name of the organization role."
+  permissions:
+    type: list
+    description: "The permissions for the organization role."
+  base_role:
+    type: string
+    description: "The system role from which this role inherits permissions."
+    default: null
+  description:
+    type: string
+    description: "The description of the organization role."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Role"
+    default: null
+
+resources:
+  main:
+    type: github:organization:Role
+    properties:
+      name: ${var.name}
+      permissions: ${var.permissions}
+      base_role: ${var.base_role}
+      description: ${var.description}
+      id: ${var.id}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  role_id:
+    description: "The ID of the organization role."
+    value: ${resources.main.role_id}

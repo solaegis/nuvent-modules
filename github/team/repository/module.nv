@@ -1,0 +1,32 @@
+variables:
+  repository:
+    type: string
+    description: "The repository to add to the team."
+  team_id:
+    type: string
+    description: "ID or slug of team"
+  id:
+    type: string
+    description: "Optional property for Repository"
+    default: null
+  permission:
+    type: string
+    description: "The permissions of team members regarding the repository. Must be one of 'pull', 'triage', 'push', 'maintain', 'admin' or the name of an existing custom repository role within the organisation."
+    default: null
+
+resources:
+  main:
+    type: github:team:Repository
+    properties:
+      repository: ${var.repository}
+      team_id: ${var.team_id}
+      id: ${var.id}
+      permission: ${var.permission}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

@@ -1,0 +1,37 @@
+variables:
+  team_id:
+    type: string
+    description: "The GitHub team id or the GitHub team slug."
+  id:
+    type: string
+    description: "Optional property for Settings"
+    default: null
+  review_request_delegation:
+    type: list
+    description: "Nested block: review_request_delegation"
+    default: []
+
+resources:
+  main:
+    type: github:team:Settings
+    properties:
+      team_id: ${var.team_id}
+      id: ${var.id}
+      dynamic:
+        review_request_delegation:
+          for_each: ${var.review_request_delegation}
+          content:
+            algorithm: ${each.value.algorithm}
+            member_count: ${each.value.member_count}
+            notify: ${each.value.notify}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  team_slug:
+    description: "The slug of the Team within the Organization."
+    value: ${resources.main.team_slug}
+  team_uid:
+    description: "The unique ID of the Team on GitHub. Corresponds to the ID of the 'github_team_settings' resource."
+    value: ${resources.main.team_uid}

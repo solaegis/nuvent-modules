@@ -1,0 +1,24 @@
+variables:
+  role_id:
+    type: number
+    description: "The ID of the organization role."
+  team_slug:
+    type: string
+    description: "The slug of the team name."
+  id:
+    type: string
+    description: "Optional property for RoleTeam"
+    default: null
+
+resources:
+  main:
+    type: github:organization:RoleTeam
+    properties:
+      role_id: ${var.role_id}
+      team_slug: ${var.team_slug}
+      id: ${var.id}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

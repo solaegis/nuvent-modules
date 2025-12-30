@@ -1,0 +1,36 @@
+variables:
+  environment_name:
+    type: string
+    description: "The target environment name."
+  name:
+    type: string
+    description: "The name of the branch"
+  repository:
+    type: string
+    description: "The GitHub repository name."
+  etag:
+    type: string
+    description: "An etag representing the Branch object."
+    default: null
+  id:
+    type: string
+    description: "Optional property for DeploymentBranchPolicy"
+    default: null
+
+resources:
+  main:
+    type: github:repository:DeploymentBranchPolicy
+    properties:
+      environment_name: ${var.environment_name}
+      name: ${var.name}
+      repository: ${var.repository}
+      etag: ${var.etag}
+      id: ${var.id}
+
+outputs:
+  etag:
+    description: "An etag representing the Branch object."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

@@ -1,0 +1,23 @@
+variables:
+  username:
+    type: string
+    description: "The name of the user to block."
+  id:
+    type: string
+    description: "Optional property for Block"
+    default: null
+
+resources:
+  main:
+    type: github:organization:Block
+    properties:
+      username: ${var.username}
+      id: ${var.id}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
