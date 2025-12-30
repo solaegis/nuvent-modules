@@ -81,3 +81,14 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The unique identifier of the webhook. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/webhooks/<Webhook ID>."
+    value: ${resources.main.name}
+  start_flow:
+    description: "Deprecated. Name of the start flow in this agent. A start flow will be automatically created when the agent is created, and can only be deleted by deleting the agent. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>."
+    value: ${resources.main.start_flow}

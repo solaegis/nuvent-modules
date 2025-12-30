@@ -75,3 +75,35 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  baseline:
+    description: "Output only. Indicates that this revision has been successfully rolled out in this zone and new VMs will be assigned OS policies from this revision. For a given OS policy assignment, there is only one revision with a value of 'true' for this field."
+    value: ${resources.main.baseline}
+  deleted:
+    description: "Output only. Indicates that this revision deletes the OS policy assignment."
+    value: ${resources.main.deleted}
+  etag:
+    description: "The etag for this OS policy assignment. If this is provided on update, it must match the server's etag."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "The project for the resource"
+    value: ${resources.main.project}
+  reconciling:
+    description: "Output only. Indicates that reconciliation is in progress for the revision. This value is 'true' when the 'rollout_state' is one of: * IN_PROGRESS * CANCELLING"
+    value: ${resources.main.reconciling}
+  revision_create_time:
+    description: "Output only. The timestamp that the revision was created."
+    value: ${resources.main.revision_create_time}
+  revision_id:
+    description: "Output only. The assignment revision ID A new revision is committed whenever a rollout is triggered for a OS policy assignment"
+    value: ${resources.main.revision_id}
+  rollout_state:
+    description: "Output only. OS policy assignment rollout state"
+    value: ${resources.main.rollout_state}
+  uid:
+    description: "Output only. Server generated unique id for the OS policy assignment resource."
+    value: ${resources.main.uid}

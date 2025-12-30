@@ -126,3 +126,32 @@ resources:
             enablement_config: ${each.value.enablement_config}
             enablement_state: ${each.value.enablement_state}
             enablement_state_reason: ${each.value.enablement_state_reason}
+
+outputs:
+  create_time:
+    description: "The time when the repository was created."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  location:
+    description: "The name of the repository's location. In addition to specific regions, special values for multi-region locations are 'asia', 'europe', and 'us'. See [here](https://cloud.google.com/artifact-registry/docs/repositories/repo-locations), or use the [google_artifact_registry_locations](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/artifact_registry_locations) data source for possible values."
+    value: ${resources.main.location}
+  name:
+    description: "The name of the repository, for example: \"repo1\""
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  registry_uri:
+    description: "The repository endpoint, for example: us-docker.pkg.dev/my-proj/my-repo."
+    value: ${resources.main.registry_uri}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "The time when the repository was last updated."
+    value: ${resources.main.update_time}

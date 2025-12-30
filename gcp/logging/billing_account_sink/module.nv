@@ -56,3 +56,11 @@ resources:
             disabled: ${each.value.disabled}
             filter: ${each.value.filter}
             name: ${each.value.name}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  writer_identity:
+    description: "The identity associated with this sink. This identity must be granted write access to the configured destination."
+    value: ${resources.main.writer_identity}

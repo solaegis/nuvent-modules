@@ -54,3 +54,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  label_fingerprint:
+    description: "The fingerprint used for optimistic locking of this resource.  Used internally during updates."
+    value: ${resources.main.label_fingerprint}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

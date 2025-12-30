@@ -109,3 +109,47 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The time when the batch was created."
+    value: ${resources.main.create_time}
+  creator:
+    description: "The email address of the user who created the batch."
+    value: ${resources.main.creator}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name of the batch."
+    value: ${resources.main.name}
+  operation:
+    description: "The resource name of the operation associated with this batch."
+    value: ${resources.main.operation}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  runtime_info:
+    description: "Runtime information about batch execution."
+    value: ${resources.main.runtime_info}
+  state:
+    description: "The state of the batch. For possible values, see the [API documentation](https://cloud.google.com/dataproc-serverless/docs/reference/rest/v1/projects.locations.batches#State)."
+    value: ${resources.main.state}
+  state_history:
+    description: "Historical state information for the batch."
+    value: ${resources.main.state_history}
+  state_message:
+    description: "Batch state details, such as a failure description if the state is FAILED."
+    value: ${resources.main.state_message}
+  state_time:
+    description: "Batch state details, such as a failure description if the state is FAILED."
+    value: ${resources.main.state_time}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  uuid:
+    description: "A batch UUID (Unique Universal Identifier). The service generates this value when it creates the batch."
+    value: ${resources.main.uuid}

@@ -132,3 +132,68 @@ resources:
       subnetwork: ${var.subnetwork}
       temp_location: ${var.temp_location}
       transform_name_mapping: ${var.transform_name_mapping}
+
+outputs:
+  additional_experiments:
+    description: "List of experiments that should be used by the job. An example value is [\"enable_stackdriver_agent_metrics\"]."
+    value: ${resources.main.additional_experiments}
+  autoscaling_algorithm:
+    description: "The algorithm to use for autoscaling"
+    value: ${resources.main.autoscaling_algorithm}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  job_id:
+    description: "Output: job_id"
+    value: ${resources.main.job_id}
+  kms_key_name:
+    description: "The name for the Cloud KMS key for the job. Key format is: projects/PROJECT_ID/locations/LOCATION/keyRings/KEY_RING/cryptoKeys/KEY"
+    value: ${resources.main.kms_key_name}
+  launcher_machine_type:
+    description: "The machine type to use for launching the job. The default is n1-standard-1."
+    value: ${resources.main.launcher_machine_type}
+  machine_type:
+    description: "The machine type to use for the job."
+    value: ${resources.main.machine_type}
+  max_workers:
+    description: "The maximum number of Google Compute Engine instances to be made available to your pipeline during execution, from 1 to 1000."
+    value: ${resources.main.max_workers}
+  network:
+    description: "The network to which VMs will be assigned. If it is not provided, \"default\" will be used."
+    value: ${resources.main.network}
+  num_workers:
+    description: "The initial number of Google Compute Engine instances for the job."
+    value: ${resources.main.num_workers}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  region:
+    description: "The region in which the created job should run."
+    value: ${resources.main.region}
+  sdk_container_image:
+    description: "Docker registry location of container image to use for the 'worker harness. Default is the container for the version of the SDK. Note this field is only valid for portable pipelines."
+    value: ${resources.main.sdk_container_image}
+  service_account_email:
+    description: "The Service Account email used to create the job."
+    value: ${resources.main.service_account_email}
+  staging_location:
+    description: "The Cloud Storage path to use for staging files. Must be a valid Cloud Storage URL, beginning with gs://."
+    value: ${resources.main.staging_location}
+  state:
+    description: "Output: state"
+    value: ${resources.main.state}
+  subnetwork:
+    description: "The subnetwork to which VMs will be assigned. Should be of the form \"regions/REGION/subnetworks/SUBNETWORK\"."
+    value: ${resources.main.subnetwork}
+  temp_location:
+    description: "The Cloud Storage path to use for temporary files. Must be a valid Cloud Storage URL, beginning with gs://."
+    value: ${resources.main.temp_location}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  type:
+    description: "The type of this job, selected from the JobType enum."
+    value: ${resources.main.type}

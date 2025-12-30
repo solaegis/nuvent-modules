@@ -105,3 +105,17 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  network:
+    description: "This field is only used for PSC and INTERNET NEGs.  The URL of the network to which all network endpoints in the NEG belong. Uses \"default\" project network if unspecified."
+    value: ${resources.main.network}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}

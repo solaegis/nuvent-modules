@@ -37,3 +37,20 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  create_time:
+    description: "Timestamp when the sitemap was created."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The unique full resource name of the sitemap. Values are of the format 'projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}/siteSearchEngine/sitemaps/{sitemap_id}'. This field must be a UTF-8 encoded string with a length limit of 1024 characters."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  sitemap_id:
+    description: "The unique id of the sitemap."
+    value: ${resources.main.sitemap_id}

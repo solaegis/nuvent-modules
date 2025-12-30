@@ -69,3 +69,20 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  density:
+    description: "The density configuration for this index. Possible values: [\"SPARSE_ALL\", \"SPARSE_ANY\", \"DENSE\"]"
+    value: ${resources.main.density}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "A server defined name for this index. Format: 'projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/indexes/{{server_generated_id}}'"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  unique:
+    description: "Whether it is an unique index. Unique index ensures all values for the indexed field(s) are unique across documents."
+    value: ${resources.main.unique}

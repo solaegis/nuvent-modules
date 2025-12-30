@@ -87,3 +87,44 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  block_names:
+    description: "List of all reservation block names in the parent reservation."
+    value: ${resources.main.block_names}
+  commitment:
+    description: "Full or partial URL to a parent commitment. This field displays for reservations that are tied to a commitment."
+    value: ${resources.main.commitment}
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  delete_at_time:
+    description: "Absolute time in future when the reservation will be auto-deleted by Compute Engine. Timestamp is represented in RFC3339 text format. Cannot be used with delete_after_duration."
+    value: ${resources.main.delete_at_time}
+  id:
+    description: "The unique identifier for the resource. This identifier is defined by the server."
+    value: ${resources.main.id}
+  kind:
+    description: "Type of the resource. Always compute#reservations for reservations."
+    value: ${resources.main.kind}
+  linked_commitments:
+    description: "Full or partial URL to parent commitments. This field displays for reservations that are tied to multiple commitments."
+    value: ${resources.main.linked_commitments}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  reservation_block_count:
+    description: "The number of reservation blocks associated with this reservation."
+    value: ${resources.main.reservation_block_count}
+  resource_status:
+    description: "Status information for Reservation resource."
+    value: ${resources.main.resource_status}
+  satisfies_pzs:
+    description: "Reserved for future use."
+    value: ${resources.main.satisfies_pzs}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}
+  status:
+    description: "The status of the reservation."
+    value: ${resources.main.status}

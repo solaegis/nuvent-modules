@@ -51,3 +51,17 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The name of the connector. The 'connector' segment is used when connecting directly to the connect cluster. Structured like: 'projects/PROJECT_ID/locations/LOCATION/connectClusters/CONNECT_CLUSTER/connectors/CONNECTOR_ID'."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "The current state of the connect. Possible values: 'STATE_UNSPECIFIED', 'UNASSIGNED', 'RUNNING', 'PAUSED', 'FAILED', 'RESTARTING', and 'STOPPED'."
+    value: ${resources.main.state}

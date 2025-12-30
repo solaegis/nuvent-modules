@@ -48,3 +48,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Output only. The creation timestamp of the view."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  location:
+    description: "The location of the resource. The supported locations are: global, us-central1, us-east1, us-west1, asia-east1, europe-west1."
+    value: ${resources.main.location}
+  parent:
+    description: "The parent of the resource."
+    value: ${resources.main.parent}
+  update_time:
+    description: "Output only. The last update timestamp of the view."
+    value: ${resources.main.update_time}

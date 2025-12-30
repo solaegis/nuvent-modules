@@ -141,3 +141,35 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The date and time that the Autonomous Database was created."
+    value: ${resources.main.create_time}
+  display_name:
+    description: "The display name for the Autonomous Database. The name does not have to be unique within your project."
+    value: ${resources.main.display_name}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  entitlement_id:
+    description: "The ID of the subscription entitlement associated with the Autonomous Database."
+    value: ${resources.main.entitlement_id}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. The name of the Autonomous Database resource in the following format: projects/{project}/locations/{region}/autonomousDatabases/{autonomous_database}"
+    value: ${resources.main.name}
+  odb_network:
+    description: "The name of the OdbNetwork associated with the Autonomous Database. Format: projects/{project}/locations/{location}/odbNetworks/{odb_network} It is optional but if specified, this should match the parent ODBNetwork of the odb_subnet and backup_odb_subnet."
+    value: ${resources.main.odb_network}
+  odb_subnet:
+    description: "The name of the OdbSubnet associated with the Autonomous Database for IP allocation. Format: projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}"
+    value: ${resources.main.odb_subnet}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

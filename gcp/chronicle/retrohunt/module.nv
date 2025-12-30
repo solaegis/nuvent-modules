@@ -50,3 +50,26 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  execution_interval:
+    description: "Represents a time interval, encoded as a Timestamp start (inclusive) and a Timestamp end (exclusive).  The start must be less than or equal to the end. When the start equals the end, the interval is empty (matches no time). When both start and end are unspecified, the interval matches any time."
+    value: ${resources.main.execution_interval}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name of the retrohunt. Retrohunt is the child of a rule revision. {rule} in the format below is structured as {rule_id@revision_id}. Format: projects/{project}/locations/{location}/instances/{instance}/rules/{rule}/retrohunts/{retrohunt}"
+    value: ${resources.main.name}
+  progress_percentage:
+    description: "Output only. Percent progress of the retrohunt towards completion, from 0.00 to 100.00."
+    value: ${resources.main.progress_percentage}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  retrohunt:
+    description: "The retrohunt ID of the Retrohunt. A retrohunt is an execution of a Rule over a time range in the past."
+    value: ${resources.main.retrohunt}
+  state:
+    description: "Output only. The state of the retrohunt. Possible values: RUNNING DONE CANCELLED FAILED"
+    value: ${resources.main.state}

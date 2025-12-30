@@ -137,3 +137,50 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  accelerator_type:
+    description: "TPU accelerator type for the TPU. 'accelerator_type' cannot be used at the same time as 'accelerator_config'. If neither is specified, 'accelerator_type' defaults to 'v2-8'."
+    value: ${resources.main.accelerator_type}
+  api_version:
+    description: "The API version that created this Node."
+    value: ${resources.main.api_version}
+  cidr_block:
+    description: "The CIDR block that the TPU node will use when selecting an IP address. This CIDR block must be a /29 block; the Compute Engine networks API forbids a smaller block, and using a larger block would be wasteful (a node can only consume one IP address). Errors will occur if the CIDR block has already been used for a currently existing TPU node, the CIDR block conflicts with any subnetworks in the user's provided network, or the provided network is peered with another network that is using that CIDR block."
+    value: ${resources.main.cidr_block}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  health:
+    description: "The health status of the TPU node."
+    value: ${resources.main.health}
+  health_description:
+    description: "If this field is populated, it contains a description of why the TPU Node is unhealthy."
+    value: ${resources.main.health_description}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  multislice_node:
+    description: "Whether the Node belongs to a Multislice group."
+    value: ${resources.main.multislice_node}
+  network_endpoints:
+    description: "The network endpoints where TPU workers can be accessed and sent work. It is recommended that runtime clients of the node reach out to the 0th entry in this map first."
+    value: ${resources.main.network_endpoints}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  queued_resource:
+    description: "The qualified name of the QueuedResource that requested this Node."
+    value: ${resources.main.queued_resource}
+  state:
+    description: "The current state for the TPU Node."
+    value: ${resources.main.state}
+  symptoms:
+    description: "The Symptoms that have occurred to the TPU Node."
+    value: ${resources.main.symptoms}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  zone:
+    description: "The GCP location for the TPU. If it is not provided, the provider zone is used."
+    value: ${resources.main.zone}

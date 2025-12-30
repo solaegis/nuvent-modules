@@ -66,3 +66,14 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  recent_scheduled_execution_records:
+    description: "Records of the 10 most recent scheduled execution attempts, ordered in in descending order of executionTime. Updated whenever automatic creation of a workflow invocation is triggered by cronSchedule."
+    value: ${resources.main.recent_scheduled_execution_records}

@@ -29,3 +29,14 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Resource name of the bucket in the format projects/PROJECT_IDENTIFIER/buckets/BUCKET_ID"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

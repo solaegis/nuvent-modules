@@ -39,3 +39,26 @@ resources:
             delete: ${each.value.delete}
             read: ${each.value.read}
             update: ${each.value.update}
+
+outputs:
+  configured_capabilities:
+    description: "A list of capabilities that are configured for this folder."
+    value: ${resources.main.configured_capabilities}
+  create_time:
+    description: "Timestamp when the Folder was created. Assigned by the server. A timestamp in RFC3339 UTC \"Zulu\" format, accurate to nanoseconds. Example: \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.create_time}
+  folder_id:
+    description: "The folder id from the name \"folders/{folder_id}\""
+    value: ${resources.main.folder_id}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  lifecycle_state:
+    description: "The lifecycle state of the folder such as ACTIVE or DELETE_REQUESTED."
+    value: ${resources.main.lifecycle_state}
+  management_project:
+    description: "The Management Project associated with the folder's configured capabilities."
+    value: ${resources.main.management_project}
+  name:
+    description: "The resource name of the Folder. Its format is folders/{folder_id}."
+    value: ${resources.main.name}

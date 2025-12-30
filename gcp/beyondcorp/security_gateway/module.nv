@@ -68,3 +68,29 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Output only. Timestamp when the resource was created."
+    value: ${resources.main.create_time}
+  delegating_service_account:
+    description: "Service account used for operations that involve resources in consumer projects."
+    value: ${resources.main.delegating_service_account}
+  external_ips:
+    description: "Output only. IP addresses that will be used for establishing connection to the endpoints."
+    value: ${resources.main.external_ips}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. Name of the resource."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "Output only. The operational state of the SecurityGateway. Possible values: STATE_UNSPECIFIED CREATING UPDATING DELETING RUNNING DOWN ERROR"
+    value: ${resources.main.state}
+  update_time:
+    description: "Output only. Timestamp when the resource was last modified."
+    value: ${resources.main.update_time}

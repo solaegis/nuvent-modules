@@ -46,3 +46,14 @@ resources:
             delete: ${each.value.delete}
             read: ${each.value.read}
             update: ${each.value.update}
+
+outputs:
+  certs_info:
+    description: "Chain of certificates under this alias."
+    value: ${resources.main.certs_info}
+  id:
+    description: "Project identifier"
+    value: ${resources.main.id}
+  type:
+    description: "Optional. Type of Alias."
+    value: ${resources.main.type}

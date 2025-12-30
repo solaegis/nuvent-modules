@@ -29,3 +29,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  effective_container:
+    description: "The resource container that determines if the quota adjuster is set for this project. Expect this field to be empty currently."
+    value: ${resources.main.effective_container}
+  effective_enablement:
+    description: "Based on the effective container's setting above, determines Whether this resource container has the quota adjuster enabled. Expect this field to be empty currently."
+    value: ${resources.main.effective_enablement}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  inherited:
+    description: "Indicates whether the setting is inherited or explicitly specified."
+    value: ${resources.main.inherited}
+  inherited_from:
+    description: "The resource container from which the setting is inherited. This refers to the  nearest ancestor with enablement set (either ENABLED or DISABLED). The value can be 'organizations/{organization_id}', 'folders/{folder_id}', or can be 'default' if no ancestor exists with enablement set. The value will be empty when 'enablement' is specified on this resource container."
+    value: ${resources.main.inherited_from}
+  parent:
+    description: "The parent of the quota preference. Allowed parent format is \"projects/[project-id / number]\"."
+    value: ${resources.main.parent}

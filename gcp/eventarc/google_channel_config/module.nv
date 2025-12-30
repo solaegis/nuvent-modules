@@ -38,3 +38,14 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  update_time:
+    description: "Output only. The last-modified time."
+    value: ${resources.main.update_time}

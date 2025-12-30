@@ -61,3 +61,26 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  display_name:
+    description: "Output only. The unique display name of the reference list."
+    value: ${resources.main.display_name}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Output only. The resource name of the reference list. Format: projects/{project}/locations/{location}/instances/{instance}/referenceLists/{reference_list}"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  revision_create_time:
+    description: "Output only. The timestamp when the reference list was last updated."
+    value: ${resources.main.revision_create_time}
+  rule_associations_count:
+    description: "Output only. The count of self-authored rules using the reference list."
+    value: ${resources.main.rule_associations_count}
+  rules:
+    description: "Output only. The resource names for the associated self-authored Rules that use this reference list. This is returned only when the view is REFERENCE_LIST_VIEW_FULL."
+    value: ${resources.main.rules}

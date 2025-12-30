@@ -35,3 +35,14 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  create_time:
+    description: "Time of creation"
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "A system-generated unique identifier for this Lien."
+    value: ${resources.main.name}

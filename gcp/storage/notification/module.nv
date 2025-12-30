@@ -31,3 +31,14 @@ resources:
       custom_attributes: ${var.custom_attributes}
       event_types: ${var.event_types}
       object_name_prefix: ${var.object_name_prefix}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  notification_id:
+    description: "The ID of the created notification."
+    value: ${resources.main.notification_id}
+  self_link:
+    description: "The URI of the created resource."
+    value: ${resources.main.self_link}

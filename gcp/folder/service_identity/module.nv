@@ -28,3 +28,14 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             read: ${each.value.read}
+
+outputs:
+  email:
+    description: "Output: email"
+    value: ${resources.main.email}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  member:
+    description: "The Identity of the Google managed service account in the form 'serviceAccount:{email}'. This value is often used to refer to the service account in order to grant IAM permissions."
+    value: ${resources.main.member}

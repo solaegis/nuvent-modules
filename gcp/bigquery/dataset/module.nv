@@ -132,3 +132,41 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  creation_time:
+    description: "The time when this dataset was created, in milliseconds since the epoch."
+    value: ${resources.main.creation_time}
+  default_collation:
+    description: "Defines the default collation specification of future tables created in the dataset. If a table is created in this dataset without table-level default collation, then the table inherits the dataset default collation, which is applied to the string fields that do not have explicit collation specified. A change to this field affects only tables created afterwards, and does not alter the existing tables.  The following values are supported: - 'und:ci': undetermined locale, case insensitive. - '': empty string. Default to case-sensitive behavior."
+    value: ${resources.main.default_collation}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  etag:
+    description: "A hash of the resource."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  is_case_insensitive:
+    description: "TRUE if the dataset and its table names are case-insensitive, otherwise FALSE. By default, this is FALSE, which means the dataset and its table names are case-sensitive. This field does not affect routine references."
+    value: ${resources.main.is_case_insensitive}
+  last_modified_time:
+    description: "The date when this dataset or any of its tables was last modified, in milliseconds since the epoch."
+    value: ${resources.main.last_modified_time}
+  max_time_travel_hours:
+    description: "Defines the time travel window in hours. The value can be from 48 to 168 hours (2 to 7 days)."
+    value: ${resources.main.max_time_travel_hours}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}
+  storage_billing_model:
+    description: "Specifies the storage billing model for the dataset. Set this flag value to LOGICAL to use logical bytes for storage billing, or to PHYSICAL to use physical bytes instead.  LOGICAL is the default if this flag isn't specified."
+    value: ${resources.main.storage_billing_model}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

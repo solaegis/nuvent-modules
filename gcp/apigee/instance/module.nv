@@ -71,3 +71,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  consumer_accept_list:
+    description: "Optional. Customer accept list represents the list of projects (id/number) on customer side that can privately connect to the service attachment. It is an optional field which the customers can provide during the instance creation. By default, the customer project associated with the Apigee organization will be included to the list."
+    value: ${resources.main.consumer_accept_list}
+  host:
+    description: "Output only. Hostname or IP address of the exposed Apigee endpoint used by clients to connect to the service."
+    value: ${resources.main.host}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  peering_cidr_range:
+    description: "The size of the CIDR block range that will be reserved by the instance. For valid values, see [CidrRange](https://cloud.google.com/apigee/docs/reference/apis/apigee/rest/v1/organizations.instances#CidrRange) on the documentation."
+    value: ${resources.main.peering_cidr_range}
+  port:
+    description: "Output only. Port number of the exposed Apigee endpoint."
+    value: ${resources.main.port}
+  service_attachment:
+    description: "Output only. Resource name of the service attachment created for the instance in the format: projects/*/regions/*/serviceAttachments/* Apigee customers can privately forward traffic to this service attachment using the PSC endpoints."
+    value: ${resources.main.service_attachment}

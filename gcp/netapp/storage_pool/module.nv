@@ -120,3 +120,53 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  available_throughput_mibps:
+    description: "Available throughput of the storage pool (in MiB/s)."
+    value: ${resources.main.available_throughput_mibps}
+  cold_tier_size_used_gib:
+    description: "Total cold tier data rounded down to the nearest GiB used by the storage pool."
+    value: ${resources.main.cold_tier_size_used_gib}
+  custom_performance_enabled:
+    description: "Optional. True if using Independent Scaling of capacity and performance (Hyperdisk). Default is false."
+    value: ${resources.main.custom_performance_enabled}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  encryption_type:
+    description: "Reports if volumes in the pool are encrypted using a Google-managed encryption key or CMEK."
+    value: ${resources.main.encryption_type}
+  hot_tier_size_used_gib:
+    description: "Total hot tier data rounded down to the nearest GiB used by the storage pool."
+    value: ${resources.main.hot_tier_size_used_gib}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  qos_type:
+    description: "QoS (Quality of Service) type of the storage pool. Possible values are: AUTO, MANUAL. Possible values: [\"QOS_TYPE_UNSPECIFIED\", \"AUTO\", \"MANUAL\"]"
+    value: ${resources.main.qos_type}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  total_iops:
+    description: "Optional. Custom Performance Total IOPS of the pool If not provided, it will be calculated based on the totalThroughputMibps"
+    value: ${resources.main.total_iops}
+  total_throughput_mibps:
+    description: "Optional. Custom Performance Total Throughput of the pool (in MiB/s)."
+    value: ${resources.main.total_throughput_mibps}
+  type:
+    description: "Type of the storage pool. This field is used to control whether the pool supports FILE based volumes only or UNIFIED (both FILE and BLOCK) volumes. If not specified during creation, it defaults to FILE. Possible values: [\"STORAGE_POOL_TYPE_UNSPECIFIED\", \"FILE\", \"UNIFIED\"]"
+    value: ${resources.main.type}
+  volume_capacity_gib:
+    description: "Size allocated to volumes in the storage pool (in GiB)."
+    value: ${resources.main.volume_capacity_gib}
+  volume_count:
+    description: "Number of volume in the storage pool."
+    value: ${resources.main.volume_count}
+  zone:
+    description: "Specifies the active zone for regional Flex pools. 'zone' and 'replica_zone' values can be swapped to initiate a [zone switch](https://cloud.google.com/netapp/volumes/docs/configure-and-use/storage-pools/edit-or-delete-storage-pool#switch_active_and_replica_zones). If you want to create a zonal Flex pool, specify a zone name for 'location' and omit 'zone'."
+    value: ${resources.main.zone}

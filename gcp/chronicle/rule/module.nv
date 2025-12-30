@@ -58,3 +58,62 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  allowed_run_frequencies:
+    description: "Output only. The run frequencies that are allowed for the rule. Populated in BASIC view and FULL view."
+    value: ${resources.main.allowed_run_frequencies}
+  author:
+    description: "Output only. The author of the rule. Extracted from the meta section of text. Populated in BASIC view and FULL view."
+    value: ${resources.main.author}
+  compilation_diagnostics:
+    description: "Output only. A list of a rule's corresponding compilation diagnostic messages such as compilation errors and compilation warnings. Populated in FULL view."
+    value: ${resources.main.compilation_diagnostics}
+  compilation_state:
+    description: "Output only. The current compilation state of the rule. Populated in FULL view. Possible values: COMPILATION_STATE_UNSPECIFIED SUCCEEDED FAILED"
+    value: ${resources.main.compilation_state}
+  create_time:
+    description: "Output only. The timestamp of when the rule was created. Populated in FULL view."
+    value: ${resources.main.create_time}
+  data_tables:
+    description: "Output only. Resource names of the data tables used in this rule."
+    value: ${resources.main.data_tables}
+  display_name:
+    description: "Output only. Display name of the rule. Populated in BASIC view and FULL view."
+    value: ${resources.main.display_name}
+  etag:
+    description: "The etag for this rule. If this is provided on update, the request will succeed if and only if it matches the server-computed value, and will fail with an ABORTED error otherwise. Populated in BASIC view and FULL view."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  metadata:
+    description: "Output only. Additional metadata specified in the meta section of text. Populated in FULL view."
+    value: ${resources.main.metadata}
+  name:
+    description: "Full resource name for the rule. This unique identifier is generated using values provided for the URL parameters. Format: projects/{project}/locations/{location}/instances/{instance}/rules/{rule}"
+    value: ${resources.main.name}
+  near_real_time_live_rule_eligible:
+    description: "Output only. Indicate the rule can run in near real time live rule. If this is true, the rule uses the near real time live rule when the run frequency is set to LIVE."
+    value: ${resources.main.near_real_time_live_rule_eligible}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  reference_lists:
+    description: "Output only. Resource names of the reference lists used in this rule. Populated in FULL view."
+    value: ${resources.main.reference_lists}
+  revision_create_time:
+    description: "Output only. The timestamp of when the rule revision was created. Populated in FULL, REVISION_METADATA_ONLY views."
+    value: ${resources.main.revision_create_time}
+  revision_id:
+    description: "Output only. The revision ID of the rule. A new revision is created whenever the rule text is changed in any way. Format: v_{10 digits}_{9 digits} Populated in REVISION_METADATA_ONLY view and FULL view."
+    value: ${resources.main.revision_id}
+  rule_id:
+    description: "Rule Id is the ID of the Rule."
+    value: ${resources.main.rule_id}
+  severity:
+    description: "Severity represents the severity level of the rule."
+    value: ${resources.main.severity}
+  type:
+    description: "Possible values: RULE_TYPE_UNSPECIFIED SINGLE_EVENT MULTI_EVENT"
+    value: ${resources.main.type}

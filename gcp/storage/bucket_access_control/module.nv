@@ -33,3 +33,14 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  domain:
+    description: "The domain associated with the entity."
+    value: ${resources.main.domain}
+  email:
+    description: "The email address associated with the entity."
+    value: ${resources.main.email}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

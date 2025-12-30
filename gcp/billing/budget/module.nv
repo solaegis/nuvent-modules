@@ -80,3 +80,11 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Resource name of the budget. The resource name implies the scope of a budget. Values are of the form billingAccounts/{billingAccountId}/budgets/{budgetId}."
+    value: ${resources.main.name}

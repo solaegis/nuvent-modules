@@ -153,3 +153,62 @@ resources:
           content:
             mode: ${each.value.mode}
             zone: ${each.value.zone}
+
+outputs:
+  available_maintenance_versions:
+    description: "This field is used to determine the available maintenance versions for the self service update."
+    value: ${resources.main.available_maintenance_versions}
+  backup_collection:
+    description: "The backup collection full resource name. Example: projects/{project}/locations/{location}/backupCollections/{collection}"
+    value: ${resources.main.backup_collection}
+  create_time:
+    description: "The timestamp associated with the cluster creation request. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.create_time}
+  discovery_endpoints:
+    description: "Output only. Endpoints created on each given network, for Redis clients to connect to the cluster. Currently only one endpoint is supported."
+    value: ${resources.main.discovery_endpoints}
+  effective_maintenance_version:
+    description: "This field represents the actual maintenance version of the cluster."
+    value: ${resources.main.effective_maintenance_version}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  maintenance_schedule:
+    description: "Upcoming maintenance schedule."
+    value: ${resources.main.maintenance_schedule}
+  managed_server_ca:
+    description: "Cluster's Certificate Authority. This field will only be populated if Redis Cluster's transit_encryption_mode is TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION"
+    value: ${resources.main.managed_server_ca}
+  name:
+    description: "Unique name of the resource in this scope including project and location using the form: projects/{projectId}/locations/{locationId}/clusters/{clusterId}"
+    value: ${resources.main.name}
+  node_type:
+    description: "The nodeType for the Redis cluster. If not provided, REDIS_HIGHMEM_MEDIUM will be used as default Possible values: [\"REDIS_SHARED_CORE_NANO\", \"REDIS_HIGHMEM_MEDIUM\", \"REDIS_HIGHMEM_XLARGE\", \"REDIS_STANDARD_SMALL\"]"
+    value: ${resources.main.node_type}
+  precise_size_gb:
+    description: "Output only. Redis memory precise size in GB for the entire cluster."
+    value: ${resources.main.precise_size_gb}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  psc_connections:
+    description: "Output only. PSC connections for discovery of the cluster topology and accessing the cluster."
+    value: ${resources.main.psc_connections}
+  psc_service_attachments:
+    description: "Service attachment details to configure Psc connections."
+    value: ${resources.main.psc_service_attachments}
+  region:
+    description: "The name of the region of the Redis cluster."
+    value: ${resources.main.region}
+  size_gb:
+    description: "Output only. Redis memory size in GB for the entire cluster."
+    value: ${resources.main.size_gb}
+  state:
+    description: "The current state of this cluster. Can be CREATING, READY, UPDATING, DELETING and SUSPENDED"
+    value: ${resources.main.state}
+  state_info:
+    description: "Output only. Additional information about the current state of the cluster."
+    value: ${resources.main.state_info}
+  uid:
+    description: "System assigned, unique identifier for the cluster."
+    value: ${resources.main.uid}

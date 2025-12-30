@@ -42,3 +42,23 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  gateway_id:
+    description: "The unique identifier for the resource."
+    value: ${resources.main.gateway_id}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  region:
+    description: "The region this gateway should sit in."
+    value: ${resources.main.region}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}

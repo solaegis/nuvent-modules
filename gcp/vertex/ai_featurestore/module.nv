@@ -67,3 +67,29 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The timestamp of when the featurestore was created in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  etag:
+    description: "Used to perform consistent read-modify-write updates."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  region:
+    description: "The region of the dataset. eg us-central1"
+    value: ${resources.main.region}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "The timestamp of when the featurestore was last updated in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits."
+    value: ${resources.main.update_time}

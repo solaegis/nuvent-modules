@@ -124,3 +124,56 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  cluster_ca_certificate:
+    description: "The PEM-encoded public certificate of the cluster's CA."
+    value: ${resources.main.cluster_ca_certificate}
+  control_plane_version:
+    description: "The control plane release version."
+    value: ${resources.main.control_plane_version}
+  create_time:
+    description: "The time the cluster was created, in RFC3339 text format."
+    value: ${resources.main.create_time}
+  default_max_pods_per_node:
+    description: "The default maximum number of pods per node used if a maximum value is not specified explicitly for a node pool in this cluster. If unspecified, the Kubernetes default value will be used."
+    value: ${resources.main.default_max_pods_per_node}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  endpoint:
+    description: "The IP address of the Kubernetes API server."
+    value: ${resources.main.endpoint}
+  external_load_balancer_ipv4_address_pools:
+    description: "Address pools for cluster data plane external load balancing."
+    value: ${resources.main.external_load_balancer_ipv4_address_pools}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  maintenance_events:
+    description: "All the maintenance events scheduled for the cluster, including the ones ongoing, planned for the future and done in the past (up to 90 days)."
+    value: ${resources.main.maintenance_events}
+  node_version:
+    description: "The lowest release version among all worker nodes. This field can be empty if the cluster does not have any worker nodes."
+    value: ${resources.main.node_version}
+  port:
+    description: "The port number of the Kubernetes API server."
+    value: ${resources.main.port}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  release_channel:
+    description: "The release channel a cluster is subscribed to. Possible values: [\"RELEASE_CHANNEL_UNSPECIFIED\", \"NONE\", \"REGULAR\"]"
+    value: ${resources.main.release_channel}
+  status:
+    description: "Indicates the status of the cluster."
+    value: ${resources.main.status}
+  target_version:
+    description: "The target cluster version. For example: \"1.5.0\"."
+    value: ${resources.main.target_version}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "The time the cluster was last updated, in RFC3339 text format."
+    value: ${resources.main.update_time}

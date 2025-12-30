@@ -54,3 +54,14 @@ resources:
           for_each: ${var.ttl_config}
           content:
             state: ${each.value.state}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The name of this field. Format: 'projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/fields/{{field}}'"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

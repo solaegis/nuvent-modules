@@ -92,3 +92,17 @@ resources:
             accelerator_topology: ${each.value.accelerator_topology}
             max_topology_distance: ${each.value.max_topology_distance}
             type: ${each.value.type}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  region:
+    description: "Region where resource policy resides."
+    value: ${resources.main.region}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}

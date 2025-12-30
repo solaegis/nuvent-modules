@@ -57,3 +57,23 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  generated_id:
+    description: "The uniquely generated identifier for the resource. This identifier is defined by the server."
+    value: ${resources.main.generated_id}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}
+  size:
+    description: "Number of network endpoints in the network endpoint group."
+    value: ${resources.main.size}
+  zone:
+    description: "Zone where the network endpoint group is located."
+    value: ${resources.main.zone}

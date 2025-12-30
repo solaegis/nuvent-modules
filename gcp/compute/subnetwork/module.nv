@@ -143,3 +143,62 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  allow_subnet_cidr_routes_overlap:
+    description: "Typically packets destined to IPs within the subnetwork range that do not match existing resources are dropped and prevented from leaving the VPC. Setting this field to true will allow these packets to match dynamic routes injected via BGP even if their destinations match existing subnet ranges."
+    value: ${resources.main.allow_subnet_cidr_routes_overlap}
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  external_ipv6_prefix:
+    description: "The range of external IPv6 addresses that are owned by this subnetwork."
+    value: ${resources.main.external_ipv6_prefix}
+  fingerprint:
+    description: "Fingerprint of this resource. This field is used internally during updates of this resource."
+    value: ${resources.main.fingerprint}
+  gateway_address:
+    description: "The gateway address for default routes to reach destination addresses outside this subnetwork."
+    value: ${resources.main.gateway_address}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  internal_ipv6_prefix:
+    description: "The internal IPv6 address range that is assigned to this subnetwork."
+    value: ${resources.main.internal_ipv6_prefix}
+  ip_cidr_range:
+    description: "The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported. Field is optional when 'reserved_internal_range' is defined, otherwise required."
+    value: ${resources.main.ip_cidr_range}
+  ipv6_cidr_range:
+    description: "The range of internal IPv6 addresses that are owned by this subnetwork."
+    value: ${resources.main.ipv6_cidr_range}
+  ipv6_gce_endpoint:
+    description: "Possible endpoints of this subnetwork. It can be one of the following:   * VM_ONLY: The subnetwork can be used for creating instances and IPv6 addresses with VM endpoint type. Such a subnetwork   gets external IPv6 ranges from a public delegated prefix and cannot be used to create NetLb.   * VM_AND_FR: The subnetwork can be used for creating both VM instances and Forwarding Rules. It can also be used to reserve   IPv6 addresses with both VM and FR endpoint types. Such a subnetwork gets its IPv6 range from Google IP Pool directly."
+    value: ${resources.main.ipv6_gce_endpoint}
+  private_ip_google_access:
+    description: "When enabled, VMs in this subnetwork without external IP addresses can access Google APIs and services by using Private Google Access."
+    value: ${resources.main.private_ip_google_access}
+  private_ipv6_google_access:
+    description: "The private IPv6 google access type for the VMs in this subnet."
+    value: ${resources.main.private_ipv6_google_access}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  purpose:
+    description: "The purpose of the resource. This field can be either 'PRIVATE', 'REGIONAL_MANAGED_PROXY', 'GLOBAL_MANAGED_PROXY', 'PRIVATE_SERVICE_CONNECT', 'PEER_MIGRATION' or 'PRIVATE_NAT'([Beta](https://terraform.io/docs/providers/google/guides/provider_versions.html)). A subnet with purpose set to 'REGIONAL_MANAGED_PROXY' is a user-created subnetwork that is reserved for regional Envoy-based load balancers. A subnetwork in a given region with purpose set to 'GLOBAL_MANAGED_PROXY' is a proxy-only subnet and is shared between all the cross-regional Envoy-based load balancers. A subnetwork with purpose set to 'PRIVATE_SERVICE_CONNECT' reserves the subnet for hosting a Private Service Connect published service. A subnetwork with purpose set to 'PEER_MIGRATION' is a user created subnetwork that is reserved for migrating resources from one peered network to another. A subnetwork with purpose set to 'PRIVATE_NAT' is used as source range for Private NAT gateways. Note that 'REGIONAL_MANAGED_PROXY' is the preferred setting for all regional Envoy load balancers. If unspecified, the purpose defaults to 'PRIVATE'."
+    value: ${resources.main.purpose}
+  region:
+    description: "The GCP region for this subnetwork."
+    value: ${resources.main.region}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}
+  stack_type:
+    description: "The stack type for this subnet to identify whether the IPv6 feature is enabled or not. If not specified IPV4_ONLY will be used. Possible values: [\"IPV4_ONLY\", \"IPV4_IPV6\", \"IPV6_ONLY\"]"
+    value: ${resources.main.stack_type}
+  state:
+    description: "'The state of the subnetwork, which can be one of the following values:  READY: Subnetwork is created and ready to use DRAINING: only applicable to subnetworks that have the purpose  set to INTERNAL_HTTPS_LOAD_BALANCER and indicates that connections to the load balancer are being drained.  A subnetwork that is draining cannot be used or modified until it reaches a status of READY'"
+    value: ${resources.main.state}
+  subnetwork_id:
+    description: "The unique identifier number for the resource. This identifier is defined by the server."
+    value: ${resources.main.subnetwork_id}

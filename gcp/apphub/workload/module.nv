@@ -63,3 +63,32 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Output only. Create time."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. The resource name of the Workload. Format:\"projects/{host-project-id}/locations/{location}/applications/{application-id}/workloads/{workload-id}\""
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "Output only. Workload state. Possible values:  STATE_UNSPECIFIED CREATING ACTIVE DELETING DETACHED"
+    value: ${resources.main.state}
+  uid:
+    description: "Output only. A universally unique identifier (UUID) for the 'Workload' in the UUID4 format."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Output only. Update time."
+    value: ${resources.main.update_time}
+  workload_properties:
+    description: "Properties of an underlying compute resource represented by the Workload."
+    value: ${resources.main.workload_properties}
+  workload_reference:
+    description: "Reference of an underlying compute resource represented by the Workload."
+    value: ${resources.main.workload_reference}

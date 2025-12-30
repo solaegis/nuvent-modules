@@ -80,3 +80,17 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  priority:
+    description: "Since only one rule can be active at a time, priority is used to break ties in the case of two rules that apply to the same instances."
+    value: ${resources.main.priority}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  region:
+    description: "The Region in which the created address should reside. If it is not provided, the provider region is used."
+    value: ${resources.main.region}

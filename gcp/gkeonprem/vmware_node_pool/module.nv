@@ -78,3 +78,38 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The time the cluster was created, in RFC3339 text format."
+    value: ${resources.main.create_time}
+  delete_time:
+    description: "The time the cluster was deleted, in RFC3339 text format."
+    value: ${resources.main.delete_time}
+  effective_annotations:
+    description: "All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services."
+    value: ${resources.main.effective_annotations}
+  etag:
+    description: "This checksum is computed by the server based on the value of other fields, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding. Allows clients to perform consistent read-modify-writes through optimistic concurrency control."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  reconciling:
+    description: "If set, there are currently changes in flight to the node pool."
+    value: ${resources.main.reconciling}
+  state:
+    description: "The current state of this cluster."
+    value: ${resources.main.state}
+  status:
+    description: "ResourceStatus representing detailed cluster state."
+    value: ${resources.main.status}
+  uid:
+    description: "The unique identifier of the node pool."
+    value: ${resources.main.uid}
+  update_time:
+    description: "The time the cluster was last updated, in RFC3339 text format."
+    value: ${resources.main.update_time}

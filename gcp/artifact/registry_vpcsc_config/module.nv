@@ -35,3 +35,17 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  location:
+    description: "The name of the location this config is located in."
+    value: ${resources.main.location}
+  name:
+    description: "The name of the project's VPC SC Config. Always of the form: projects/{project}/location/{location}/vpcscConfig"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

@@ -111,3 +111,32 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Output only. The timestamp when the resource was created. A timestamp in RFC3339 UTC 'Zulu' format, accurate to nanoseconds. Example: '2014-10-02T15:01:23.045123456Z'."
+    value: ${resources.main.create_time}
+  dbprovider:
+    description: "The database provider."
+    value: ${resources.main.dbprovider}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  error:
+    description: "Output only. The error details in case of state FAILED."
+    value: ${resources.main.error}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The name of this connection profile resource in the form of projects/{project}/locations/{location}/connectionProfiles/{connectionProfile}."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "The current connection profile state."
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

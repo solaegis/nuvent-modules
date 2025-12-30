@@ -47,3 +47,17 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  client_secret:
+    description: "The system-generated OAuth client secret.  The client secret must be stored securely. If the client secret is leaked, you must delete and re-create the client credential. To learn more, see [OAuth client and credential security risks and mitigations](https://cloud.google.com/iam/docs/workforce-oauth-app#security)"
+    value: ${resources.main.client_secret}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Immutable. Identifier. The resource name of the OauthClientCredential.  Format: 'projects/{project}/locations/{location}/oauthClients/{oauth_client}/credentials/{credential}'"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

@@ -166,3 +166,50 @@ resources:
           for_each: ${var.upgrade_policy}
           content:
             policy: ${each.value.policy}
+
+outputs:
+  create_time:
+    description: "The time the cluster was created, in RFC3339 text format."
+    value: ${resources.main.create_time}
+  delete_time:
+    description: "The time the cluster was deleted, in RFC3339 text format."
+    value: ${resources.main.delete_time}
+  effective_annotations:
+    description: "All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services."
+    value: ${resources.main.effective_annotations}
+  endpoint:
+    description: "The IP address name of Bare Metal User Cluster's API server."
+    value: ${resources.main.endpoint}
+  etag:
+    description: "This checksum is computed by the server based on the value of other fields, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding. Allows clients to perform consistent read-modify-writes through optimistic concurrency control."
+    value: ${resources.main.etag}
+  fleet:
+    description: "Fleet related configuration. Fleets are a Google Cloud concept for logically organizing clusters, letting you use and manage multi-cluster capabilities and apply consistent policies across your systems. See [Anthos Fleets](https://cloud.google.com/anthos/multicluster-management/fleets) for more details on Anthos multi-cluster capabilities using Fleets."
+    value: ${resources.main.fleet}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  local_name:
+    description: "The object name of the Bare Metal Cluster custom resource on the associated admin cluster. This field is used to support conflicting names when enrolling existing clusters to the API. When used as a part of cluster enrollment, this field will differ from the ID in the resource name. For new clusters, this field will match the user provided cluster ID and be visible in the last component of the resource name. It is not modifiable. All users should use this name to access their cluster using gkectl or kubectl and should expect to see the local name when viewing admin cluster controller logs."
+    value: ${resources.main.local_name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  reconciling:
+    description: "If set, there are currently changes in flight to the Bare Metal User Cluster."
+    value: ${resources.main.reconciling}
+  state:
+    description: "The current state of this cluster."
+    value: ${resources.main.state}
+  status:
+    description: "Specifies detailed cluster status."
+    value: ${resources.main.status}
+  uid:
+    description: "The unique identifier of the Bare Metal User Cluster."
+    value: ${resources.main.uid}
+  update_time:
+    description: "The time the cluster was last updated, in RFC3339 text format."
+    value: ${resources.main.update_time}
+  validation_check:
+    description: "Specifies the security related settings for the Bare Metal User Cluster."
+    value: ${resources.main.validation_check}

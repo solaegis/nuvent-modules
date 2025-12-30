@@ -27,3 +27,11 @@ resources:
           content:
             exempted_members: ${each.value.exempted_members}
             log_type: ${each.value.log_type}
+
+outputs:
+  etag:
+    description: "The etag of iam policy"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

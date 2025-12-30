@@ -211,3 +211,47 @@ resources:
             delete: ${each.value.delete}
             read: ${each.value.read}
             update: ${each.value.update}
+
+outputs:
+  build_service_account:
+    description: "The fully-qualified name of the service account to be used for the build step of deploying this function"
+    value: ${resources.main.build_service_account}
+  docker_registry:
+    description: "Docker Registry to use for storing the function's Docker images. Allowed values are ARTIFACT_REGISTRY (default) and CONTAINER_REGISTRY."
+    value: ${resources.main.docker_registry}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  https_trigger_security_level:
+    description: "The security level for the function. Defaults to SECURE_OPTIONAL. Valid only if trigger_http is used."
+    value: ${resources.main.https_trigger_security_level}
+  https_trigger_url:
+    description: "URL which triggers function execution. Returned only if trigger_http is used."
+    value: ${resources.main.https_trigger_url}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  max_instances:
+    description: "The limit on the maximum number of function instances that may coexist at a given time."
+    value: ${resources.main.max_instances}
+  project:
+    description: "Project of the function. If it is not provided, the provider project is used."
+    value: ${resources.main.project}
+  region:
+    description: "Region of function. If it is not provided, the provider region is used."
+    value: ${resources.main.region}
+  service_account_email:
+    description: " If provided, the self-provided service account to run the function with."
+    value: ${resources.main.service_account_email}
+  status:
+    description: "Describes the current stage of a deployment."
+    value: ${resources.main.status}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  version_id:
+    description: "The version identifier of the Cloud Function. Each deployment attempt results in a new version of a function being created."
+    value: ${resources.main.version_id}
+  vpc_connector_egress_settings:
+    description: "The egress settings for the connector, controlling what traffic is diverted through it. Allowed values are ALL_TRAFFIC and PRIVATE_RANGES_ONLY. Defaults to PRIVATE_RANGES_ONLY. If unset, this field preserves the previously set value."
+    value: ${resources.main.vpc_connector_egress_settings}

@@ -21,3 +21,8 @@ resources:
       project: ${var.project}
       role: ${var.role}
       id: ${var.id}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

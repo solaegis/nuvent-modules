@@ -58,3 +58,17 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  creation_time:
+    description: "When the test was created. A timestamp in RFC3339 text format."
+    value: ${resources.main.creation_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_test_result:
+    description: "The latest test result."
+    value: ${resources.main.last_test_result}
+  name:
+    description: "The unique identifier of the test case. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>."
+    value: ${resources.main.name}

@@ -249,3 +249,44 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  metadata_fingerprint:
+    description: "The unique fingerprint of the metadata."
+    value: ${resources.main.metadata_fingerprint}
+  name:
+    description: "The name of the instance template. If you leave this blank, Terraform will auto-generate a unique name."
+    value: ${resources.main.name}
+  name_prefix:
+    description: "Creates a unique name beginning with the specified prefix. Conflicts with name. Max length is 54 characters. Prefixes with lengths longer than 37 characters will use a shortened UUID that will be more prone to collisions."
+    value: ${resources.main.name_prefix}
+  numeric_id:
+    description: "The ID of the template in numeric format."
+    value: ${resources.main.numeric_id}
+  project:
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    value: ${resources.main.project}
+  region:
+    description: "An instance template is a global resource that is not bound to a zone or a region. However, you can still specify some regional resources in an instance template, which restricts the template to the region where that resource resides. For example, a custom subnetwork resource is tied to a specific region. Defaults to the region of the Provider if no value is given."
+    value: ${resources.main.region}
+  self_link:
+    description: "The URI of the created resource."
+    value: ${resources.main.self_link}
+  self_link_unique:
+    description: "A special URI of the created resource that uniquely identifies this instance template."
+    value: ${resources.main.self_link_unique}
+  tags_fingerprint:
+    description: "The unique fingerprint of the tags."
+    value: ${resources.main.tags_fingerprint}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

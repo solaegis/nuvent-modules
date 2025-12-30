@@ -153,3 +153,65 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  base_forwarding_rule:
+    description: "[Output Only] The URL for the corresponding base Forwarding Rule. By base Forwarding Rule, we mean the Forwarding Rule that has the same IP address, protocol, and port settings with the current Forwarding Rule, but without sourceIPRanges specified. Always empty if the current Forwarding Rule does not have sourceIPRanges specified."
+    value: ${resources.main.base_forwarding_rule}
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  forwarding_rule_id:
+    description: "The unique identifier number for the resource. This identifier is defined by the server."
+    value: ${resources.main.forwarding_rule_id}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  ip_address:
+    description: "IP address for which this forwarding rule accepts traffic. When a client sends traffic to this IP address, the forwarding rule directs the traffic to the referenced 'target' or 'backendService'.  While creating a forwarding rule, specifying an 'IPAddress' is required under the following circumstances:  * When the 'target' is set to 'targetGrpcProxy' and 'validateForProxyless' is set to 'true', the 'IPAddress' should be set to '0.0.0.0'. * When the 'target' is a Private Service Connect Google APIs bundle, you must specify an 'IPAddress'.  Otherwise, you can optionally specify an IP address that references an existing static (reserved) IP address resource. When omitted, Google Cloud assigns an ephemeral IP address.  Use one of the following formats to specify an IP address while creating a forwarding rule:  * IP address number, as in '100.1.2.3' * IPv6 address range, as in '2600:1234::/96' * Full resource URL, as in 'https://www.googleapis.com/compute/v1/projects/project_id/regions/region/addresses/address-name' * Partial URL or by name, as in:   * 'projects/project_id/regions/region/addresses/address-name'   * 'regions/region/addresses/address-name'   * 'global/addresses/address-name'   * 'address-name'  The forwarding rule's 'target' or 'backendService', and in most cases, also the 'loadBalancingScheme', determine the type of IP address that you can use. For detailed information, see [IP address specifications](https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#ip_address_specifications).  When reading an 'IPAddress', the API always returns the IP address number."
+    value: ${resources.main.ip_address}
+  ip_protocol:
+    description: "The IP protocol to which this rule applies.  For protocol forwarding, valid options are 'TCP', 'UDP', 'ESP', 'AH', 'SCTP', 'ICMP' and 'L3_DEFAULT'.  The valid IP protocols are different for different load balancing products as described in [Load balancing features](https://cloud.google.com/load-balancing/docs/features#protocols_from_the_load_balancer_to_the_backends).  A Forwarding Rule with protocol L3_DEFAULT can attach with target instance or backend service with UNSPECIFIED protocol. A forwarding rule with \"L3_DEFAULT\" IPProtocal cannot be attached to a backend service with TCP or UDP. Possible values: [\"TCP\", \"UDP\", \"ESP\", \"AH\", \"SCTP\", \"ICMP\", \"L3_DEFAULT\"]"
+    value: ${resources.main.ip_protocol}
+  ip_version:
+    description: "The IP address version that will be used by this forwarding rule. Valid options are IPV4 and IPV6.  If not set, the IPv4 address will be used by default. Possible values: [\"IPV4\", \"IPV6\"]"
+    value: ${resources.main.ip_version}
+  label_fingerprint:
+    description: "The fingerprint used for optimistic locking of this resource.  Used internally during updates."
+    value: ${resources.main.label_fingerprint}
+  network:
+    description: "This field is not used for external load balancing.  For Internal TCP/UDP Load Balancing, this field identifies the network that the load balanced IP should belong to for this Forwarding Rule. If the subnetwork is specified, the network of the subnetwork will be used. If neither subnetwork nor this field is specified, the default network will be used.  For Private Service Connect forwarding rules that forward traffic to Google APIs, a network must be provided."
+    value: ${resources.main.network}
+  network_tier:
+    description: "This signifies the networking tier used for configuring this load balancer and can only take the following values: 'PREMIUM', 'STANDARD'.  For regional ForwardingRule, the valid values are 'PREMIUM' and 'STANDARD'. For GlobalForwardingRule, the valid value is 'PREMIUM'.  If this field is not specified, it is assumed to be 'PREMIUM'. If 'IPAddress' is specified, this value must be equal to the networkTier of the Address. Possible values: [\"PREMIUM\", \"STANDARD\"]"
+    value: ${resources.main.network_tier}
+  port_range:
+    description: "The 'ports', 'portRange', and 'allPorts' fields are mutually exclusive. Only packets addressed to ports in the specified range will be forwarded to the backends configured with this forwarding rule.  The 'portRange' field has the following limitations: * It requires that the forwarding rule 'IPProtocol' be TCP, UDP, or SCTP, and * It's applicable only to the following products: external passthrough Network Load Balancers, internal and external proxy Network Load Balancers, internal and external Application Load Balancers, external protocol forwarding, and Classic VPN. * Some products have restrictions on what ports can be used. See [port specifications](https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#port_specifications) for details.  For external forwarding rules, two or more forwarding rules cannot use the same '[IPAddress, IPProtocol]' pair, and cannot have overlapping 'portRange's.  For internal forwarding rules within the same VPC network, two or more forwarding rules cannot use the same '[IPAddress, IPProtocol]' pair, and cannot have overlapping 'portRange's.  @pattern: \d+(?:-\d+)?"
+    value: ${resources.main.port_range}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  psc_connection_id:
+    description: "The PSC connection id of the PSC Forwarding Rule."
+    value: ${resources.main.psc_connection_id}
+  psc_connection_status:
+    description: "The PSC connection status of the PSC Forwarding Rule. Possible values: 'STATUS_UNSPECIFIED', 'PENDING', 'ACCEPTED', 'REJECTED', 'CLOSED'"
+    value: ${resources.main.psc_connection_status}
+  region:
+    description: "A reference to the region where the regional forwarding rule resides.  This field is not applicable to global forwarding rules."
+    value: ${resources.main.region}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}
+  service_name:
+    description: "The internal fully qualified service name for this Forwarding Rule.  This field is only used for INTERNAL load balancing."
+    value: ${resources.main.service_name}
+  subnetwork:
+    description: "This field identifies the subnetwork that the load balanced IP should belong to for this Forwarding Rule, used in internal load balancing and network load balancing with IPv6.  If the network specified is in auto subnet mode, this field is optional. However, a subnetwork must be specified if the network is in custom subnet mode or when creating external forwarding rule with IPv6."
+    value: ${resources.main.subnetwork}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

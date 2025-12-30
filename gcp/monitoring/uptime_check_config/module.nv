@@ -124,3 +124,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  checker_type:
+    description: "The checker type to use for the check. If the monitored resource type is 'servicedirectory_service', 'checker_type' must be set to 'VPC_CHECKERS'. Possible values: [\"STATIC_IP_CHECKERS\", \"VPC_CHECKERS\"]"
+    value: ${resources.main.checker_type}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "A unique resource name for this UptimeCheckConfig. The format is 'projects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]'."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  uptime_check_id:
+    description: "The id of the uptime check"
+    value: ${resources.main.uptime_check_id}

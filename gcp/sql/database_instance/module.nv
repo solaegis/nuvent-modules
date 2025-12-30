@@ -206,3 +206,71 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  available_maintenance_versions:
+    description: "Available Maintenance versions."
+    value: ${resources.main.available_maintenance_versions}
+  connection_name:
+    description: "The connection name of the instance to be used in connection strings. For example, when connecting with Cloud SQL Proxy."
+    value: ${resources.main.connection_name}
+  dns_name:
+    description: "The instance-level dns name of the instance for PSC instances or public IP CAS instances."
+    value: ${resources.main.dns_name}
+  dns_names:
+    description: "The list of DNS names used by this instance. Different connection types for an instance may have different DNS names. DNS names can apply to an individual instance or a cluster of instances."
+    value: ${resources.main.dns_names}
+  encryption_key_name:
+    description: "Output: encryption_key_name"
+    value: ${resources.main.encryption_key_name}
+  first_ip_address:
+    description: "The first IPv4 address of any type assigned. This is to support accessing the first address in the list in a terraform output when the resource is configured with a count."
+    value: ${resources.main.first_ip_address}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  instance_type:
+    description: "The type of the instance. See https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1/instances#SqlInstanceType for supported values."
+    value: ${resources.main.instance_type}
+  ip_address:
+    description: "Output: ip_address"
+    value: ${resources.main.ip_address}
+  maintenance_version:
+    description: "Maintenance version."
+    value: ${resources.main.maintenance_version}
+  master_instance_name:
+    description: "The name of the instance that will act as the master in the replication setup. Note, this requires the master to have binary_log_enabled set, as well as existing backups."
+    value: ${resources.main.master_instance_name}
+  name:
+    description: "The name of the instance. If the name is left blank, Terraform will randomly generate one when the instance is first created. This is done because after a name is used, it cannot be reused for up to one week."
+    value: ${resources.main.name}
+  node_count:
+    description: "For a read pool instance, the number of nodes in the read pool. For read pools with auto scaling enabled, this field is read only."
+    value: ${resources.main.node_count}
+  private_ip_address:
+    description: "IPv4 address assigned. This is a workaround for an issue fixed in Terraform 0.12 but also provides a convenient way to access an IP of a specific type without performing filtering in a Terraform config."
+    value: ${resources.main.private_ip_address}
+  project:
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    value: ${resources.main.project}
+  psc_service_attachment_link:
+    description: "The link to service attachment of PSC instance."
+    value: ${resources.main.psc_service_attachment_link}
+  public_ip_address:
+    description: "IPv4 address assigned. This is a workaround for an issue fixed in Terraform 0.12 but also provides a convenient way to access an IP of a specific type without performing filtering in a Terraform config."
+    value: ${resources.main.public_ip_address}
+  region:
+    description: "The region the instance will sit in. Note, Cloud SQL is not available in all regions. A valid region must be provided to use this resource. If a region is not provided in the resource definition, the provider region will be used instead, but this will be an apply-time error for instances if the provider region is not supported with Cloud SQL. If you choose not to provide the region argument for this resource, make sure you understand this."
+    value: ${resources.main.region}
+  replica_names:
+    description: "The replicas of the instance."
+    value: ${resources.main.replica_names}
+  self_link:
+    description: "The URI of the created resource."
+    value: ${resources.main.self_link}
+  server_ca_cert:
+    description: "Output: server_ca_cert"
+    value: ${resources.main.server_ca_cert}
+  service_account_email_address:
+    description: "The service account email address assigned to the instance."
+    value: ${resources.main.service_account_email_address}

@@ -92,3 +92,35 @@ resources:
           for_each: ${var.transport}
           content:
             pubsub: ${each.value.pubsub}
+
+outputs:
+  conditions:
+    description: "Output only. The reason(s) why a trigger is in FAILED state."
+    value: ${resources.main.conditions}
+  create_time:
+    description: "Output only. The creation time."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  etag:
+    description: "Output only. This checksum is computed by the server based on the value of other fields, and may be sent only on create requests to ensure the client has an up-to-date value before proceeding."
+    value: ${resources.main.etag}
+  event_data_content_type:
+    description: "Optional. EventDataContentType specifies the type of payload in MIME format that is expected from the CloudEvent data field. This is set to 'application/json' if the value is not defined."
+    value: ${resources.main.event_data_content_type}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  uid:
+    description: "Output only. Server assigned unique identifier for the trigger. The value is a UUID4 string and guaranteed to remain unchanged until the resource is deleted."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Output only. The last-modified time."
+    value: ${resources.main.update_time}

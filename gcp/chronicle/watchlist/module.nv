@@ -68,3 +68,26 @@ resources:
           for_each: ${var.watchlist_user_preferences}
           content:
             pinned: ${each.value.pinned}
+
+outputs:
+  create_time:
+    description: "Output only. Time the watchlist was created."
+    value: ${resources.main.create_time}
+  entity_count:
+    description: "Count of different types of entities in the watchlist."
+    value: ${resources.main.entity_count}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. Resource name of the watchlist. This unique identifier is generated using values provided for the URL parameters. Format: projects/{project}/locations/{location}/instances/{instance}/watchlists/{watchlist}"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  update_time:
+    description: "Output only. Time the watchlist was last updated."
+    value: ${resources.main.update_time}
+  watchlist_id:
+    description: "Optional. The ID to use for the watchlist, which will become the final component of the watchlist's resource name. This value should be 4-63 characters, and valid characters are /a-z-/."
+    value: ${resources.main.watchlist_id}

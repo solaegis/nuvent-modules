@@ -58,3 +58,26 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  instances:
+    description: "The list of instances in the group, in self_link format. When adding instances they must all be in the same network and zone as the instance group."
+    value: ${resources.main.instances}
+  network:
+    description: "The URL of the network the instance group is in. If this is different from the network where the instances are in, the creation fails. Defaults to the network where the instances are in (if neither network nor instances is specified, this field will be blank)."
+    value: ${resources.main.network}
+  project:
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    value: ${resources.main.project}
+  self_link:
+    description: "The URI of the created resource."
+    value: ${resources.main.self_link}
+  size:
+    description: "The number of instances in the group."
+    value: ${resources.main.size}
+  zone:
+    description: "The zone that this instance group should be created in."
+    value: ${resources.main.zone}

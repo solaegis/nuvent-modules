@@ -31,3 +31,11 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  display_name:
+    description: "The display name of the security policy of the association."
+    value: ${resources.main.display_name}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

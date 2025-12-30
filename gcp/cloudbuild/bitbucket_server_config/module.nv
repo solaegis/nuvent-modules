@@ -74,3 +74,17 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name for the config."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  webhook_key:
+    description: "Output only. UUID included in webhook requests. The UUID is used to look up the corresponding config."
+    value: ${resources.main.webhook_key}

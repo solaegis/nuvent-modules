@@ -48,3 +48,26 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  etag:
+    description: "'etag' is used for concurrency control. An 'etag' is returned in the response to 'GetAcl' and 'CreateAcl'. Callers are required to put that etag in the request to 'UpdateAcl' to ensure that their change will be applied to the same version of the acl that exists in the Kafka Cluster.  A terminal 'T' character in the etag indicates that the AclEntries were truncated due to repeated field limits."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The name of the acl. The 'ACL_ID' segment is used when connecting directly to the cluster. Must be in the format 'projects/PROJECT_ID/locations/LOCATION/clusters/CLUSTER_ID/acls/ACL_ID'."
+    value: ${resources.main.name}
+  pattern_type:
+    description: "The acl pattern type derived from the name. One of: LITERAL, PREFIXED."
+    value: ${resources.main.pattern_type}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  resource_name:
+    description: "The acl resource name derived from the name. For cluster resource_type, this is always \"kafka-cluster\". Can be the wildcard literal \"*\"."
+    value: ${resources.main.resource_name}
+  resource_type:
+    description: "The acl resource type derived from the name. One of: CLUSTER, TOPIC, GROUP, TRANSACTIONAL_ID."
+    value: ${resources.main.resource_type}

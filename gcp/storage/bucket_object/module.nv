@@ -134,3 +134,41 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  content:
+    description: "Data as string to be uploaded. Must be defined if source is not. Note: The content field is marked as sensitive. To view the raw contents of the object, please define an output."
+    value: ${resources.main.content}
+  content_type:
+    description: "Content-Type of the object data. Defaults to \"application/octet-stream\" or \"text/plain; charset=utf-8\"."
+    value: ${resources.main.content_type}
+  crc32c:
+    description: "Base 64 CRC32 hash of the uploaded data."
+    value: ${resources.main.crc32c}
+  generation:
+    description: "The content generation of this object. Used for object versioning and soft delete."
+    value: ${resources.main.generation}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  kms_key_name:
+    description: "Resource name of the Cloud KMS key that will be used to encrypt the object. Overrides the object metadata's kmsKeyName value, if any."
+    value: ${resources.main.kms_key_name}
+  md5hash:
+    description: "Base 64 MD5 hash of the uploaded data."
+    value: ${resources.main.md5hash}
+  md5hexhash:
+    description: "Hex value of md5hash"
+    value: ${resources.main.md5hexhash}
+  media_link:
+    description: "A url reference to download this object."
+    value: ${resources.main.media_link}
+  output_name:
+    description: "The name of the object. Use this field in interpolations with google_storage_object_acl to recreate google_storage_object_acl resources when your google_storage_bucket_object is recreated."
+    value: ${resources.main.output_name}
+  self_link:
+    description: "A url reference to this object."
+    value: ${resources.main.self_link}
+  storage_class:
+    description: "The StorageClass of the new bucket object. Supported values include: MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE. If not provided, this defaults to the bucket's default storage class or to a standard class."
+    value: ${resources.main.storage_class}

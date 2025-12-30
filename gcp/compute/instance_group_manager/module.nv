@@ -194,3 +194,44 @@ resources:
             instance_template: ${each.value.instance_template}
             name: ${each.value.name}
             target_size: ${each.value.target_size}
+
+outputs:
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  fingerprint:
+    description: "The fingerprint of the instance group manager."
+    value: ${resources.main.fingerprint}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  instance_group:
+    description: "The full URL of the instance group created by the manager."
+    value: ${resources.main.instance_group}
+  instance_group_manager_id:
+    description: "The unique identifier number for the resource. This identifier is defined by the server."
+    value: ${resources.main.instance_group_manager_id}
+  operation:
+    description: "Output: operation"
+    value: ${resources.main.operation}
+  project:
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    value: ${resources.main.project}
+  self_link:
+    description: "The URL of the created resource."
+    value: ${resources.main.self_link}
+  status:
+    description: "The status of this managed instance group."
+    value: ${resources.main.status}
+  target_size:
+    description: "The target number of running instances for this managed instance group. This value should always be explicitly set unless this resource is attached to an autoscaler, in which case it should never be set. Defaults to 0."
+    value: ${resources.main.target_size}
+  target_stopped_size:
+    description: "The target number of stopped instances for this managed instance group."
+    value: ${resources.main.target_stopped_size}
+  target_suspended_size:
+    description: "The target number of suspended instances for this managed instance group."
+    value: ${resources.main.target_suspended_size}
+  zone:
+    description: "The zone that instances in this group should be created in."
+    value: ${resources.main.zone}

@@ -75,3 +75,26 @@ resources:
             instance_id: ${each.value.instance_id}
             instance_name: ${each.value.instance_name}
             virtual_machine_config: ${each.value.virtual_machine_config}
+
+outputs:
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  health_state:
+    description: "The health state of this runtime. For a list of possible output values, see 'https://cloud.google.com/vertex-ai/docs/workbench/ reference/rest/v1/projects.locations.runtimes#healthstate'."
+    value: ${resources.main.health_state}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  metrics:
+    description: "Contains Runtime daemon metrics such as Service status and JupyterLab status"
+    value: ${resources.main.metrics}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "The state of this runtime."
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

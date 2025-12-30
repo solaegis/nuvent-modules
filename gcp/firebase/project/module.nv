@@ -24,3 +24,17 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  display_name:
+    description: "The GCP project display name"
+    value: ${resources.main.display_name}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  project_number:
+    description: "The number of the Google Project that Firebase is enabled on."
+    value: ${resources.main.project_number}

@@ -255,3 +255,20 @@ resources:
           for_each: ${var.vpc_access_connector}
           content:
             name: ${each.value.name}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Full path to the Version resource in the API. Example, \"v1\"."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  runtime_api_version:
+    description: "The version of the API in the given runtime environment. Please see the app.yaml reference for valid values at 'https://cloud.google.com/appengine/docs/standard/<language>/config/appref'\ Substitute '<language>' with 'python', 'java', 'php', 'ruby', 'go' or 'nodejs'."
+    value: ${resources.main.runtime_api_version}
+  service_account:
+    description: "The identity that the deployed version will run as. Admin API will use the App Engine Appspot service account as default if this field is neither provided in app.yaml file nor through CLI flag."
+    value: ${resources.main.service_account}

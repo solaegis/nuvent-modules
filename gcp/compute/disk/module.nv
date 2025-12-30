@@ -202,3 +202,77 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  access_mode:
+    description: "The access mode of the disk. For example:   * READ_WRITE_SINGLE: The default AccessMode, means the disk can be attached to single instance in RW mode.   * READ_WRITE_MANY: The AccessMode means the disk can be attached to multiple instances in RW mode.   * READ_ONLY_SINGLE: The AccessMode means the disk can be attached to multiple instances in RO mode. The AccessMode is only valid for Hyperdisk disk types."
+    value: ${resources.main.access_mode}
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  disk_id:
+    description: "The unique identifier for the resource. This identifier is defined by the server."
+    value: ${resources.main.disk_id}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  enable_confidential_compute:
+    description: "Whether this disk is using confidential compute mode. Note: Only supported on hyperdisk skus, disk_encryption_key is required when setting to true"
+    value: ${resources.main.enable_confidential_compute}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  label_fingerprint:
+    description: "The fingerprint used for optimistic locking of this resource.  Used internally during updates."
+    value: ${resources.main.label_fingerprint}
+  last_attach_timestamp:
+    description: "Last attach timestamp in RFC3339 text format."
+    value: ${resources.main.last_attach_timestamp}
+  last_detach_timestamp:
+    description: "Last detach timestamp in RFC3339 text format."
+    value: ${resources.main.last_detach_timestamp}
+  licenses:
+    description: "Any applicable license URI."
+    value: ${resources.main.licenses}
+  physical_block_size_bytes:
+    description: "Physical block size of the persistent disk, in bytes. If not present in a request, a default value is used. Currently supported sizes are 4096 and 16384, other sizes may be added in the future. If an unsupported value is requested, the error message will list the supported values for the caller's project."
+    value: ${resources.main.physical_block_size_bytes}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  provisioned_iops:
+    description: "Indicates how many IOPS must be provisioned for the disk. Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk allows for an update of IOPS every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it"
+    value: ${resources.main.provisioned_iops}
+  provisioned_throughput:
+    description: "Indicates how much Throughput must be provisioned for the disk. Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk allows for an update of Throughput every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it"
+    value: ${resources.main.provisioned_throughput}
+  resource_policies:
+    description: "Resource policies applied to this disk for automatic snapshot creations.  ~>**NOTE** This value does not support updating the resource policy, as resource policies can not be updated more than one at a time. Use ['google_compute_disk_resource_policy_attachment'](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_disk_resource_policy_attachment) to allow for updating the resource policy attached to the disk."
+    value: ${resources.main.resource_policies}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}
+  size:
+    description: "Size of the persistent disk, specified in GB. You can specify this field when creating a persistent disk using the 'image' or 'snapshot' parameter, or specify it alone to create an empty persistent disk.  If you specify this field along with 'image' or 'snapshot', the value must not be less than the size of the image or the size of the snapshot.  ~>**NOTE** If you change the size, Terraform updates the disk size if upsizing is detected but recreates the disk if downsizing is requested. You can add 'lifecycle.prevent_destroy' in the config to prevent destroying and recreating."
+    value: ${resources.main.size}
+  source_disk_id:
+    description: "The ID value of the disk used to create this image. This value may be used to determine whether the image was taken from the current or a previous instance of a given disk name."
+    value: ${resources.main.source_disk_id}
+  source_image_id:
+    description: "The ID value of the image used to create this disk. This value identifies the exact image that was used to create this persistent disk. For example, if you created the persistent disk from an image that was later deleted and recreated under the same name, the source image ID would identify the exact version of the image that was used."
+    value: ${resources.main.source_image_id}
+  source_instant_snapshot_id:
+    description: "The unique ID of the instant snapshot used to create this disk. This value identifies the exact instant snapshot that was used to create this persistent disk. For example, if you created the persistent disk from an instant snapshot that was later deleted and recreated under the same name, the source instant snapshot ID would identify the exact version of the instant snapshot that was used."
+    value: ${resources.main.source_instant_snapshot_id}
+  source_snapshot_id:
+    description: "The unique ID of the snapshot used to create this disk. This value identifies the exact snapshot that was used to create this persistent disk. For example, if you created the persistent disk from a snapshot that was later deleted and recreated under the same name, the source snapshot ID would identify the exact version of the snapshot that was used."
+    value: ${resources.main.source_snapshot_id}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  users:
+    description: "Links to the users of the disk (attached instances) in form: project/zones/zone/instances/instance"
+    value: ${resources.main.users}
+  zone:
+    description: "A reference to the zone where the disk resides."
+    value: ${resources.main.zone}

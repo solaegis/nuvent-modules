@@ -33,3 +33,11 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             read: ${each.value.read}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  service_accounts:
+    description: "The Service Accounts changed by this resource. It is used for revert the action on the destroy."
+    value: ${resources.main.service_accounts}

@@ -67,3 +67,35 @@ resources:
           for_each: ${var.workforce_identity_federation_config}
           content:
             enabled: ${each.value.enabled}
+
+outputs:
+  create_time:
+    description: "Time the Instance was created in UTC."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  host_config:
+    description: "A list of hostnames for this instance."
+    value: ${resources.main.host_config}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name for the Instance."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "The current state of the Instance."
+    value: ${resources.main.state}
+  state_note:
+    description: "Provides information about the current instance state."
+    value: ${resources.main.state_note}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "Time the Instance was updated in UTC."
+    value: ${resources.main.update_time}

@@ -167,3 +167,26 @@ resources:
             description: ${each.value.description}
             name: ${each.value.name}
             schema: ${each.value.schema}
+
+outputs:
+  create_time:
+    description: "Timestamp when the app was created."
+    value: ${resources.main.create_time}
+  deployment_count:
+    description: "Number of deployments in the app."
+    value: ${resources.main.deployment_count}
+  etag:
+    description: "Etag used to ensure the object hasn't changed during a read-modify-write operation. If the etag is empty, the update will overwrite any concurrent changes."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. The unique identifier of the app. Format: 'projects/{project}/locations/{location}/apps/{app}'"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  update_time:
+    description: "Timestamp when the app was last updated."
+    value: ${resources.main.update_time}

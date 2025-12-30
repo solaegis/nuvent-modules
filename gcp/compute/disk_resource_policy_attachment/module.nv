@@ -37,3 +37,14 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  zone:
+    description: "A reference to the zone where the disk resides."
+    value: ${resources.main.zone}

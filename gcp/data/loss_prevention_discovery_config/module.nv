@@ -83,3 +83,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Output only. The creation timestamp of a DiscoveryConfig."
+    value: ${resources.main.create_time}
+  errors:
+    description: "Output only. A stream of errors encountered when the config was activated. Repeated errors may result in the config automatically being paused. Output only field. Will return the last 100 errors. Whenever the config is modified this list will be cleared."
+    value: ${resources.main.errors}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_run_time:
+    description: "Output only. The timestamp of the last time this config was executed"
+    value: ${resources.main.last_run_time}
+  name:
+    description: "Unique resource name for the DiscoveryConfig, assigned by the service when the DiscoveryConfig is created."
+    value: ${resources.main.name}
+  update_time:
+    description: "Output only. The last update timestamp of a DiscoveryConfig."
+    value: ${resources.main.update_time}

@@ -44,3 +44,17 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  fingerprint:
+    description: "Fingerprint of this resource. This field is used internally during updates of this resource."
+    value: ${resources.main.fingerprint}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  policy_id:
+    description: "The unique identifier for the resource. This identifier is defined by the server."
+    value: ${resources.main.policy_id}
+  type:
+    description: "The type indicates the intended use of the security policy. This field can be set only at resource creation time.  **NOTE** : 'FIREWALL' type is deprecated and will be removed in a future major release. Please use 'google_compute_firewall_policy' instead.\" Possible values: [\"FIREWALL\", \"CLOUD_ARMOR\", \"CLOUD_ARMOR_EDGE\", \"CLOUD_ARMOR_INTERNAL_SERVICE\", \"CLOUD_ARMOR_NETWORK\"]"
+    value: ${resources.main.type}

@@ -76,3 +76,14 @@ resources:
             revision_name: ${each.value.revision_name}
             tag: ${each.value.tag}
             url: ${each.value.url}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  status:
+    description: "The current status of the Service."
+    value: ${resources.main.status}

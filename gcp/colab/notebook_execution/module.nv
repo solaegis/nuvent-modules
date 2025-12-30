@@ -97,3 +97,14 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  notebook_execution_job_id:
+    description: "User specified ID for the Notebook Execution Job"
+    value: ${resources.main.notebook_execution_job_id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

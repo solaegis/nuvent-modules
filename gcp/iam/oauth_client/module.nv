@@ -65,3 +65,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  client_id:
+    description: "Output only. The system-generated OauthClient id."
+    value: ${resources.main.client_id}
+  expire_time:
+    description: "Time after which the OauthClient will be permanently purged and cannot be recovered."
+    value: ${resources.main.expire_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Immutable. Identifier. The resource name of the OauthClient.  Format:'projects/{project}/locations/{location}/oauthClients/{oauth_client}'."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "The state of the OauthClient. Possible values: STATE_UNSPECIFIED ACTIVE DELETED"
+    value: ${resources.main.state}

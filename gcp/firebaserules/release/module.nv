@@ -32,3 +32,20 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  create_time:
+    description: "Output only. Time the release was created."
+    value: ${resources.main.create_time}
+  disabled:
+    description: "Disable the release to keep it from being served. The response code of NOT_FOUND will be given for executables generated from this Release."
+    value: ${resources.main.disabled}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "The project for the resource"
+    value: ${resources.main.project}
+  update_time:
+    description: "Output only. Time the release was updated."
+    value: ${resources.main.update_time}

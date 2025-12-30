@@ -122,3 +122,14 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  created_at:
+    description: "Response only. Creation time of this environment as milliseconds since epoch."
+    value: ${resources.main.created_at}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_modified_at:
+    description: "Response only. Modified time of this environment as milliseconds since epoch."
+    value: ${resources.main.last_modified_at}

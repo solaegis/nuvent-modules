@@ -92,3 +92,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  apigee_project_id:
+    description: "Output only. Project ID of the Apigee Tenant Project."
+    value: ${resources.main.apigee_project_id}
+  billing_type:
+    description: "Billing type of the Apigee organization. See [Apigee pricing](https://cloud.google.com/apigee/pricing)."
+    value: ${resources.main.billing_type}
+  ca_certificate:
+    description: "Output only. Base64-encoded public certificate for the root CA of the Apigee organization. Valid only when 'RuntimeType' is CLOUD. A base64-encoded string."
+    value: ${resources.main.ca_certificate}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Output only. Name of the Apigee organization."
+    value: ${resources.main.name}
+  subscription_type:
+    description: "Output only. Subscription type of the Apigee organization. Valid values include trial (free, limited, and for evaluation purposes only) or paid (full subscription has been purchased)."
+    value: ${resources.main.subscription_type}

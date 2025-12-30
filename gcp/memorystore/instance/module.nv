@@ -176,3 +176,83 @@ resources:
           content:
             mode: ${each.value.mode}
             zone: ${each.value.zone}
+
+outputs:
+  authorization_mode:
+    description: "Optional. Immutable. Authorization mode of the instance. Possible values:  AUTH_DISABLED IAM_AUTH"
+    value: ${resources.main.authorization_mode}
+  available_maintenance_versions:
+    description: "This field is used to determine the available maintenance versions for the self service update."
+    value: ${resources.main.available_maintenance_versions}
+  backup_collection:
+    description: "The backup collection full resource name. Example: projects/{project}/locations/{location}/backupCollections/{collection}"
+    value: ${resources.main.backup_collection}
+  create_time:
+    description: "Output only. Creation timestamp of the instance."
+    value: ${resources.main.create_time}
+  discovery_endpoints:
+    description: "Deprecated. Output only. Endpoints clients can connect to the instance through."
+    value: ${resources.main.discovery_endpoints}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  effective_maintenance_version:
+    description: "This field represents the actual maintenance version of the cluster."
+    value: ${resources.main.effective_maintenance_version}
+  endpoints:
+    description: "Endpoints for the instance."
+    value: ${resources.main.endpoints}
+  engine_version:
+    description: "Optional. Engine version of the instance."
+    value: ${resources.main.engine_version}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  maintenance_schedule:
+    description: "Upcoming maintenance schedule."
+    value: ${resources.main.maintenance_schedule}
+  managed_server_ca:
+    description: "Instance's Certificate Authority. This field will only be populated if instance's transit_encryption_mode is SERVER_AUTHENTICATION"
+    value: ${resources.main.managed_server_ca}
+  mode:
+    description: "Optional. cluster or cluster-disabled.   Possible values:  CLUSTER  CLUSTER_DISABLED Possible values: [\"CLUSTER\", \"CLUSTER_DISABLED\"]"
+    value: ${resources.main.mode}
+  name:
+    description: "Identifier. Unique name of the instance. Format: projects/{project}/locations/{location}/instances/{instance}"
+    value: ${resources.main.name}
+  node_config:
+    description: "Represents configuration for nodes of the instance."
+    value: ${resources.main.node_config}
+  node_type:
+    description: "Optional. Machine type for individual nodes of the instance.   Possible values:  SHARED_CORE_NANO HIGHMEM_MEDIUM HIGHMEM_XLARGE STANDARD_SMALL"
+    value: ${resources.main.node_type}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  psc_attachment_details:
+    description: "Configuration of a service attachment of the cluster, for creating PSC connections."
+    value: ${resources.main.psc_attachment_details}
+  psc_auto_connections:
+    description: "Output only. User inputs and resource details of the auto-created PSC connections."
+    value: ${resources.main.psc_auto_connections}
+  replica_count:
+    description: "Optional. Number of replica nodes per shard. If omitted the default is 0 replicas."
+    value: ${resources.main.replica_count}
+  state:
+    description: "Output only. Current state of the instance.   Possible values:  CREATING ACTIVE UPDATING DELETING"
+    value: ${resources.main.state}
+  state_info:
+    description: "Additional information about the state of the instance."
+    value: ${resources.main.state_info}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  transit_encryption_mode:
+    description: "Optional. Immutable. In-transit encryption mode of the instance.   Possible values:  TRANSIT_ENCRYPTION_DISABLED SERVER_AUTHENTICATION"
+    value: ${resources.main.transit_encryption_mode}
+  uid:
+    description: "Output only. System assigned, unique identifier for the instance."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Output only. Latest update timestamp of the instance."
+    value: ${resources.main.update_time}

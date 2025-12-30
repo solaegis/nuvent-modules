@@ -85,3 +85,26 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  maintenance_interval:
+    description: "Specifies the frequency of planned maintenance events. Set to one of the following:   - AS_NEEDED: Hosts are eligible to receive infrastructure and hypervisor updates as they become available.   - RECURRENT: Hosts receive planned infrastructure and hypervisor updates on a periodic basis, but not more frequently than every 28 days. This minimizes the number of planned maintenance operations on individual hosts and reduces the frequency of disruptions, both live migrations and terminations, on individual VMs. Possible values: [\"AS_NEEDED\", \"RECURRENT\"]"
+    value: ${resources.main.maintenance_interval}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}
+  size:
+    description: "The total number of nodes in the node group."
+    value: ${resources.main.size}
+  zone:
+    description: "Zone where this node group is located"
+    value: ${resources.main.zone}

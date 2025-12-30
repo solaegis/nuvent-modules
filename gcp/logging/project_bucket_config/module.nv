@@ -62,3 +62,17 @@ resources:
           content:
             field_path: ${each.value.field_path}
             type: ${each.value.type}
+
+outputs:
+  description:
+    description: "An optional description for this bucket."
+    value: ${resources.main.description}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  lifecycle_state:
+    description: "The bucket's lifecycle such as active or deleted."
+    value: ${resources.main.lifecycle_state}
+  name:
+    description: "The resource name of the bucket"
+    value: ${resources.main.name}

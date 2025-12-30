@@ -45,3 +45,29 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The time when the instance was created"
+    value: ${resources.main.create_time}
+  data_source:
+    description: "Resource name of data source which will be used as storage location for backups taken"
+    value: ${resources.main.data_source}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_successful_backup_consistency_time:
+    description: "The point in time when the last successful backup was captured from the source"
+    value: ${resources.main.last_successful_backup_consistency_time}
+  name:
+    description: "The name of backup plan association resource created"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  rules_config_info:
+    description: "Message for rules config info"
+    value: ${resources.main.rules_config_info}
+  update_time:
+    description: "The time when the instance was updated."
+    value: ${resources.main.update_time}

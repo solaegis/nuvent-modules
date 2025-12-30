@@ -55,3 +55,44 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Output only. The time the hub was created."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  export_psc:
+    description: "Whether Private Service Connect transitivity is enabled for the hub. If true, Private Service Connect endpoints in VPC spokes attached to the hub are made accessible to other VPC spokes attached to the hub. The default value is false."
+    value: ${resources.main.export_psc}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Immutable. The name of the hub. Hub names must be unique. They use the following form: 'projects/{project_number}/locations/global/hubs/{hub_id}'"
+    value: ${resources.main.name}
+  policy_mode:
+    description: "Optional. The policy mode of this hub. This field can be either PRESET or CUSTOM. If unspecified, the policyMode defaults to PRESET. Possible values: [\"CUSTOM\", \"PRESET\"]"
+    value: ${resources.main.policy_mode}
+  preset_topology:
+    description: "Optional. The topology implemented in this hub. Currently, this field is only used when policyMode = PRESET. The available preset topologies are MESH and STAR. If presetTopology is unspecified and policyMode = PRESET, the presetTopology defaults to MESH. When policyMode = CUSTOM, the presetTopology is set to PRESET_TOPOLOGY_UNSPECIFIED. Possible values: [\"MESH\", \"STAR\", \"HYBRID_INSPECTION\"]"
+    value: ${resources.main.preset_topology}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  routing_vpcs:
+    description: "The VPC network associated with this hub's spokes. All of the VPN tunnels, VLAN attachments, and router appliance instances referenced by this hub's spokes must belong to this VPC network. This field is read-only. Network Connectivity Center automatically populates it based on the set of spokes attached to the hub."
+    value: ${resources.main.routing_vpcs}
+  state:
+    description: "Output only. The current lifecycle state of this hub."
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  unique_id:
+    description: "Output only. The Google-generated UUID for the hub. This value is unique across all hub resources. If a hub is deleted and another with the same name is created, the new hub is assigned a different unique_id."
+    value: ${resources.main.unique_id}
+  update_time:
+    description: "Output only. The time the hub was last updated."
+    value: ${resources.main.update_time}

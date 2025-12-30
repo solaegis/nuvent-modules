@@ -56,3 +56,26 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  etag:
+    description: "The etag for this Data Policy. This field is used for UpdateDataPolicy calls. If Data Policy exists, this field is required and must match the server's etag. It will also be populated in the response of GetDataPolicy, CreateDataPolicy, and UpdateDataPolicy calls."
+    value: ${resources.main.etag}
+  grantees:
+    description: "The list of IAM principals that have Fine Grained Access to the underlying data goverened by this data policy.  Uses the [IAM V2 principal syntax](https://cloud.google.com/iam/docs/principal-identifiers#v2) Only supports principal types users, groups, serviceaccounts, cloudidentity. This field is supported in V2 Data Policy only. In case of V1 data policies (i.e. verion = 1 and policy_tag is set), this field is not populated."
+    value: ${resources.main.grantees}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. Resource name of this data policy, in the format of 'projects/{project_number}/locations/{location_id}/dataPolicies/{data_policy_id}'."
+    value: ${resources.main.name}
+  policy_tag:
+    description: "Policy tag resource name, in the format of 'projects/{project_number}/locations/{location_id}/taxonomies/{taxonomy_id}/policyTags/{policyTag_id}'. policy_tag is supported only for V1 data policies."
+    value: ${resources.main.policy_tag}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  version:
+    description: "The version of the Data Policy resource. Possible values: V1 V2"
+    value: ${resources.main.version}

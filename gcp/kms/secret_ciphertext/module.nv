@@ -32,3 +32,11 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  ciphertext:
+    description: "Contains the result of encrypting the provided plaintext, encoded in base64."
+    value: ${resources.main.ciphertext}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

@@ -125,3 +125,47 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The timestamp when the resource was created."
+    value: ${resources.main.create_time}
+  effective_annotations:
+    description: "All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services."
+    value: ${resources.main.effective_annotations}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  monitoring_endpoint:
+    description: "URL for a monitoring UI for this application (for eventual Spark PHS/UI support) Out of scope for private GA"
+    value: ${resources.main.monitoring_endpoint}
+  name:
+    description: "Identifier. The name of the application. Format: projects/{project}/locations/{location}/serviceInstances/{service_instance}/sparkApplications/{application}"
+    value: ${resources.main.name}
+  output_uri:
+    description: "An HCFS URI pointing to the location of stdout and stdout of the application Mainly useful for Pantheon and gcloud Not in scope for private GA"
+    value: ${resources.main.output_uri}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  reconciling:
+    description: "Whether the application is currently reconciling. True if the current state of the resource does not match the intended state, and the system is working to reconcile them, whether or not the change was user initiated."
+    value: ${resources.main.reconciling}
+  state:
+    description: "The current state. Possible values: * 'STATE_UNSPECIFIED' * 'PENDING' * 'RUNNING' * 'CANCELLING' * 'CANCELLED' * 'SUCCEEDED' * 'FAILED'"
+    value: ${resources.main.state}
+  state_message:
+    description: "A message explaining the current state."
+    value: ${resources.main.state_message}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  uid:
+    description: "System generated unique identifier for this application, formatted as UUID4."
+    value: ${resources.main.uid}
+  update_time:
+    description: "The timestamp when the resource was most recently updated."
+    value: ${resources.main.update_time}

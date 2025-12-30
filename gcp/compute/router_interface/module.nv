@@ -72,3 +72,23 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  ip_range:
+    description: "The IP address and range of the interface. The IP range must be in the RFC3927 link-local IP space. Changing this forces a new interface to be created."
+    value: ${resources.main.ip_range}
+  ip_version:
+    description: "IP version of this interface."
+    value: ${resources.main.ip_version}
+  project:
+    description: "The ID of the project in which this interface's router belongs. If it is not provided, the provider project is used. Changing this forces a new interface to be created."
+    value: ${resources.main.project}
+  redundant_interface:
+    description: "The name of the interface that is redundant to this interface. Changing this forces a new interface to be created."
+    value: ${resources.main.redundant_interface}
+  region:
+    description: "The region this interface's router sits in. If not specified, the project region will be used. Changing this forces a new interface to be created."
+    value: ${resources.main.region}

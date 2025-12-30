@@ -91,3 +91,26 @@ resources:
             name: ${each.value.name}
             offset: ${each.value.offset}
             size: ${each.value.size}
+
+outputs:
+  fingerprint:
+    description: "Fingerprint of this resource. This field is used internally during updates of this resource."
+    value: ${resources.main.fingerprint}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  policy_id:
+    description: "The unique identifier for the resource. This identifier is defined by the server."
+    value: ${resources.main.policy_id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  region:
+    description: "The Region in which the created Region Security Policy should reside. If it is not provided, the provider region is used."
+    value: ${resources.main.region}
+  self_link:
+    description: "Server-defined URL for the resource."
+    value: ${resources.main.self_link}
+  self_link_with_policy_id:
+    description: "Server-defined URL for this resource with the resource id."
+    value: ${resources.main.self_link_with_policy_id}

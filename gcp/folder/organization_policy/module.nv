@@ -61,3 +61,17 @@ resources:
             delete: ${each.value.delete}
             read: ${each.value.read}
             update: ${each.value.update}
+
+outputs:
+  etag:
+    description: "The etag of the organization policy. etag is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  update_time:
+    description: "The timestamp in RFC3339 UTC \"Zulu\" format, accurate to nanoseconds, representing when the variable was last updated. Example: \"2016-10-09T12:33:37.578138407Z\"."
+    value: ${resources.main.update_time}
+  version:
+    description: "Version of the Policy. Default version is 0."
+    value: ${resources.main.version}

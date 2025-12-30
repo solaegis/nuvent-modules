@@ -38,3 +38,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  anywhere_cache_id:
+    description: "The ID of the Anywhere cache instance."
+    value: ${resources.main.anywhere_cache_id}
+  create_time:
+    description: "The creation time of the cache instance in RFC 3339 format."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  pending_update:
+    description: "True if the cache instance has an active Update long-running operation."
+    value: ${resources.main.pending_update}
+  state:
+    description: "The current state of the cache instance."
+    value: ${resources.main.state}
+  update_time:
+    description: "The modification time of the cache instance metadata in RFC 3339 format."
+    value: ${resources.main.update_time}

@@ -82,3 +82,26 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  complete_time:
+    description: "The time that the job was completed."
+    value: ${resources.main.complete_time}
+  create_time:
+    description: "The timestamp at which this storage batch operation was created."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  schedule_time:
+    description: "The time that the job was scheduled."
+    value: ${resources.main.schedule_time}
+  state:
+    description: "State of the job."
+    value: ${resources.main.state}
+  update_time:
+    description: "The timestamp at which this storage batch operation was most recently updated."
+    value: ${resources.main.update_time}

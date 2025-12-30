@@ -22,3 +22,14 @@ resources:
       workforce_pool_id: ${var.workforce_pool_id}
       id: ${var.id}
       location: ${var.location}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  location:
+    description: "Output: location"
+    value: ${resources.main.location}

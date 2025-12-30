@@ -56,3 +56,35 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The time the job was created."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  end_time:
+    description: "The time the transcoding finished."
+    value: ${resources.main.end_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name of the job."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  start_time:
+    description: "The time the transcoding started."
+    value: ${resources.main.start_time}
+  state:
+    description: "The current state of the job."
+    value: ${resources.main.state}
+  template_id:
+    description: "Specify the templateId to use for populating Job.config. The default is preset/web-hd, which is the only supported preset."
+    value: ${resources.main.template_id}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

@@ -65,3 +65,35 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  backup_vault_type:
+    description: "Type of the backup vault to be created. Default is IN_REGION. Possible values: [\"BACKUP_VAULT_TYPE_UNSPECIFIED\", \"IN_REGION\", \"CROSS_REGION\"]"
+    value: ${resources.main.backup_vault_type}
+  create_time:
+    description: "Create time of the backup vault. A timestamp in RFC3339 UTC \"Zulu\" format. Examples: \"2023-06-22T09:13:01.617Z\"."
+    value: ${resources.main.create_time}
+  destination_backup_vault:
+    description: "Name of the Backup vault created in backup region."
+    value: ${resources.main.destination_backup_vault}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  source_backup_vault:
+    description: "Name of the Backup vault created in source region."
+    value: ${resources.main.source_backup_vault}
+  source_region:
+    description: "Region in which the backup vault is created."
+    value: ${resources.main.source_region}
+  state:
+    description: "The state of the Backup Vault."
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

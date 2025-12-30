@@ -47,3 +47,29 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  certificate_id:
+    description: "The unique identifier for the resource."
+    value: ${resources.main.certificate_id}
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  expire_time:
+    description: "Expire time of the certificate in RFC3339 text format."
+    value: ${resources.main.expire_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.  These are in the same namespace as the managed SSL certificates."
+    value: ${resources.main.name}
+  name_prefix:
+    description: "Creates a unique name beginning with the specified prefix. Conflicts with name."
+    value: ${resources.main.name_prefix}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}

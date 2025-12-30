@@ -38,3 +38,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The relative resource name of the reCAPTCHA V3 configuration object"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  site_secret_set:
+    description: "Whether the siteSecret was previously set. Since we will never return the siteSecret field, this field is the only way to find out whether it was previously set."
+    value: ${resources.main.site_secret_set}
+  token_ttl:
+    description: "Specifies the duration for which App Check tokens exchanged from reCAPTCHA V3 artifacts will be valid. If unset, a default value of 1 hour is assumed. Must be between 30 minutes and 7 days, inclusive.  A duration in seconds with up to nine fractional digits, ending with 's'. Example: \"3.5s\"."
+    value: ${resources.main.token_ttl}

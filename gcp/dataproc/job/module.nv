@@ -164,3 +164,26 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  driver_controls_files_uri:
+    description: "Output-only. If present, the location of miscellaneous control files which may be used as part of job setup and handling. If not present, control files may be placed in the same location as driver_output_uri."
+    value: ${resources.main.driver_controls_files_uri}
+  driver_output_resource_uri:
+    description: "Output-only. A URI pointing to the location of the stdout of the job's driver program"
+    value: ${resources.main.driver_output_resource_uri}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "The project in which the cluster can be found and jobs subsequently run against. If it is not provided, the provider project is used."
+    value: ${resources.main.project}
+  status:
+    description: "The status of the job."
+    value: ${resources.main.status}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

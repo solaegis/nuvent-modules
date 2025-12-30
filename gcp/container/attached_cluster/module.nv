@@ -123,3 +123,41 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  cluster_region:
+    description: "Output only. The region where this cluster runs.  For EKS clusters, this is an AWS region. For AKS clusters, this is an Azure region."
+    value: ${resources.main.cluster_region}
+  create_time:
+    description: "Output only. The time at which this cluster was created."
+    value: ${resources.main.create_time}
+  effective_annotations:
+    description: "All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services."
+    value: ${resources.main.effective_annotations}
+  errors:
+    description: "A set of errors found in the cluster."
+    value: ${resources.main.errors}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  kubernetes_version:
+    description: "The Kubernetes version of the cluster."
+    value: ${resources.main.kubernetes_version}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  reconciling:
+    description: "If set, there are currently changes in flight to the cluster."
+    value: ${resources.main.reconciling}
+  state:
+    description: "The current state of the cluster. Possible values: STATE_UNSPECIFIED, PROVISIONING, RUNNING, RECONCILING, STOPPING, ERROR, DEGRADED"
+    value: ${resources.main.state}
+  uid:
+    description: "A globally unique identifier for the cluster."
+    value: ${resources.main.uid}
+  update_time:
+    description: "The time at which this cluster was last updated."
+    value: ${resources.main.update_time}
+  workload_identity_config:
+    description: "Workload Identity settings."
+    value: ${resources.main.workload_identity_config}

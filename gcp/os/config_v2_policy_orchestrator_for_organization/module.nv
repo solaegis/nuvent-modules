@@ -64,3 +64,32 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Output only. Timestamp when the policy orchestrator resource was created."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  etag:
+    description: "Output only. This checksum is computed by the server based on the value of other fields, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Immutable. Identifier. In form of * 'organizations/{organization_id}/locations/global/policyOrchestrators/{orchestrator_id}' * 'folders/{folder_id}/locations/global/policyOrchestrators/{orchestrator_id}' * 'projects/{project_id_or_number}/locations/global/policyOrchestrators/{orchestrator_id}'"
+    value: ${resources.main.name}
+  orchestration_state:
+    description: "Describes the state of the orchestration process."
+    value: ${resources.main.orchestration_state}
+  reconciling:
+    description: "Output only. Set to true, if the there are ongoing changes being applied by the orchestrator."
+    value: ${resources.main.reconciling}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "Output only. Timestamp when the policy orchestrator resource was last modified."
+    value: ${resources.main.update_time}

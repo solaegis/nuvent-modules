@@ -37,3 +37,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The time at which the Regional Parameter Version was created."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  kms_key_version:
+    description: "The resource name of the Cloud KMS CryptoKeyVersion used to decrypt regional parameter version payload. Format 'projects/{{project}}/locations/{{location}}/keyRings/{{key_ring}}/cryptoKeys/{{crypto_key}}/cryptoKeyVersions/{{crypto_key_version}}'"
+    value: ${resources.main.kms_key_version}
+  location:
+    description: "Location of Parameter Manager Regional parameter resource."
+    value: ${resources.main.location}
+  name:
+    description: "The resource name of the Regional Parameter Version. Format: 'projects/{{project}}/locations/{{location}}/parameters/{{parameter_id}}/versions/{{parameter_version_id}}'"
+    value: ${resources.main.name}
+  update_time:
+    description: "The time at which the Regional Parameter Version was updated."
+    value: ${resources.main.update_time}

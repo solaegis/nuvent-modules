@@ -50,3 +50,14 @@ resources:
           for_each: ${var.weekly_recurrence}
           content:
             day: ${each.value.day}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The unique backup schedule identifier across all locations and databases for the given project. Format: 'projects/{{project}}/databases/{{database}}/backupSchedules/{{backupSchedule}}'"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

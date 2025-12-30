@@ -46,3 +46,35 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  failure_reason:
+    description: "Site search indexing failure reasons."
+    value: ${resources.main.failure_reason}
+  generated_uri_pattern:
+    description: "This is system-generated based on the 'provided_uri_pattern'."
+    value: ${resources.main.generated_uri_pattern}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  indexing_status:
+    description: "The indexing status."
+    value: ${resources.main.indexing_status}
+  name:
+    description: "The unique full resource name of the target site. Values are of the format 'projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}/siteSearchEngine/targetSites/{target_site_id}'. This field must be a UTF-8 encoded string with a length limit of 1024 characters."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  root_domain_uri:
+    description: "Root domain of the 'provided_uri_pattern'."
+    value: ${resources.main.root_domain_uri}
+  site_verification_info:
+    description: "Site ownership and validity verification status."
+    value: ${resources.main.site_verification_info}
+  target_site_id:
+    description: "The unique id of the target site."
+    value: ${resources.main.target_site_id}
+  update_time:
+    description: "The target site's last updated time."
+    value: ${resources.main.update_time}

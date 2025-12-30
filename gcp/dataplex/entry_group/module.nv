@@ -50,3 +50,32 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The time when the EntryGroup was created."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The relative resource name of the EntryGroup, of the form: projects/{project_number}/locations/{location_id}/entryGroups/{entry_group_id}"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  transfer_status:
+    description: "Denotes the transfer status of the Entry Group. It is unspecified for Entry Group created from Dataplex API."
+    value: ${resources.main.transfer_status}
+  uid:
+    description: "System generated globally unique ID for the EntryGroup. This ID will be different if the EntryGroup is deleted and re-created with the same name."
+    value: ${resources.main.uid}
+  update_time:
+    description: "The time when the EntryGroup was last updated."
+    value: ${resources.main.update_time}

@@ -33,3 +33,29 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  fingerprint:
+    description: "Fingerprint of the resource. This field is used internally during updates of this resource."
+    value: ${resources.main.fingerprint}
+  firewall_policy_id:
+    description: "The unique identifier for the resource. This identifier is defined by the server."
+    value: ${resources.main.firewall_policy_id}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Name of the resource. It is a numeric ID allocated by GCP which uniquely identifies the Firewall Policy."
+    value: ${resources.main.name}
+  rule_tuple_count:
+    description: "Total count of all firewall policy rule tuples. A firewall policy can not exceed a set number of tuples."
+    value: ${resources.main.rule_tuple_count}
+  self_link:
+    description: "Server-defined URL for the resource."
+    value: ${resources.main.self_link}
+  self_link_with_id:
+    description: "Server-defined URL for this resource with the resource id."
+    value: ${resources.main.self_link_with_id}

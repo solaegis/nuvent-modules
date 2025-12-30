@@ -85,3 +85,29 @@ resources:
           for_each: ${var.virtual_machine}
           content:
             tags: ${each.value.tags}
+
+outputs:
+  create_time:
+    description: "Time when the policy-based route was created."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  kind:
+    description: "Type of this resource."
+    value: ${resources.main.kind}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "Time when the policy-based route was created."
+    value: ${resources.main.update_time}
+  warnings:
+    description: "If potential misconfigurations are detected for this route, this field will be populated with warning messages."
+    value: ${resources.main.warnings}

@@ -69,3 +69,11 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The unique identifier of the generativeSettings. Format: projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generativeSettings."
+    value: ${resources.main.name}

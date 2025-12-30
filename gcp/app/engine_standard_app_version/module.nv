@@ -162,3 +162,20 @@ resources:
           content:
             egress_setting: ${each.value.egress_setting}
             name: ${each.value.name}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  instance_class:
+    description: "Instance class that is used to run this version. Valid values are AutomaticScaling: F1, F2, F4, F4_1G BasicScaling or ManualScaling: B1, B2, B4, B4_1G, B8 Defaults to F1 for AutomaticScaling and B2 for ManualScaling and BasicScaling. If no scaling is specified, AutomaticScaling is chosen."
+    value: ${resources.main.instance_class}
+  name:
+    description: "Full path to the Version resource in the API. Example, \"v1\"."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  service_account:
+    description: "The identity that the deployed version will run as. Admin API will use the App Engine Appspot service account as default if this field is neither provided in app.yaml file nor through CLI flag."
+    value: ${resources.main.service_account}

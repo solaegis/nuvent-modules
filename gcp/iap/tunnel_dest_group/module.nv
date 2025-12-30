@@ -44,3 +44,17 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Full resource name."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  region:
+    description: "The region of the tunnel group. Must be the same as the network resources in the group."
+    value: ${resources.main.region}

@@ -48,3 +48,50 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  commercial_info:
+    description: "Commercial info metadata for this subscription. This is set if this is a commercial subscription i.e. if this subscription was created from subscribing to a commercial listing."
+    value: ${resources.main.commercial_info}
+  creation_time:
+    description: "Timestamp when the subscription was created."
+    value: ${resources.main.creation_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_modify_time:
+    description: "Timestamp when the subscription was last modified."
+    value: ${resources.main.last_modify_time}
+  linked_dataset_map:
+    description: "Output only. Map of listing resource names to associated linked resource, e.g. projects/123/locations/US/dataExchanges/456/listings/789 -> projects/123/datasets/my_dataset"
+    value: ${resources.main.linked_dataset_map}
+  linked_resources:
+    description: "Output only. Linked resources created in the subscription. Only contains values if state = STATE_ACTIVE."
+    value: ${resources.main.linked_resources}
+  log_linked_dataset_query_user_email:
+    description: "Output only. By default, false. If true, the Subscriber agreed to the email sharing mandate that is enabled for Listing."
+    value: ${resources.main.log_linked_dataset_query_user_email}
+  name:
+    description: "The resource name of the subscription. e.g. \"projects/myproject/locations/US/subscriptions/123\""
+    value: ${resources.main.name}
+  organization_display_name:
+    description: "Display name of the project of this subscription."
+    value: ${resources.main.organization_display_name}
+  organization_id:
+    description: "Organization of the project this subscription belongs to."
+    value: ${resources.main.organization_id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  resource_type:
+    description: "Listing shared asset type."
+    value: ${resources.main.resource_type}
+  state:
+    description: "Current state of the subscription."
+    value: ${resources.main.state}
+  subscriber_contact:
+    description: "Email of the subscriber."
+    value: ${resources.main.subscriber_contact}
+  subscription_id:
+    description: "The subscription id used to reference the subscription."
+    value: ${resources.main.subscription_id}

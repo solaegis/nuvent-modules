@@ -207,3 +207,80 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  active_directory:
+    description: "Reports the resource name of the Active Directory policy being used. Inherited from storage pool."
+    value: ${resources.main.active_directory}
+  cold_tier_size_gib:
+    description: "Output only. Size of the volume cold tier data in GiB."
+    value: ${resources.main.cold_tier_size_gib}
+  create_time:
+    description: "Create time of the volume. A timestamp in RFC3339 UTC \"Zulu\" format. Examples: \"2023-06-22T09:13:01.617Z\"."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  encryption_type:
+    description: "Reports the data-at-rest encryption type of the volume. Inherited from storage pool."
+    value: ${resources.main.encryption_type}
+  has_replication:
+    description: "Indicates whether the volume is part of a volume replication relationship."
+    value: ${resources.main.has_replication}
+  hot_tier_size_used_gib:
+    description: "Total hot tier data rounded down to the nearest GiB used by the volume. This field is only used for flex Service Level"
+    value: ${resources.main.hot_tier_size_used_gib}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  kms_config:
+    description: "Reports the CMEK policy resurce name being used for volume encryption. Inherited from storage pool."
+    value: ${resources.main.kms_config}
+  ldap_enabled:
+    description: "Flag indicating if the volume is NFS LDAP enabled or not. Inherited from storage pool."
+    value: ${resources.main.ldap_enabled}
+  mount_options:
+    description: "Reports mount instructions for this volume."
+    value: ${resources.main.mount_options}
+  network:
+    description: "VPC network name with format: 'projects/{{project}}/global/networks/{{network}}'. Inherited from storage pool."
+    value: ${resources.main.network}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  psa_range:
+    description: "Name of the Private Service Access allocated range. Inherited from storage pool."
+    value: ${resources.main.psa_range}
+  replica_zone:
+    description: "Specifies the replica zone for regional volume."
+    value: ${resources.main.replica_zone}
+  security_style:
+    description: "Security Style of the Volume. Use UNIX to use UNIX or NFSV4 ACLs for file permissions. Use NTFS to use NTFS ACLs for file permissions. Can only be set for volumes which use SMB together with NFS as protocol. Possible values: [\"NTFS\", \"UNIX\"]"
+    value: ${resources.main.security_style}
+  service_level:
+    description: "Service level of the volume. Inherited from storage pool. Supported values are : PREMIUM, EXTREME, STANDARD, FLEX."
+    value: ${resources.main.service_level}
+  smb_settings:
+    description: "Settings for volumes with SMB access. Possible values: [\"ENCRYPT_DATA\", \"BROWSABLE\", \"CHANGE_NOTIFY\", \"NON_BROWSABLE\", \"OPLOCKS\", \"SHOW_SNAPSHOT\", \"SHOW_PREVIOUS_VERSIONS\", \"ACCESS_BASED_ENUMERATION\", \"CONTINUOUSLY_AVAILABLE\"]"
+    value: ${resources.main.smb_settings}
+  state:
+    description: "State of the volume."
+    value: ${resources.main.state}
+  state_details:
+    description: "State details of the volume."
+    value: ${resources.main.state_details}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  throughput_mibps:
+    description: "Optional. Custom Performance Total Throughput of the pool (in MiB/s)."
+    value: ${resources.main.throughput_mibps}
+  unix_permissions:
+    description: "Unix permission the mount point will be created with. Default is 0770. Applicable for UNIX security style volumes only."
+    value: ${resources.main.unix_permissions}
+  used_gib:
+    description: "Used capacity of the volume (in GiB). This is computed periodically and it does not represent the realtime usage."
+    value: ${resources.main.used_gib}
+  zone:
+    description: "Specifies the active zone for regional volume."
+    value: ${resources.main.zone}

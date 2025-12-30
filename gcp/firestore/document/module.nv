@@ -42,3 +42,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Creation timestamp in RFC3339 format."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "A server defined name for this document. Format: 'projects/{{project_id}}/databases/{{database_id}}/documents/{{path}}/{{document_id}}'"
+    value: ${resources.main.name}
+  path:
+    description: "A relative path to the collection this document exists within"
+    value: ${resources.main.path}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  update_time:
+    description: "Last update timestamp in RFC3339 format."
+    value: ${resources.main.update_time}

@@ -52,3 +52,20 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  ipv6_access_type:
+    description: "The internet access type for IPv6 Public Advertised Prefixes. It can be set to one of following:   * EXTERNAL: Default access type. The prefix will be announced to the   internet. All children PDPs will have access type as EXTERNAL.   * INTERNAL: The prefix won’t be announced to the internet. Prefix will   be used privately within Google Cloud. All children PDPs will have   access type as INTERNAL. Possible values: [\"EXTERNAL\", \"INTERNAL\"]"
+    value: ${resources.main.ipv6_access_type}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}
+  shared_secret:
+    description: "Output Only. The shared secret to be used for reverse DNS verification."
+    value: ${resources.main.shared_secret}

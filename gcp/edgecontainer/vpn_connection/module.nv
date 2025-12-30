@@ -70,3 +70,29 @@ resources:
           for_each: ${var.vpc_project}
           content:
             project_id: ${each.value.project_id}
+
+outputs:
+  create_time:
+    description: "The time when the VPN connection was created."
+    value: ${resources.main.create_time}
+  details:
+    description: "A nested object resource."
+    value: ${resources.main.details}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  enable_high_availability:
+    description: "Whether this VPN connection has HA enabled on cluster side. If enabled, when creating VPN connection we will attempt to use 2 ANG floating IPs."
+    value: ${resources.main.enable_high_availability}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "The time when the VPN connection was last updated."
+    value: ${resources.main.update_time}

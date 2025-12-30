@@ -55,3 +55,23 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  creation_timestamp:
+    description: "The creation timestamp for this resize request in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "Current state of the request."
+    value: ${resources.main.state}
+  status:
+    description: "Status of the request."
+    value: ${resources.main.status}
+  zone:
+    description: "The reference of the compute zone scoping this request. If it is not provided, the provider zone is used."
+    value: ${resources.main.zone}

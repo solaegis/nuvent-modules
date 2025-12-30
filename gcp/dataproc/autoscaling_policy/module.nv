@@ -63,3 +63,14 @@ resources:
             max_instances: ${each.value.max_instances}
             min_instances: ${each.value.min_instances}
             weight: ${each.value.weight}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The \"resource name\" of the autoscaling policy."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

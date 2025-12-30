@@ -61,3 +61,53 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  build_logs_uri:
+    description: "The location of the [Cloud Build logs](https://cloud.google.com/build/docs/view-build-results) for the build process."
+    value: ${resources.main.build_logs_uri}
+  create_time:
+    description: "Time at which the build was created."
+    value: ${resources.main.create_time}
+  effective_annotations:
+    description: "All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services."
+    value: ${resources.main.effective_annotations}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  environment:
+    description: "The environment name of the backend when this build was created."
+    value: ${resources.main.environment}
+  error:
+    description: "The 'Status' type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each 'Status' message contains three pieces of data: error code, error message, and error details.  You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors)."
+    value: ${resources.main.error}
+  error_source:
+    description: "The source of the error for the build, if in a 'FAILED' state. Possible values: CLOUD_BUILD CLOUD_RUN"
+    value: ${resources.main.error_source}
+  etag:
+    description: "Server-computed checksum based on other values; may be sent on update or delete to ensure operation is done on expected resource."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  image:
+    description: "The Artifact Registry [container image](https://cloud.google.com/artifact-registry/docs/reference/rest/v1/projects.locations.repositories.dockerImages) URI, used by the Cloud Run ['revision'](https://cloud.google.com/run/docs/reference/rest/v2/projects.locations.services.revisions) for this build."
+    value: ${resources.main.image}
+  name:
+    description: "Identifier. The resource name of the build.  Format:  'projects/{project}/locations/{locationId}/backends/{backendId}/builds/{buildId}'."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "The state of the build. Possible values: BUILDING BUILT DEPLOYING READY FAILED"
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  uid:
+    description: "System-assigned, unique identifier."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Time at which the build was last updated."
+    value: ${resources.main.update_time}

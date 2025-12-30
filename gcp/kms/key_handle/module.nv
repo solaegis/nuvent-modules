@@ -36,3 +36,14 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  kms_key:
+    description: "A reference to a Cloud KMS CryptoKey that can be used for CMEK in the requested product/project/location, for example 'projects/1/locations/us-east1/keyRings/foo/cryptoKeys/bar-ffffff'"
+    value: ${resources.main.kms_key}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

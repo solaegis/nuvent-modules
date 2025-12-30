@@ -62,3 +62,14 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  state:
+    description: "State for the peering, either ACTIVE or INACTIVE. The peering is ACTIVE when there's a matching configuration in the peer network."
+    value: ${resources.main.state}
+  state_details:
+    description: "Details about the current state of the peering."
+    value: ${resources.main.state_details}

@@ -165,3 +165,35 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  auto_network_tier:
+    description: "The network tier to use when automatically reserving NAT IP addresses. Must be one of: PREMIUM, STANDARD. If not specified, then the current project-level default tier is used. Possible values: [\"PREMIUM\", \"STANDARD\"]"
+    value: ${resources.main.auto_network_tier}
+  drain_nat_ips:
+    description: "A list of URLs of the IP resources to be drained. These IPs must be valid static external IPs that have been assigned to the NAT."
+    value: ${resources.main.drain_nat_ips}
+  enable_dynamic_port_allocation:
+    description: "Enable Dynamic Port Allocation. If minPortsPerVm is set, minPortsPerVm must be set to a power of two greater than or equal to 32. If minPortsPerVm is not set, a minimum of 32 ports will be allocated to a VM from this NAT config. If maxPortsPerVm is set, maxPortsPerVm must be set to a power of two greater than minPortsPerVm. If maxPortsPerVm is not set, a maximum of 65536 ports will be allocated to a VM from this NAT config.  Mutually exclusive with enableEndpointIndependentMapping."
+    value: ${resources.main.enable_dynamic_port_allocation}
+  enable_endpoint_independent_mapping:
+    description: "Enable endpoint independent mapping. For more information see the [official documentation](https://docs.cloud.google.com/nat/docs/public-nat#specs-rfcs)."
+    value: ${resources.main.enable_endpoint_independent_mapping}
+  endpoint_types:
+    description: "Specifies the endpoint Types supported by the NAT Gateway. Supported values include:       'ENDPOINT_TYPE_VM', 'ENDPOINT_TYPE_SWG',       'ENDPOINT_TYPE_MANAGED_PROXY_LB'."
+    value: ${resources.main.endpoint_types}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  min_ports_per_vm:
+    description: "Minimum number of ports allocated to a VM from this NAT. Defaults to 64 for static port allocation and 32 dynamic port allocation if not set."
+    value: ${resources.main.min_ports_per_vm}
+  nat_ips:
+    description: "Self-links of NAT IPs. Only valid if natIpAllocateOption is set to MANUAL_ONLY. If this field is used alongside with a count created list of address resources 'google_compute_address.foobar.*.self_link', the access level resource for the address resource must have a 'lifecycle' block with 'create_before_destroy = true' so the number of resources can be increased/decreased without triggering the 'resourceInUseByAnotherResource' error."
+    value: ${resources.main.nat_ips}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  region:
+    description: "Region where the router and NAT reside."
+    value: ${resources.main.region}

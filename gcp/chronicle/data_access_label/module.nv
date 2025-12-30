@@ -46,3 +46,29 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  author:
+    description: "Output only. The user who created the data access label."
+    value: ${resources.main.author}
+  create_time:
+    description: "Output only. The time at which the data access label was created."
+    value: ${resources.main.create_time}
+  display_name:
+    description: "Output only. The short name displayed for the label as it appears on event data. This is same as data access label id."
+    value: ${resources.main.display_name}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_editor:
+    description: "Output only. The user who last updated the data access label."
+    value: ${resources.main.last_editor}
+  name:
+    description: "The unique resource name of the data access label. This unique identifier is generated using values provided for the URL parameters. Format: projects/{project}/locations/{location}/instances/{instance}/dataAccessLabels/{data_access_label_id}"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  update_time:
+    description: "Output only. The time at which the data access label was last updated."
+    value: ${resources.main.update_time}

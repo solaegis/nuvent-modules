@@ -61,3 +61,26 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  backup_vault_service_account:
+    description: "The Google Cloud Platform Service Account to be used by the BackupVault for taking backups."
+    value: ${resources.main.backup_vault_service_account}
+  create_time:
+    description: "When the 'BackupPlan' was created."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The name of backup plan resource created"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  supported_resource_types:
+    description: "The list of all resource types to which the 'BackupPlan' can be applied."
+    value: ${resources.main.supported_resource_types}
+  update_time:
+    description: "When the 'BackupPlan' was last updated."
+    value: ${resources.main.update_time}

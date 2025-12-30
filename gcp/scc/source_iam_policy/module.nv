@@ -21,3 +21,11 @@ resources:
       policy_data: ${var.policy_data}
       source: ${var.source}
       id: ${var.id}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

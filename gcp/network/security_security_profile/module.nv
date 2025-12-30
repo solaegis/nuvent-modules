@@ -84,3 +84,26 @@ resources:
           for_each: ${var.url_filtering_profile}
           content:
             url_filters: ${each.value.url_filters}
+
+outputs:
+  create_time:
+    description: "Time the security profile was created in UTC."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  etag:
+    description: "This checksum is computed by the server based on the value of other fields, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  self_link:
+    description: "Server-defined URL of this resource."
+    value: ${resources.main.self_link}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "Time the security profile was updated in UTC."
+    value: ${resources.main.update_time}

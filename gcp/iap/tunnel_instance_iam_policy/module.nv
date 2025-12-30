@@ -27,3 +27,17 @@ resources:
       id: ${var.id}
       project: ${var.project}
       zone: ${var.zone}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  zone:
+    description: "Output: zone"
+    value: ${resources.main.zone}

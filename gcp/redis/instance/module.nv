@@ -150,3 +150,83 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  alternative_location_id:
+    description: "Only applicable to STANDARD_HA tier which protects the instance against zonal failures by provisioning it across two zones. If provided, it must be a different zone from the one provided in [locationId]."
+    value: ${resources.main.alternative_location_id}
+  auth_string:
+    description: "AUTH String set on the instance. This field will only be populated if auth_enabled is true."
+    value: ${resources.main.auth_string}
+  authorized_network:
+    description: "The full name of the Google Compute Engine network to which the instance is connected. If left unspecified, the default network will be used."
+    value: ${resources.main.authorized_network}
+  create_time:
+    description: "The time the instance was created in RFC3339 UTC \"Zulu\" format, accurate to nanoseconds."
+    value: ${resources.main.create_time}
+  current_location_id:
+    description: "The current zone where the Redis endpoint is placed. For Basic Tier instances, this will always be the same as the [locationId] provided by the user at creation time. For Standard Tier instances, this can be either [locationId] or [alternativeLocationId] and can change after a failover event."
+    value: ${resources.main.current_location_id}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  effective_reserved_ip_range:
+    description: "The CIDR range of internal addresses that are reserved for this instance. If not provided, the service will choose an unused /29 block, for example, 10.0.0.0/29 or 192.168.0.0/29. Ranges must be unique and non-overlapping with existing subnets in an authorized network."
+    value: ${resources.main.effective_reserved_ip_range}
+  host:
+    description: "Hostname or IP address of the exposed Redis endpoint used by clients to connect to the service."
+    value: ${resources.main.host}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  location_id:
+    description: "The zone where the instance will be provisioned. If not provided, the service will choose a zone for the instance. For STANDARD_HA tier, instances will be created across two zones for protection against zonal failures. If [alternativeLocationId] is also provided, it must be different from [locationId]."
+    value: ${resources.main.location_id}
+  maintenance_schedule:
+    description: "Upcoming maintenance schedule."
+    value: ${resources.main.maintenance_schedule}
+  maintenance_version:
+    description: "The self service update maintenance version."
+    value: ${resources.main.maintenance_version}
+  nodes:
+    description: "Output only. Info per node."
+    value: ${resources.main.nodes}
+  persistence_iam_identity:
+    description: "Output only. Cloud IAM identity used by import / export operations to transfer data to/from Cloud Storage. Format is \"serviceAccount:\". The value may change over time for a given instance so should be checked before each import/export operation."
+    value: ${resources.main.persistence_iam_identity}
+  port:
+    description: "The port number of the exposed Redis endpoint."
+    value: ${resources.main.port}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  read_endpoint:
+    description: "Output only. Hostname or IP address of the exposed readonly Redis endpoint. Standard tier only. Targets all healthy replica nodes in instance. Replication is asynchronous and replica nodes will exhibit some lag behind the primary. Write requests must target 'host'."
+    value: ${resources.main.read_endpoint}
+  read_endpoint_port:
+    description: "Output only. The port number of the exposed readonly redis endpoint. Standard tier only. Write requests should target 'port'."
+    value: ${resources.main.read_endpoint_port}
+  read_replicas_mode:
+    description: "Optional. Read replica mode. Can only be specified when trying to create the instance. If not set, Memorystore Redis backend will default to READ_REPLICAS_DISABLED. - READ_REPLICAS_DISABLED: If disabled, read endpoint will not be provided and the instance cannot scale up or down the number of replicas. - READ_REPLICAS_ENABLED: If enabled, read endpoint will be provided and the instance can scale up and down the number of replicas. Possible values: [\"READ_REPLICAS_DISABLED\", \"READ_REPLICAS_ENABLED\"]"
+    value: ${resources.main.read_replicas_mode}
+  redis_version:
+    description: "The version of Redis software. If not provided, latest supported version will be used. Please check the API documentation linked at the top for the latest valid values."
+    value: ${resources.main.redis_version}
+  region:
+    description: "The name of the Redis region of the instance."
+    value: ${resources.main.region}
+  replica_count:
+    description: "Optional. The number of replica nodes. The valid range for the Standard Tier with read replicas enabled is [1-5] and defaults to 2. If read replicas are not enabled for a Standard Tier instance, the only valid value is 1 and the default is 1. The valid value for basic tier is 0 and the default is also 0."
+    value: ${resources.main.replica_count}
+  reserved_ip_range:
+    description: "The CIDR range of internal addresses that are reserved for this instance. If not provided, the service will choose an unused /29 block, for example, 10.0.0.0/29 or 192.168.0.0/29. Ranges must be unique and non-overlapping with existing subnets in an authorized network."
+    value: ${resources.main.reserved_ip_range}
+  secondary_ip_range:
+    description: "Optional. Additional IP range for node placement. Required when enabling read replicas on an existing instance. For DIRECT_PEERING mode value must be a CIDR range of size /28, or \"auto\". For PRIVATE_SERVICE_ACCESS mode value must be the name of an allocated address range associated with the private service access connection, or \"auto\"."
+    value: ${resources.main.secondary_ip_range}
+  server_ca_certs:
+    description: "List of server CA certificates for the instance."
+    value: ${resources.main.server_ca_certs}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

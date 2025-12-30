@@ -30,3 +30,14 @@ resources:
       version_id: ${var.version_id}
       id: ${var.id}
       project: ${var.project}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

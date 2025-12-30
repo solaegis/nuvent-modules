@@ -114,3 +114,35 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Output only. The time the spoke was created."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  group:
+    description: "The name of the group that this spoke is associated with."
+    value: ${resources.main.group}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  reasons:
+    description: "The reasons for the current state in the lifecycle"
+    value: ${resources.main.reasons}
+  state:
+    description: "Output only. The current lifecycle state of this spoke."
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  unique_id:
+    description: "Output only. The Google-generated UUID for the spoke. This value is unique across all spoke resources. If a spoke is deleted and another with the same name is created, the new spoke is assigned a different unique_id."
+    value: ${resources.main.unique_id}
+  update_time:
+    description: "Output only. The time the spoke was last updated."
+    value: ${resources.main.update_time}

@@ -160,3 +160,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The unique identifier of the agent."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  satisfies_pzi:
+    description: "A read only boolean field reflecting Zone Isolation status of the agent."
+    value: ${resources.main.satisfies_pzi}
+  satisfies_pzs:
+    description: "A read only boolean field reflecting Zone Separation status of the agent."
+    value: ${resources.main.satisfies_pzs}
+  start_flow:
+    description: "Name of the start flow in this agent. A start flow will be automatically created when the agent is created, and can only be deleted by deleting the agent. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>."
+    value: ${resources.main.start_flow}

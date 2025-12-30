@@ -102,3 +102,44 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  authorized_network:
+    description: "The full name of the GCE network to connect the instance to.  If not provided, 'default' will be used."
+    value: ${resources.main.authorized_network}
+  create_time:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.create_time}
+  discovery_endpoint:
+    description: "Endpoint for Discovery API"
+    value: ${resources.main.discovery_endpoint}
+  display_name:
+    description: "A user-visible name for the instance."
+    value: ${resources.main.display_name}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  maintenance_schedule:
+    description: "Output only. Published maintenance schedule."
+    value: ${resources.main.maintenance_schedule}
+  memcache_full_version:
+    description: "The full version of memcached server running on this instance."
+    value: ${resources.main.memcache_full_version}
+  memcache_nodes:
+    description: "Additional information about the instance state, if available."
+    value: ${resources.main.memcache_nodes}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  region:
+    description: "The region of the Memcache instance. If it is not provided, the provider region is used."
+    value: ${resources.main.region}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  zones:
+    description: "Zones where memcache nodes should be provisioned.  If not provided, all zones will be used."
+    value: ${resources.main.zones}

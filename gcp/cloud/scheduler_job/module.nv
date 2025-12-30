@@ -106,3 +106,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  paused:
+    description: "Sets the job to a paused state. Jobs default to being enabled when this property is not set."
+    value: ${resources.main.paused}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  region:
+    description: "Region where the scheduler job resides. If it is not provided, Terraform will use the provider default."
+    value: ${resources.main.region}
+  state:
+    description: "State of the job."
+    value: ${resources.main.state}

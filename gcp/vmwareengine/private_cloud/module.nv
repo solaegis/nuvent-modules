@@ -76,3 +76,38 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Creation time of this resource. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.create_time}
+  delete_time:
+    description: "Time when the resource was scheduled for deletion. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.delete_time}
+  expire_time:
+    description: "Time when the resource will be irreversibly deleted. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.expire_time}
+  hcx:
+    description: "Details about a HCX Cloud Manager appliance."
+    value: ${resources.main.hcx}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  nsx:
+    description: "Details about a NSX Manager appliance."
+    value: ${resources.main.nsx}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "State of the resource. New values may be added to this enum when appropriate."
+    value: ${resources.main.state}
+  uid:
+    description: "System-generated unique identifier for the resource."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Last update time of this resource. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.update_time}
+  vcenter:
+    description: "Details about a vCenter Server management appliance."
+    value: ${resources.main.vcenter}

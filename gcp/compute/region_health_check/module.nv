@@ -156,3 +156,26 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  health_check_id:
+    description: "The unique identifier number for the resource. This identifier is defined by the server."
+    value: ${resources.main.health_check_id}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  region:
+    description: "The Region in which the created health check should reside. If it is not provided, the provider region is used."
+    value: ${resources.main.region}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}
+  type:
+    description: "The type of the health check. One of HTTP, HTTP2, HTTPS, TCP, or SSL."
+    value: ${resources.main.type}

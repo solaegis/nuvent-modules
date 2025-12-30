@@ -64,3 +64,26 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Create timestamp."
+    value: ${resources.main.create_time}
+  events:
+    description: "The events that trigger hook on. Possible values: [\"PUSH\", \"PULL_REQUEST\"]"
+    value: ${resources.main.events}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "A unique identifier for a Hook. The name should be of the format: 'projects/{project}/locations/{location_id}/repositories/{repository_id}/hooks/{hook_id}'"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  uid:
+    description: "Unique identifier of the hook."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Update timestamp."
+    value: ${resources.main.update_time}

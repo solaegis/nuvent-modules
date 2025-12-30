@@ -18,3 +18,11 @@ resources:
       bucket: ${var.bucket}
       id: ${var.id}
       role_entity: ${var.role_entity}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  role_entity:
+    description: "Output: role_entity"
+    value: ${resources.main.role_entity}

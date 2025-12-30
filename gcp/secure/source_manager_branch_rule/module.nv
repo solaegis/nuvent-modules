@@ -76,3 +76,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Time the BranchRule was created in UTC."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name for the BranchRule."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  uid:
+    description: "Unique identifier of the BranchRule."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Time the BranchRule was updated in UTC."
+    value: ${resources.main.update_time}

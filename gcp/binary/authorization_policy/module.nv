@@ -64,3 +64,14 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  global_policy_evaluation_mode:
+    description: "Controls the evaluation of a Google-maintained global admission policy for common system-level images. Images not covered by the global policy will be subject to the project admission policy. Possible values: [\"ENABLE\", \"DISABLE\"]"
+    value: ${resources.main.global_policy_evaluation_mode}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

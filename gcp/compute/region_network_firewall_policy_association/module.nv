@@ -41,3 +41,17 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  region:
+    description: "The location of this resource."
+    value: ${resources.main.region}
+  short_name:
+    description: "The short name of the firewall policy of the association."
+    value: ${resources.main.short_name}

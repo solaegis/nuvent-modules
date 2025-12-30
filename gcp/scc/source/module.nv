@@ -33,3 +33,11 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name of this source, in the format 'organizations/{{organization}}/sources/{{source}}'."
+    value: ${resources.main.name}

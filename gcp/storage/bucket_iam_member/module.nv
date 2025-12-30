@@ -40,3 +40,11 @@ resources:
           for_each: ${var.timeouts}
           content:
             create: ${each.value.create}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

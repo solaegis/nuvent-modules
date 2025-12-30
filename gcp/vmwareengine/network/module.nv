@@ -42,3 +42,29 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Creation time of this resource. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.create_time}
+  etag:
+    description: "Checksum that may be sent on update and delete requests to ensure that the user-provided value is up to date befor The server computes checksums based on the value of other fields in the request."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "State of the VMware Engine network."
+    value: ${resources.main.state}
+  uid:
+    description: "System-generated unique identifier for the resource."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Last update time of this resource. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.update_time}
+  vpc_networks:
+    description: "VMware Engine service VPC networks that provide connectivity from a private cloud to customer projects, the internet, and other Google Cloud services."
+    value: ${resources.main.vpc_networks}

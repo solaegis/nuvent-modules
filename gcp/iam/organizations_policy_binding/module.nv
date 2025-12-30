@@ -70,3 +70,29 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Output only. The time when the policy binding was created."
+    value: ${resources.main.create_time}
+  effective_annotations:
+    description: "All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services."
+    value: ${resources.main.effective_annotations}
+  etag:
+    description: "Optional. The etag for the policy binding. If this is provided on update, it must match the server's etag."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The name of the policy binding in the format '{binding_parent/locations/{location}/policyBindings/{policy_binding_id}'"
+    value: ${resources.main.name}
+  policy_uid:
+    description: "Output only. The globally unique ID of the policy to be bound."
+    value: ${resources.main.policy_uid}
+  uid:
+    description: "Output only. The globally unique ID of the policy binding. Assigned when the policy binding is created."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Output only. The time when the policy binding was most recently updated."
+    value: ${resources.main.update_time}

@@ -50,3 +50,17 @@ resources:
             description: ${each.value.description}
             expression: ${each.value.expression}
             title: ${each.value.title}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  location:
+    description: "Output: location"
+    value: ${resources.main.location}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

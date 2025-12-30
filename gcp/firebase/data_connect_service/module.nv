@@ -53,3 +53,38 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Output only. [Output only] Create time stamp."
+    value: ${resources.main.create_time}
+  effective_annotations:
+    description: "All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services."
+    value: ${resources.main.effective_annotations}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  etag:
+    description: "Output only. This checksum is computed by the server based on the value of other fields, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding. [AIP-154](https://google.aip.dev/154)"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. The relative resource name of the Firebase Data Connect service, in the format: ''' projects/{project}/locations/{location}/services/{service} ''' Note that the service ID is specific to Firebase Data Connect and does not correspond to any of the instance IDs of the underlying data source connections."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  reconciling:
+    description: "Output only. A field that if true, indicates that the system is working update the service."
+    value: ${resources.main.reconciling}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  uid:
+    description: "Output only. System-assigned, unique identifier."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Output only. [Output only] Update time stamp."
+    value: ${resources.main.update_time}

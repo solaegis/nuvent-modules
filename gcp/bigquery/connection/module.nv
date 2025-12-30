@@ -115,3 +115,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  connection_id:
+    description: "Optional connection id that should be assigned to the created connection."
+    value: ${resources.main.connection_id}
+  has_credential:
+    description: "True if the connection has credential assigned."
+    value: ${resources.main.has_credential}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name of the connection in the form of: \"projects/{project_id}/locations/{location_id}/connections/{connectionId}\""
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

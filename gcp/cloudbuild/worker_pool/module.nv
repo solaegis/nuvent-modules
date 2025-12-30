@@ -72,3 +72,29 @@ resources:
             enable_nested_virtualization: ${each.value.enable_nested_virtualization}
             machine_type: ${each.value.machine_type}
             no_external_ip: ${each.value.no_external_ip}
+
+outputs:
+  create_time:
+    description: "Output only. Time at which the request to create the `WorkerPool` was received."
+    value: ${resources.main.create_time}
+  delete_time:
+    description: "Output only. Time at which the request to delete the `WorkerPool` was received."
+    value: ${resources.main.delete_time}
+  effective_annotations:
+    description: "All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services."
+    value: ${resources.main.effective_annotations}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "The project for the resource"
+    value: ${resources.main.project}
+  state:
+    description: "Output only. `WorkerPool` state. Possible values: STATE_UNSPECIFIED, PENDING, APPROVED, REJECTED, CANCELLED"
+    value: ${resources.main.state}
+  uid:
+    description: "Output only. A unique identifier for the `WorkerPool`."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Output only. Time at which the request to update the `WorkerPool` was received."
+    value: ${resources.main.update_time}

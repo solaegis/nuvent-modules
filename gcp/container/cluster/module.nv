@@ -707,3 +707,80 @@ resources:
           for_each: ${var.workload_identity_config}
           content:
             workload_pool: ${each.value.workload_pool}
+
+outputs:
+  cluster_ipv4_cidr:
+    description: "The IP address range of the Kubernetes pods in this cluster in CIDR notation (e.g. 10.96.0.0/14). Leave blank to have one automatically chosen or specify a /14 block in 10.0.0.0/8. This field will only work for routes-based clusters, where ip_allocation_policy is not defined."
+    value: ${resources.main.cluster_ipv4_cidr}
+  datapath_provider:
+    description: "The desired datapath provider for this cluster. By default, uses the IPTables-based kube-proxy implementation."
+    value: ${resources.main.datapath_provider}
+  default_max_pods_per_node:
+    description: "The default maximum number of pods per node in this cluster. This doesn't work on \"routes-based\" clusters, clusters that don't have IP Aliasing enabled."
+    value: ${resources.main.default_max_pods_per_node}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  enable_intranode_visibility:
+    description: "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network."
+    value: ${resources.main.enable_intranode_visibility}
+  enable_l4_ilb_subsetting:
+    description: "Whether L4ILB Subsetting is enabled for this cluster."
+    value: ${resources.main.enable_l4_ilb_subsetting}
+  enable_tpu:
+    description: "Whether to enable Cloud TPU resources in this cluster."
+    value: ${resources.main.enable_tpu}
+  endpoint:
+    description: "The IP address of this cluster's Kubernetes master."
+    value: ${resources.main.endpoint}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  label_fingerprint:
+    description: "The fingerprint of the set of labels for this cluster."
+    value: ${resources.main.label_fingerprint}
+  location:
+    description: "The location (region or zone) in which the cluster master will be created, as well as the default node location. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region, and with default node locations in those zones as well."
+    value: ${resources.main.location}
+  logging_service:
+    description: "The logging service that the cluster should write logs to. Available options include logging.googleapis.com(Legacy Stackdriver), logging.googleapis.com/kubernetes(Stackdriver Kubernetes Engine Logging), and none. Defaults to logging.googleapis.com/kubernetes."
+    value: ${resources.main.logging_service}
+  master_version:
+    description: "The current version of the master in the cluster. This may be different than the min_master_version set in the config if the master has been updated by GKE."
+    value: ${resources.main.master_version}
+  monitoring_service:
+    description: "The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com(Legacy Stackdriver), monitoring.googleapis.com/kubernetes(Stackdriver Kubernetes Engine Monitoring), and none. Defaults to monitoring.googleapis.com/kubernetes."
+    value: ${resources.main.monitoring_service}
+  networking_mode:
+    description: "Determines whether alias IPs or routes will be used for pod IPs in the cluster. Defaults to VPC_NATIVE for new clusters."
+    value: ${resources.main.networking_mode}
+  node_locations:
+    description: "The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. If this is specified for a zonal cluster, omit the cluster's zone."
+    value: ${resources.main.node_locations}
+  node_version:
+    description: "The Kubernetes version on the nodes. Must either be unset or set to the same value as min_master_version on create. Defaults to the default version set by GKE which is not necessarily the latest version. This only affects nodes in the default node pool. While a fuzzy version can be specified, it's recommended that you specify explicit versions as Terraform will see spurious diffs when fuzzy versions are used. See the google_container_engine_versions data source's version_prefix field to approximate fuzzy versions in a Terraform-compatible way. To update nodes in other node pools, use the version attribute on the node pool."
+    value: ${resources.main.node_version}
+  operation:
+    description: "Output: operation"
+    value: ${resources.main.operation}
+  private_ipv6_google_access:
+    description: "The desired state of IPv6 connectivity to Google Services. By default, no private IPv6 access to or from Google Services (all access will be via IPv4)."
+    value: ${resources.main.private_ipv6_google_access}
+  project:
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    value: ${resources.main.project}
+  self_link:
+    description: "Server-defined URL for the resource."
+    value: ${resources.main.self_link}
+  services_ipv4_cidr:
+    description: "The IP address range of the Kubernetes services in this cluster, in CIDR notation (e.g. 1.2.3.4/29). Service addresses are typically put in the last /16 from the container CIDR."
+    value: ${resources.main.services_ipv4_cidr}
+  subnetwork:
+    description: "The name or self_link of the Google Compute Engine subnetwork in which the cluster's instances are launched."
+    value: ${resources.main.subnetwork}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  tpu_ipv4_cidr_block:
+    description: "The IP address range of the Cloud TPUs in this cluster, in CIDR notation (e.g. 1.2.3.4/29)."
+    value: ${resources.main.tpu_ipv4_cidr_block}

@@ -64,3 +64,17 @@ resources:
             delete: ${each.value.delete}
             read: ${each.value.read}
             update: ${each.value.update}
+
+outputs:
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  number:
+    description: "The numeric identifier of the project."
+    value: ${resources.main.number}
+  terraform_labels:
+    description: "(ReadOnly) The combination of labels configured directly on the resource and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

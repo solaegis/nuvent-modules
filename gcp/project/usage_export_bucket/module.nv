@@ -33,3 +33,11 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "The project to set the export bucket on. If it is not provided, the provider project is used."
+    value: ${resources.main.project}

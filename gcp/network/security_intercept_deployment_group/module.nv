@@ -47,3 +47,38 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  connected_endpoint_groups:
+    description: "The list of endpoint groups that are connected to this resource."
+    value: ${resources.main.connected_endpoint_groups}
+  create_time:
+    description: "The timestamp when the resource was created. See https://google.aip.dev/148#timestamps."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  locations:
+    description: "The list of locations where the deployment group is present."
+    value: ${resources.main.locations}
+  name:
+    description: "The resource name of this deployment group, for example: 'projects/123456789/locations/global/interceptDeploymentGroups/my-dg'. See https://google.aip.dev/122 for more details."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  reconciling:
+    description: "The current state of the resource does not match the user's intended state, and the system is working to reconcile them. This is part of the normal operation (e.g. adding a new deployment to the group) See https://google.aip.dev/128."
+    value: ${resources.main.reconciling}
+  state:
+    description: "The current state of the deployment group. See https://google.aip.dev/216. Possible values: STATE_UNSPECIFIED ACTIVE CREATING DELETING"
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "The timestamp when the resource was most recently updated. See https://google.aip.dev/148#timestamps."
+    value: ${resources.main.update_time}

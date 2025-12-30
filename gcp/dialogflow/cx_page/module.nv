@@ -105,3 +105,11 @@ resources:
             target_flow: ${each.value.target_flow}
             target_page: ${each.value.target_page}
             trigger_fulfillment: ${each.value.trigger_fulfillment}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The unique identifier of the page. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>."
+    value: ${resources.main.name}

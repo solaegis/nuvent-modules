@@ -108,3 +108,38 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The time when the scan was created."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  execution_status:
+    description: "Status of the data scan execution."
+    value: ${resources.main.execution_status}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The relative resource name of the scan, of the form: projects/{project}/locations/{locationId}/dataScans/{datascan_id}, where project refers to a project_id or project_number and locationId refers to a GCP region."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "Current state of the DataScan."
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  type:
+    description: "The type of DataScan."
+    value: ${resources.main.type}
+  uid:
+    description: "System generated globally unique ID for the scan. This ID will be different if the scan is deleted and re-created with the same name."
+    value: ${resources.main.uid}
+  update_time:
+    description: "The time when the scan was last updated."
+    value: ${resources.main.update_time}

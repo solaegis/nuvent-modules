@@ -41,3 +41,14 @@ resources:
           for_each: ${var.tpu}
           content:
             node_spec: ${each.value.node_spec}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  zone:
+    description: "The GCP location for the Queued Resource. If it is not provided, the provider zone is used."
+    value: ${resources.main.zone}

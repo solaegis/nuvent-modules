@@ -71,3 +71,14 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  certs_info:
+    description: "Chain of certificates under this alias."
+    value: ${resources.main.certs_info}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  type:
+    description: "Optional.Type of Alias"
+    value: ${resources.main.type}

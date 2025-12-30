@@ -37,3 +37,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  domain:
+    description: "The domain associated with the entity."
+    value: ${resources.main.domain}
+  email:
+    description: "The email address associated with the entity."
+    value: ${resources.main.email}
+  entity_id:
+    description: "The ID for the entity"
+    value: ${resources.main.entity_id}
+  generation:
+    description: "The content generation of the object, if applied to an object."
+    value: ${resources.main.generation}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project_team:
+    description: "The project team associated with the entity"
+    value: ${resources.main.project_team}

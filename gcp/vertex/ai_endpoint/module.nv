@@ -96,3 +96,38 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Output only. Timestamp when this Endpoint was created."
+    value: ${resources.main.create_time}
+  dedicated_endpoint_dns:
+    description: "Output only. DNS of the dedicated endpoint. Will only be populated if dedicatedEndpointEnabled is true. Format: 'https://{endpointId}.{region}-{projectNumber}.prediction.vertexai.goog'."
+    value: ${resources.main.dedicated_endpoint_dns}
+  deployed_models:
+    description: "Output only. The models deployed in this Endpoint. To add or remove DeployedModels use EndpointService.DeployModel and EndpointService.UndeployModel respectively. Models can also be deployed and undeployed using the [Cloud Console](https://console.cloud.google.com/vertex-ai/)."
+    value: ${resources.main.deployed_models}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  etag:
+    description: "Used to perform consistent read-modify-write updates. If not set, a blind \"overwrite\" update happens."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  model_deployment_monitoring_job:
+    description: "Output only. Resource name of the Model Monitoring job associated with this Endpoint if monitoring is enabled by CreateModelDeploymentMonitoringJob. Format: 'projects/{project}/locations/{location}/modelDeploymentMonitoringJobs/{model_deployment_monitoring_job}'"
+    value: ${resources.main.model_deployment_monitoring_job}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  traffic_split:
+    description: "A map from a DeployedModel's id to the percentage of this Endpoint's traffic that should be forwarded to that DeployedModel. If a DeployedModel's id is not listed in this map, then it receives no traffic. The traffic percentage values must add up to 100, or map must be empty if the Endpoint is to not accept any traffic at a moment. See the 'deployModel' [example](https://cloud.google.com/vertex-ai/docs/general/deployment#deploy_a_model_to_an_endpoint) and [documentation](https://cloud.google.com/vertex-ai/docs/reference/rest/v1beta1/projects.locations.endpoints/deployModel) for more information.  ~> **Note:** To set the map to empty, set '\"{}\"', apply, and then remove the field from your config."
+    value: ${resources.main.traffic_split}
+  update_time:
+    description: "Output only. Timestamp when this Endpoint was last updated."
+    value: ${resources.main.update_time}

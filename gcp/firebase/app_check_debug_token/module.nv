@@ -37,3 +37,14 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  debug_token_id:
+    description: "The last segment of the resource name of the debug token."
+    value: ${resources.main.debug_token_id}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

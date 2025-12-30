@@ -188,3 +188,44 @@ resources:
             max_unavailable: ${each.value.max_unavailable}
             strategy: ${each.value.strategy}
             blue_green_settings: ${each.value.blue_green_settings}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  initial_node_count:
+    description: "The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource."
+    value: ${resources.main.initial_node_count}
+  instance_group_urls:
+    description: "The resource URLs of the managed instance groups associated with this node pool."
+    value: ${resources.main.instance_group_urls}
+  location:
+    description: "The location (region or zone) of the cluster."
+    value: ${resources.main.location}
+  managed_instance_group_urls:
+    description: "List of instance group URLs which have been assigned to this node pool."
+    value: ${resources.main.managed_instance_group_urls}
+  max_pods_per_node:
+    description: "The maximum number of pods per node in this node pool. Note that this does not work on node pools which are \"route-based\" - that is, node pools belonging to clusters that do not have IP Aliasing enabled."
+    value: ${resources.main.max_pods_per_node}
+  name:
+    description: "The name of the node pool. If left blank, Terraform will auto-generate a unique name."
+    value: ${resources.main.name}
+  name_prefix:
+    description: "Creates a unique name for the node pool beginning with the specified prefix. Conflicts with name."
+    value: ${resources.main.name_prefix}
+  node_count:
+    description: "The number of nodes per instance group. This field can be used to update the number of nodes per instance group but should not be used alongside autoscaling."
+    value: ${resources.main.node_count}
+  node_locations:
+    description: "The list of zones in which the node pool's nodes should be located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. If unspecified, the cluster-level node_locations will be used."
+    value: ${resources.main.node_locations}
+  operation:
+    description: "Output: operation"
+    value: ${resources.main.operation}
+  project:
+    description: "The ID of the project in which to create the node pool. If blank, the provider-configured project will be used."
+    value: ${resources.main.project}
+  version:
+    description: "The Kubernetes version for the nodes in this pool. Note that if this field and auto_upgrade are both specified, they will fight each other for what the node version should be, so setting both is highly discouraged. While a fuzzy version can be specified, it's recommended that you specify explicit versions as Terraform will see spurious diffs when fuzzy versions are used. See the google_container_engine_versions data source's version_prefix field to approximate fuzzy versions in a Terraform-compatible way."
+    value: ${resources.main.version}

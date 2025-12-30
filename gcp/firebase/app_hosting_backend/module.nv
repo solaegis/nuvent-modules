@@ -74,3 +74,44 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Time at which the backend was created."
+    value: ${resources.main.create_time}
+  delete_time:
+    description: "Time at which the backend was deleted."
+    value: ${resources.main.delete_time}
+  effective_annotations:
+    description: "All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services."
+    value: ${resources.main.effective_annotations}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  etag:
+    description: "Server-computed checksum based on other values; may be sent on update or delete to ensure operation is done on expected resource."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  managed_resources:
+    description: "A list of the resources managed by this backend."
+    value: ${resources.main.managed_resources}
+  name:
+    description: "Identifier. The resource name of the backend.  Format:  'projects/{project}/locations/{locationId}/backends/{backendId}'."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  uid:
+    description: "System-assigned, unique identifier."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Time at which the backend was last updated."
+    value: ${resources.main.update_time}
+  uri:
+    description: "The primary URI to communicate with the backend."
+    value: ${resources.main.uri}

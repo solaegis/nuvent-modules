@@ -83,3 +83,53 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Create time of the active directory. A timestamp in RFC3339 UTC \"Zulu\" format. Examples: \"2023-06-22T09:13:01.617Z\"."
+    value: ${resources.main.create_time}
+  destination_volume:
+    description: "Full resource name of destination volume with format: 'projects/{{project}}/locations/{{location}}/volumes/{{volumeId}}'"
+    value: ${resources.main.destination_volume}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  healthy:
+    description: "Condition of the relationship. Can be one of the following:   - true: The replication relationship is healthy. It has not missed the most recent scheduled transfer.   - false: The replication relationship is not healthy. It has missed the most recent scheduled transfer."
+    value: ${resources.main.healthy}
+  hybrid_peering_details:
+    description: "HybridPeeringDetails contains details about the hybrid peering."
+    value: ${resources.main.hybrid_peering_details}
+  hybrid_replication_type:
+    description: "Hybrid replication type."
+    value: ${resources.main.hybrid_replication_type}
+  hybrid_replication_user_commands:
+    description: "Copy pastable snapmirror commands to be executed on onprem cluster by the customer."
+    value: ${resources.main.hybrid_replication_user_commands}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  mirror_state:
+    description: "Indicates the state of the mirror between source and destination volumes. Depending on the amount of data in your source volume, PREPARING phase can take hours or days. mirrorState = MIRRORED indicates your baseline transfer ended and destination volume became accessible read-only. TRANSFERRING means a MIRRORED volume currently receives an update. Updated every 5 minutes."
+    value: ${resources.main.mirror_state}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  role:
+    description: "Reverting a replication can swap source and destination volume roles. This field indicates if the 'location' hosts the source or destination volume. For resume and revert and resume operations it is critical to understand which volume is the source volume, since it will overwrite changes done to the destination volume."
+    value: ${resources.main.role}
+  source_volume:
+    description: "Full resource name of source volume with format: 'projects/{{project}}/locations/{{location}}/volumes/{{volumeId}}'"
+    value: ${resources.main.source_volume}
+  state:
+    description: "Indicates the state of replication resource. State of the mirror itself is indicated in mirrorState."
+    value: ${resources.main.state}
+  state_details:
+    description: "State details of the replication resource."
+    value: ${resources.main.state_details}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  transfer_stats:
+    description: "Replication transfer statistics. All statistics are updated every 5 minutes."
+    value: ${resources.main.transfer_stats}

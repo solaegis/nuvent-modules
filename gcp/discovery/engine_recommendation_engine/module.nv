@@ -66,3 +66,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Timestamp the Engine was created at."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The unique full resource name of the recommendation engine. Values are of the format 'projects/{project}/locations/{location}/collections/{collection}/engines/{engine_id}'. This field must be a UTF-8 encoded string with a length limit of 1024 characters."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  update_time:
+    description: "Timestamp the Engine was last updated."
+    value: ${resources.main.update_time}

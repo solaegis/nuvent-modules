@@ -77,3 +77,32 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  asset_status:
+    description: "Output only. Aggregated status of the underlying assets of the zone."
+    value: ${resources.main.asset_status}
+  create_time:
+    description: "Output only. The time when the zone was created."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "The project for the resource"
+    value: ${resources.main.project}
+  state:
+    description: "Output only. Current state of the zone. Possible values: STATE_UNSPECIFIED, ACTIVE, CREATING, DELETING, ACTION_REQUIRED"
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  uid:
+    description: "Output only. System generated globally unique ID for the zone. This ID will be different if the zone is deleted and re-created with the same name."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Output only. The time when the zone was last updated."
+    value: ${resources.main.update_time}

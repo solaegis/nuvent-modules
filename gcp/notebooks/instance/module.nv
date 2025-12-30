@@ -205,3 +205,47 @@ resources:
             image_family: ${each.value.image_family}
             image_name: ${each.value.image_name}
             project: ${each.value.project}
+
+outputs:
+  create_time:
+    description: "Instance creation time"
+    value: ${resources.main.create_time}
+  disk_encryption:
+    description: "Disk encryption method used on the boot and data disks, defaults to GMEK. Possible values: [\"DISK_ENCRYPTION_UNSPECIFIED\", \"GMEK\", \"CMEK\"]"
+    value: ${resources.main.disk_encryption}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  network:
+    description: "The name of the VPC that this instance is in. Format: projects/{project_id}/global/networks/{network_id}"
+    value: ${resources.main.network}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  proxy_uri:
+    description: "The proxy endpoint that is used to access the Jupyter notebook. Only returned when the resource is in a 'PROVISIONED' state. If needed you can utilize 'terraform apply -refresh-only' to await the population of this value."
+    value: ${resources.main.proxy_uri}
+  service_account:
+    description: "The service account on this instance, giving access to other Google Cloud services. You can use any service account within the same project, but you must have the service account user permission to use the instance. If not specified, the Compute Engine default service account is used."
+    value: ${resources.main.service_account}
+  service_account_scopes:
+    description: "Optional. The URIs of service account scopes to be included in Compute Engine instances. If not specified, the following scopes are defined: - https://www.googleapis.com/auth/cloud-platform - https://www.googleapis.com/auth/userinfo.email"
+    value: ${resources.main.service_account_scopes}
+  state:
+    description: "The state of this instance."
+    value: ${resources.main.state}
+  subnet:
+    description: "The name of the subnet that this instance is in. Format: projects/{project_id}/regions/{region}/subnetworks/{subnetwork_id}"
+    value: ${resources.main.subnet}
+  tags:
+    description: "The Compute Engine tags to add to instance."
+    value: ${resources.main.tags}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "Instance update time."
+    value: ${resources.main.update_time}

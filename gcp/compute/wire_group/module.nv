@@ -70,3 +70,20 @@ resources:
             bandwidth_allocation: ${each.value.bandwidth_allocation}
             bandwidth_unmetered: ${each.value.bandwidth_unmetered}
             fault_response: ${each.value.fault_response}
+
+outputs:
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  topology:
+    description: "Topology details for the wire group configuration."
+    value: ${resources.main.topology}
+  wires:
+    description: "The single/redundant wire(s) managed by the wire group."
+    value: ${resources.main.wires}

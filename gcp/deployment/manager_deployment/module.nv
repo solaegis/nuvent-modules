@@ -67,3 +67,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  deployment_id:
+    description: "Unique identifier for deployment. Output only."
+    value: ${resources.main.deployment_id}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  manifest:
+    description: "Output only. URL of the manifest representing the last manifest that was successfully deployed."
+    value: ${resources.main.manifest}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  self_link:
+    description: "Output only. Server defined URL for the resource."
+    value: ${resources.main.self_link}

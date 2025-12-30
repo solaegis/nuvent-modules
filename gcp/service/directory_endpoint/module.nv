@@ -48,3 +48,11 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name for the endpoint in the format 'projects/*/locations/*/namespaces/*/services/*/endpoints/*'."
+    value: ${resources.main.name}

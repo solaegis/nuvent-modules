@@ -218,3 +218,20 @@ resources:
           content:
             secret: ${each.value.secret}
             state: ${each.value.state}
+
+outputs:
+  create_time:
+    description: "Time when the trigger was created."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Name of the trigger. Must be unique within the project."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  trigger_id:
+    description: "The unique identifier for the trigger."
+    value: ${resources.main.trigger_id}

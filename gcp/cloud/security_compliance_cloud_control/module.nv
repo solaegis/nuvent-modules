@@ -93,3 +93,26 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The last updated time of the cloud control. The create_time is used because a new CC is created whenever we update an existing CC."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  major_revision_id:
+    description: "Major revision of the cloud control incremented in ascending order."
+    value: ${resources.main.major_revision_id}
+  name:
+    description: "Identifier. The resource name of the cloud control. Format: organizations/{organization}/locations/{location}/cloudControls/{cloud_control_id}"
+    value: ${resources.main.name}
+  related_frameworks:
+    description: "The Frameworks that include this CloudControl"
+    value: ${resources.main.related_frameworks}
+  supported_enforcement_modes:
+    description: "The supported enforcement mode of the cloud control. Default is DETECTIVE."
+    value: ${resources.main.supported_enforcement_modes}
+  supported_target_resource_types:
+    description: "target resource types supported by the CloudControl."
+    value: ${resources.main.supported_target_resource_types}

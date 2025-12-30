@@ -40,3 +40,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  edition_config:
+    description: "Edition configuration of the Storage Intelligence resource. Valid values are INHERIT, DISABLED, TRIAL and STANDARD."
+    value: ${resources.main.edition_config}
+  effective_intelligence_config:
+    description: "The Intelligence config that is effective for the resource."
+    value: ${resources.main.effective_intelligence_config}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  trial_config:
+    description: "The trial configuration of the Storage Intelligence resource."
+    value: ${resources.main.trial_config}
+  update_time:
+    description: "The time at which the Storage Intelligence Config resource is last updated."
+    value: ${resources.main.update_time}

@@ -58,3 +58,38 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  associations:
+    description: "List of associations to this endpoint group."
+    value: ${resources.main.associations}
+  connected_deployment_groups:
+    description: "List of details about the connected deployment groups to this endpoint group."
+    value: ${resources.main.connected_deployment_groups}
+  create_time:
+    description: "The timestamp when the resource was created. See https://google.aip.dev/148#timestamps."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name of this endpoint group, for example: 'projects/123456789/locations/global/mirroringEndpointGroups/my-eg'. See https://google.aip.dev/122 for more details."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  reconciling:
+    description: "The current state of the resource does not match the user's intended state, and the system is working to reconcile them. This is part of the normal operation (e.g. adding a new association to the group). See https://google.aip.dev/128."
+    value: ${resources.main.reconciling}
+  state:
+    description: "The current state of the endpoint group. See https://google.aip.dev/216. Possible values: STATE_UNSPECIFIED ACTIVE CLOSED CREATING DELETING OUT_OF_SYNC DELETE_FAILED"
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "The timestamp when the resource was most recently updated. See https://google.aip.dev/148#timestamps."
+    value: ${resources.main.update_time}

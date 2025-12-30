@@ -299,3 +299,38 @@ resources:
             authentication_config: ${each.value.authentication_config}
             sni: ${each.value.sni}
             subject_alt_names: ${each.value.subject_alt_names}
+
+outputs:
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  fingerprint:
+    description: "Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking."
+    value: ${resources.main.fingerprint}
+  generated_id:
+    description: "The unique identifier for the resource. This identifier is defined by the server."
+    value: ${resources.main.generated_id}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  port_name:
+    description: "A named port on a backend instance group representing the port for communication to the backend VMs in that group. Required when the loadBalancingScheme is EXTERNAL, EXTERNAL_MANAGED, INTERNAL_MANAGED, or INTERNAL_SELF_MANAGED and the backends are instance groups. The named port must be defined on each backend instance group. This parameter has no meaning if the backends are NEGs. API sets a default of \"http\" if not given. Must be omitted when the loadBalancingScheme is INTERNAL (Internal TCP/UDP Load Balancing)."
+    value: ${resources.main.port_name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  protocol:
+    description: "The protocol this BackendService uses to communicate with backends. The default is HTTP. Possible values are HTTP, HTTPS, HTTP2, H2C, TCP, SSL, UDP or GRPC. Refer to the documentation for the load balancers or for Traffic Director for more information. Possible values: [\"HTTP\", \"HTTPS\", \"HTTP2\", \"TCP\", \"SSL\", \"UDP\", \"GRPC\", \"UNSPECIFIED\", \"H2C\"]"
+    value: ${resources.main.protocol}
+  region:
+    description: "The Region in which the created backend service should reside. If it is not provided, the provider region is used."
+    value: ${resources.main.region}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}
+  session_affinity:
+    description: "Type of session affinity to use. The default is NONE. Session affinity is not applicable if the protocol is UDP. Possible values: [\"NONE\", \"CLIENT_IP\", \"CLIENT_IP_PORT_PROTO\", \"CLIENT_IP_PROTO\", \"GENERATED_COOKIE\", \"HEADER_FIELD\", \"HTTP_COOKIE\", \"CLIENT_IP_NO_DESTINATION\", \"STRONG_COOKIE_AFFINITY\"]"
+    value: ${resources.main.session_affinity}
+  timeout_sec:
+    description: "The backend service timeout has a different meaning depending on the type of load balancer. For more information see, [Backend service settings](https://cloud.google.com/compute/docs/reference/rest/v1/backendServices). The default is 30 seconds. The full range of timeout values allowed goes from 1 through 2,147,483,647 seconds."
+    value: ${resources.main.timeout_sec}

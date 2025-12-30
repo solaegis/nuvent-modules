@@ -61,3 +61,26 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The timestamp of initial playbook creation.  Uses RFC 3339, where generated output will always be Z-normalized and uses 0, 3, 6 or 9 fractional digits. Offsets other than \"Z\" are also accepted. Examples: \"2014-10-02T15:01:23Z\", \"2014-10-02T15:01:23.045123456Z\" or \"2014-10-02T15:01:23+05:30\"."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The unique identifier of the Playbook. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>."
+    value: ${resources.main.name}
+  referenced_flows:
+    description: "The resource name of flows referenced by the current playbook in the instructions."
+    value: ${resources.main.referenced_flows}
+  referenced_playbooks:
+    description: "The resource name of other playbooks referenced by the current playbook in the instructions."
+    value: ${resources.main.referenced_playbooks}
+  token_count:
+    description: "Estimated number of tokes current playbook takes when sent to the LLM."
+    value: ${resources.main.token_count}
+  update_time:
+    description: "Last time the playbook version was updated.  Uses RFC 3339, where generated output will always be Z-normalized and uses 0, 3, 6 or 9 fractional digits. Offsets other than \"Z\" are also accepted. Examples: \"2014-10-02T15:01:23Z\", \"2014-10-02T15:01:23.045123456Z\" or \"2014-10-02T15:01:23+05:30\"."
+    value: ${resources.main.update_time}

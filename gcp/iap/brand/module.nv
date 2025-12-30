@@ -32,3 +32,17 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Output only. Identifier of the brand, in the format 'projects/{project_number}/brands/{brand_id}' NOTE: The name can also be expressed as 'projects/{project_id}/brands/{brand_id}', e.g. when importing. NOTE: The brand identification corresponds to the project number as only one brand can be created per project."
+    value: ${resources.main.name}
+  org_internal_only:
+    description: "Whether the brand is only intended for usage inside the GSuite organization only."
+    value: ${resources.main.org_internal_only}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

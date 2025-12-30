@@ -56,3 +56,38 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  capacity_gb:
+    description: "The amount of bytes needed to allocate a full copy of the snapshot content."
+    value: ${resources.main.capacity_gb}
+  create_time:
+    description: "The time when the snapshot was created in RFC3339 text format."
+    value: ${resources.main.create_time}
+  download_bytes:
+    description: "Amount of bytes that will be downloaded if the backup is restored."
+    value: ${resources.main.download_bytes}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  kms_key_name:
+    description: "KMS key name used for data encryption."
+    value: ${resources.main.kms_key_name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  source_instance_tier:
+    description: "The service tier of the source Cloud Filestore instance that this backup is created from."
+    value: ${resources.main.source_instance_tier}
+  state:
+    description: "The backup state."
+    value: ${resources.main.state}
+  storage_bytes:
+    description: "The size of the storage used by the backup. As backups share storage, this number is expected to change with backup creation/deletion."
+    value: ${resources.main.storage_bytes}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

@@ -154,3 +154,47 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  connection_revision:
+    description: "Connection revision. This field is only updated when the connection is created or updated by User."
+    value: ${resources.main.connection_revision}
+  connector_version_infra_config:
+    description: "This configuration provides infra configs like rate limit threshold which need to be configurable for every connector version."
+    value: ${resources.main.connector_version_infra_config}
+  connector_version_launch_stage:
+    description: "Flag to mark the version indicating the launch stage."
+    value: ${resources.main.connector_version_launch_stage}
+  create_time:
+    description: "Time the Namespace was created in UTC."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  eventing_runtime_data:
+    description: "Eventing Runtime Data."
+    value: ${resources.main.eventing_runtime_data}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  service_account:
+    description: "Service account needed for runtime plane to access Google Cloud resources."
+    value: ${resources.main.service_account}
+  service_directory:
+    description: "The name of the Service Directory service name. Used for Private Harpoon to resolve the ILB address. e.g. \"projects/cloud-connectors-e2e-testing/locations/us-central1/namespaces/istio-system/services/istio-ingressgateway-connectors\""
+    value: ${resources.main.service_directory}
+  status:
+    description: "Status of the Integration Connector."
+    value: ${resources.main.status}
+  subscription_type:
+    description: "This subscription type enum states the subscription type of the project."
+    value: ${resources.main.subscription_type}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "Time the Namespace was updated in UTC."
+    value: ${resources.main.update_time}

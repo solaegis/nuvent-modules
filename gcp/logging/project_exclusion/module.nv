@@ -32,3 +32,11 @@ resources:
       disabled: ${var.disabled}
       id: ${var.id}
       project: ${var.project}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

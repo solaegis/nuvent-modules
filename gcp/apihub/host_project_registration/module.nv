@@ -36,3 +36,17 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  create_time:
+    description: "Output only. The time at which the host project registration was created."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. The name of the host project registration. Format: \"projects/{project}/locations/{location}/hostProjectRegistrations/{host_project_registration}\"."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

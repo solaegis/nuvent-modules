@@ -81,3 +81,41 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  conditions:
+    description: "Status conditions describing the current resource state."
+    value: ${resources.main.conditions}
+  control_plane_ip:
+    description: "The private IP address of the control plane for this workstation cluster. Workstation VMs need access to this IP address to work with the service, so make sure that your firewall rules allow egress from the workstation VMs to this address."
+    value: ${resources.main.control_plane_ip}
+  create_time:
+    description: "Time when this resource was created."
+    value: ${resources.main.create_time}
+  degraded:
+    description: "Whether this resource is in degraded mode, in which case it may require user action to restore full functionality. Details can be found in the conditions field."
+    value: ${resources.main.degraded}
+  effective_annotations:
+    description: "All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services."
+    value: ${resources.main.effective_annotations}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  etag:
+    description: "Checksum computed by the server. May be sent on update and delete requests to ensure that the client has an up-to-date value before proceeding."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The name of the cluster resource."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  uid:
+    description: "The system-generated UID of the resource."
+    value: ${resources.main.uid}

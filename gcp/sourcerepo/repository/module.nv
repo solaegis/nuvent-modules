@@ -44,3 +44,17 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  size:
+    description: "The disk usage of the repo, in bytes."
+    value: ${resources.main.size}
+  url:
+    description: "URL to clone the repository from Google Cloud Source Repositories."
+    value: ${resources.main.url}

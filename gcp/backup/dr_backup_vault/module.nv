@@ -100,3 +100,50 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  backup_count:
+    description: "Output only. The number of backups in this backup vault."
+    value: ${resources.main.backup_count}
+  create_time:
+    description: "Output only. The time when the instance was created."
+    value: ${resources.main.create_time}
+  deletable:
+    description: "Output only. Set to true when there are no backups nested under this resource."
+    value: ${resources.main.deletable}
+  effective_annotations:
+    description: "All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services."
+    value: ${resources.main.effective_annotations}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  etag:
+    description: "Optional. Server specified ETag for the backup vault resource to prevent simultaneous updates from overwiting each other."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Output only. Identifier. The resource name."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  service_account:
+    description: "Output only. Service account used by the BackupVault Service for this BackupVault.  The user should grant this account permissions in their workload project to enable the service to run backups and restores there."
+    value: ${resources.main.service_account}
+  state:
+    description: "Output only. The BackupVault resource instance state.   Possible values:  STATE_UNSPECIFIED  CREATING  ACTIVE  DELETING  ERROR"
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  total_stored_bytes:
+    description: "Output only. Total size of the storage used by all backup resources."
+    value: ${resources.main.total_stored_bytes}
+  uid:
+    description: "Output only. Output only Immutable after resource creation until resource deletion."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Output only. The time when the instance was updated."
+    value: ${resources.main.update_time}

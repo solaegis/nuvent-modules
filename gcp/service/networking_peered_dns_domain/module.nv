@@ -42,3 +42,14 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             read: ${each.value.read}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  parent:
+    description: "Output: parent"
+    value: ${resources.main.parent}
+  project:
+    description: "The ID of the project that the service account will be created in. Defaults to the provider project configuration."
+    value: ${resources.main.project}

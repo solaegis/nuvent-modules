@@ -90,3 +90,41 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "An RFC3339 timestamp in UTC time. This in the format of yyyy-MM-ddTHH:mm:ss.SSSZ. The milliseconds portion (\".SSS\") is optional."
+    value: ${resources.main.create_time}
+  creator:
+    description: "Output only. Email address of entity that sent original CreateInstance request."
+    value: ${resources.main.creator}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  health_info:
+    description: "'Output only. Additional information about instance health. Example: healthInfo\": { \"docker_proxy_agent_status\": \"1\", \"docker_status\": \"1\", \"jupyterlab_api_status\": \"-1\", \"jupyterlab_status\": \"-1\", \"updated\": \"2020-10-18 09:40:03.573409\" }'"
+    value: ${resources.main.health_info}
+  health_state:
+    description: "Output only. Instance health_state."
+    value: ${resources.main.health_state}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  proxy_uri:
+    description: "Output only. The proxy endpoint that is used to access the Jupyter notebook."
+    value: ${resources.main.proxy_uri}
+  state:
+    description: "Output only. The state of this instance."
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "An RFC3339 timestamp in UTC time. This in the format of yyyy-MM-ddTHH:mm:ss.SSSZ. The milliseconds portion (\".SSS\") is optional."
+    value: ${resources.main.update_time}
+  upgrade_history:
+    description: "Output only. The upgrade history of this instance."
+    value: ${resources.main.upgrade_history}

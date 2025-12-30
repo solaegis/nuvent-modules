@@ -41,3 +41,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Output only. The creation time of the database. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.create_time}
+  delete_time:
+    description: "Output only. The deletion time of the database. Only set after the database is deleted. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.delete_time}
+  expire_time:
+    description: "Output only. The time when this database is considered expired. Only set after the database is deleted. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.expire_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  update_time:
+    description: "Output only. The last modification time of the database. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.update_time}

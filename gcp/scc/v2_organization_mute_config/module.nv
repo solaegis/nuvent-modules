@@ -46,3 +46,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The time at which the mute config was created. This field is set by the server and will be ignored if provided on config creation."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  most_recent_editor:
+    description: "Email address of the user who last edited the mute config. This field is set by the server and will be ignored if provided on config creation or update."
+    value: ${resources.main.most_recent_editor}
+  name:
+    description: "Name of the mute config. Its format is organizations/{organization}/locations/global/muteConfigs/{configId}, folders/{folder}/locations/global/muteConfigs/{configId}, or projects/{project}/locations/global/muteConfigs/{configId}"
+    value: ${resources.main.name}
+  update_time:
+    description: "Output only. The most recent time at which the mute config was updated. This field is set by the server and will be ignored if provided on config creation or update."
+    value: ${resources.main.update_time}

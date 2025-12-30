@@ -57,3 +57,41 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "[Output only] Create timestamp"
+    value: ${resources.main.create_time}
+  effective_annotations:
+    description: "All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services."
+    value: ${resources.main.effective_annotations}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  errors:
+    description: "Any errors that occurred while setting up the InsightsConfig. Each error will be in the format: 'field_name: error_message', e.g. GetAppHubApplication: Permission denied while getting App Hub application. Please grant permissions to the P4SA."
+    value: ${resources.main.errors}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. The name of the InsightsConfig. Format: projects/{project}/locations/{location}/insightsConfigs/{insightsConfig}"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  reconciling:
+    description: "Reconciling (https://google.aip.dev/128#reconciliation). Set to true if the current state of InsightsConfig does not match the user's intended state, and the service is actively updating the resource to reconcile them. This can happen due to user-triggered updates or system actions like failover or maintenance."
+    value: ${resources.main.reconciling}
+  runtime_configs:
+    description: "The runtime configurations where the application is deployed."
+    value: ${resources.main.runtime_configs}
+  state:
+    description: "The state of the InsightsConfig. Possible values: STATE_UNSPECIFIED PENDING COMPLETE ERROR"
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "[Output only] Update timestamp"
+    value: ${resources.main.update_time}

@@ -66,3 +66,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The time this note was created."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  kind:
+    description: "The type of analysis this note describes"
+    value: ${resources.main.kind}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  update_time:
+    description: "The time this note was last updated."
+    value: ${resources.main.update_time}

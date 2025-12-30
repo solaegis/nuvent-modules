@@ -89,3 +89,53 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  as_paths:
+    description: "Output: as_paths"
+    value: ${resources.main.as_paths}
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  next_hop_hub:
+    description: "The hub network that should handle matching packets, which should conform to RFC1035."
+    value: ${resources.main.next_hop_hub}
+  next_hop_instance_zone:
+    description: "The zone of the instance specified in next_hop_instance. Omit if next_hop_instance is specified as a URL."
+    value: ${resources.main.next_hop_instance_zone}
+  next_hop_inter_region_cost:
+    description: "Internal fixed region-to-region cost that Google Cloud calculates based on factors such as network performance, distance, and available bandwidth between regions."
+    value: ${resources.main.next_hop_inter_region_cost}
+  next_hop_ip:
+    description: "Network IP address of an instance that should handle matching packets."
+    value: ${resources.main.next_hop_ip}
+  next_hop_med:
+    description: "Multi-Exit Discriminator, a BGP route metric that indicates the desirability of a particular route in a network."
+    value: ${resources.main.next_hop_med}
+  next_hop_network:
+    description: "URL to a Network that should handle matching packets."
+    value: ${resources.main.next_hop_network}
+  next_hop_origin:
+    description: "Indicates the origin of the route. Can be IGP (Interior Gateway Protocol), EGP (Exterior Gateway Protocol), or INCOMPLETE."
+    value: ${resources.main.next_hop_origin}
+  next_hop_peering:
+    description: "The network peering name that should handle matching packets, which should conform to RFC1035."
+    value: ${resources.main.next_hop_peering}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  route_status:
+    description: "The status of the route, which can be one of the following values: - 'ACTIVE' for an active route - 'INACTIVE' for an inactive route"
+    value: ${resources.main.route_status}
+  route_type:
+    description: "The type of this route, which can be one of the following values: - 'TRANSIT' for a transit route that this router learned from another Cloud Router and will readvertise to one of its BGP peers - 'SUBNET' for a route from a subnet of the VPC - 'BGP' for a route learned from a BGP peer of this router - 'STATIC' for a static route"
+    value: ${resources.main.route_type}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}
+  warnings:
+    description: "If potential misconfigurations are detected for this route, this field will be populated with warning messages."
+    value: ${resources.main.warnings}

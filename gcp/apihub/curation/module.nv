@@ -50,3 +50,32 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The time at which the curation was created."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_execution_error_code:
+    description: "The error code of the last execution of the curation. The error code is populated only when the last execution state is failed. Possible values: ERROR_CODE_UNSPECIFIED INTERNAL_ERROR UNAUTHORIZED"
+    value: ${resources.main.last_execution_error_code}
+  last_execution_error_message:
+    description: "Error message describing the failure, if any, during the last execution of the curation."
+    value: ${resources.main.last_execution_error_message}
+  last_execution_state:
+    description: "The last execution state of the curation. Possible values: LAST_EXECUTION_STATE_UNSPECIFIED SUCCEEDED FAILED"
+    value: ${resources.main.last_execution_state}
+  name:
+    description: "Identifier. The name of the curation.  Format: 'projects/{project}/locations/{location}/curations/{curation}'"
+    value: ${resources.main.name}
+  plugin_instance_actions:
+    description: "The plugin instances and associated actions that are using the curation. Note: A particular curation could be used by multiple plugin instances or multiple actions in a plugin instance."
+    value: ${resources.main.plugin_instance_actions}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  update_time:
+    description: "The time at which the curation was last updated."
+    value: ${resources.main.update_time}

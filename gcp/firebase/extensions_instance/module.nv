@@ -45,3 +45,41 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The time at which the Extension Instance was created."
+    value: ${resources.main.create_time}
+  error_status:
+    description: "If this Instance has 'state: ERRORED', the error messages will be found here."
+    value: ${resources.main.error_status}
+  etag:
+    description: "A weak etag that is computed by the server based on other configuration values and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_operation_name:
+    description: "The name of the last operation that acted on this Extension Instance"
+    value: ${resources.main.last_operation_name}
+  last_operation_type:
+    description: "The type of the last operation that acted on the Extension Instance."
+    value: ${resources.main.last_operation_type}
+  name:
+    description: "The fully-qualified resource name of the Extension Instance."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  runtime_data:
+    description: "Data set by the extension instance at runtime."
+    value: ${resources.main.runtime_data}
+  service_account_email:
+    description: "The email of the service account to be used at runtime by compute resources created for the operation of the Extension instance."
+    value: ${resources.main.service_account_email}
+  state:
+    description: "The current state of the Extension Instance.   DEPLOYING:     The Extension Instance is waiting on an Operation to complete. Could     resolve to 'ACTIVE', 'PAUSED', 'ERRORED'.   UNINSTALLING:     The Extension Instance is being removed from the project. Could resolve     to 'ERRORED', but more likely the instance will soon cease to exist.   ACTIVE:     The Extension Instance is installed and ready.   ERRORED:     The Extension Instance encountered an error while 'DEPLOYING' or     'UNINSTALLING'.   PAUSED:     The Extension's resources have been removed from the project, but the     Config remains so the Instance can be restored."
+    value: ${resources.main.state}
+  update_time:
+    description: "The time at which the Extension Instance was updated."
+    value: ${resources.main.update_time}

@@ -91,3 +91,14 @@ resources:
             result_description_type: ${each.value.result_description_type}
             data_store_ui_configs: ${each.value.data_store_ui_configs}
             generative_answer_config: ${each.value.generative_answer_config}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The full resource name of the widget config. Format: 'projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}/widgetConfigs/{widget_config_id}'."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

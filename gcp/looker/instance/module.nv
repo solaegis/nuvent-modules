@@ -168,3 +168,35 @@ resources:
             additional_developer_user_count: ${each.value.additional_developer_user_count}
             additional_standard_user_count: ${each.value.additional_standard_user_count}
             additional_viewer_user_count: ${each.value.additional_viewer_user_count}
+
+outputs:
+  create_time:
+    description: "The time the instance was created in RFC3339 UTC \"Zulu\" format, accurate to nanoseconds."
+    value: ${resources.main.create_time}
+  egress_public_ip:
+    description: "Public Egress IP (IPv4)."
+    value: ${resources.main.egress_public_ip}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  ingress_private_ip:
+    description: "Private Ingress IP (IPv4)."
+    value: ${resources.main.ingress_private_ip}
+  ingress_public_ip:
+    description: "Public Ingress IP (IPv4)."
+    value: ${resources.main.ingress_public_ip}
+  looker_uri:
+    description: "Looker instance URI which can be used to access the Looker Instance UI."
+    value: ${resources.main.looker_uri}
+  looker_version:
+    description: "The Looker version that the instance is using."
+    value: ${resources.main.looker_version}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  region:
+    description: "The name of the Looker region of the instance."
+    value: ${resources.main.region}
+  update_time:
+    description: "The time the instance was updated in RFC3339 UTC \"Zulu\" format, accurate to nanoseconds."
+    value: ${resources.main.update_time}

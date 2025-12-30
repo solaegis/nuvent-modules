@@ -123,3 +123,47 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  detailed_status:
+    description: "Detailed status message for the VPN tunnel."
+    value: ${resources.main.detailed_status}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  label_fingerprint:
+    description: "The fingerprint used for optimistic locking of this resource.  Used internally during updates."
+    value: ${resources.main.label_fingerprint}
+  local_traffic_selector:
+    description: "Local traffic selector to use when establishing the VPN tunnel with peer VPN gateway. The value should be a CIDR formatted string, for example '192.168.0.0/16'. The ranges should be disjoint. Only IPv4 is supported."
+    value: ${resources.main.local_traffic_selector}
+  peer_ip:
+    description: "IP address of the peer VPN gateway. Only IPv4 is supported."
+    value: ${resources.main.peer_ip}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  region:
+    description: "The region where the tunnel is located. If unset, is set to the region of 'target_vpn_gateway'."
+    value: ${resources.main.region}
+  remote_traffic_selector:
+    description: "Remote traffic selector to use when establishing the VPN tunnel with peer VPN gateway. The value should be a CIDR formatted string, for example '192.168.0.0/16'. The ranges should be disjoint. Only IPv4 is supported."
+    value: ${resources.main.remote_traffic_selector}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}
+  shared_secret_hash:
+    description: "Hash of the shared secret."
+    value: ${resources.main.shared_secret_hash}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  tunnel_id:
+    description: "The unique identifier for the resource. This identifier is defined by the server."
+    value: ${resources.main.tunnel_id}

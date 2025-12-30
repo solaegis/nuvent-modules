@@ -65,3 +65,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Timestamp when the toolset was created."
+    value: ${resources.main.create_time}
+  etag:
+    description: "ETag used to ensure the object hasn't changed during a read-modify-write operation. If the etag is empty, the update will overwrite any concurrent changes."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. The unique identifier of the toolset. Format: 'projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}'"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  update_time:
+    description: "Timestamp when the toolset was last updated."
+    value: ${resources.main.update_time}

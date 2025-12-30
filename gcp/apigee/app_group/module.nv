@@ -57,3 +57,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  app_group_id:
+    description: "Internal identifier that cannot be edited"
+    value: ${resources.main.app_group_id}
+  created_at:
+    description: "Created time as milliseconds since epoch."
+    value: ${resources.main.created_at}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_modified_at:
+    description: "Modified time as milliseconds since epoch."
+    value: ${resources.main.last_modified_at}
+  organization:
+    description: "App group name displayed in the UI"
+    value: ${resources.main.organization}

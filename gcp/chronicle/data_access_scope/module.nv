@@ -71,3 +71,29 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  author:
+    description: "Output only. The user who created the data access scope."
+    value: ${resources.main.author}
+  create_time:
+    description: "Output only. The time at which the data access scope was created."
+    value: ${resources.main.create_time}
+  display_name:
+    description: "Output only. The name to be used for display to customers of the data access scope."
+    value: ${resources.main.display_name}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_editor:
+    description: "Output only. The user who last updated the data access scope."
+    value: ${resources.main.last_editor}
+  name:
+    description: "The unique full name of the data access scope. This unique identifier is generated using values provided for the URL parameters. Format: projects/{project}/locations/{location}/instances/{instance}/dataAccessScopes/{data_access_scope_id}"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  update_time:
+    description: "Output only. The time at which the data access scope was last updated."
+    value: ${resources.main.update_time}

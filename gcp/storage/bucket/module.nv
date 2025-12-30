@@ -187,3 +187,41 @@ resources:
           content:
             main_page_suffix: ${each.value.main_page_suffix}
             not_found_page: ${each.value.not_found_page}
+
+outputs:
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    value: ${resources.main.project}
+  project_number:
+    description: "The project number of the project in which the resource belongs."
+    value: ${resources.main.project_number}
+  public_access_prevention:
+    description: "Prevents public access to a bucket."
+    value: ${resources.main.public_access_prevention}
+  rpo:
+    description: "Specifies the RPO setting of bucket. If set 'ASYNC_TURBO', The Turbo Replication will be enabled for the dual-region bucket. Value 'DEFAULT' will set RPO setting to default. Turbo Replication is only for buckets in dual-regions.See the docs for more details."
+    value: ${resources.main.rpo}
+  self_link:
+    description: "The URI of the created resource."
+    value: ${resources.main.self_link}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  time_created:
+    description: "The creation time of the bucket in RFC 3339 format."
+    value: ${resources.main.time_created}
+  uniform_bucket_level_access:
+    description: "Enables uniform bucket-level access on a bucket."
+    value: ${resources.main.uniform_bucket_level_access}
+  updated:
+    description: "The time at which the bucket's metadata or IAM policy was last updated, in RFC 3339 format."
+    value: ${resources.main.updated}
+  url:
+    description: "The base URL of the bucket, in the format gs://<bucket-name>."
+    value: ${resources.main.url}

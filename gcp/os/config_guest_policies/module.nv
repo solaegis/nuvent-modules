@@ -85,3 +85,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Time this guest policy was created. A timestamp in RFC3339 UTC \"Zulu\" format, accurate to nanoseconds. Example: \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.create_time}
+  etag:
+    description: "The etag for this guest policy. If this is provided on update, it must match the server's etag."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Unique name of the resource in this project using one of the following forms: projects/{project_number}/guestPolicies/{guestPolicyId}."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  update_time:
+    description: "Last time this guest policy was updated. A timestamp in RFC3339 UTC \"Zulu\" format, accurate to nanoseconds. Example: \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.update_time}

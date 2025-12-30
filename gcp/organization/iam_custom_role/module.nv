@@ -35,3 +35,14 @@ resources:
       description: ${var.description}
       id: ${var.id}
       stage: ${var.stage}
+
+outputs:
+  deleted:
+    description: "The current deleted state of the role."
+    value: ${resources.main.deleted}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The name of the role in the format organizations/{{org_id}}/roles/{{role_id}}. Like id, this field can be used as a reference in other resources such as IAM role bindings."
+    value: ${resources.main.name}

@@ -51,3 +51,29 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  is_default:
+    description: "The default CmekConfig for the Customer."
+    value: ${resources.main.is_default}
+  kms_key_version:
+    description: "KMS key version resource name which will be used to encrypt resources '<kms_key>/cryptoKeyVersions/{keyVersion}'."
+    value: ${resources.main.kms_key_version}
+  last_rotation_timestamp_micros:
+    description: "The timestamp of the last key rotation."
+    value: ${resources.main.last_rotation_timestamp_micros}
+  name:
+    description: "The unique full resource name of the cmek config. Values are of the format 'projects/{project}/locations/{location}/cmekConfigs/{cmek_config_id}'. This field must be a UTF-8 encoded string with a length limit of 1024 characters."
+    value: ${resources.main.name}
+  notebooklm_state:
+    description: "Whether the NotebookLM Corpus is ready to be used."
+    value: ${resources.main.notebooklm_state}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "The state of the CmekConfig."
+    value: ${resources.main.state}

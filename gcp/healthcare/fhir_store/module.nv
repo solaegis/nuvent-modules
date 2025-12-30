@@ -124,3 +124,20 @@ resources:
             disable_reference_type_validation: ${each.value.disable_reference_type_validation}
             disable_required_field_validation: ${each.value.disable_required_field_validation}
             enabled_implementation_guides: ${each.value.enabled_implementation_guides}
+
+outputs:
+  complex_data_type_reference_parsing:
+    description: "Enable parsing of references within complex FHIR data types such as Extensions. If this value is set to ENABLED, then features like referential integrity and Bundle reference rewriting apply to all references. If this flag has not been specified the behavior of the FHIR store will not change, references in complex data types will not be parsed. New stores will have this value set to ENABLED by default after a notification period. Warning: turning on this flag causes processing existing resources to fail if they contain references to non-existent resources. Possible values: [\"COMPLEX_DATA_TYPE_REFERENCE_PARSING_UNSPECIFIED\", \"DISABLED\", \"ENABLED\"]"
+    value: ${resources.main.complex_data_type_reference_parsing}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  self_link:
+    description: "The fully qualified name of this dataset"
+    value: ${resources.main.self_link}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

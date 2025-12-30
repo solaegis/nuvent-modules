@@ -48,3 +48,29 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  create_time:
+    description: "Time the RBAC Role Binding was created in UTC."
+    value: ${resources.main.create_time}
+  delete_time:
+    description: "Time the RBAC Role Binding was deleted in UTC."
+    value: ${resources.main.delete_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name for the RBAC Role Binding"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "State of the RBAC Role Binding resource."
+    value: ${resources.main.state}
+  uid:
+    description: "Google-generated UUID for this resource."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Time the RBAC Role Binding was updated in UTC."
+    value: ${resources.main.update_time}

@@ -147,3 +147,38 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  archive_size_bytes:
+    description: "Size of the image tar.gz archive stored in Google Cloud Storage (in bytes)."
+    value: ${resources.main.archive_size_bytes}
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  disk_size_gb:
+    description: "Size of the image when restored onto a persistent disk (in GB)."
+    value: ${resources.main.disk_size_gb}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  label_fingerprint:
+    description: "The fingerprint used for optimistic locking of this resource. Used internally during updates."
+    value: ${resources.main.label_fingerprint}
+  licenses:
+    description: "Any applicable license URI."
+    value: ${resources.main.licenses}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}
+  storage_locations:
+    description: "Cloud Storage bucket storage location of the image (regional or multi-regional). Reference link: https://cloud.google.com/compute/docs/reference/rest/v1/images"
+    value: ${resources.main.storage_locations}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

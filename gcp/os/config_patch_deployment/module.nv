@@ -98,3 +98,23 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  create_time:
+    description: "Time the patch deployment was created. Timestamp is in RFC3339 text format. A timestamp in RFC3339 UTC \"Zulu\" format, accurate to nanoseconds. Example: \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_execute_time:
+    description: "The last time a patch job was started by this deployment. Timestamp is in RFC3339 text format. A timestamp in RFC3339 UTC \"Zulu\" format, accurate to nanoseconds. Example: \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.last_execute_time}
+  name:
+    description: "Unique name for the patch deployment resource in a project. The patch deployment name is in the form: projects/{project_id}/patchDeployments/{patchDeploymentId}."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  update_time:
+    description: "Time the patch deployment was last updated. Timestamp is in RFC3339 text format. A timestamp in RFC3339 UTC \"Zulu\" format, accurate to nanoseconds. Example: \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.update_time}

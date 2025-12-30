@@ -38,3 +38,26 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  algorithm:
+    description: "The CryptoKeyVersionAlgorithm that this CryptoKeyVersion supports."
+    value: ${resources.main.algorithm}
+  attestation:
+    description: "Statement that was generated and signed by the HSM at key creation time. Use this statement to verify attributes of the key as stored on the HSM, independently of Google. Only provided for key versions with protectionLevel HSM."
+    value: ${resources.main.attestation}
+  generate_time:
+    description: "The time this CryptoKeyVersion key material was generated"
+    value: ${resources.main.generate_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name for this CryptoKeyVersion."
+    value: ${resources.main.name}
+  protection_level:
+    description: "The ProtectionLevel describing how crypto operations are performed with this CryptoKeyVersion."
+    value: ${resources.main.protection_level}
+  state:
+    description: "The current state of the CryptoKeyVersion. Note: you can only specify this field to manually 'ENABLE' or 'DISABLE' the CryptoKeyVersion, otherwise the value of this field is always retrieved automatically. Possible values: [\"PENDING_GENERATION\", \"ENABLED\", \"DISABLED\", \"DESTROYED\", \"DESTROY_SCHEDULED\", \"PENDING_IMPORT\", \"IMPORT_FAILED\"]"
+    value: ${resources.main.state}

@@ -45,3 +45,17 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. The resource name of the scim token. Format: 'locations/{location}/workforcePools/{workforce_pool}/providers/{workforce_pool_provider}/scimTenants/{scim_tenant_id}/tokens/{scim_token_id}'"
+    value: ${resources.main.name}
+  security_token:
+    description: "The token string provided to the IdP for authentication and will be set only during creation."
+    value: ${resources.main.security_token}
+  state:
+    description: "The current state of the scim token. * ACTIVE: The token is active and may be used to provision users and groups. * DELETED: The token is soft-deleted. Soft-deleted tokens are permanently deleted after approximately 30 days."
+    value: ${resources.main.state}

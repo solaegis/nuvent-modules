@@ -119,3 +119,32 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The UTC time at which the DatasetConfig was created. This is auto-populated."
+    value: ${resources.main.create_time}
+  dataset_config_state:
+    description: "State of the DatasetConfig."
+    value: ${resources.main.dataset_config_state}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  link:
+    description: "Details of the linked DatasetConfig."
+    value: ${resources.main.link}
+  name:
+    description: "The full canonical resource name of the DatasetConfig (e.g., projects/P/locations/L/datasetConfigs/ID)."
+    value: ${resources.main.name}
+  organization_number:
+    description: "Organization resource ID that the source projects should belong to. Projects that do not belong to the provided organization are not considered when creating the dataset."
+    value: ${resources.main.organization_number}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  uid:
+    description: "System generated unique identifier for the resource."
+    value: ${resources.main.uid}
+  update_time:
+    description: "The UTC time at which the DatasetConfig was updated. This is auto-populated."
+    value: ${resources.main.update_time}

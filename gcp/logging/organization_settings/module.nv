@@ -39,3 +39,26 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  disable_default_sink:
+    description: "If set to true, the _Default sink in newly created projects and folders will created in a disabled state. This can be used to automatically disable log storage if there is already an aggregated sink configured in the hierarchy. The _Default sink can be re-enabled manually if needed."
+    value: ${resources.main.disable_default_sink}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  kms_key_name:
+    description: "The resource name for the configured Cloud KMS key."
+    value: ${resources.main.kms_key_name}
+  kms_service_account_id:
+    description: "The service account that will be used by the Log Router to access your Cloud KMS key."
+    value: ${resources.main.kms_service_account_id}
+  logging_service_account_id:
+    description: "The service account for the given container. Sinks use this service account as their writerIdentity if no custom service account is provided."
+    value: ${resources.main.logging_service_account_id}
+  name:
+    description: "The resource name of the settings."
+    value: ${resources.main.name}
+  storage_location:
+    description: "The storage location that Cloud Logging will use to create new resources when a location is needed but not explicitly provided."
+    value: ${resources.main.storage_location}

@@ -119,3 +119,35 @@ resources:
           content:
             aia_issuing_certificate_urls: ${each.value.aia_issuing_certificate_urls}
             crl_access_urls: ${each.value.crl_access_urls}
+
+outputs:
+  access_urls:
+    description: "URLs for accessing content published by this CA, such as the CA certificate and CRLs."
+    value: ${resources.main.access_urls}
+  create_time:
+    description: "The time at which this CertificateAuthority was created.  A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name for this CertificateAuthority in the format projects/*/locations/*/certificateAuthorities/*."
+    value: ${resources.main.name}
+  pem_ca_certificates:
+    description: "This CertificateAuthority's certificate chain, including the current CertificateAuthority's certificate. Ordered such that the root issuer is the final element (consistent with RFC 5246). For a self-signed CA, this will only list the current CertificateAuthority's certificate."
+    value: ${resources.main.pem_ca_certificates}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "The State for this CertificateAuthority."
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "The time at which this CertificateAuthority was updated.  A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.update_time}

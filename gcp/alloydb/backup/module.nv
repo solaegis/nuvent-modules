@@ -70,3 +70,62 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  cluster_uid:
+    description: "Output only. The system-generated UID of the cluster which was used to create this resource."
+    value: ${resources.main.cluster_uid}
+  create_time:
+    description: "Output only. Create time stamp. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.create_time}
+  delete_time:
+    description: "Output only. Delete time stamp. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.delete_time}
+  effective_annotations:
+    description: "All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services."
+    value: ${resources.main.effective_annotations}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  encryption_info:
+    description: "EncryptionInfo describes the encryption information of a cluster or a backup."
+    value: ${resources.main.encryption_info}
+  etag:
+    description: "For Resource freshness validation (https://google.aip.dev/154)"
+    value: ${resources.main.etag}
+  expiry_quantity:
+    description: "Output only. The QuantityBasedExpiry of the backup, specified by the backup's retention policy. Once the expiry quantity is over retention, the backup is eligible to be garbage collected."
+    value: ${resources.main.expiry_quantity}
+  expiry_time:
+    description: "Output only. The time at which after the backup is eligible to be garbage collected. It is the duration specified by the backup's retention policy, added to the backup's createTime."
+    value: ${resources.main.expiry_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Output only. The name of the backup resource with the format: * projects/{project}/locations/{region}/backups/{backupId}"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  reconciling:
+    description: "Output only. Reconciling (https://google.aip.dev/128#reconciliation), if true, indicates that the service is actively updating the resource. This can happen due to user-triggered updates or system actions like failover or maintenance."
+    value: ${resources.main.reconciling}
+  size_bytes:
+    description: "Output only. The size of the backup in bytes."
+    value: ${resources.main.size_bytes}
+  state:
+    description: "Output only. The current state of the backup."
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  type:
+    description: "The backup type, which suggests the trigger for the backup. Possible values: [\"TYPE_UNSPECIFIED\", \"ON_DEMAND\", \"AUTOMATED\", \"CONTINUOUS\"]"
+    value: ${resources.main.type}
+  uid:
+    description: "Output only. The system-generated UID of the resource. The UID is assigned when the resource is created, and it is retained until it is deleted."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Output only. Update time stamp. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.update_time}

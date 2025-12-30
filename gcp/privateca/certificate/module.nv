@@ -73,3 +73,38 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  certificate_description:
+    description: "Output only. Details regarding the revocation of this Certificate. This Certificate is considered revoked if and only if this field is present."
+    value: ${resources.main.certificate_description}
+  create_time:
+    description: "The time that this resource was created on the server. This is in RFC3339 text format."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  issuer_certificate_authority:
+    description: "The resource name of the issuing CertificateAuthority in the format 'projects/*/locations/*/caPools/*/certificateAuthorities/*'."
+    value: ${resources.main.issuer_certificate_authority}
+  pem_certificate:
+    description: "Output only. The pem-encoded, signed X.509 certificate."
+    value: ${resources.main.pem_certificate}
+  pem_certificate_chain:
+    description: "The chain that may be used to verify the X.509 certificate. Expected to be in issuer-to-root order according to RFC 5246."
+    value: ${resources.main.pem_certificate_chain}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  revocation_details:
+    description: "Output only. Details regarding the revocation of this Certificate. This Certificate is considered revoked if and only if this field is present."
+    value: ${resources.main.revocation_details}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "Output only. The time at which this CertificateAuthority was updated. This is in RFC3339 text format."
+    value: ${resources.main.update_time}

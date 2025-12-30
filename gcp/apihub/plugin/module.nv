@@ -82,3 +82,26 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  create_time:
+    description: "Timestamp indicating when the plugin was created."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. The name of the plugin. Format: 'projects/{project}/locations/{location}/plugins/{plugin}'"
+    value: ${resources.main.name}
+  ownership_type:
+    description: "The type of the plugin, indicating whether it is 'SYSTEM_OWNED' or 'USER_OWNED'. Possible values: OWNERSHIP_TYPE_UNSPECIFIED SYSTEM_OWNED USER_OWNED"
+    value: ${resources.main.ownership_type}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "Represents the state of the plugin. Note this field will not be set for plugins developed via plugin framework as the state will be managed at plugin instance level. Possible values: STATE_UNSPECIFIED ENABLED DISABLED"
+    value: ${resources.main.state}
+  update_time:
+    description: "Timestamp indicating when the plugin was last updated."
+    value: ${resources.main.update_time}

@@ -64,3 +64,23 @@ resources:
           content:
             manual: ${each.value.manual}
             schedule: ${each.value.schedule}
+
+outputs:
+  create_time:
+    description: "The creation timestamp of an inspectTemplate. Set by the server."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_run_time:
+    description: "The timestamp of the last time this trigger executed."
+    value: ${resources.main.last_run_time}
+  name:
+    description: "The resource name of the job trigger. Set by the server."
+    value: ${resources.main.name}
+  trigger_id:
+    description: "The trigger id can contain uppercase and lowercase letters, numbers, and hyphens; that is, it must match the regular expression: [a-zA-Z\d-_]+. The maximum length is 100 characters. Can be empty to allow the system to generate one."
+    value: ${resources.main.trigger_id}
+  update_time:
+    description: "The last update timestamp of an inspectTemplate. Set by the server."
+    value: ${resources.main.update_time}

@@ -38,3 +38,14 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  child_policy_tags:
+    description: "Resource names of child policy tags of this policy tag."
+    value: ${resources.main.child_policy_tags}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Resource name of this policy tag, whose format is: \"projects/{project}/locations/{region}/taxonomies/{taxonomy}/policyTags/{policytag}\""
+    value: ${resources.main.name}

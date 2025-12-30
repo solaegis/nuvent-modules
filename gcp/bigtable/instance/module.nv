@@ -69,3 +69,20 @@ resources:
             create: ${each.value.create}
             read: ${each.value.read}
             update: ${each.value.update}
+
+outputs:
+  display_name:
+    description: "The human-readable display name of the Bigtable instance. Defaults to the instance name."
+    value: ${resources.main.display_name}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    value: ${resources.main.project}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

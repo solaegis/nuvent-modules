@@ -174,3 +174,80 @@ resources:
             revision: ${each.value.revision}
             tag: ${each.value.tag}
             type: ${each.value.type}
+
+outputs:
+  conditions:
+    description: "The Conditions of all other associated sub-resources. They contain additional diagnostics information in case the Service does not reach its Serving state. See comments in reconciling for additional information on reconciliation process in Cloud Run."
+    value: ${resources.main.conditions}
+  create_time:
+    description: "The creation time."
+    value: ${resources.main.create_time}
+  creator:
+    description: "Email address of the authenticated creator."
+    value: ${resources.main.creator}
+  delete_time:
+    description: "The deletion time."
+    value: ${resources.main.delete_time}
+  effective_annotations:
+    description: "All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services."
+    value: ${resources.main.effective_annotations}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  etag:
+    description: "A system-generated fingerprint for this version of the resource. May be used to detect modification conflict during updates."
+    value: ${resources.main.etag}
+  expire_time:
+    description: "For a deleted resource, the time after which it will be permanently deleted."
+    value: ${resources.main.expire_time}
+  generation:
+    description: "A number that monotonically increases every time the user modifies the desired state. Please note that unlike v1, this is an int64 value. As with most Google APIs, its JSON representation will be a string instead of an integer."
+    value: ${resources.main.generation}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  ingress:
+    description: "Provides the ingress settings for this Service. On output, returns the currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED if no revision is active. Possible values: [\"INGRESS_TRAFFIC_ALL\", \"INGRESS_TRAFFIC_INTERNAL_ONLY\", \"INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER\"]"
+    value: ${resources.main.ingress}
+  last_modifier:
+    description: "Email address of the last authenticated modifier."
+    value: ${resources.main.last_modifier}
+  latest_created_revision:
+    description: "Name of the last created revision. See comments in reconciling for additional information on reconciliation process in Cloud Run."
+    value: ${resources.main.latest_created_revision}
+  latest_ready_revision:
+    description: "Name of the latest revision that is serving traffic. See comments in reconciling for additional information on reconciliation process in Cloud Run."
+    value: ${resources.main.latest_ready_revision}
+  launch_stage:
+    description: "The launch stage as defined by [Google Cloud Platform Launch Stages](https://cloud.google.com/products#product-launch-stages). Cloud Run supports ALPHA, BETA, and GA. If no value is specified, GA is assumed. Set the launch stage to a preview stage on input to allow use of preview features in that stage. On read (or output), describes whether the resource uses preview features.  For example, if ALPHA is provided as input, but only BETA and GA-level features are used, this field will be BETA on output. Possible values: [\"UNIMPLEMENTED\", \"PRELAUNCH\", \"EARLY_ACCESS\", \"ALPHA\", \"BETA\", \"GA\", \"DEPRECATED\"]"
+    value: ${resources.main.launch_stage}
+  observed_generation:
+    description: "The generation of this Service currently serving traffic. See comments in reconciling for additional information on reconciliation process in Cloud Run. Please note that unlike v1, this is an int64 value. As with most Google APIs, its JSON representation will be a string instead of an integer."
+    value: ${resources.main.observed_generation}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  reconciling:
+    description: "Returns true if the Service is currently being acted upon by the system to bring it into the desired state.  When a new Service is created, or an existing one is updated, Cloud Run will asynchronously perform all necessary steps to bring the Service to the desired serving state. This process is called reconciliation. While reconciliation is in process, observedGeneration, latest_ready_revison, trafficStatuses, and uri will have transient values that might mismatch the intended state: Once reconciliation is over (and this field is false), there are two possible outcomes: reconciliation succeeded and the serving state matches the Service, or there was an error, and reconciliation failed. This state can be found in terminalCondition.state.  If reconciliation succeeded, the following fields will match: traffic and trafficStatuses, observedGeneration and generation, latestReadyRevision and latestCreatedRevision.  If reconciliation failed, trafficStatuses, observedGeneration, and latestReadyRevision will have the state of the last serving revision, or empty for newly created Services. Additional information on the failure can be found in terminalCondition and conditions."
+    value: ${resources.main.reconciling}
+  terminal_condition:
+    description: "The Condition of this Service, containing its readiness status, and detailed error information in case it did not reach a serving state. See comments in reconciling for additional information on reconciliation process in Cloud Run."
+    value: ${resources.main.terminal_condition}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  traffic_statuses:
+    description: "Detailed status information for corresponding traffic targets. See comments in reconciling for additional information on reconciliation process in Cloud Run."
+    value: ${resources.main.traffic_statuses}
+  uid:
+    description: "Server assigned unique identifier for the trigger. The value is a UUID4 string and guaranteed to remain unchanged until the resource is deleted."
+    value: ${resources.main.uid}
+  update_time:
+    description: "The last-modified time."
+    value: ${resources.main.update_time}
+  uri:
+    description: "The main URI in which this Service is serving traffic."
+    value: ${resources.main.uri}
+  urls:
+    description: "All URLs serving traffic for this Service."
+    value: ${resources.main.urls}

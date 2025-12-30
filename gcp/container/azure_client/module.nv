@@ -40,3 +40,20 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  certificate:
+    description: "Output only. The PEM encoded x509 certificate."
+    value: ${resources.main.certificate}
+  create_time:
+    description: "Output only. The time at which this resource was created."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "The project for the resource"
+    value: ${resources.main.project}
+  uid:
+    description: "Output only. A globally unique identifier for the client."
+    value: ${resources.main.uid}

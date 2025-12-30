@@ -98,3 +98,14 @@ resources:
             dataset_id: ${each.value.dataset_id}
             project_id: ${each.value.project_id}
             table_id: ${each.value.table_id}
+
+outputs:
+  api_updated_member:
+    description: "If true, represents that that the iam_member in the config was translated to a different member type by the API, and is stored in state as a different member type"
+    value: ${resources.main.api_updated_member}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

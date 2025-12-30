@@ -32,3 +32,38 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Creation time of this resource. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.create_time}
+  dhcp_address_ranges:
+    description: "DHCP address ranges."
+    value: ${resources.main.dhcp_address_ranges}
+  gateway_id:
+    description: "The canonical identifier of the logical router that this subnet is attached to."
+    value: ${resources.main.gateway_id}
+  gateway_ip:
+    description: "The IP address of the gateway of this subnet. Must fall within the IP prefix defined above."
+    value: ${resources.main.gateway_ip}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  standard_config:
+    description: "Whether the NSX-T configuration in the backend follows the standard configuration supported by Google Cloud. If false, the subnet cannot be modified through Google Cloud, only through NSX-T directly."
+    value: ${resources.main.standard_config}
+  state:
+    description: "State of the subnet."
+    value: ${resources.main.state}
+  type:
+    description: "The type of the subnet."
+    value: ${resources.main.type}
+  uid:
+    description: "System-generated unique identifier for the resource."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Last updated time of this resource. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.update_time}
+  vlan_id:
+    description: "VLAN ID of the VLAN on which the subnet is configured."
+    value: ${resources.main.vlan_id}

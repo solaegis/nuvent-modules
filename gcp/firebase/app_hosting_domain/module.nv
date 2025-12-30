@@ -45,3 +45,35 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Time at which the domain was created."
+    value: ${resources.main.create_time}
+  custom_domain_status:
+    description: "The status of a custom domain's linkage to the Backend."
+    value: ${resources.main.custom_domain_status}
+  delete_time:
+    description: "Time at which the domain was deleted."
+    value: ${resources.main.delete_time}
+  etag:
+    description: "Server-computed checksum based on other values; may be sent on update or delete to ensure operation is done on expected resource."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. The resource name of the domain, e.g. 'projects/{project}/locations/{locationId}/backends/{backendId}/domains/{domainId}'"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  purge_time:
+    description: "Time at which a soft-deleted domain will be purged, rendering in permanently deleted."
+    value: ${resources.main.purge_time}
+  uid:
+    description: "System-assigned, unique identifier."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Time at which the domain was last updated."
+    value: ${resources.main.update_time}

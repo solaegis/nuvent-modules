@@ -33,3 +33,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The timestamp at which this folder was created."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  metageneration:
+    description: "The metadata generation of the folder."
+    value: ${resources.main.metageneration}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}
+  update_time:
+    description: "The timestamp at which this folder was most recently updated."
+    value: ${resources.main.update_time}

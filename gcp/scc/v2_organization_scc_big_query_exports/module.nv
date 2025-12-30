@@ -53,3 +53,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The time at which the BigQuery export was created. This field is set by the server and will be ignored if provided on export on creation. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  most_recent_editor:
+    description: "Email address of the user who last edited the BigQuery export. This field is set by the server and will be ignored if provided on export creation or update."
+    value: ${resources.main.most_recent_editor}
+  principal:
+    description: "The service account that needs permission to create table and upload data to the BigQuery dataset."
+    value: ${resources.main.principal}
+  update_time:
+    description: "The most recent time at which the BigQuery export was updated. This field is set by the server and will be ignored if provided on export creation or update. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.update_time}

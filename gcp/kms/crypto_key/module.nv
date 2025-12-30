@@ -80,3 +80,26 @@ resources:
           content:
             algorithm: ${each.value.algorithm}
             protection_level: ${each.value.protection_level}
+
+outputs:
+  crypto_key_backend:
+    description: "The resource name of the backend environment associated with all CryptoKeyVersions within this CryptoKey. The resource name is in the format \"projects/*/locations/*/ekmConnections/*\" and only applies to \"EXTERNAL_VPC\" keys."
+    value: ${resources.main.crypto_key_backend}
+  destroy_scheduled_duration:
+    description: "The period of time that versions of this key spend in the DESTROY_SCHEDULED state before transitioning to DESTROYED. If not specified at creation time, the default duration is 30 days."
+    value: ${resources.main.destroy_scheduled_duration}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  import_only:
+    description: "Whether this key may contain imported versions only."
+    value: ${resources.main.import_only}
+  primary:
+    description: "A copy of the primary CryptoKeyVersion that will be used by cryptoKeys.encrypt when this CryptoKey is given in EncryptRequest.name. Keys with purpose ENCRYPT_DECRYPT may have a primary. For other keys, this field will be unset."
+    value: ${resources.main.primary}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

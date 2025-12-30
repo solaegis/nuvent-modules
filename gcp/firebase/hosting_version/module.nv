@@ -33,3 +33,14 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The fully-qualified resource name for the version, in the format: sites/SITE_ID/versions/VERSION_ID"
+    value: ${resources.main.name}
+  version_id:
+    description: "The ID for the version as in sites/SITE_ID/versions/VERSION_ID"
+    value: ${resources.main.version_id}

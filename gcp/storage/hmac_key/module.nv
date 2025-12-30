@@ -34,3 +34,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  access_id:
+    description: "The access ID of the HMAC Key."
+    value: ${resources.main.access_id}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  secret:
+    description: "HMAC secret key material."
+    value: ${resources.main.secret}
+  time_created:
+    description: "'The creation time of the HMAC key in RFC 3339 format. '"
+    value: ${resources.main.time_created}
+  updated:
+    description: "'The last modification time of the HMAC key metadata in RFC 3339 format.'"
+    value: ${resources.main.updated}

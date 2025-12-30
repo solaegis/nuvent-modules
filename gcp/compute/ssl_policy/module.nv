@@ -49,3 +49,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  enabled_features:
+    description: "The list of features enabled in the SSL policy."
+    value: ${resources.main.enabled_features}
+  fingerprint:
+    description: "Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking."
+    value: ${resources.main.fingerprint}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}

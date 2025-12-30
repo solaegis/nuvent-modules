@@ -64,3 +64,44 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The timestamp when the resource was created."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  effective_service_account:
+    description: "Effective service account associated with ServiceInstance. This will be the service_account if specified. Otherwise, it will be an automatically created per-resource P4SA that also automatically has Fleet Workload. Identity bindings applied."
+    value: ${resources.main.effective_service_account}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. The name of the service instance."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  reconciling:
+    description: "Whether the service instance is currently reconciling. True if the current state of the resource does not match the intended state, and the system is working to reconcile them, whether or not the change was user initiated."
+    value: ${resources.main.reconciling}
+  requested_state:
+    description: "The intended state to which the service instance is reconciling. Possible values: * 'CREATING' * 'ACTIVE' * 'DISCONNECTED' * 'DELETING' * 'STOPPING' * 'STOPPED' * 'STARTING' * 'UPDATING' * 'FAILED'"
+    value: ${resources.main.requested_state}
+  state:
+    description: "The current state. Possible values: * 'CREATING' * 'ACTIVE' * 'DISCONNECTED' * 'DELETING' * 'STOPPING' * 'STOPPED' * 'STARTING' * 'UPDATING' * 'FAILED'"
+    value: ${resources.main.state}
+  state_message:
+    description: "A message explaining the current state."
+    value: ${resources.main.state_message}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  uid:
+    description: "System generated unique identifier for this service instance, formatted as UUID4."
+    value: ${resources.main.uid}
+  update_time:
+    description: "The timestamp when the resource was most recently updated."
+    value: ${resources.main.update_time}

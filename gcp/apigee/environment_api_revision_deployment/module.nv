@@ -50,3 +50,17 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  basepaths:
+    description: "Basepaths associated with the deployed proxy."
+    value: ${resources.main.basepaths}
+  deploy_start_time:
+    description: "RFC3339 timestamp when deployment started."
+    value: ${resources.main.deploy_start_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  state:
+    description: "Deployment state reported by Apigee."
+    value: ${resources.main.state}

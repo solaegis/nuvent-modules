@@ -173,3 +173,53 @@ resources:
             folder: ${each.value.folder}
             resource_pool: ${each.value.resource_pool}
             storage_policy_name: ${each.value.storage_policy_name}
+
+outputs:
+  create_time:
+    description: "The time at which VMware User Cluster was created."
+    value: ${resources.main.create_time}
+  delete_time:
+    description: "The time at which VMware User Cluster was deleted."
+    value: ${resources.main.delete_time}
+  effective_annotations:
+    description: "All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services."
+    value: ${resources.main.effective_annotations}
+  endpoint:
+    description: "The DNS name of VMware User Cluster's API server."
+    value: ${resources.main.endpoint}
+  etag:
+    description: "This checksum is computed by the server based on the value of other fields, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding. Allows clients to perform consistent read-modify-writes through optimistic concurrency control."
+    value: ${resources.main.etag}
+  fleet:
+    description: "Fleet configuration for the cluster."
+    value: ${resources.main.fleet}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  local_name:
+    description: "The object name of the VMware OnPremUserCluster custom resource on the associated admin cluster. This field is used to support conflicting names when enrolling existing clusters to the API. When used as a part of cluster enrollment, this field will differ from the ID in the resource name. For new clusters, this field will match the user provided cluster ID and be visible in the last component of the resource name. It is not modifiable.  All users should use this name to access their cluster using gkectl or kubectl and should expect to see the local name when viewing admin cluster controller logs."
+    value: ${resources.main.local_name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  reconciling:
+    description: "If set, there are currently changes in flight to the VMware User Cluster."
+    value: ${resources.main.reconciling}
+  state:
+    description: "The current state of this cluster."
+    value: ${resources.main.state}
+  status:
+    description: "ResourceStatus representing detailed cluster state."
+    value: ${resources.main.status}
+  uid:
+    description: "The unique identifier of the VMware User Cluster."
+    value: ${resources.main.uid}
+  update_time:
+    description: "The time at which VMware User Cluster was last updated."
+    value: ${resources.main.update_time}
+  validation_check:
+    description: "ValidationCheck represents the result of the preflight check job."
+    value: ${resources.main.validation_check}
+  vm_tracking_enabled:
+    description: "Enable VM tracking."
+    value: ${resources.main.vm_tracking_enabled}

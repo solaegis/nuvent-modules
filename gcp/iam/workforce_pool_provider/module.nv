@@ -106,3 +106,14 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Output only. The resource name of the provider. Format: 'locations/{location}/workforcePools/{workforcePoolId}/providers/{providerId}'"
+    value: ${resources.main.name}
+  state:
+    description: "The current state of the provider. * STATE_UNSPECIFIED: State unspecified. * ACTIVE: The provider is active and may be used to validate authentication credentials. * DELETED: The provider is soft-deleted. Soft-deleted providers are permanently   deleted after approximately 30 days. You can restore a soft-deleted provider using   [providers.undelete](https://cloud.google.com/iam/docs/reference/rest/v1/locations.workforcePools.providers/undelete#google.iam.admin.v1.WorkforcePools.UndeleteWorkforcePoolProvider)."
+    value: ${resources.main.state}

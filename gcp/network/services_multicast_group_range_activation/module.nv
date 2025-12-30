@@ -59,3 +59,38 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "[Output only] The timestamp when the multicast group range activation was created."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  ip_cidr_range:
+    description: "[Output only] The multicast group IP address range."
+    value: ${resources.main.ip_cidr_range}
+  multicast_group_consumer_activations:
+    description: "The resource names of associated multicast group consumer activations. Use the following format: 'projects/*/locations/*/multicastGroupConsumerActivations/*'."
+    value: ${resources.main.multicast_group_consumer_activations}
+  name:
+    description: "Identifier. The resource name of the multicast group range activation. Use the following format: 'projects/*/locations/*/multicastGroupRangeActivations/*'."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "The multicast resource's state."
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  unique_id:
+    description: "[Output only] The Google-generated UUID for the resource. This value is unique across all multicast group resources. If a group is deleted and another with the same name is created, the new group is assigned a different unique_id."
+    value: ${resources.main.unique_id}
+  update_time:
+    description: "[Output only] The timestamp when the multicast group range activation was most recently updated."
+    value: ${resources.main.update_time}

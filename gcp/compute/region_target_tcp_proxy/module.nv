@@ -52,3 +52,26 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  proxy_bind:
+    description: "This field only applies when the forwarding rule that references this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED."
+    value: ${resources.main.proxy_bind}
+  proxy_id:
+    description: "The unique identifier for the resource."
+    value: ${resources.main.proxy_id}
+  region:
+    description: "The Region in which the created target TCP proxy should reside. If it is not provided, the provider region is used."
+    value: ${resources.main.region}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}

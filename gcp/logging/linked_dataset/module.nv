@@ -50,3 +50,23 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  create_time:
+    description: "Output only. The creation timestamp of the link. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  lifecycle_state:
+    description: "Output only. The linked dataset lifecycle state."
+    value: ${resources.main.lifecycle_state}
+  location:
+    description: "The location of the linked dataset."
+    value: ${resources.main.location}
+  name:
+    description: "The resource name of the linked dataset. The name can have up to 100 characters. A valid link id (at the end of the link name) must only have alphanumeric characters and underscores within it."
+    value: ${resources.main.name}
+  parent:
+    description: "The parent of the linked dataset."
+    value: ${resources.main.parent}

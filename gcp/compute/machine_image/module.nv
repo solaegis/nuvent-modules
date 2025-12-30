@@ -53,3 +53,17 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}
+  storage_locations:
+    description: "The regional or multi-regional Cloud Storage bucket location where the machine image is stored."
+    value: ${resources.main.storage_locations}

@@ -49,3 +49,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  created_at:
+    description: "Time at which the developer was created in milliseconds since epoch."
+    value: ${resources.main.created_at}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_modified_at:
+    description: "Time at which the developer was last modified in milliseconds since epoch."
+    value: ${resources.main.last_modified_at}
+  organizatio_name:
+    description: "Name of the Apigee organization in which the developer resides."
+    value: ${resources.main.organizatio_name}
+  status:
+    description: "Status of the developer. Valid values are active and inactive."
+    value: ${resources.main.status}

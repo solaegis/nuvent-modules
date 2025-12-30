@@ -70,3 +70,17 @@ resources:
           content:
             create: ${each.value.create}
             update: ${each.value.update}
+
+outputs:
+  change_stream_retention:
+    description: "Duration to retain change stream data for the table. Set to 0 to disable. Must be between 1 and 7 days."
+    value: ${resources.main.change_stream_retention}
+  deletion_protection:
+    description: "A field to make the table protected against data loss i.e. when set to PROTECTED, deleting the table, the column families in the table, and the instance containing the table would be prohibited. If not provided, currently deletion protection will be set to UNPROTECTED as it is the API default value."
+    value: ${resources.main.deletion_protection}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    value: ${resources.main.project}

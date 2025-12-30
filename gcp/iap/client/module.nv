@@ -27,3 +27,14 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  client_id:
+    description: "Output only. Unique identifier of the OAuth client."
+    value: ${resources.main.client_id}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  secret:
+    description: "Output only. Client secret of the OAuth client."
+    value: ${resources.main.secret}

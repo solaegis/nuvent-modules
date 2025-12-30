@@ -35,3 +35,17 @@ resources:
       id: ${var.id}
       location: ${var.location}
       project: ${var.project}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  location:
+    description: "Output: location"
+    value: ${resources.main.location}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

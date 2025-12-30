@@ -22,3 +22,17 @@ resources:
       master_billing_account: ${var.master_billing_account}
       deletion_policy: ${var.deletion_policy}
       id: ${var.id}
+
+outputs:
+  billing_account_id:
+    description: "Output: billing_account_id"
+    value: ${resources.main.billing_account_id}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Output: name"
+    value: ${resources.main.name}
+  open:
+    description: "Output: open"
+    value: ${resources.main.open}

@@ -87,3 +87,35 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  deactivated:
+    description: "This flag indicates whether this BackupPlan has been deactivated. Setting this field to True locks the BackupPlan such that no further updates will be allowed (except deletes), including the deactivated field itself. It also prevents any new Backups from being created via this BackupPlan (including scheduled Backups)."
+    value: ${resources.main.deactivated}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  etag:
+    description: "etag is used for optimistic concurrency control as a way to help prevent simultaneous updates of a backup plan from overwriting each other. It is strongly suggested that systems make use of the 'etag' in the read-modify-write cycle to perform BackupPlan updates in order to avoid race conditions: An etag is returned in the response to backupPlans.get, and systems are expected to put that etag in the request to backupPlans.patch or backupPlans.delete to ensure that their change will be applied to the same version of the resource."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  protected_pod_count:
+    description: "The number of Kubernetes Pods backed up in the last successful Backup created via this BackupPlan."
+    value: ${resources.main.protected_pod_count}
+  state:
+    description: "The State of the BackupPlan."
+    value: ${resources.main.state}
+  state_reason:
+    description: "Detailed description of why BackupPlan is in its current state."
+    value: ${resources.main.state_reason}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  uid:
+    description: "Server generated, unique identifier of UUID format."
+    value: ${resources.main.uid}

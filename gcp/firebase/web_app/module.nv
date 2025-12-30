@@ -39,3 +39,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  api_key_id:
+    description: "The globally unique, Google-assigned identifier (UID) for the Firebase API key associated with the WebApp. If apiKeyId is not set during creation, then Firebase automatically associates an apiKeyId with the WebApp. This auto-associated key may be an existing valid key or, if no valid key exists, a new one will be provisioned."
+    value: ${resources.main.api_key_id}
+  app_id:
+    description: "The globally unique, Firebase-assigned identifier of the App. This identifier should be treated as an opaque token, as the data format is not specified."
+    value: ${resources.main.app_id}
+  app_urls:
+    description: "The URLs where the 'WebApp' is hosted."
+    value: ${resources.main.app_urls}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The fully qualified resource name of the App, for example: projects/projectId/webApps/appId"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

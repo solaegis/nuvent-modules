@@ -87,3 +87,29 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  disable_quic:
+    description: "HTTP/3 (IETF QUIC) and Google QUIC are enabled by default."
+    value: ${resources.main.disable_quic}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  ipv4_addresses:
+    description: "The IPv4 addresses associated with this service. Addresses are static for the lifetime of the service."
+    value: ${resources.main.ipv4_addresses}
+  ipv6_addresses:
+    description: "The IPv6 addresses associated with this service. Addresses are static for the lifetime of the service."
+    value: ${resources.main.ipv6_addresses}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  require_tls:
+    description: "Require TLS (HTTPS) for all clients connecting to this service.  Clients who connect over HTTP (port 80) will receive a HTTP 301 to the same URL over HTTPS (port 443). You must have at least one (1) edgeSslCertificate specified to enable this."
+    value: ${resources.main.require_tls}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

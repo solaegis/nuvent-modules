@@ -149,3 +149,50 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  artifact_gcs_uri:
+    description: "A Cloud Storage URI (starting with gs://) that specifies where artifacts related to the metastore service are stored."
+    value: ${resources.main.artifact_gcs_uri}
+  create_time:
+    description: "Output only. The time when the metastore service was created."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  endpoint_uri:
+    description: "The URI of the endpoint used to access the metastore service."
+    value: ${resources.main.endpoint_uri}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The relative resource name of the metastore service."
+    value: ${resources.main.name}
+  network:
+    description: "The relative resource name of the VPC network on which the instance can be accessed. It is specified in the following form:  \"projects/{projectNumber}/global/networks/{network_id}\"."
+    value: ${resources.main.network}
+  port:
+    description: "The TCP port at which the metastore service is reached. Default: 9083."
+    value: ${resources.main.port}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "The current state of the metastore service."
+    value: ${resources.main.state}
+  state_message:
+    description: "Additional information about the current state of the metastore service, if available."
+    value: ${resources.main.state_message}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  tier:
+    description: "The tier of the service. Possible values: [\"DEVELOPER\", \"ENTERPRISE\"]"
+    value: ${resources.main.tier}
+  uid:
+    description: "The globally unique resource identifier of the metastore service."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Output only. The time when the metastore service was last updated."
+    value: ${resources.main.update_time}

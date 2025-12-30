@@ -57,3 +57,20 @@ resources:
             region_preferences: ${each.value.region_preferences}
             sole_tenancy_preferences: ${each.value.sole_tenancy_preferences}
             vmware_engine_preferences: ${each.value.vmware_engine_preferences}
+
+outputs:
+  create_time:
+    description: "Output only. The timestamp when the preference set was created."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Output only. Name of the preference set."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  update_time:
+    description: "Output only. The timestamp when the preference set was last updated."
+    value: ${resources.main.update_time}

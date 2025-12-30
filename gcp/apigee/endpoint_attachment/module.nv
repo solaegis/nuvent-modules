@@ -35,3 +35,17 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  connection_state:
+    description: "State of the endpoint attachment connection to the service attachment."
+    value: ${resources.main.connection_state}
+  host:
+    description: "Host that can be used in either HTTP Target Endpoint directly, or as the host in Target Server."
+    value: ${resources.main.host}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Name of the Endpoint Attachment in the following format: organizations/{organization}/endpointAttachments/{endpointAttachment}."
+    value: ${resources.main.name}

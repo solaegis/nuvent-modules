@@ -32,3 +32,14 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  owners:
+    description: "The email addresses of all direct, verified owners of this exact property. Indirect owners — for example verified owners of the containing domain—are not included in this list."
+    value: ${resources.main.owners}
+  web_resource_id:
+    description: "The string used to identify this web resource."
+    value: ${resources.main.web_resource_id}

@@ -73,3 +73,29 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The time when the node pool was created."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  machine_filter:
+    description: "Only machines matching this filter will be allowed to join the node pool. The filtering language accepts strings like \"name=<name>\", and is documented in more detail in [AIP-160](https://google.aip.dev/160)."
+    value: ${resources.main.machine_filter}
+  node_version:
+    description: "The lowest release version among all worker nodes."
+    value: ${resources.main.node_version}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "The time when the node pool was last updated."
+    value: ${resources.main.update_time}

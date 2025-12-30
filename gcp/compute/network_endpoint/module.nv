@@ -47,3 +47,14 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  zone:
+    description: "Zone where the containing network endpoint group is located."
+    value: ${resources.main.zone}

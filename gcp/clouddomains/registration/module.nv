@@ -87,3 +87,38 @@ resources:
           content:
             currency_code: ${each.value.currency_code}
             units: ${each.value.units}
+
+outputs:
+  create_time:
+    description: "Output only. Time at which the automation was created."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  expire_time:
+    description: "Output only. Time at which the automation was updated."
+    value: ${resources.main.expire_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  issues:
+    description: "Output only. The set of issues with the Registration that require attention."
+    value: ${resources.main.issues}
+  name:
+    description: "Output only. Name of the Registration resource, in the format projects/*/locations/*/registrations/<domain_name>."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  register_failure_reason:
+    description: "Output only. The reason the domain registration failed. Only set for domains in REGISTRATION_FAILED state."
+    value: ${resources.main.register_failure_reason}
+  state:
+    description: "Output only. The current state of the Registration."
+    value: ${resources.main.state}
+  supported_privacy:
+    description: "Output only. Set of options for the contactSettings.privacy field that this Registration supports."
+    value: ${resources.main.supported_privacy}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

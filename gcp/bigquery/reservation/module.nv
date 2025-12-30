@@ -77,3 +77,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  edition:
+    description: "The edition type. Valid values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS"
+    value: ${resources.main.edition}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  original_primary_location:
+    description: "The location where the reservation was originally created. This is set only during the failover reservation's creation. All billing charges for the failover reservation will be applied to this location."
+    value: ${resources.main.original_primary_location}
+  primary_location:
+    description: "The current location of the reservation's primary replica. This field is only set for reservations using the managed disaster recovery feature."
+    value: ${resources.main.primary_location}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  replication_status:
+    description: "The Disaster Recovery(DR) replication status of the reservation. This is only available for the primary replicas of DR/failover reservations and provides information about the both the staleness of the secondary and the last error encountered while trying to replicate changes from the primary to the secondary. If this field is blank, it means that the reservation is either not a DR reservation or the reservation is a DR secondary or that any replication operations on the reservation have succeeded."
+    value: ${resources.main.replication_status}

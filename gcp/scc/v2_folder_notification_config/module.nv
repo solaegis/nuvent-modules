@@ -50,3 +50,14 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name of this notification config, in the format 'folders/{{folder}}/locations/{{location}}/notificationConfigs/{{config_id}}'."
+    value: ${resources.main.name}
+  service_account:
+    description: "The service account that needs \"pubsub.topics.publish\" permission to publish to the Pub/Sub topic."
+    value: ${resources.main.service_account}

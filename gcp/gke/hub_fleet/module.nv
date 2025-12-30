@@ -39,3 +39,26 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The time the fleet was created, in RFC3339 text format."
+    value: ${resources.main.create_time}
+  delete_time:
+    description: "The time the fleet was deleted, in RFC3339 text format."
+    value: ${resources.main.delete_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "The state of the fleet resource."
+    value: ${resources.main.state}
+  uid:
+    description: "Google-generated UUID for this resource. This is unique across all Fleet resources. If a Fleet resource is deleted and another resource with the same name is created, it gets a different uid."
+    value: ${resources.main.uid}
+  update_time:
+    description: "The time the fleet was last updated, in RFC3339 text format."
+    value: ${resources.main.update_time}

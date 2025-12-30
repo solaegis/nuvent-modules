@@ -17,3 +17,11 @@ resources:
       org_id: ${var.org_id}
       policy_data: ${var.policy_data}
       id: ${var.id}
+
+outputs:
+  etag:
+    description: "Output: etag"
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

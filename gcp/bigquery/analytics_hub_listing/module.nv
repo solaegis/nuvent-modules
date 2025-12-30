@@ -137,3 +137,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  commercial_info:
+    description: "Commercial info contains the information about the commercial data products associated with the listing."
+    value: ${resources.main.commercial_info}
+  discovery_type:
+    description: "Specifies the type of discovery on the discovery page. Cannot be set for a restricted listing. Note that this does not control the visibility of the exchange/listing which is defined by IAM permission. Possible values: [\"DISCOVERY_TYPE_PRIVATE\", \"DISCOVERY_TYPE_PUBLIC\"]"
+    value: ${resources.main.discovery_type}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name of the listing. e.g. \"projects/myproject/locations/US/dataExchanges/123/listings/456\""
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "Current state of the listing."
+    value: ${resources.main.state}

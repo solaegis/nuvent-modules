@@ -57,3 +57,29 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  archive_time:
+    description: "Output only. The timestamp when the rule deployment archive state was last set to true. If the rule deployment's current archive state is not set to true, the field will be empty."
+    value: ${resources.main.archive_time}
+  consumer_rules:
+    description: "Output only. The names of the associated/chained consumer rules. Rules are considered consumers of this rule if their rule text explicitly filters on this rule's ruleid. Format: projects/{project}/locations/{location}/instances/{instance}/rules/{rule}"
+    value: ${resources.main.consumer_rules}
+  execution_state:
+    description: "The execution state of the rule deployment. Possible values: DEFAULT LIMITED PAUSED"
+    value: ${resources.main.execution_state}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_alert_status_change_time:
+    description: "Output only. The timestamp when the rule deployment alert state was lastly changed. This is filled regardless of the current alert state.E.g. if the current alert status is false, this timestamp will be the timestamp when the alert status was changed to false."
+    value: ${resources.main.last_alert_status_change_time}
+  name:
+    description: "The resource name of the rule deployment. Note that RuleDeployment is a child of the overall Rule, not any individual revision, so the resource ID segment for the Rule resource must not reference a specific revision. Format: projects/{project}/locations/{location}/instances/{instance}/rules/{rule}/deployment"
+    value: ${resources.main.name}
+  producer_rules:
+    description: "Output only. The names of the associated/chained producer rules. Rules are considered producers for this rule if this rule explicitly filters on their ruleid. Format: projects/{project}/locations/{location}/instances/{instance}/rules/{rule}"
+    value: ${resources.main.producer_rules}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

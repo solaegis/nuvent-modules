@@ -53,3 +53,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Time the TlsRoute was created in UTC."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  self_link:
+    description: "Server-defined URL of this resource."
+    value: ${resources.main.self_link}
+  update_time:
+    description: "Time the TlsRoute was updated in UTC."
+    value: ${resources.main.update_time}

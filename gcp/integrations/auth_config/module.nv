@@ -78,3 +78,44 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  certificate_id:
+    description: "Certificate id for client certificate."
+    value: ${resources.main.certificate_id}
+  create_time:
+    description: "The timestamp when the auth config is created.  A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.create_time}
+  creator_email:
+    description: "The creator's email address. Generated based on the End User Credentials/LOAS role of the user making the call."
+    value: ${resources.main.creator_email}
+  credential_type:
+    description: "Credential type of the encrypted credential."
+    value: ${resources.main.credential_type}
+  encrypted_credential:
+    description: "Auth credential encrypted by Cloud KMS. Can be decrypted as Credential with proper KMS key.  A base64-encoded string."
+    value: ${resources.main.encrypted_credential}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_modifier_email:
+    description: "The last modifier's email address. Generated based on the End User Credentials/LOAS role of the user making the call."
+    value: ${resources.main.last_modifier_email}
+  name:
+    description: "Resource name of the auth config."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  reason:
+    description: "The reason / details of the current status."
+    value: ${resources.main.reason}
+  state:
+    description: "The status of the auth config."
+    value: ${resources.main.state}
+  update_time:
+    description: "The timestamp when the auth config is modified.  A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.update_time}
+  valid_time:
+    description: "The time until the auth config is valid. Empty or max value is considered the auth config won't expire.  A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.valid_time}

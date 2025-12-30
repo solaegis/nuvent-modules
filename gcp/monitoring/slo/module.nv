@@ -91,3 +91,17 @@ resources:
             good_total_ratio_threshold: ${each.value.good_total_ratio_threshold}
             metric_mean_in_range: ${each.value.metric_mean_in_range}
             metric_sum_in_range: ${each.value.metric_sum_in_range}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The full resource name for this service. The syntax is: projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]/serviceLevelObjectives/[SLO_NAME]"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  slo_id:
+    description: "The id to use for this ServiceLevelObjective. If omitted, an id will be generated instead."
+    value: ${resources.main.slo_id}

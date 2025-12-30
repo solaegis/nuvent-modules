@@ -128,3 +128,32 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  effective_replication:
+    description: "Output only fields for replication configuration."
+    value: ${resources.main.effective_replication}
+  etag:
+    description: "Server-specified ETag for the instance resource to prevent simultaneous updates from overwriting each other."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  location:
+    description: "The name of the location of the instance. This can be a region for ENTERPRISE tier instances."
+    value: ${resources.main.location}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  zone:
+    description: "The name of the Filestore zone of the instance."
+    value: ${resources.main.zone}

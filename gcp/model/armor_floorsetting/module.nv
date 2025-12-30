@@ -77,3 +77,17 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "[Output only] Create timestamp"
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. The resource name."
+    value: ${resources.main.name}
+  update_time:
+    description: "[Output only] Update timestamp"
+    value: ${resources.main.update_time}

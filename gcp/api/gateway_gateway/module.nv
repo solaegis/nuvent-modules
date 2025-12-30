@@ -48,3 +48,29 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  default_hostname:
+    description: "The default API Gateway host name of the form {gatewayId}-{hash}.{region_code}.gateway.dev."
+    value: ${resources.main.default_hostname}
+  display_name:
+    description: "A user-visible name for the API."
+    value: ${resources.main.display_name}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Resource name of the Gateway. Format: projects/{project}/locations/{region}/gateways/{gateway}"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  region:
+    description: "The region of the gateway for the API."
+    value: ${resources.main.region}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

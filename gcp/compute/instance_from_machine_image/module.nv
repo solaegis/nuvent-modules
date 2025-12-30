@@ -261,3 +261,101 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  allow_stopping_for_update:
+    description: "If true, allows Terraform to stop the instance to update its properties. If you try to update a property that requires stopping the instance without setting this field, the update will fail."
+    value: ${resources.main.allow_stopping_for_update}
+  attached_disk:
+    description: "List of disks attached to the instance"
+    value: ${resources.main.attached_disk}
+  boot_disk:
+    description: "The boot disk for the instance."
+    value: ${resources.main.boot_disk}
+  can_ip_forward:
+    description: "Whether sending and receiving of packets with non-matching source or destination IPs is allowed."
+    value: ${resources.main.can_ip_forward}
+  cpu_platform:
+    description: "The CPU platform used by this instance."
+    value: ${resources.main.cpu_platform}
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  current_status:
+    description: " 					Current status of the instance. 					This could be one of the following values: PROVISIONING, STAGING, RUNNING, STOPPING, SUSPENDING, SUSPENDED, REPAIRING, and TERMINATED. 					For more information about the status of the instance, see [Instance life cycle](https://cloud.google.com/compute/docs/instances/instance-life-cycle)."
+    value: ${resources.main.current_status}
+  deletion_protection:
+    description: "Whether deletion protection is enabled on this instance."
+    value: ${resources.main.deletion_protection}
+  description:
+    description: "A brief description of the resource."
+    value: ${resources.main.description}
+  desired_status:
+    description: "Desired status of the instance. Either \"RUNNING\", \"SUSPENDED\" or \"TERMINATED\"."
+    value: ${resources.main.desired_status}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  enable_display:
+    description: "Whether the instance has virtual displays enabled."
+    value: ${resources.main.enable_display}
+  hostname:
+    description: "A custom hostname for the instance. Must be a fully qualified DNS name and RFC-1035-valid. Valid format is a series of labels 1-63 characters long matching the regular expression [a-z]([-a-z0-9]*[a-z0-9]), concatenated with periods. The entire hostname must not exceed 253 characters. Changing this forces a new resource to be created."
+    value: ${resources.main.hostname}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  instance_id:
+    description: "The server-assigned unique identifier of this instance."
+    value: ${resources.main.instance_id}
+  key_revocation_action_type:
+    description: "Action to be taken when a customer's encryption key is revoked. Supports \"STOP\" and \"NONE\", with \"NONE\" being the default."
+    value: ${resources.main.key_revocation_action_type}
+  label_fingerprint:
+    description: "The unique fingerprint of the labels."
+    value: ${resources.main.label_fingerprint}
+  labels:
+    description: "A set of key/value label pairs assigned to the instance.  				**Note**: This field is non-authoritative, and will only manage the labels present in your configuration. 				Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    value: ${resources.main.labels}
+  machine_type:
+    description: "The machine type to create."
+    value: ${resources.main.machine_type}
+  metadata:
+    description: "Metadata key/value pairs made available within the instance."
+    value: ${resources.main.metadata}
+  metadata_fingerprint:
+    description: "The unique fingerprint of the metadata."
+    value: ${resources.main.metadata_fingerprint}
+  metadata_startup_script:
+    description: "Metadata startup scripts made available within the instance."
+    value: ${resources.main.metadata_startup_script}
+  min_cpu_platform:
+    description: "The minimum CPU platform specified for the VM instance."
+    value: ${resources.main.min_cpu_platform}
+  partner_metadata:
+    description: "Partner Metadata Map made available within the instance."
+    value: ${resources.main.partner_metadata}
+  project:
+    description: "The ID of the project in which the resource belongs. If self_link is provided, this value is ignored. If neither self_link nor project are provided, the provider project is used."
+    value: ${resources.main.project}
+  resource_policies:
+    description: "A list of self_links of resource policies to attach to the instance. Currently a max of 1 resource policy is supported."
+    value: ${resources.main.resource_policies}
+  scratch_disk:
+    description: "The scratch disks attached to the instance."
+    value: ${resources.main.scratch_disk}
+  self_link:
+    description: "The URI of the created resource."
+    value: ${resources.main.self_link}
+  tags:
+    description: "The list of tags attached to the instance."
+    value: ${resources.main.tags}
+  tags_fingerprint:
+    description: "The unique fingerprint of the tags."
+    value: ${resources.main.tags_fingerprint}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  zone:
+    description: "The zone of the instance. If self_link is provided, this value is ignored. If neither self_link nor zone are provided, the provider zone is used."
+    value: ${resources.main.zone}

@@ -37,3 +37,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  latest_revision_id:
+    description: "The id of the most recently created revision for this shared flow."
+    value: ${resources.main.latest_revision_id}
+  md5hash:
+    description: "Base 64 MD5 hash of the uploaded config bundle."
+    value: ${resources.main.md5hash}
+  meta_data:
+    description: "Metadata describing the shared flow."
+    value: ${resources.main.meta_data}
+  revision:
+    description: "A list of revisions of this shared flow."
+    value: ${resources.main.revision}

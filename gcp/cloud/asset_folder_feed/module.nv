@@ -66,3 +66,14 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  folder_id:
+    description: "The ID of the folder where this feed has been created. Both [FOLDER_NUMBER] and folders/[FOLDER_NUMBER] are accepted."
+    value: ${resources.main.folder_id}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The format will be folders/{folder_number}/feeds/{client-assigned_feed_identifier}."
+    value: ${resources.main.name}

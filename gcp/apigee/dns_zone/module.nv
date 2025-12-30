@@ -44,3 +44,11 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Name of the Dns Zone in the following format: organizations/{organization}/dnsZones/{dnsZone}."
+    value: ${resources.main.name}

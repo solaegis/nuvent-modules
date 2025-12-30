@@ -31,3 +31,8 @@ resources:
       description: ${var.description}
       disabled: ${var.disabled}
       id: ${var.id}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}

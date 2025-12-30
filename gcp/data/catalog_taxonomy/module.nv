@@ -44,3 +44,17 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Resource name of this taxonomy, whose format is: \"projects/{project}/locations/{region}/taxonomies/{taxonomy}\"."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  region:
+    description: "Taxonomy location region."
+    value: ${resources.main.region}

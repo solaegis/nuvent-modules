@@ -87,3 +87,29 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The date and time that the Exadata Infrastructure was created."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  entitlement_id:
+    description: "Entitlement ID of the private offer against which this infrastructure resource is provisioned."
+    value: ${resources.main.entitlement_id}
+  gcp_oracle_zone:
+    description: "GCP location where Oracle Exadata is hosted."
+    value: ${resources.main.gcp_oracle_zone}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. The name of the Exadata Infrastructure resource with the following format: projects/{project}/locations/{region}/cloudExadataInfrastructures/{cloud_exadata_infrastructure}"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

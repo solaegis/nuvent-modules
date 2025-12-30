@@ -41,3 +41,17 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_editor:
+    description: "The editor that last updated the custom module"
+    value: ${resources.main.last_editor}
+  name:
+    description: "The resource name of the Event Threat Detection custom module. Its format is \"organizations/{organization}/eventThreatDetectionSettings/customModules/{module}\"."
+    value: ${resources.main.name}
+  update_time:
+    description: "The time at which the custom module was last updated.  A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.update_time}

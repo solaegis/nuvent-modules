@@ -47,3 +47,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  instructions:
+    description: "Access to the key needs to be granted. The instructions contain gcloud commands to run to grant access.  To make the policy work, a CMEK policy check is required, which verifies key access."
+    value: ${resources.main.instructions}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  service_account:
+    description: "The Service account which needs to have access to the  provided KMS key."
+    value: ${resources.main.service_account}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

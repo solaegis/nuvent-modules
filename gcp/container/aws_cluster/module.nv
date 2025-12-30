@@ -113,3 +113,38 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Output only. The time at which this cluster was created."
+    value: ${resources.main.create_time}
+  effective_annotations:
+    description: "All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services."
+    value: ${resources.main.effective_annotations}
+  endpoint:
+    description: "Output only. The endpoint of the cluster's API server."
+    value: ${resources.main.endpoint}
+  etag:
+    description: "Allows clients to perform consistent read-modify-writes through optimistic concurrency control. May be sent on update and delete requests to ensure the client has an up-to-date value before proceeding."
+    value: ${resources.main.etag}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "The project for the resource"
+    value: ${resources.main.project}
+  reconciling:
+    description: "Output only. If set, there are currently changes in flight to the cluster."
+    value: ${resources.main.reconciling}
+  state:
+    description: "Output only. The current state of the cluster. Possible values: STATE_UNSPECIFIED, PROVISIONING, RUNNING, RECONCILING, STOPPING, ERROR, DEGRADED"
+    value: ${resources.main.state}
+  uid:
+    description: "Output only. A globally unique identifier for the cluster."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Output only. The time at which this cluster was last updated."
+    value: ${resources.main.update_time}
+  workload_identity_config:
+    description: "Output only. Workload Identity settings."
+    value: ${resources.main.workload_identity_config}

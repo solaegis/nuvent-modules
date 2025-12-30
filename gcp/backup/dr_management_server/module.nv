@@ -46,3 +46,17 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  management_uri:
+    description: "The management console URI"
+    value: ${resources.main.management_uri}
+  oauth2_client_id:
+    description: "The oauth2ClientId of management console."
+    value: ${resources.main.oauth2_client_id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

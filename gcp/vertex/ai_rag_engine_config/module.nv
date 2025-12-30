@@ -40,3 +40,17 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name of the Dataset. This value is set by Google."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  region:
+    description: "The region of the RagEngineConfig. eg us-central1"
+    value: ${resources.main.region}

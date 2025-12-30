@@ -52,3 +52,29 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  category:
+    description: "The category of the framework."
+    value: ${resources.main.category}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  major_revision_id:
+    description: "Major revision of the framework incremented in ascending order."
+    value: ${resources.main.major_revision_id}
+  name:
+    description: "Identifier. The name of the framework. Format: organizations/{organization}/locations/{{location}}/frameworks/{framework_id}"
+    value: ${resources.main.name}
+  supported_cloud_providers:
+    description: "cloud providers supported"
+    value: ${resources.main.supported_cloud_providers}
+  supported_enforcement_modes:
+    description: "The supported enforcement modes of the framework."
+    value: ${resources.main.supported_enforcement_modes}
+  supported_target_resource_types:
+    description: "target resource types supported by the Framework."
+    value: ${resources.main.supported_target_resource_types}
+  type:
+    description: "The type of the framework. The default is TYPE_CUSTOM. Possible values: BUILT_IN CUSTOM"
+    value: ${resources.main.type}

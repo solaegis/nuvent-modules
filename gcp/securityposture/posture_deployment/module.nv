@@ -49,3 +49,35 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Time the posture deployment was created in UTC."
+    value: ${resources.main.create_time}
+  desired_posture_id:
+    description: "This is an output only optional field which will be filled in case when PostureDeployment state is UPDATE_FAILED or CREATE_FAILED or DELETE_FAILED. It denotes the desired posture to be deployed."
+    value: ${resources.main.desired_posture_id}
+  desired_posture_revision_id:
+    description: "This is an output only optional field which will be filled in case when PostureDeployment state is UPDATE_FAILED or CREATE_FAILED or DELETE_FAILED. It denotes the desired posture revision_id to be deployed."
+    value: ${resources.main.desired_posture_revision_id}
+  etag:
+    description: "For Resource freshness validation (https://google.aip.dev/154)"
+    value: ${resources.main.etag}
+  failure_message:
+    description: "This is a output only optional field which will be filled in case where PostureDeployment enters a failure state like UPDATE_FAILED or CREATE_FAILED or DELETE_FAILED. It will have the failure message for posture deployment's CREATE/UPDATE/DELETE methods."
+    value: ${resources.main.failure_message}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Name of the posture deployment instance."
+    value: ${resources.main.name}
+  reconciling:
+    description: "If set, there are currently changes in flight to the posture deployment."
+    value: ${resources.main.reconciling}
+  state:
+    description: "State of the posture deployment. A posture deployment can be in the following terminal states: ACTIVE, CREATE_FAILED, UPDATE_FAILED, DELETE_FAILED."
+    value: ${resources.main.state}
+  update_time:
+    description: "Time the posture deployment was updated in UTC."
+    value: ${resources.main.update_time}

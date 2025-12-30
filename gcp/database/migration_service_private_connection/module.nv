@@ -57,3 +57,29 @@ resources:
           content:
             subnet: ${each.value.subnet}
             vpc_name: ${each.value.vpc_name}
+
+outputs:
+  display_name:
+    description: "Display name."
+    value: ${resources.main.display_name}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  error:
+    description: "The PrivateConnection error in case of failure."
+    value: ${resources.main.error}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource's name."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "State of the PrivateConnection."
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

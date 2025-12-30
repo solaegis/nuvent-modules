@@ -137,3 +137,17 @@ resources:
             speaking_rate: ${each.value.speaking_rate}
             volume_gain_db: ${each.value.volume_gain_db}
             voice: ${each.value.voice}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  language_code:
+    description: "Language code for the conversation profile. This should be a BCP-47 language tag."
+    value: ${resources.main.language_code}
+  name:
+    description: "name"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

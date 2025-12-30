@@ -73,3 +73,14 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Resource name of the assistant. Format: 'projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/assistants/{assistant}'  It must be a UTF-8 encoded string with a length limit of 1024 characters."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

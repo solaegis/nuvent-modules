@@ -44,3 +44,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The timestamp at which this profile was created."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Name of the security monitoring condition resource, in the format 'organizations/{{org_name}}/securityMonitoringConditions/{{condition_id}}'."
+    value: ${resources.main.name}
+  total_deployed_resources:
+    description: "Total number of deployed resources within scope."
+    value: ${resources.main.total_deployed_resources}
+  total_monitored_resources:
+    description: "Total number of monitored resources within this condition."
+    value: ${resources.main.total_monitored_resources}
+  update_time:
+    description: "The timestamp at which this profile was most recently updated."
+    value: ${resources.main.update_time}

@@ -67,3 +67,44 @@ resources:
           content:
             create: ${each.value.create}
             update: ${each.value.update}
+
+outputs:
+  app_id:
+    description: "Identifier of the app."
+    value: ${resources.main.app_id}
+  auth_domain:
+    description: "The domain to authenticate users with when using App Engine's User API."
+    value: ${resources.main.auth_domain}
+  code_bucket:
+    description: "The GCS bucket code is being stored in for this app."
+    value: ${resources.main.code_bucket}
+  database_type:
+    description: "Output: database_type"
+    value: ${resources.main.database_type}
+  default_bucket:
+    description: "The GCS bucket content is being stored in for this app."
+    value: ${resources.main.default_bucket}
+  default_hostname:
+    description: "The default hostname for this app."
+    value: ${resources.main.default_hostname}
+  gcr_domain:
+    description: "The GCR domain used for storing managed Docker images for this app."
+    value: ${resources.main.gcr_domain}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Unique name of the app."
+    value: ${resources.main.name}
+  project:
+    description: "The project ID to create the application under."
+    value: ${resources.main.project}
+  serving_status:
+    description: "The serving status of the app."
+    value: ${resources.main.serving_status}
+  ssl_policy:
+    description: "The SSL policy that will be applied to the application. If set to Modern it will restrict traffic with TLS \u003c 1.2 and allow only Modern Ciphers suite"
+    value: ${resources.main.ssl_policy}
+  url_dispatch_rule:
+    description: "A list of dispatch rule blocks. Each block has a domain, path, and service field."
+    value: ${resources.main.url_dispatch_rule}

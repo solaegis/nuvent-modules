@@ -56,3 +56,38 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Output only. [Output only] Create timestamp"
+    value: ${resources.main.create_time}
+  delete_time:
+    description: "Output only. [Output only] Delete timestamp"
+    value: ${resources.main.delete_time}
+  effective_annotations:
+    description: "All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services."
+    value: ${resources.main.effective_annotations}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. Resource name of the repository, in the format 'projects/*/locations/*/connections/*/gitRepositoryLinks/*'."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  reconciling:
+    description: "Output only. Set to true when the connection is being set up or updated in the background."
+    value: ${resources.main.reconciling}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  uid:
+    description: "Output only. A system-assigned unique identifier for a the GitRepositoryLink."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Output only. [Output only] Update timestamp"
+    value: ${resources.main.update_time}

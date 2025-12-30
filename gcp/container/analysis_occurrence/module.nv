@@ -47,3 +47,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The time when the repository was created."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  kind:
+    description: "The note kind which explicitly denotes which of the occurrence details are specified. This field can be used as a filter in list requests."
+    value: ${resources.main.kind}
+  name:
+    description: "The name of the occurrence."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  update_time:
+    description: "The time when the repository was last updated."
+    value: ${resources.main.update_time}

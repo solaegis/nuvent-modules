@@ -67,3 +67,44 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  creation_time:
+    description: "Timestamp when the subscription was created."
+    value: ${resources.main.creation_time}
+  data_exchange:
+    description: "Output only. Resource name of the source Data Exchange. e.g. projects/123/locations/us/dataExchanges/456"
+    value: ${resources.main.data_exchange}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_modify_time:
+    description: "Timestamp when the subscription was last modified."
+    value: ${resources.main.last_modify_time}
+  linked_dataset_map:
+    description: "Output only. Map of listing resource names to associated linked resource, e.g. projects/123/locations/us/dataExchanges/456/listings/789 -> projects/123/datasets/my_dataset For Data Exchange subscriptions, this map may contain multiple entries if the Data Exchange has multiple listings."
+    value: ${resources.main.linked_dataset_map}
+  linked_resources:
+    description: "Output only. Linked resources created in the subscription. Only contains values if state = STATE_ACTIVE."
+    value: ${resources.main.linked_resources}
+  log_linked_dataset_query_user_email:
+    description: "Output only. By default, false. If true, the Subscriber agreed to the email sharing mandate that is enabled for DataExchange/Listing."
+    value: ${resources.main.log_linked_dataset_query_user_email}
+  name:
+    description: "The resource name of the subscription. e.g. \"projects/myproject/locations/us/subscriptions/123\""
+    value: ${resources.main.name}
+  organization_display_name:
+    description: "Display name of the project of this subscription."
+    value: ${resources.main.organization_display_name}
+  organization_id:
+    description: "Organization of the project this subscription belongs to."
+    value: ${resources.main.organization_id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  resource_type:
+    description: "Listing shared asset type."
+    value: ${resources.main.resource_type}
+  state:
+    description: "Current state of the subscription."
+    value: ${resources.main.state}

@@ -58,3 +58,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  commitment_end_time:
+    description: "The start of the current commitment period. It is applicable only for ACTIVE capacity commitments."
+    value: ${resources.main.commitment_end_time}
+  commitment_start_time:
+    description: "The start of the current commitment period. It is applicable only for ACTIVE capacity commitments."
+    value: ${resources.main.commitment_start_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name of the capacity commitment, e.g., projects/myproject/locations/US/capacityCommitments/123"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "State of the commitment"
+    value: ${resources.main.state}

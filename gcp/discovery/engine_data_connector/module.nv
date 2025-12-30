@@ -101,3 +101,50 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  action_state:
+    description: "State of the action connector. This reflects whether the action connector is initializing, active or has encountered errors. The possible value can be: 'STATE_UNSPECIFIED', 'CREATING', 'ACTIVE', 'FAILED', 'RUNNING', 'WARNING', 'INITIALIZATION_FAILED', 'UPDATING'."
+    value: ${resources.main.action_state}
+  blocking_reasons:
+    description: "User actions that must be completed before the connector can start syncing data. The possible values can be: 'ALLOWLIST_STATIC_IP', 'ALLOWLIST_IN_SERVICE_ATTACHMENT'."
+    value: ${resources.main.blocking_reasons}
+  connector_type:
+    description: "The type of connector. Each source can only map to one type. For example, salesforce, confluence and jira have THIRD_PARTY connector type. It is not mutable once set by system. The possible value can be: 'CONNECTOR_TYPE_UNSPECIFIED', 'THIRD_PARTY', 'GCP_FHIR', 'BIG_QUERY', 'GCS', 'GOOGLE_MAIL', 'GOOGLE_CALENDAR', 'GOOGLE_DRIVE', 'NATIVE_CLOUD_IDENTITY', 'THIRD_PARTY_FEDERATED', 'THIRD_PARTY_EUA', 'GCNV'."
+    value: ${resources.main.connector_type}
+  create_time:
+    description: "Timestamp when the DataConnector was created."
+    value: ${resources.main.create_time}
+  errors:
+    description: "The errors from initialization or from the latest connector run."
+    value: ${resources.main.errors}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_sync_time:
+    description: "For periodic connectors only, the last time a data sync was completed."
+    value: ${resources.main.last_sync_time}
+  latest_pause_time:
+    description: "The most recent timestamp when this [DataConnector][] was paused, affecting all functionalities such as data synchronization. Pausing a connector has the following effects:   - All functionalities, including data synchronization, are halted.   - Any ongoing data synchronization job will be canceled.   - No future data synchronization runs will be scheduled nor can be triggered."
+    value: ${resources.main.latest_pause_time}
+  name:
+    description: "The full resource name of the Data Connector. Format: 'projects/*/locations/*/collections/*/dataConnector'."
+    value: ${resources.main.name}
+  private_connectivity_project_id:
+    description: "The tenant project ID associated with private connectivity connectors. This project must be allowlisted by in order for the connector to function."
+    value: ${resources.main.private_connectivity_project_id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  realtime_state:
+    description: "The real-time sync state. The possible values can be: 'STATE_UNSPECIFIED', 'CREATING', 'ACTIVE', 'FAILED', 'RUNNING', 'WARNING', 'INITIALIZATION_FAILED', 'UPDATING'."
+    value: ${resources.main.realtime_state}
+  state:
+    description: "The state of connector. The possible value can be: 'STATE_UNSPECIFIED', 'CREATING', 'ACTIVE', 'FAILED', 'RUNNING', 'WARNING', 'INITIALIZATION_FAILED', 'UPDATING'."
+    value: ${resources.main.state}
+  static_ip_addresses:
+    description: "The static IP addresses used by this connector."
+    value: ${resources.main.static_ip_addresses}
+  update_time:
+    description: "Timestamp when the DataConnector was updated."
+    value: ${resources.main.update_time}

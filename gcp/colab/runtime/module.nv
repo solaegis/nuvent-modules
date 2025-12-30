@@ -65,3 +65,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  expiration_time:
+    description: "Output only. Timestamp when this NotebookRuntime will be expired."
+    value: ${resources.main.expiration_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  is_upgradable:
+    description: "Output only. Checks if the NotebookRuntime is upgradable."
+    value: ${resources.main.is_upgradable}
+  notebook_runtime_type:
+    description: "Output only. The type of the notebook runtime."
+    value: ${resources.main.notebook_runtime_type}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "Output only. The state of the runtime."
+    value: ${resources.main.state}

@@ -90,3 +90,41 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The timestamp of when the workflow was created in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits."
+    value: ${resources.main.create_time}
+  description:
+    description: "Description of the workflow provided by the user. Must be at most 1000 unicode characters long."
+    value: ${resources.main.description}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Name of the Workflow."
+    value: ${resources.main.name}
+  name_prefix:
+    description: "Output: name_prefix"
+    value: ${resources.main.name_prefix}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  revision_id:
+    description: "The revision of the workflow. A new one is generated if the service account or source contents is changed."
+    value: ${resources.main.revision_id}
+  service_account:
+    description: "Name of the service account associated with the latest workflow version. This service account represents the identity of the workflow and determines what permissions the workflow has. Format: projects/{project}/serviceAccounts/{account} or {account}. Using - as a wildcard for the {project} or not providing one at all will infer the project from the account. The {account} value can be the email address or the unique_id of the service account. If not provided, workflow will use the project's default service account. Modifying this field for an existing workflow results in a new workflow revision."
+    value: ${resources.main.service_account}
+  state:
+    description: "State of the workflow deployment."
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "The timestamp of when the workflow was last updated in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits."
+    value: ${resources.main.update_time}

@@ -102,3 +102,41 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  bgp_always_compare_med:
+    description: "Enables/disables the comparison of MED across routes with different Neighbor ASNs. This value can only be set if the --bgp-best-path-selection-mode is STANDARD"
+    value: ${resources.main.bgp_always_compare_med}
+  bgp_best_path_selection_mode:
+    description: "The BGP best selection algorithm to be employed. MODE can be LEGACY or STANDARD. Possible values: [\"LEGACY\", \"STANDARD\"]"
+    value: ${resources.main.bgp_best_path_selection_mode}
+  bgp_inter_region_cost:
+    description: "Choice of the behavior of inter-regional cost and MED in the BPS algorithm. Possible values: [\"DEFAULT\", \"ADD_COST_TO_MED\"]"
+    value: ${resources.main.bgp_inter_region_cost}
+  gateway_ipv4:
+    description: "The gateway address for default routing out of the network. This value is selected by GCP."
+    value: ${resources.main.gateway_ipv4}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  internal_ipv6_range:
+    description: "When enabling ula internal ipv6, caller optionally can specify the /48 range they want from the google defined ULA prefix fd20::/20. The input must be a valid /48 ULA IPv6 address and must be within the fd20::/20. Operation will fail if the speficied /48 is already in used by another resource. If the field is not speficied, then a /48 range will be randomly allocated from fd20::/20 and returned via this field."
+    value: ${resources.main.internal_ipv6_range}
+  mtu:
+    description: "Maximum Transmission Unit in bytes. The default value is 1460 bytes. The minimum value for this field is 1300 and the maximum value is 8896 bytes (jumbo frames). Note that packets larger than 1500 bytes (standard Ethernet) can be subject to TCP-MSS clamping or dropped with an ICMP 'Fragmentation-Needed' message if the packets are routed to the Internet or other VPCs with varying MTUs."
+    value: ${resources.main.mtu}
+  network_id:
+    description: "The unique identifier for the resource. This identifier is defined by the server."
+    value: ${resources.main.network_id}
+  numeric_id:
+    description: "The unique identifier for the resource. This identifier is defined by the server."
+    value: ${resources.main.numeric_id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  routing_mode:
+    description: "The network-wide routing mode to use. If set to 'REGIONAL', this network's cloud routers will only advertise routes with subnetworks of this network in the same region as the router. If set to 'GLOBAL', this network's cloud routers will advertise routes with all subnetworks of this network, across regions. Possible values: [\"REGIONAL\", \"GLOBAL\"]"
+    value: ${resources.main.routing_mode}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}

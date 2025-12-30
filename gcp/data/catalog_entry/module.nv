@@ -72,3 +72,23 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  bigquery_date_sharded_spec:
+    description: "Specification for a group of BigQuery tables with name pattern [prefix]YYYYMMDD. Context: https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding."
+    value: ${resources.main.bigquery_date_sharded_spec}
+  bigquery_table_spec:
+    description: "Specification that applies to a BigQuery table. This is only valid on entries of type TABLE."
+    value: ${resources.main.bigquery_table_spec}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  integrated_system:
+    description: "This field indicates the entry's source system that Data Catalog integrates with, such as BigQuery or Pub/Sub."
+    value: ${resources.main.integrated_system}
+  linked_resource:
+    description: "The resource this metadata entry refers to. For Google Cloud Platform resources, linkedResource is the full name of the resource. For example, the linkedResource for a table resource from BigQuery is: //bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId Output only when Entry is of type in the EntryType enum. For entries with userSpecifiedType, this field is optional and defaults to an empty string."
+    value: ${resources.main.linked_resource}
+  name:
+    description: "The Data Catalog resource name of the entry in URL format. Example: projects/{project_id}/locations/{location}/entryGroups/{entryGroupId}/entries/{entryId}. Note that this Entry and its child resources may not actually be stored in the location in this name."
+    value: ${resources.main.name}

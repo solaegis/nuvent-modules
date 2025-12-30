@@ -49,3 +49,32 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  associated_networks:
+    description: "List of networks that are associated with this endpoint in the local zone. This is a projection of the FirewallEndpointAssociations pointing at this endpoint. A network will only appear in this list after traffic routing is fully configured. Format: projects/{project}/global/networks/{name}."
+    value: ${resources.main.associated_networks}
+  create_time:
+    description: "Time the firewall endpoint was created in UTC."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  reconciling:
+    description: "Whether reconciling is in progress, recommended per https://google.aip.dev/128."
+    value: ${resources.main.reconciling}
+  self_link:
+    description: "Server-defined URL of this resource."
+    value: ${resources.main.self_link}
+  state:
+    description: "The current state of the endpoint."
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "Time the firewall endpoint was updated in UTC."
+    value: ${resources.main.update_time}

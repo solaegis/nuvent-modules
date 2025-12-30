@@ -48,3 +48,17 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The full resource name for this service. The syntax is: projects/[PROJECT_ID]/services/[SERVICE_ID]."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  service_id:
+    description: "An optional service ID to use. If not given, the server will generate a service ID."
+    value: ${resources.main.service_id}

@@ -248,3 +248,41 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  creation_timestamp:
+    description: "The time at which the instance was created in RFC 3339 format."
+    value: ${resources.main.creation_timestamp}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  metadata_fingerprint:
+    description: "The unique fingerprint of the metadata."
+    value: ${resources.main.metadata_fingerprint}
+  name:
+    description: "The name of the instance template. If you leave this blank, Terraform will auto-generate a unique name."
+    value: ${resources.main.name}
+  name_prefix:
+    description: "Creates a unique name beginning with the specified prefix. Conflicts with name."
+    value: ${resources.main.name_prefix}
+  numeric_id:
+    description: "The ID of the template in numeric format."
+    value: ${resources.main.numeric_id}
+  project:
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    value: ${resources.main.project}
+  region:
+    description: "The region in which the instance template is located. If it is not provided, the provider region is used."
+    value: ${resources.main.region}
+  self_link:
+    description: "The URI of the created resource."
+    value: ${resources.main.self_link}
+  tags_fingerprint:
+    description: "The unique fingerprint of the tags."
+    value: ${resources.main.tags_fingerprint}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

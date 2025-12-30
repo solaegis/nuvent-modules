@@ -51,3 +51,32 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "The timestamp when the multicast group producer activation was created."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "Identifier. The resource name of the multicast group producer activation. Use the following format: 'projects/*/locations/*/multicastGroupProducerActivations/*'."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "The multicast resource's state."
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  unique_id:
+    description: "The Google-generated UUID for the resource. This value is unique across all multicast group producer activation resources. If a group producer activation is deleted and another with the same name is created, the new group producer activation is assigned a different unique_id."
+    value: ${resources.main.unique_id}
+  update_time:
+    description: "The timestamp when the multicast group producer activation was most recently updated."
+    value: ${resources.main.update_time}

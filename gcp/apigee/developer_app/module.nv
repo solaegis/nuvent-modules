@@ -70,3 +70,29 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  app_family:
+    description: "Developer app family."
+    value: ${resources.main.app_family}
+  app_id:
+    description: "ID of the developer app. This ID is not user specified but is automatically generated on app creation. appId is a UUID."
+    value: ${resources.main.app_id}
+  created_at:
+    description: "Time at which the developer was created in milliseconds since epoch."
+    value: ${resources.main.created_at}
+  credentials:
+    description: "Output only. Set of credentials for the developer app consisting of the consumer key/secret pairs associated with the API products."
+    value: ${resources.main.credentials}
+  developer_id:
+    description: "ID of the developer."
+    value: ${resources.main.developer_id}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  last_modified_at:
+    description: "Time at which the developer was last modified in milliseconds since epoch."
+    value: ${resources.main.last_modified_at}
+  status:
+    description: "Status of the credential. Valid values include approved or revoked."
+    value: ${resources.main.status}

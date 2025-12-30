@@ -47,3 +47,26 @@ resources:
           content:
             create: ${each.value.create}
             delete: ${each.value.delete}
+
+outputs:
+  certificate_id:
+    description: "The unique identifier for the resource."
+    value: ${resources.main.certificate_id}
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  expire_time:
+    description: "Expire time of the certificate in RFC3339 text format."
+    value: ${resources.main.expire_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  self_link:
+    description: "Output: self_link"
+    value: ${resources.main.self_link}
+  subject_alternative_names:
+    description: "Domains associated with the certificate via Subject Alternative Name."
+    value: ${resources.main.subject_alternative_names}

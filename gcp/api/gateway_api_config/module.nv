@@ -83,3 +83,32 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  api_config_id:
+    description: "Identifier to assign to the API Config. Must be unique within scope of the parent resource(api)."
+    value: ${resources.main.api_config_id}
+  api_config_id_prefix:
+    description: "Creates a unique name beginning with the specified prefix. If this and api_config_id are unspecified, a random value is chosen for the name."
+    value: ${resources.main.api_config_id_prefix}
+  display_name:
+    description: "A user-visible name for the API."
+    value: ${resources.main.display_name}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource name of the API Config."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  service_config_id:
+    description: "The ID of the associated Service Config (https://cloud.google.com/service-infrastructure/docs/glossary#config)."
+    value: ${resources.main.service_config_id}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

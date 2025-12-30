@@ -48,3 +48,20 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  creation_timestamp:
+    description: "Creation timestamp in RFC3339 text format."
+    value: ${resources.main.creation_timestamp}
+  fingerprint:
+    description: "Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. This field will be ignored when inserting a 'HealthAggregationPolicy'. An up-to-date fingerprint must be provided in order to patch the RegionHealthAggregationPolicy; Otherwise, the request will fail with error '412 conditionNotMet'. To see the latest fingerprint, make a 'get()' request to retrieve the RegionHealthAggregationPolicy."
+    value: ${resources.main.fingerprint}
+  id:
+    description: "The unique identifier for the resource. This identifier is defined by the server."
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  self_link_with_id:
+    description: "Server-defined URL with id for the resource."
+    value: ${resources.main.self_link_with_id}

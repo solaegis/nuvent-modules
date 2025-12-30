@@ -90,3 +90,17 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  creation_record:
+    description: "A read-only record of the creation of the alerting policy. If provided in a call to create or update, this field will be ignored."
+    value: ${resources.main.creation_record}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The unique resource name for this policy. Its syntax is: projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]"
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}

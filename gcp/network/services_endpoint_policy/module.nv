@@ -74,3 +74,23 @@ resources:
           for_each: ${var.traffic_port_selector}
           content:
             ports: ${each.value.ports}
+
+outputs:
+  create_time:
+    description: "Time the TcpRoute was created in UTC."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  update_time:
+    description: "Time the TcpRoute was updated in UTC."
+    value: ${resources.main.update_time}

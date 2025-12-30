@@ -57,3 +57,38 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  backup_region:
+    description: "Region in which backup is stored."
+    value: ${resources.main.backup_region}
+  backup_type:
+    description: "Type of backup, manually created or created by a backup policy. Possible Values : [TYPE_UNSPECIFIED, MANUAL, SCHEDULED]"
+    value: ${resources.main.backup_type}
+  chain_storage_bytes:
+    description: "Backups of a volume build incrementally on top of each other. They form a \"backup chain\". Total size of all backups in a chain in bytes = baseline backup size + sum(incremental backup size)"
+    value: ${resources.main.chain_storage_bytes}
+  create_time:
+    description: "Create time of the backup. A timestamp in RFC3339 UTC \"Zulu\" format. Examples: \"2023-06-22T09:13:01.617Z\"."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "The state of the Backup Vault. Possible Values : [STATE_UNSPECIFIED, CREATING, UPLOADING, READY, DELETING, ERROR, UPDATING]"
+    value: ${resources.main.state}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  volume_region:
+    description: "Region of the volume from which the backup was created."
+    value: ${resources.main.volume_region}
+  volume_usage_bytes:
+    description: "Size of the file system when the backup was created. When creating a new volume from the backup, the volume capacity will have to be at least as big."
+    value: ${resources.main.volume_usage_bytes}

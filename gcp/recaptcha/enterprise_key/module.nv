@@ -82,3 +82,23 @@ resources:
             allowed_domains: ${each.value.allowed_domains}
             challenge_security_preference: ${each.value.challenge_security_preference}
             integration_type: ${each.value.integration_type}
+
+outputs:
+  create_time:
+    description: "The timestamp corresponding to the creation of this Key."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The resource id for the Key, which is the same as the Site Key itself."
+    value: ${resources.main.name}
+  project:
+    description: "The project for the resource"
+    value: ${resources.main.project}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}

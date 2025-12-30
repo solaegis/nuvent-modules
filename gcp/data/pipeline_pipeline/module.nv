@@ -76,3 +76,23 @@ resources:
           content:
             dataflow_flex_template_request: ${each.value.dataflow_flex_template_request}
             dataflow_launch_template_request: ${each.value.dataflow_launch_template_request}
+
+outputs:
+  create_time:
+    description: "The timestamp when the pipeline was initially created. Set by the Data Pipelines service. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.create_time}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  job_count:
+    description: "Number of jobs."
+    value: ${resources.main.job_count}
+  last_update_time:
+    description: "The timestamp when the pipeline was last modified. Set by the Data Pipelines service. A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    value: ${resources.main.last_update_time}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  scheduler_service_account_email:
+    description: "Optional. A service account email to be used with the Cloud Scheduler job. If not specified, the default compute engine service account will be used."
+    value: ${resources.main.scheduler_service_account_email}

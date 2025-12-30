@@ -63,3 +63,38 @@ resources:
             create: ${each.value.create}
             delete: ${each.value.delete}
             update: ${each.value.update}
+
+outputs:
+  create_time:
+    description: "Output only. The time when the metastore federation was created."
+    value: ${resources.main.create_time}
+  effective_labels:
+    description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."
+    value: ${resources.main.effective_labels}
+  endpoint_uri:
+    description: "The URI of the endpoint used to access the metastore federation."
+    value: ${resources.main.endpoint_uri}
+  id:
+    description: "Output: id"
+    value: ${resources.main.id}
+  name:
+    description: "The relative resource name of the metastore federation."
+    value: ${resources.main.name}
+  project:
+    description: "Output: project"
+    value: ${resources.main.project}
+  state:
+    description: "The current state of the metastore federation."
+    value: ${resources.main.state}
+  state_message:
+    description: "Additional information about the current state of the metastore federation, if available."
+    value: ${resources.main.state_message}
+  terraform_labels:
+    description: "The combination of labels configured directly on the resource  and default labels configured on the provider."
+    value: ${resources.main.terraform_labels}
+  uid:
+    description: "The globally unique resource identifier of the metastore federation."
+    value: ${resources.main.uid}
+  update_time:
+    description: "Output only. The time when the metastore federation was last updated."
+    value: ${resources.main.update_time}
