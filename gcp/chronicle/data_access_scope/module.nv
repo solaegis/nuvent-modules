@@ -1,3 +1,8 @@
+#------------------------------------------------------------------------------
+# gcp/chronicle/data_access_scope/module.nv
+# yaml-language-server: $schema=https://raw.githubusercontent.com/solaegis/nuvent/refs/heads/main/tools/vscode-extension/schemas/nuvent-manifest.schema.json?token=GHSAT0AAAAAADJBKTZJYHQDWBGJPIP6TMBS2KUJZ3A
+#------------------------------------------------------------------------------
+
 variables:
   data_access_scope_id:
     type: string

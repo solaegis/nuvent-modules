@@ -1,3 +1,8 @@
+#------------------------------------------------------------------------------
+# gcp/discovery/engine_control/module.nv
+# yaml-language-server: $schema=https://raw.githubusercontent.com/solaegis/nuvent/refs/heads/main/tools/vscode-extension/schemas/nuvent-manifest.schema.json?token=GHSAT0AAAAAADJBKTZJYHQDWBGJPIP6TMBS2KUJZ3A
+#------------------------------------------------------------------------------
+
 variables:
   control_id:
     type: string
