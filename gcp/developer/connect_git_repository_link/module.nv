@@ -1,0 +1,58 @@
+variables:
+  clone_uri:
+    type: string
+    description: "Required. Git Clone URI."
+  git_repository_link_id:
+    type: string
+    description: "Required. The ID to use for the repository, which will become the final component of the repository's resource name. This ID should be unique in the connection. Allows alphanumeric characters and any of -._~%!$&'()*+,;=@."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122. See documentation for resource type 'developerconnect.googleapis.com/GitRepositoryLink'."
+  parent_connection:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122. See documentation for resource type 'developerconnect.googleapis.com/GitRepositoryLink'."
+  annotations:
+    type: object
+    description: "Optional. Allows clients to store small amounts of arbitrary data.   **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  etag:
+    type: string
+    description: "Optional. This checksum is computed by the server based on the value of other fields, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ConnectGitRepositoryLink"
+    default: null
+  labels:
+    type: object
+    description: "Optional. Labels as key value pairs   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ConnectGitRepositoryLink"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:developer:ConnectGitRepositoryLink
+    properties:
+      clone_uri: ${var.clone_uri}
+      git_repository_link_id: ${var.git_repository_link_id}
+      location: ${var.location}
+      parent_connection: ${var.parent_connection}
+      annotations: ${var.annotations}
+      etag: ${var.etag}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

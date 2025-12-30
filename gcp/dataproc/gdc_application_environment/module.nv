@@ -1,0 +1,69 @@
+variables:
+  location:
+    type: string
+    description: "The location of the application environment"
+  serviceinstance:
+    type: string
+    description: "The id of the service instance to which this application environment belongs."
+  annotations:
+    type: object
+    description: "The annotations to associate with this application environment. Annotations may be used to store client information, but are not used by the server.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  application_environment_id:
+    type: string
+    description: "The id of the application environment"
+    default: null
+  display_name:
+    type: string
+    description: "User-provided human-readable name to be used in user interfaces."
+    default: null
+  id:
+    type: string
+    description: "Optional property for GdcApplicationEnvironment"
+    default: null
+  labels:
+    type: object
+    description: "The labels to associate with this application environment. Labels may be used for filtering and billing tracking.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  namespace:
+    type: string
+    description: "The name of the namespace in which to create this ApplicationEnvironment. This namespace must already exist in the cluster"
+    default: null
+  project:
+    type: string
+    description: "Optional property for GdcApplicationEnvironment"
+    default: null
+  spark_application_environment_config:
+    type: list
+    description: "Nested block: spark_application_environment_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataproc:GdcApplicationEnvironment
+    properties:
+      location: ${var.location}
+      serviceinstance: ${var.serviceinstance}
+      annotations: ${var.annotations}
+      application_environment_id: ${var.application_environment_id}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      namespace: ${var.namespace}
+      project: ${var.project}
+      dynamic:
+        spark_application_environment_config:
+          for_each: ${var.spark_application_environment_config}
+          content:
+            default_properties: ${each.value.default_properties}
+            default_version: ${each.value.default_version}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

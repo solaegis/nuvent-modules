@@ -1,0 +1,37 @@
+variables:
+  asset:
+    type: string
+    description: "Required property for AssetIamPolicy"
+  dataplex_zone:
+    type: string
+    description: "Required property for AssetIamPolicy"
+  lake:
+    type: string
+    description: "Required property for AssetIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for AssetIamPolicy"
+  id:
+    type: string
+    description: "Optional property for AssetIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for AssetIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AssetIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:dataplex:AssetIamPolicy
+    properties:
+      asset: ${var.asset}
+      dataplex_zone: ${var.dataplex_zone}
+      lake: ${var.lake}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

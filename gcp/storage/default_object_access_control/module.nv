@@ -1,0 +1,39 @@
+variables:
+  bucket:
+    type: string
+    description: "The name of the bucket."
+  entity:
+    type: string
+    description: "The entity holding the permission, in one of the following forms:   * user-{{userId}}   * user-{{email}} (such as \"user-liz@example.com\")   * group-{{groupId}}   * group-{{email}} (such as \"group-example@googlegroups.com\")   * domain-{{domain}} (such as \"domain-example.com\")   * project-team-{{projectId}}   * allUsers   * allAuthenticatedUsers"
+  role:
+    type: string
+    description: "The access permission for the entity. Possible values: [\"OWNER\", \"READER\"]"
+  id:
+    type: string
+    description: "Optional property for DefaultObjectAccessControl"
+    default: null
+  object:
+    type: string
+    description: "The name of the object, if applied to an object."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:DefaultObjectAccessControl
+    properties:
+      bucket: ${var.bucket}
+      entity: ${var.entity}
+      role: ${var.role}
+      id: ${var.id}
+      object: ${var.object}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

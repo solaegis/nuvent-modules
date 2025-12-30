@@ -1,0 +1,38 @@
+variables:
+  location:
+    type: string
+    description: "The location in which the encryptionSpec is to be initialized."
+  id:
+    type: string
+    description: "Optional property for EncryptionSpec"
+    default: null
+  project:
+    type: string
+    description: "Optional property for EncryptionSpec"
+    default: null
+  encryption_spec:
+    type: list
+    description: "Nested block: encryption_spec"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:EncryptionSpec
+    properties:
+      location: ${var.location}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        encryption_spec:
+          for_each: ${var.encryption_spec}
+          content:
+            kms_key: ${each.value.kms_key}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

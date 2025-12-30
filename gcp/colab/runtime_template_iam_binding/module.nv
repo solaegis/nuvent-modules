@@ -1,0 +1,44 @@
+variables:
+  members:
+    type: list
+    description: "Required property for RuntimeTemplateIamBinding"
+  role:
+    type: string
+    description: "Required property for RuntimeTemplateIamBinding"
+  runtime_template:
+    type: string
+    description: "Required property for RuntimeTemplateIamBinding"
+  id:
+    type: string
+    description: "Optional property for RuntimeTemplateIamBinding"
+    default: null
+  location:
+    type: string
+    description: "Optional property for RuntimeTemplateIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RuntimeTemplateIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:colab:RuntimeTemplateIamBinding
+    properties:
+      members: ${var.members}
+      role: ${var.role}
+      runtime_template: ${var.runtime_template}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

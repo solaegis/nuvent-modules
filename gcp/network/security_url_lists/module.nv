@@ -1,0 +1,44 @@
+variables:
+  location:
+    type: string
+    description: "The location of the url lists."
+  name:
+    type: string
+    description: "Short name of the UrlList resource to be created. This value should be 1-63 characters long, containing only letters, numbers, hyphens, and underscores, and should not start with a number. E.g. 'urlList'."
+  values:
+    type: list
+    description: "FQDNs and URLs."
+  description:
+    type: string
+    description: "Free-text description of the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SecurityUrlLists"
+    default: null
+  project:
+    type: string
+    description: "Optional property for SecurityUrlLists"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:SecurityUrlLists
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      values: ${var.values}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

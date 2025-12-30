@@ -1,0 +1,63 @@
+variables:
+  backup_plan_id:
+    type: string
+    description: "The ID of the backup plan"
+  backup_vault:
+    type: string
+    description: "Backup vault where the backups gets stored using this Backup plan."
+  location:
+    type: string
+    description: "The location for the backup plan"
+  resource_type:
+    type: string
+    description: "The resource type to which the 'BackupPlan' will be applied. Examples include, \"compute.googleapis.com/Instance\", \"compute.googleapis.com/Disk\", \"sqladmin.googleapis.com/Instance\" and \"storage.googleapis.com/Bucket\"."
+  description:
+    type: string
+    description: "The description allows for additional details about 'BackupPlan' and its use cases to be provided."
+    default: null
+  id:
+    type: string
+    description: "Optional property for DrBackupPlan"
+    default: null
+  log_retention_days:
+    type: number
+    description: "This is only applicable for CloudSql resource. Days for which logs will be stored. This value should be greater than or equal to minimum enforced log retention duration of the backup vault."
+    default: null
+  project:
+    type: string
+    description: "Optional property for DrBackupPlan"
+    default: null
+  backup_rules:
+    type: list
+    description: "Nested block: backup_rules"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:backup:DrBackupPlan
+    properties:
+      backup_plan_id: ${var.backup_plan_id}
+      backup_vault: ${var.backup_vault}
+      location: ${var.location}
+      resource_type: ${var.resource_type}
+      description: ${var.description}
+      id: ${var.id}
+      log_retention_days: ${var.log_retention_days}
+      project: ${var.project}
+      dynamic:
+        backup_rules:
+          for_each: ${var.backup_rules}
+          content:
+            backup_retention_days: ${each.value.backup_retention_days}
+            rule_id: ${each.value.rule_id}
+            standard_schedule: ${each.value.standard_schedule}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

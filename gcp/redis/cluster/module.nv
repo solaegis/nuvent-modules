@@ -1,0 +1,155 @@
+variables:
+  shard_count:
+    type: number
+    description: "Required. Number of shards for the Redis cluster."
+  authorization_mode:
+    type: string
+    description: "Optional. The authorization mode of the Redis cluster. If not provided, auth feature is disabled for the cluster. Default value: \"AUTH_MODE_DISABLED\" Possible values: [\"AUTH_MODE_UNSPECIFIED\", \"AUTH_MODE_IAM_AUTH\", \"AUTH_MODE_DISABLED\"]"
+    default: null
+  deletion_protection_enabled:
+    type: boolean
+    description: "Optional. Indicates if the cluster is deletion protected or not. If the value if set to true, any delete cluster operation will fail. Default value is true."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Cluster"
+    default: null
+  kms_key:
+    type: string
+    description: "The KMS key used to encrypt the at-rest data of the cluster."
+    default: null
+  maintenance_version:
+    type: string
+    description: "This field can be used to trigger self service update to indicate the desired maintenance version. The input to this field can be determined by the available_maintenance_versions field. *Note*: This field can only be specified when updating an existing cluster to a newer version. Downgrades are currently not supported!"
+    default: null
+  name:
+    type: string
+    description: "Unique name of the resource in this scope including project and location using the form: projects/{projectId}/locations/{locationId}/clusters/{clusterId}"
+    default: null
+  node_type:
+    type: string
+    description: "The nodeType for the Redis cluster. If not provided, REDIS_HIGHMEM_MEDIUM will be used as default Possible values: [\"REDIS_SHARED_CORE_NANO\", \"REDIS_HIGHMEM_MEDIUM\", \"REDIS_HIGHMEM_XLARGE\", \"REDIS_STANDARD_SMALL\"]"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Cluster"
+    default: null
+  redis_configs:
+    type: object
+    description: "Configure Redis Cluster behavior using a subset of native Redis configuration parameters. Please check Memorystore documentation for the list of supported parameters: https://cloud.google.com/memorystore/docs/cluster/supported-instance-configurations"
+    default: null
+  region:
+    type: string
+    description: "The name of the region of the Redis cluster."
+    default: null
+  replica_count:
+    type: number
+    description: "Optional. The number of replica nodes per shard."
+    default: null
+  transit_encryption_mode:
+    type: string
+    description: "Optional. The in-transit encryption for the Redis cluster. If not provided, encryption is disabled for the cluster. Default value: \"TRANSIT_ENCRYPTION_MODE_DISABLED\" Possible values: [\"TRANSIT_ENCRYPTION_MODE_UNSPECIFIED\", \"TRANSIT_ENCRYPTION_MODE_DISABLED\", \"TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION\"]"
+    default: null
+  automated_backup_config:
+    type: list
+    description: "Nested block: automated_backup_config"
+    default: []
+  cross_cluster_replication_config:
+    type: list
+    description: "Nested block: cross_cluster_replication_config"
+    default: []
+  gcs_source:
+    type: list
+    description: "Nested block: gcs_source"
+    default: []
+  maintenance_policy:
+    type: list
+    description: "Nested block: maintenance_policy"
+    default: []
+  managed_backup_source:
+    type: list
+    description: "Nested block: managed_backup_source"
+    default: []
+  persistence_config:
+    type: list
+    description: "Nested block: persistence_config"
+    default: []
+  psc_configs:
+    type: list
+    description: "Nested block: psc_configs"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  zone_distribution_config:
+    type: list
+    description: "Nested block: zone_distribution_config"
+    default: []
+
+resources:
+  main:
+    type: gcp:redis:Cluster
+    properties:
+      shard_count: ${var.shard_count}
+      authorization_mode: ${var.authorization_mode}
+      deletion_protection_enabled: ${var.deletion_protection_enabled}
+      id: ${var.id}
+      kms_key: ${var.kms_key}
+      maintenance_version: ${var.maintenance_version}
+      name: ${var.name}
+      node_type: ${var.node_type}
+      project: ${var.project}
+      redis_configs: ${var.redis_configs}
+      region: ${var.region}
+      replica_count: ${var.replica_count}
+      transit_encryption_mode: ${var.transit_encryption_mode}
+      dynamic:
+        automated_backup_config:
+          for_each: ${var.automated_backup_config}
+          content:
+            retention: ${each.value.retention}
+            fixed_frequency_schedule: ${each.value.fixed_frequency_schedule}
+        cross_cluster_replication_config:
+          for_each: ${var.cross_cluster_replication_config}
+          content:
+            cluster_role: ${each.value.cluster_role}
+            membership: ${each.value.membership}
+            update_time: ${each.value.update_time}
+            primary_cluster: ${each.value.primary_cluster}
+            secondary_clusters: ${each.value.secondary_clusters}
+        gcs_source:
+          for_each: ${var.gcs_source}
+          content:
+            uris: ${each.value.uris}
+        maintenance_policy:
+          for_each: ${var.maintenance_policy}
+          content:
+            create_time: ${each.value.create_time}
+            update_time: ${each.value.update_time}
+            weekly_maintenance_window: ${each.value.weekly_maintenance_window}
+        managed_backup_source:
+          for_each: ${var.managed_backup_source}
+          content:
+            backup: ${each.value.backup}
+        persistence_config:
+          for_each: ${var.persistence_config}
+          content:
+            mode: ${each.value.mode}
+            aof_config: ${each.value.aof_config}
+            rdb_config: ${each.value.rdb_config}
+        psc_configs:
+          for_each: ${var.psc_configs}
+          content:
+            network: ${each.value.network}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        zone_distribution_config:
+          for_each: ${var.zone_distribution_config}
+          content:
+            mode: ${each.value.mode}
+            zone: ${each.value.zone}

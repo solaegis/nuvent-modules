@@ -1,0 +1,29 @@
+variables:
+  project:
+    type: string
+    description: "Required property for IamAuditConfig"
+  service:
+    type: string
+    description: "Service which will be enabled for audit logging. The special value allServices covers all services."
+  id:
+    type: string
+    description: "Optional property for IamAuditConfig"
+    default: null
+  audit_log_config:
+    type: list
+    description: "Nested block: audit_log_config"
+    default: []
+
+resources:
+  main:
+    type: gcp:project:IamAuditConfig
+    properties:
+      project: ${var.project}
+      service: ${var.service}
+      id: ${var.id}
+      dynamic:
+        audit_log_config:
+          for_each: ${var.audit_log_config}
+          content:
+            exempted_members: ${each.value.exempted_members}
+            log_type: ${each.value.log_type}

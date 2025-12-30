@@ -1,0 +1,44 @@
+variables:
+  member:
+    type: string
+    description: "Required property for SourceManagerRepositoryIamMember"
+  repository_id:
+    type: string
+    description: "Required property for SourceManagerRepositoryIamMember"
+  role:
+    type: string
+    description: "Required property for SourceManagerRepositoryIamMember"
+  id:
+    type: string
+    description: "Optional property for SourceManagerRepositoryIamMember"
+    default: null
+  location:
+    type: string
+    description: "Optional property for SourceManagerRepositoryIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for SourceManagerRepositoryIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:secure:SourceManagerRepositoryIamMember
+    properties:
+      member: ${var.member}
+      repository_id: ${var.repository_id}
+      role: ${var.role}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

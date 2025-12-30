@@ -1,0 +1,70 @@
+variables:
+  display_name:
+    type: string
+    description: "Required. Display name of the watchlist. Note that it must be at least one character and less than 63 characters (https://google.aip.dev/148)."
+  instance:
+    type: string
+    description: "The unique identifier for the Chronicle instance, which is the same as the customer ID."
+  location:
+    type: string
+    description: "The location of the resource. This is the geographical region where the Chronicle instance resides, such as \"us\" or \"europe-west2\"."
+  description:
+    type: string
+    description: "Optional. Description of the watchlist."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Watchlist"
+    default: null
+  multiplying_factor:
+    type: number
+    description: "Optional. Weight applied to the risk score for entities in this watchlist. The default is 1.0 if it is not specified."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Watchlist"
+    default: null
+  watchlist_id:
+    type: string
+    description: "Optional. The ID to use for the watchlist, which will become the final component of the watchlist's resource name. This value should be 4-63 characters, and valid characters are /a-z-/."
+    default: null
+  entity_population_mechanism:
+    type: list
+    description: "Nested block: entity_population_mechanism"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  watchlist_user_preferences:
+    type: list
+    description: "Nested block: watchlist_user_preferences"
+    default: []
+
+resources:
+  main:
+    type: gcp:chronicle:Watchlist
+    properties:
+      display_name: ${var.display_name}
+      instance: ${var.instance}
+      location: ${var.location}
+      description: ${var.description}
+      id: ${var.id}
+      multiplying_factor: ${var.multiplying_factor}
+      project: ${var.project}
+      watchlist_id: ${var.watchlist_id}
+      dynamic:
+        entity_population_mechanism:
+          for_each: ${var.entity_population_mechanism}
+          content:
+            manual: ${each.value.manual}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        watchlist_user_preferences:
+          for_each: ${var.watchlist_user_preferences}
+          content:
+            pinned: ${each.value.pinned}

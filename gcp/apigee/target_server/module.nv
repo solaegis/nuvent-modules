@@ -1,0 +1,70 @@
+variables:
+  env_id:
+    type: string
+    description: "The Apigee environment group associated with the Apigee environment, in the format 'organizations/{{org_name}}/environments/{{env_name}}'."
+  host:
+    type: string
+    description: "The host name this target connects to. Value must be a valid hostname as described by RFC-1123."
+  name:
+    type: string
+    description: "The resource id of this reference. Values must match the regular expression [\w\s-.]+."
+  port:
+    type: number
+    description: "The port number this target connects to on the given host. Value must be between 1 and 65535, inclusive."
+  description:
+    type: string
+    description: "A human-readable description of this TargetServer."
+    default: null
+  id:
+    type: string
+    description: "Optional property for TargetServer"
+    default: null
+  is_enabled:
+    type: boolean
+    description: "Enabling/disabling a TargetServer is useful when TargetServers are used in load balancing configurations, and one or more TargetServers need to taken out of rotation periodically. Defaults to true."
+    default: null
+  protocol:
+    type: string
+    description: "Immutable. The protocol used by this TargetServer. Possible values: [\"HTTP\", \"HTTP2\", \"GRPC_TARGET\", \"GRPC\", \"EXTERNAL_CALLOUT\"]"
+    default: null
+  s_sl_info:
+    type: list
+    description: "Nested block: s_sl_info"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:TargetServer
+    properties:
+      env_id: ${var.env_id}
+      host: ${var.host}
+      name: ${var.name}
+      port: ${var.port}
+      description: ${var.description}
+      id: ${var.id}
+      is_enabled: ${var.is_enabled}
+      protocol: ${var.protocol}
+      dynamic:
+        s_sl_info:
+          for_each: ${var.s_sl_info}
+          content:
+            ciphers: ${each.value.ciphers}
+            client_auth_enabled: ${each.value.client_auth_enabled}
+            enabled: ${each.value.enabled}
+            enforce: ${each.value.enforce}
+            ignore_validation_errors: ${each.value.ignore_validation_errors}
+            key_alias: ${each.value.key_alias}
+            key_store: ${each.value.key_store}
+            protocols: ${each.value.protocols}
+            trust_store: ${each.value.trust_store}
+            common_name: ${each.value.common_name}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

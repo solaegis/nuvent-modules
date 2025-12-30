@@ -1,0 +1,35 @@
+variables:
+  site_id:
+    type: string
+    description: "Required. The ID of the site in which to create this Version."
+  id:
+    type: string
+    description: "Optional property for HostingVersion"
+    default: null
+  config:
+    type: list
+    description: "Nested block: config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:firebase:HostingVersion
+    properties:
+      site_id: ${var.site_id}
+      id: ${var.id}
+      dynamic:
+        config:
+          for_each: ${var.config}
+          content:
+            headers: ${each.value.headers}
+            redirects: ${each.value.redirects}
+            rewrites: ${each.value.rewrites}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

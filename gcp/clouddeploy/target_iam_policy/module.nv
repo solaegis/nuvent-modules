@@ -1,0 +1,29 @@
+variables:
+  name:
+    type: string
+    description: "Required property for TargetIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for TargetIamPolicy"
+  id:
+    type: string
+    description: "Optional property for TargetIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for TargetIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TargetIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:clouddeploy:TargetIamPolicy
+    properties:
+      name: ${var.name}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

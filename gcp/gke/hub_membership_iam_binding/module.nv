@@ -1,0 +1,44 @@
+variables:
+  members:
+    type: list
+    description: "Required property for HubMembershipIamBinding"
+  membership_id:
+    type: string
+    description: "Required property for HubMembershipIamBinding"
+  role:
+    type: string
+    description: "Required property for HubMembershipIamBinding"
+  id:
+    type: string
+    description: "Optional property for HubMembershipIamBinding"
+    default: null
+  location:
+    type: string
+    description: "Optional property for HubMembershipIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for HubMembershipIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:gke:HubMembershipIamBinding
+    properties:
+      members: ${var.members}
+      membership_id: ${var.membership_id}
+      role: ${var.role}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

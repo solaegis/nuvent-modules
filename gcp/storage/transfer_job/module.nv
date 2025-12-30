@@ -1,0 +1,109 @@
+variables:
+  description:
+    type: string
+    description: "Unique description to identify the Transfer Job."
+  id:
+    type: string
+    description: "Optional property for TransferJob"
+    default: null
+  name:
+    type: string
+    description: "The name of the Transfer Job."
+    default: null
+  project:
+    type: string
+    description: "The project in which the resource belongs. If it is not provided, the provider project is used."
+    default: null
+  service_account:
+    type: string
+    description: "The user-managed service account to run the job. If this field is specified, the given service account is granted the necessary permissions to all applicable resources (e.g. GCS buckets) required by the job."
+    default: null
+  status:
+    type: string
+    description: "Status of the job. Default: ENABLED. NOTE: The effect of the new job status takes place during a subsequent job run. For example, if you change the job status from ENABLED to DISABLED, and an operation spawned by the transfer is running, the status change would not affect the current operation."
+    default: null
+  event_stream:
+    type: list
+    description: "Nested block: event_stream"
+    default: []
+  logging_config:
+    type: list
+    description: "Nested block: logging_config"
+    default: []
+  notification_config:
+    type: list
+    description: "Nested block: notification_config"
+    default: []
+  replication_spec:
+    type: list
+    description: "Nested block: replication_spec"
+    default: []
+  schedule:
+    type: list
+    description: "Nested block: schedule"
+    default: []
+  transfer_spec:
+    type: list
+    description: "Nested block: transfer_spec"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:TransferJob
+    properties:
+      description: ${var.description}
+      id: ${var.id}
+      name: ${var.name}
+      project: ${var.project}
+      service_account: ${var.service_account}
+      status: ${var.status}
+      dynamic:
+        event_stream:
+          for_each: ${var.event_stream}
+          content:
+            event_stream_expiration_time: ${each.value.event_stream_expiration_time}
+            event_stream_start_time: ${each.value.event_stream_start_time}
+            name: ${each.value.name}
+        logging_config:
+          for_each: ${var.logging_config}
+          content:
+            enable_on_prem_gcs_transfer_logs: ${each.value.enable_on_prem_gcs_transfer_logs}
+            log_action_states: ${each.value.log_action_states}
+            log_actions: ${each.value.log_actions}
+        notification_config:
+          for_each: ${var.notification_config}
+          content:
+            event_types: ${each.value.event_types}
+            payload_format: ${each.value.payload_format}
+            pubsub_topic: ${each.value.pubsub_topic}
+        replication_spec:
+          for_each: ${var.replication_spec}
+          content:
+            gcs_data_sink: ${each.value.gcs_data_sink}
+            gcs_data_source: ${each.value.gcs_data_source}
+            object_conditions: ${each.value.object_conditions}
+            transfer_options: ${each.value.transfer_options}
+        schedule:
+          for_each: ${var.schedule}
+          content:
+            repeat_interval: ${each.value.repeat_interval}
+            schedule_end_date: ${each.value.schedule_end_date}
+            schedule_start_date: ${each.value.schedule_start_date}
+            start_time_of_day: ${each.value.start_time_of_day}
+        transfer_spec:
+          for_each: ${var.transfer_spec}
+          content:
+            sink_agent_pool_name: ${each.value.sink_agent_pool_name}
+            source_agent_pool_name: ${each.value.source_agent_pool_name}
+            aws_s3_compatible_data_source: ${each.value.aws_s3_compatible_data_source}
+            aws_s3_data_source: ${each.value.aws_s3_data_source}
+            azure_blob_storage_data_source: ${each.value.azure_blob_storage_data_source}
+            gcs_data_sink: ${each.value.gcs_data_sink}
+            gcs_data_source: ${each.value.gcs_data_source}
+            hdfs_data_source: ${each.value.hdfs_data_source}
+            http_data_source: ${each.value.http_data_source}
+            object_conditions: ${each.value.object_conditions}
+            posix_data_sink: ${each.value.posix_data_sink}
+            posix_data_source: ${each.value.posix_data_source}
+            transfer_manifest: ${each.value.transfer_manifest}
+            transfer_options: ${each.value.transfer_options}

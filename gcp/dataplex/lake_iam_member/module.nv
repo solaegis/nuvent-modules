@@ -1,0 +1,44 @@
+variables:
+  lake:
+    type: string
+    description: "Required property for LakeIamMember"
+  member:
+    type: string
+    description: "Required property for LakeIamMember"
+  role:
+    type: string
+    description: "Required property for LakeIamMember"
+  id:
+    type: string
+    description: "Optional property for LakeIamMember"
+    default: null
+  location:
+    type: string
+    description: "Optional property for LakeIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for LakeIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataplex:LakeIamMember
+    properties:
+      lake: ${var.lake}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

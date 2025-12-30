@@ -1,0 +1,47 @@
+variables:
+  service:
+    type: string
+    description: "Required property for Service"
+  check_if_service_has_usage_on_destroy:
+    type: boolean
+    description: "Optional property for Service"
+    default: null
+  disable_dependent_services:
+    type: boolean
+    description: "Optional property for Service"
+    default: null
+  disable_on_destroy:
+    type: boolean
+    description: "Optional property for Service"
+    default: null
+  id:
+    type: string
+    description: "Optional property for Service"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Service"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:project:Service
+    properties:
+      service: ${var.service}
+      check_if_service_has_usage_on_destroy: ${var.check_if_service_has_usage_on_destroy}
+      disable_dependent_services: ${var.disable_dependent_services}
+      disable_on_destroy: ${var.disable_on_destroy}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            read: ${each.value.read}
+            update: ${each.value.update}

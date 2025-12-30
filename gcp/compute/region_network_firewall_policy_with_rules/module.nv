@@ -1,0 +1,65 @@
+variables:
+  name:
+    type: string
+    description: "User-provided name of the Network firewall policy. The name should be unique in the project in which the firewall policy is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression [a-z]([-a-z0-9]*[a-z0-9])? which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  description:
+    type: string
+    description: "An optional description of this resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RegionNetworkFirewallPolicyWithRules"
+    default: null
+  policy_type:
+    type: string
+    description: "Policy type is used to determine which resources (networks) the policy can be associated with. A policy can be associated with a network only if the network has the matching policyType in its network profile. Different policy types may support some of the Firewall Rules features. Possible values: [\"VPC_POLICY\", \"RDMA_ROCE_POLICY\"]"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RegionNetworkFirewallPolicyWithRules"
+    default: null
+  region:
+    type: string
+    description: "The region of this resource."
+    default: null
+  rule:
+    type: list
+    description: "Nested block: rule"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:RegionNetworkFirewallPolicyWithRules
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      policy_type: ${var.policy_type}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        rule:
+          for_each: ${var.rule}
+          content:
+            action: ${each.value.action}
+            description: ${each.value.description}
+            direction: ${each.value.direction}
+            disabled: ${each.value.disabled}
+            enable_logging: ${each.value.enable_logging}
+            priority: ${each.value.priority}
+            rule_name: ${each.value.rule_name}
+            security_profile_group: ${each.value.security_profile_group}
+            target_service_accounts: ${each.value.target_service_accounts}
+            tls_inspect: ${each.value.tls_inspect}
+            match: ${each.value.match}
+            target_secure_tag: ${each.value.target_secure_tag}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

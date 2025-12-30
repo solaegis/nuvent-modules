@@ -1,0 +1,55 @@
+variables:
+  display_name:
+    type: string
+    description: "The human-readable name of the fulfillment, unique within the agent."
+  enabled:
+    type: boolean
+    description: "Whether fulfillment is enabled."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Fulfillment"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Fulfillment"
+    default: null
+  features:
+    type: list
+    description: "Nested block: features"
+    default: []
+  generic_web_service:
+    type: list
+    description: "Nested block: generic_web_service"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:Fulfillment
+    properties:
+      display_name: ${var.display_name}
+      enabled: ${var.enabled}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        features:
+          for_each: ${var.features}
+          content:
+            type: ${each.value.type}
+        generic_web_service:
+          for_each: ${var.generic_web_service}
+          content:
+            password: ${each.value.password}
+            request_headers: ${each.value.request_headers}
+            uri: ${each.value.uri}
+            username: ${each.value.username}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

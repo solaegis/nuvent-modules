@@ -1,0 +1,48 @@
+variables:
+  member:
+    type: string
+    description: "Required property for WorkstationConfigIamMember"
+  role:
+    type: string
+    description: "Required property for WorkstationConfigIamMember"
+  workstation_cluster_id:
+    type: string
+    description: "Required property for WorkstationConfigIamMember"
+  workstation_config_id:
+    type: string
+    description: "Required property for WorkstationConfigIamMember"
+  id:
+    type: string
+    description: "Optional property for WorkstationConfigIamMember"
+    default: null
+  location:
+    type: string
+    description: "Optional property for WorkstationConfigIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WorkstationConfigIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:workstations:WorkstationConfigIamMember
+    properties:
+      member: ${var.member}
+      role: ${var.role}
+      workstation_cluster_id: ${var.workstation_cluster_id}
+      workstation_config_id: ${var.workstation_config_id}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

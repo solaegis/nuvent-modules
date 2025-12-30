@@ -1,0 +1,34 @@
+variables:
+  ip_cidr_range:
+    type: string
+    description: "The IP address range of the subnet in CIDR format."
+  name:
+    type: string
+    description: "The ID of the subnet. For userDefined subnets, this name should be in the format of \"service-n\", where n ranges from 1 to 5."
+  parent:
+    type: string
+    description: "The resource name of the private cloud to create a new subnet in. Resource names are schemeless URIs that follow the conventions in https://cloud.google.com/apis/design/resource_names. For example: projects/my-project/locations/us-west1-a/privateClouds/my-cloud"
+  id:
+    type: string
+    description: "Optional property for Subnet"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vmwareengine:Subnet
+    properties:
+      ip_cidr_range: ${var.ip_cidr_range}
+      name: ${var.name}
+      parent: ${var.parent}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

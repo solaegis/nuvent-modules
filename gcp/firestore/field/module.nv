@@ -1,0 +1,56 @@
+variables:
+  collection:
+    type: string
+    description: "The id of the collection group to configure."
+  field:
+    type: string
+    description: "The id of the field to configure."
+  database:
+    type: string
+    description: "The Firestore database id. Defaults to '\"(default)\"'."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Field"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Field"
+    default: null
+  index_config:
+    type: list
+    description: "Nested block: index_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  ttl_config:
+    type: list
+    description: "Nested block: ttl_config"
+    default: []
+
+resources:
+  main:
+    type: gcp:firestore:Field
+    properties:
+      collection: ${var.collection}
+      field: ${var.field}
+      database: ${var.database}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        index_config:
+          for_each: ${var.index_config}
+          content:
+            indexes: ${each.value.indexes}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        ttl_config:
+          for_each: ${var.ttl_config}
+          content:
+            state: ${each.value.state}

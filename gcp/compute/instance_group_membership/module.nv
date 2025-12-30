@@ -1,0 +1,39 @@
+variables:
+  instance:
+    type: string
+    description: "An instance being added to the InstanceGroup"
+  instance_group:
+    type: string
+    description: "Represents an Instance Group resource name that the instance belongs to."
+  id:
+    type: string
+    description: "Optional property for InstanceGroupMembership"
+    default: null
+  project:
+    type: string
+    description: "Optional property for InstanceGroupMembership"
+    default: null
+  zone:
+    type: string
+    description: "A reference to the zone where the instance group resides."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:InstanceGroupMembership
+    properties:
+      instance: ${var.instance}
+      instance_group: ${var.instance_group}
+      id: ${var.id}
+      project: ${var.project}
+      zone: ${var.zone}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

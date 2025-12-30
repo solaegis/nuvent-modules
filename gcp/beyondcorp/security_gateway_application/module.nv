@@ -1,0 +1,65 @@
+variables:
+  application_id:
+    type: string
+    description: "User-settable Application resource ID. * Must start with a letter. * Must contain between 4-63 characters from '/a-z-/'. * Must end with a number or letter."
+  security_gateway_id:
+    type: string
+    description: "ID of the Security Gateway resource this belongs to."
+  display_name:
+    type: string
+    description: "Optional. An arbitrary user-provided name for the Application resource. Cannot exceed 64 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SecurityGatewayApplication"
+    default: null
+  project:
+    type: string
+    description: "Optional property for SecurityGatewayApplication"
+    default: null
+  schema:
+    type: string
+    description: "Type of the external application. Possible values: [\"PROXY_GATEWAY\", \"API_GATEWAY\"]"
+    default: null
+  endpoint_matchers:
+    type: list
+    description: "Nested block: endpoint_matchers"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  upstreams:
+    type: list
+    description: "Nested block: upstreams"
+    default: []
+
+resources:
+  main:
+    type: gcp:beyondcorp:SecurityGatewayApplication
+    properties:
+      application_id: ${var.application_id}
+      security_gateway_id: ${var.security_gateway_id}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      project: ${var.project}
+      schema: ${var.schema}
+      dynamic:
+        endpoint_matchers:
+          for_each: ${var.endpoint_matchers}
+          content:
+            hostname: ${each.value.hostname}
+            ports: ${each.value.ports}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        upstreams:
+          for_each: ${var.upstreams}
+          content:
+            egress_policy: ${each.value.egress_policy}
+            external: ${each.value.external}
+            network: ${each.value.network}
+            proxy_protocol: ${each.value.proxy_protocol}

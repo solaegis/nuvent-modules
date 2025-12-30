@@ -1,0 +1,29 @@
+variables:
+  entry_group_id:
+    type: string
+    description: "Required property for EntryGroupIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for EntryGroupIamPolicy"
+  id:
+    type: string
+    description: "Optional property for EntryGroupIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for EntryGroupIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for EntryGroupIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:dataplex:EntryGroupIamPolicy
+    properties:
+      entry_group_id: ${var.entry_group_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

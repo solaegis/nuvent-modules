@@ -1,0 +1,116 @@
+variables:
+  app:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  display_name:
+    type: string
+    description: "Display name of the guardrail."
+  guardrail_id:
+    type: string
+    description: "The ID to use for the guardrail, which will become the final component of the guardrail's resource name. If not provided, a unique ID will be automatically assigned for the guardrail."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  description:
+    type: string
+    description: "Description of the guardrail."
+    default: null
+  enabled:
+    type: boolean
+    description: "Whether the guardrail is enabled."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Guardrail"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Guardrail"
+    default: null
+  action:
+    type: list
+    description: "Nested block: action"
+    default: []
+  code_callback:
+    type: list
+    description: "Nested block: code_callback"
+    default: []
+  content_filter:
+    type: list
+    description: "Nested block: content_filter"
+    default: []
+  llm_policy:
+    type: list
+    description: "Nested block: llm_policy"
+    default: []
+  llm_prompt_security:
+    type: list
+    description: "Nested block: llm_prompt_security"
+    default: []
+  model_safety:
+    type: list
+    description: "Nested block: model_safety"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:ces:Guardrail
+    properties:
+      app: ${var.app}
+      display_name: ${var.display_name}
+      guardrail_id: ${var.guardrail_id}
+      location: ${var.location}
+      description: ${var.description}
+      enabled: ${var.enabled}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        action:
+          for_each: ${var.action}
+          content:
+            generative_answer: ${each.value.generative_answer}
+            respond_immediately: ${each.value.respond_immediately}
+            transfer_agent: ${each.value.transfer_agent}
+        code_callback:
+          for_each: ${var.code_callback}
+          content:
+            after_agent_callback: ${each.value.after_agent_callback}
+            after_model_callback: ${each.value.after_model_callback}
+            before_agent_callback: ${each.value.before_agent_callback}
+            before_model_callback: ${each.value.before_model_callback}
+        content_filter:
+          for_each: ${var.content_filter}
+          content:
+            banned_contents: ${each.value.banned_contents}
+            banned_contents_in_agent_response: ${each.value.banned_contents_in_agent_response}
+            banned_contents_in_user_input: ${each.value.banned_contents_in_user_input}
+            disregard_diacritics: ${each.value.disregard_diacritics}
+            match_type: ${each.value.match_type}
+        llm_policy:
+          for_each: ${var.llm_policy}
+          content:
+            allow_short_utterance: ${each.value.allow_short_utterance}
+            fail_open: ${each.value.fail_open}
+            max_conversation_messages: ${each.value.max_conversation_messages}
+            policy_scope: ${each.value.policy_scope}
+            prompt: ${each.value.prompt}
+            model_settings: ${each.value.model_settings}
+        llm_prompt_security:
+          for_each: ${var.llm_prompt_security}
+          content:
+            custom_policy: ${each.value.custom_policy}
+            default_settings: ${each.value.default_settings}
+        model_safety:
+          for_each: ${var.model_safety}
+          content:
+            safety_settings: ${each.value.safety_settings}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,60 @@
+variables:
+  backend_service:
+    type: string
+    description: "A reference to the BackendService resource."
+  name:
+    type: string
+    description: "Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  certificate_map:
+    type: string
+    description: "A reference to the CertificateMap resource uri that identifies a certificate map associated with the given target proxy. This field can only be set for global target proxies. Accepted format is '//certificatemanager.googleapis.com/projects/{project}/locations/{location}/certificateMaps/{resourceName}'."
+    default: null
+  description:
+    type: string
+    description: "An optional description of this resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for TargetSslProxy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TargetSslProxy"
+    default: null
+  proxy_header:
+    type: string
+    description: "Specifies the type of proxy header to append before sending data to the backend. Default value: \"NONE\" Possible values: [\"NONE\", \"PROXY_V1\"]"
+    default: null
+  ssl_certificates:
+    type: list
+    description: "A list of SslCertificate resources that are used to authenticate connections between users and the load balancer. At least one SSL certificate must be specified."
+    default: null
+  ssl_policy:
+    type: string
+    description: "A reference to the SslPolicy resource that will be associated with the TargetSslProxy resource. If not set, the TargetSslProxy resource will not have any SSL policy configured."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:TargetSslProxy
+    properties:
+      backend_service: ${var.backend_service}
+      name: ${var.name}
+      certificate_map: ${var.certificate_map}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      proxy_header: ${var.proxy_header}
+      ssl_certificates: ${var.ssl_certificates}
+      ssl_policy: ${var.ssl_policy}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

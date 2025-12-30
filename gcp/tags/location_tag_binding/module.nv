@@ -1,0 +1,34 @@
+variables:
+  parent:
+    type: string
+    description: "The full resource name of the resource the TagValue is bound to. E.g. //cloudresourcemanager.googleapis.com/projects/123"
+  tag_value:
+    type: string
+    description: "The TagValue of the TagBinding. Must be of the form tagValues/456."
+  id:
+    type: string
+    description: "Optional property for LocationTagBinding"
+    default: null
+  location:
+    type: string
+    description: "The geographic location where the transfer config should reside. Examples: US, EU, asia-northeast1. The default value is US."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:tags:LocationTagBinding
+    properties:
+      parent: ${var.parent}
+      tag_value: ${var.tag_value}
+      id: ${var.id}
+      location: ${var.location}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

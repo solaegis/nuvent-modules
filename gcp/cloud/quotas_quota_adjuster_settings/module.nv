@@ -1,0 +1,31 @@
+variables:
+  enablement:
+    type: string
+    description: "Required. The configured value of the enablement at the given resource. Possible values: [\"ENABLED\", \"DISABLED\"]"
+  id:
+    type: string
+    description: "Optional property for QuotasQuotaAdjusterSettings"
+    default: null
+  parent:
+    type: string
+    description: "The parent of the quota preference. Allowed parent format is \"projects/[project-id / number]\"."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloud:QuotasQuotaAdjusterSettings
+    properties:
+      enablement: ${var.enablement}
+      id: ${var.id}
+      parent: ${var.parent}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

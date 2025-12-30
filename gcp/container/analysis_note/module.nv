@@ -1,0 +1,68 @@
+variables:
+  name:
+    type: string
+    description: "The name of the note."
+  expiration_time:
+    type: string
+    description: "Time of expiration for this note. Leave empty if note does not expire."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AnalysisNote"
+    default: null
+  long_description:
+    type: string
+    description: "A detailed description of the note"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AnalysisNote"
+    default: null
+  related_note_names:
+    type: list
+    description: "Names of other notes related to this note."
+    default: null
+  short_description:
+    type: string
+    description: "A one sentence description of the note."
+    default: null
+  attestation_authority:
+    type: list
+    description: "Nested block: attestation_authority"
+    default: []
+  related_url:
+    type: list
+    description: "Nested block: related_url"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:container:AnalysisNote
+    properties:
+      name: ${var.name}
+      expiration_time: ${var.expiration_time}
+      id: ${var.id}
+      long_description: ${var.long_description}
+      project: ${var.project}
+      related_note_names: ${var.related_note_names}
+      short_description: ${var.short_description}
+      dynamic:
+        attestation_authority:
+          for_each: ${var.attestation_authority}
+          content:
+            hint: ${each.value.hint}
+        related_url:
+          for_each: ${var.related_url}
+          content:
+            label: ${each.value.label}
+            url: ${each.value.url}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

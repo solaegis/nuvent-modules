@@ -1,0 +1,162 @@
+variables:
+  default_language_code:
+    type: string
+    description: "The default language of the agent as a language tag. [See Language Support](https://cloud.google.com/dialogflow/cx/docs/reference/language) for a list of the currently supported language codes. This field cannot be updated after creation."
+  display_name:
+    type: string
+    description: "The human-readable name of the agent, unique within the location."
+  location:
+    type: string
+    description: "The name of the location this agent is located in.  ~> **Note:** The first time you are deploying an Agent in your project you must configure location settings.  This is a one time step but at the moment you can only [configure location settings](https://cloud.google.com/dialogflow/cx/docs/concept/region#location-settings) via the Dialogflow CX console.  Another options is to use global location so you don't need to manually configure location settings."
+  time_zone:
+    type: string
+    description: "The time zone of this agent from the [time zone database](https://www.iana.org/time-zones), e.g., America/New_York, Europe/Paris."
+  avatar_uri:
+    type: string
+    description: "The URI of the agent's avatar. Avatars are used throughout the Dialogflow console and in the self-hosted Web Demo integration."
+    default: null
+  delete_chat_engine_on_destroy:
+    type: boolean
+    description: "If set to 'true', Terraform will delete the chat engine associated with the agent when the agent is destroyed. Otherwise, the chat engine will persist.  This virtual field addresses a critical dependency chain: 'agent' -> 'engine' -> 'data store'. The chat engine is automatically provisioned when a data store is linked to the agent, meaning Terraform doesn't have direct control over its lifecycle as a managed resource. This creates a problem when both the agent and data store are managed by Terraform and need to be destroyed. Without delete_chat_engine_on_destroy set to true, the data store's deletion would fail because the unmanaged chat engine would still be using it. This setting ensures that the entire dependency chain can be properly torn down. See 'mmv1/templates/terraform/examples/dialogflowcx_tool_data_store.tf.tmpl' as an example.  Data store can be linked to an agent through the 'knowledgeConnectorSettings' field of a [flow](https://cloud.google.com/dialogflow/cx/docs/reference/rest/v3/projects.locations.agents.flows#resource:-flow) or a [page](https://cloud.google.com/dialogflow/cx/docs/reference/rest/v3/projects.locations.agents.flows.pages#resource:-page) or the 'dataStoreSpec' field of a [tool](https://cloud.google.com/dialogflow/cx/docs/reference/rest/v3/projects.locations.agents.tools#resource:-tool). The ID of the implicitly created engine is stored in the 'genAppBuilderSettings' field of the [agent](https://cloud.google.com/dialogflow/cx/docs/reference/rest/v3/projects.locations.agents#resource:-agent)."
+    default: null
+  description:
+    type: string
+    description: "The description of this agent. The maximum length is 500 characters. If exceeded, the request is rejected."
+    default: null
+  enable_multi_language_training:
+    type: boolean
+    description: "Enable training multi-lingual models for this agent. These models will be trained on all the languages supported by the agent."
+    default: null
+  enable_spell_correction:
+    type: boolean
+    description: "Indicates if automatic spell correction is enabled in detect intent requests."
+    default: null
+  enable_stackdriver_logging:
+    type: boolean
+    description: "Determines whether this agent should log conversation queries."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CxAgent"
+    default: null
+  locked:
+    type: boolean
+    description: "Indicates whether the agent is locked for changes. If the agent is locked, modifications to the agent will be rejected except for [agents.restore][]."
+    default: null
+  project:
+    type: string
+    description: "Optional property for CxAgent"
+    default: null
+  security_settings:
+    type: string
+    description: "Name of the SecuritySettings reference for the agent. Format: projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>."
+    default: null
+  start_playbook:
+    type: string
+    description: "Name of the start playbook in this agent. A start playbook will be automatically created when the agent is created, and can only be deleted by deleting the agent. Format: **projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>**. Currently only the default playbook with id \"00000000-0000-0000-0000-000000000000\" is allowed."
+    default: null
+  supported_language_codes:
+    type: list
+    description: "The list of all languages supported by this agent (except for the default_language_code)."
+    default: null
+  advanced_settings:
+    type: list
+    description: "Nested block: advanced_settings"
+    default: []
+  answer_feedback_settings:
+    type: list
+    description: "Nested block: answer_feedback_settings"
+    default: []
+  client_certificate_settings:
+    type: list
+    description: "Nested block: client_certificate_settings"
+    default: []
+  gen_app_builder_settings:
+    type: list
+    description: "Nested block: gen_app_builder_settings"
+    default: []
+  git_integration_settings:
+    type: list
+    description: "Nested block: git_integration_settings"
+    default: []
+  personalization_settings:
+    type: list
+    description: "Nested block: personalization_settings"
+    default: []
+  speech_to_text_settings:
+    type: list
+    description: "Nested block: speech_to_text_settings"
+    default: []
+  text_to_speech_settings:
+    type: list
+    description: "Nested block: text_to_speech_settings"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:CxAgent
+    properties:
+      default_language_code: ${var.default_language_code}
+      display_name: ${var.display_name}
+      location: ${var.location}
+      time_zone: ${var.time_zone}
+      avatar_uri: ${var.avatar_uri}
+      delete_chat_engine_on_destroy: ${var.delete_chat_engine_on_destroy}
+      description: ${var.description}
+      enable_multi_language_training: ${var.enable_multi_language_training}
+      enable_spell_correction: ${var.enable_spell_correction}
+      enable_stackdriver_logging: ${var.enable_stackdriver_logging}
+      id: ${var.id}
+      locked: ${var.locked}
+      project: ${var.project}
+      security_settings: ${var.security_settings}
+      start_playbook: ${var.start_playbook}
+      supported_language_codes: ${var.supported_language_codes}
+      dynamic:
+        advanced_settings:
+          for_each: ${var.advanced_settings}
+          content:
+            audio_export_gcs_destination: ${each.value.audio_export_gcs_destination}
+            dtmf_settings: ${each.value.dtmf_settings}
+            logging_settings: ${each.value.logging_settings}
+            speech_settings: ${each.value.speech_settings}
+        answer_feedback_settings:
+          for_each: ${var.answer_feedback_settings}
+          content:
+            enable_answer_feedback: ${each.value.enable_answer_feedback}
+        client_certificate_settings:
+          for_each: ${var.client_certificate_settings}
+          content:
+            passphrase: ${each.value.passphrase}
+            private_key: ${each.value.private_key}
+            ssl_certificate: ${each.value.ssl_certificate}
+        gen_app_builder_settings:
+          for_each: ${var.gen_app_builder_settings}
+          content:
+            engine: ${each.value.engine}
+        git_integration_settings:
+          for_each: ${var.git_integration_settings}
+          content:
+            github_settings: ${each.value.github_settings}
+        personalization_settings:
+          for_each: ${var.personalization_settings}
+          content:
+            default_end_user_metadata: ${each.value.default_end_user_metadata}
+        speech_to_text_settings:
+          for_each: ${var.speech_to_text_settings}
+          content:
+            enable_speech_adaptation: ${each.value.enable_speech_adaptation}
+        text_to_speech_settings:
+          for_each: ${var.text_to_speech_settings}
+          content:
+            synthesize_speech_configs: ${each.value.synthesize_speech_configs}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

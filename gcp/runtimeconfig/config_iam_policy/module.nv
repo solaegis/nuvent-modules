@@ -1,0 +1,24 @@
+variables:
+  config:
+    type: string
+    description: "Required property for ConfigIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for ConfigIamPolicy"
+  id:
+    type: string
+    description: "Optional property for ConfigIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ConfigIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:runtimeconfig:ConfigIamPolicy
+    properties:
+      config: ${var.config}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}

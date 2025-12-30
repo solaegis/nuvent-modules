@@ -1,0 +1,42 @@
+variables:
+  parent:
+    type: string
+    description: "The AccessPolicy this ServicePerimeter lives in. Format: accessPolicies/{policy_id}"
+  id:
+    type: string
+    description: "Optional property for ContextManagerServicePerimeters"
+    default: null
+  service_perimeters:
+    type: list
+    description: "Nested block: service_perimeters"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:access:ContextManagerServicePerimeters
+    properties:
+      parent: ${var.parent}
+      id: ${var.id}
+      dynamic:
+        service_perimeters:
+          for_each: ${var.service_perimeters}
+          content:
+            create_time: ${each.value.create_time}
+            description: ${each.value.description}
+            name: ${each.value.name}
+            perimeter_type: ${each.value.perimeter_type}
+            title: ${each.value.title}
+            update_time: ${each.value.update_time}
+            use_explicit_dry_run_spec: ${each.value.use_explicit_dry_run_spec}
+            spec: ${each.value.spec}
+            status: ${each.value.status}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

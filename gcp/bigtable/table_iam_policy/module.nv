@@ -1,0 +1,28 @@
+variables:
+  instance_name:
+    type: string
+    description: "Required property for TableIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for TableIamPolicy"
+  table:
+    type: string
+    description: "Required property for TableIamPolicy"
+  id:
+    type: string
+    description: "Optional property for TableIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TableIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:bigtable:TableIamPolicy
+    properties:
+      instance_name: ${var.instance_name}
+      policy_data: ${var.policy_data}
+      table: ${var.table}
+      id: ${var.id}
+      project: ${var.project}

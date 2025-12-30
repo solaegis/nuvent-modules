@@ -1,0 +1,96 @@
+variables:
+  cluster:
+    type: string
+    description: "The azureCluster for the resource"
+  location:
+    type: string
+    description: "The location for the resource"
+  name:
+    type: string
+    description: "The name of this resource."
+  subnet_id:
+    type: string
+    description: "The ARM ID of the subnet where the node pool VMs run. Make sure it's a subnet under the virtual network in the cluster configuration."
+  version:
+    type: string
+    description: "The Kubernetes version (e.g. `1.19.10-gke.1000`) running on this node pool."
+  annotations:
+    type: object
+    description: "Optional. Annotations on the node pool. This field has the same restrictions as Kubernetes annotations. The total size of all keys and values combined is limited to 256k. Keys can have 2 segments: prefix (optional) and name (required), separated by a slash (/). Prefix must be a DNS subdomain. Name must be 63 characters or less, begin and end with alphanumerics, with dashes (-), underscores (_), dots (.), and alphanumerics between.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field `effective_annotations` for all of the annotations present on the resource."
+    default: null
+  azure_availability_zone:
+    type: string
+    description: "Optional. The Azure availability zone of the nodes in this nodepool. When unspecified, it defaults to `1`."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AzureNodePool"
+    default: null
+  project:
+    type: string
+    description: "The project for the resource"
+    default: null
+  autoscaling:
+    type: list
+    description: "Nested block: autoscaling"
+    default: []
+  config:
+    type: list
+    description: "Nested block: config"
+    default: []
+  management:
+    type: list
+    description: "Nested block: management"
+    default: []
+  max_pods_constraint:
+    type: list
+    description: "Nested block: max_pods_constraint"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:container:AzureNodePool
+    properties:
+      cluster: ${var.cluster}
+      location: ${var.location}
+      name: ${var.name}
+      subnet_id: ${var.subnet_id}
+      version: ${var.version}
+      annotations: ${var.annotations}
+      azure_availability_zone: ${var.azure_availability_zone}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        autoscaling:
+          for_each: ${var.autoscaling}
+          content:
+            max_node_count: ${each.value.max_node_count}
+            min_node_count: ${each.value.min_node_count}
+        config:
+          for_each: ${var.config}
+          content:
+            image_type: ${each.value.image_type}
+            labels: ${each.value.labels}
+            tags: ${each.value.tags}
+            vm_size: ${each.value.vm_size}
+            proxy_config: ${each.value.proxy_config}
+            root_volume: ${each.value.root_volume}
+            ssh_config: ${each.value.ssh_config}
+        management:
+          for_each: ${var.management}
+          content:
+            auto_repair: ${each.value.auto_repair}
+        max_pods_constraint:
+          for_each: ${var.max_pods_constraint}
+          content:
+            max_pods_per_node: ${each.value.max_pods_per_node}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,88 @@
+variables:
+  name:
+    type: string
+    description: "The repository's name."
+  deletion_policy:
+    type: string
+    description: "Policy to control how the repository and its child resources are deleted. When set to 'FORCE', any child resources of this repository will also be deleted. Possible values: 'DELETE', 'FORCE'. Defaults to 'DELETE'. Default value: \"DELETE\" Possible values: [\"DELETE\", \"FORCE\"]"
+    default: null
+  display_name:
+    type: string
+    description: "Optional. The repository's user-friendly name."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Repository"
+    default: null
+  kms_key_name:
+    type: string
+    description: "Optional. The reference to a KMS encryption key. If provided, it will be used to encrypt user data in the repository and all child resources. It is not possible to add or update the encryption key after the repository is created. Example projects/[kms_project_id]/locations/[region]/keyRings/[key_region]/cryptoKeys/[key]"
+    default: null
+  labels:
+    type: object
+    description: "Optional. Repository user labels. An object containing a list of \"key\": value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  npmrc_environment_variables_secret_version:
+    type: string
+    description: "Optional. The name of the Secret Manager secret version to be used to interpolate variables into the .npmrc file for package installation operations. Must be in the format projects/*/secrets/*/versions/*. The file itself must be in a JSON format."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Repository"
+    default: null
+  region:
+    type: string
+    description: "A reference to the region"
+    default: null
+  service_account:
+    type: string
+    description: "The service account to run workflow invocations under."
+    default: null
+  git_remote_settings:
+    type: list
+    description: "Nested block: git_remote_settings"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  workspace_compilation_overrides:
+    type: list
+    description: "Nested block: workspace_compilation_overrides"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataform:Repository
+    properties:
+      name: ${var.name}
+      deletion_policy: ${var.deletion_policy}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      kms_key_name: ${var.kms_key_name}
+      labels: ${var.labels}
+      npmrc_environment_variables_secret_version: ${var.npmrc_environment_variables_secret_version}
+      project: ${var.project}
+      region: ${var.region}
+      service_account: ${var.service_account}
+      dynamic:
+        git_remote_settings:
+          for_each: ${var.git_remote_settings}
+          content:
+            authentication_token_secret_version: ${each.value.authentication_token_secret_version}
+            default_branch: ${each.value.default_branch}
+            token_status: ${each.value.token_status}
+            url: ${each.value.url}
+            ssh_authentication_config: ${each.value.ssh_authentication_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        workspace_compilation_overrides:
+          for_each: ${var.workspace_compilation_overrides}
+          content:
+            default_database: ${each.value.default_database}
+            schema_suffix: ${each.value.schema_suffix}
+            table_prefix: ${each.value.table_prefix}

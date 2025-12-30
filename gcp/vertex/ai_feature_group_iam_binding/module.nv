@@ -1,0 +1,44 @@
+variables:
+  feature_group:
+    type: string
+    description: "Required property for AiFeatureGroupIamBinding"
+  members:
+    type: list
+    description: "Required property for AiFeatureGroupIamBinding"
+  role:
+    type: string
+    description: "Required property for AiFeatureGroupIamBinding"
+  id:
+    type: string
+    description: "Optional property for AiFeatureGroupIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiFeatureGroupIamBinding"
+    default: null
+  region:
+    type: string
+    description: "Optional property for AiFeatureGroupIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:vertex:AiFeatureGroupIamBinding
+    properties:
+      feature_group: ${var.feature_group}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

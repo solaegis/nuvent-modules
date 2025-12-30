@@ -1,0 +1,48 @@
+variables:
+  name:
+    type: string
+    description: "Name of the repository."
+  parent_connection:
+    type: string
+    description: "The connection for the resource"
+  remote_uri:
+    type: string
+    description: "Required. Git Clone HTTPS URI."
+  annotations:
+    type: object
+    description: "Allows clients to store small amounts of arbitrary data.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Repository"
+    default: null
+  location:
+    type: string
+    description: "The location for the resource"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Repository"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloudbuildv2:Repository
+    properties:
+      name: ${var.name}
+      parent_connection: ${var.parent_connection}
+      remote_uri: ${var.remote_uri}
+      annotations: ${var.annotations}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

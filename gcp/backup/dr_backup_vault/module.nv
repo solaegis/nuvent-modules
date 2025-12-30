@@ -1,0 +1,102 @@
+variables:
+  backup_minimum_enforced_retention_duration:
+    type: string
+    description: "Required. The default and minimum enforced retention for each backup within the backup vault. The enforced retention for each backup can be extended."
+  backup_vault_id:
+    type: string
+    description: "Required. ID of the requesting object."
+  location:
+    type: string
+    description: "The GCP location for the backup vault."
+  access_restriction:
+    type: string
+    description: "Access restriction for the backup vault. Default value is 'WITHIN_ORGANIZATION' if not provided during creation. Default value: \"WITHIN_ORGANIZATION\" Possible values: [\"ACCESS_RESTRICTION_UNSPECIFIED\", \"WITHIN_PROJECT\", \"WITHIN_ORGANIZATION\", \"UNRESTRICTED\", \"WITHIN_ORG_BUT_UNRESTRICTED_FOR_BA\"]"
+    default: null
+  allow_missing:
+    type: boolean
+    description: "Allow idempotent deletion of backup vault. The request will still succeed in case the backup vault does not exist."
+    default: null
+  annotations:
+    type: object
+    description: "Optional. User annotations. See https://google.aip.dev/128#annotations Stores small amounts of arbitrary data.   **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  backup_retention_inheritance:
+    type: string
+    description: "How a backup's enforced retention end time is inherited. Default value is 'INHERIT_VAULT_RETENTION' if not provided during creation. Possible values: [\"BACKUP_RETENTION_INHERITANCE_UNSPECIFIED\", \"INHERIT_VAULT_RETENTION\", \"MATCH_BACKUP_EXPIRE_TIME\"]"
+    default: null
+  description:
+    type: string
+    description: "Optional. The description of the BackupVault instance (2048 characters or less)."
+    default: null
+  effective_time:
+    type: string
+    description: "Optional. Time after which the BackupVault resource is locked."
+    default: null
+  force_delete:
+    type: boolean
+    description: "If set, the following restrictions against deletion of the backup vault instance can be overridden:    * deletion of a backup vault instance containing no backups, but still containing empty datasources.    * deletion of a backup vault instance that is being referenced by an active backup plan."
+    default: null
+  force_update:
+    type: boolean
+    description: "If set, allow update to extend the minimum enforced retention for backup vault. This overrides  the restriction against conflicting retention periods. This conflict may occur when the  expiration schedule defined by the associated backup plan is shorter than the minimum  retention set by the backup vault."
+    default: null
+  id:
+    type: string
+    description: "Optional property for DrBackupVault"
+    default: null
+  ignore_backup_plan_references:
+    type: boolean
+    description: "If set, the following restrictions against deletion of the backup vault instance can be overridden:    * deletion of a backup vault instance that is being referenced by an active backup plan."
+    default: null
+  ignore_inactive_datasources:
+    type: boolean
+    description: "If set, the following restrictions against deletion of the backup vault instance can be overridden:    * deletion of a backup vault instance containing no backups, but still containing empty datasources."
+    default: null
+  labels:
+    type: object
+    description: "Optional. Resource labels to represent user provided metadata.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for DrBackupVault"
+    default: null
+  encryption_config:
+    type: list
+    description: "Nested block: encryption_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:backup:DrBackupVault
+    properties:
+      backup_minimum_enforced_retention_duration: ${var.backup_minimum_enforced_retention_duration}
+      backup_vault_id: ${var.backup_vault_id}
+      location: ${var.location}
+      access_restriction: ${var.access_restriction}
+      allow_missing: ${var.allow_missing}
+      annotations: ${var.annotations}
+      backup_retention_inheritance: ${var.backup_retention_inheritance}
+      description: ${var.description}
+      effective_time: ${var.effective_time}
+      force_delete: ${var.force_delete}
+      force_update: ${var.force_update}
+      id: ${var.id}
+      ignore_backup_plan_references: ${var.ignore_backup_plan_references}
+      ignore_inactive_datasources: ${var.ignore_inactive_datasources}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        encryption_config:
+          for_each: ${var.encryption_config}
+          content:
+            kms_key_name: ${each.value.kms_key_name}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

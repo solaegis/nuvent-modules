@@ -1,0 +1,54 @@
+variables:
+  config_id:
+    type: string
+    description: "This must be unique within the project."
+  description:
+    type: string
+    description: "The description of the notification config (max of 1024 characters)."
+    default: null
+  id:
+    type: string
+    description: "Optional property for V2ProjectNotificationConfig"
+    default: null
+  location:
+    type: string
+    description: "Location ID of the parent organization. Only global is supported at the moment."
+    default: null
+  project:
+    type: string
+    description: "Optional property for V2ProjectNotificationConfig"
+    default: null
+  pubsub_topic:
+    type: string
+    description: "The Pub/Sub topic to send notifications to. Its format is \"projects/[project_id]/topics/[topic]\"."
+    default: null
+  streaming_config:
+    type: list
+    description: "Nested block: streaming_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:scc:V2ProjectNotificationConfig
+    properties:
+      config_id: ${var.config_id}
+      description: ${var.description}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      pubsub_topic: ${var.pubsub_topic}
+      dynamic:
+        streaming_config:
+          for_each: ${var.streaming_config}
+          content:
+            filter: ${each.value.filter}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

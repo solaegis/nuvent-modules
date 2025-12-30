@@ -1,0 +1,29 @@
+variables:
+  egress_policy_name:
+    type: string
+    description: "The name of the Service Perimeter to add this resource to."
+  resource:
+    type: string
+    description: "A GCP resource that is inside of the service perimeter."
+  id:
+    type: string
+    description: "Optional property for ContextManagerEgressPolicy"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:access:ContextManagerEgressPolicy
+    properties:
+      egress_policy_name: ${var.egress_policy_name}
+      resource: ${var.resource}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

@@ -1,0 +1,44 @@
+variables:
+  instance:
+    type: string
+    description: "Required property for TunnelInstanceIamMember"
+  member:
+    type: string
+    description: "Required property for TunnelInstanceIamMember"
+  role:
+    type: string
+    description: "Required property for TunnelInstanceIamMember"
+  id:
+    type: string
+    description: "Optional property for TunnelInstanceIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TunnelInstanceIamMember"
+    default: null
+  zone:
+    type: string
+    description: "Optional property for TunnelInstanceIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:iap:TunnelInstanceIamMember
+    properties:
+      instance: ${var.instance}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      zone: ${var.zone}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

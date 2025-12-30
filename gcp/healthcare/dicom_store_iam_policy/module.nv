@@ -1,0 +1,19 @@
+variables:
+  dicom_store_id:
+    type: string
+    description: "Required property for DicomStoreIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for DicomStoreIamPolicy"
+  id:
+    type: string
+    description: "Optional property for DicomStoreIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:healthcare:DicomStoreIamPolicy
+    properties:
+      dicom_store_id: ${var.dicom_store_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}

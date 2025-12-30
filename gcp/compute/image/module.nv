@@ -1,0 +1,149 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource; provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  description:
+    type: string
+    description: "An optional description of this resource. Provide this property when you create the resource."
+    default: null
+  disk_size_gb:
+    type: number
+    description: "Size of the image when restored onto a persistent disk (in GB)."
+    default: null
+  family:
+    type: string
+    description: "The name of the image family to which this image belongs. You can create disks by specifying an image family instead of a specific image name. The image family always returns its latest image that is not deprecated. The name of the image family must comply with RFC1035."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Image"
+    default: null
+  labels:
+    type: object
+    description: "Labels to apply to this Image.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  licenses:
+    type: list
+    description: "Any applicable license URI."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Image"
+    default: null
+  source_disk:
+    type: string
+    description: "The source disk to create this image based on. You must provide either this property or the rawDisk.source property but not both to create an image."
+    default: null
+  source_image:
+    type: string
+    description: "URL of the source image used to create this image. In order to create an image, you must provide the full or partial URL of one of the following:  * The selfLink URL * This property * The rawDisk.source URL * The sourceDisk URL"
+    default: null
+  source_snapshot:
+    type: string
+    description: "URL of the source snapshot used to create this image.  In order to create an image, you must provide the full or partial URL of one of the following:  * The selfLink URL * This property * The sourceImage URL * The rawDisk.source URL * The sourceDisk URL"
+    default: null
+  storage_locations:
+    type: list
+    description: "Cloud Storage bucket storage location of the image (regional or multi-regional). Reference link: https://cloud.google.com/compute/docs/reference/rest/v1/images"
+    default: null
+  guest_os_features:
+    type: list
+    description: "Nested block: guest_os_features"
+    default: []
+  image_encryption_key:
+    type: list
+    description: "Nested block: image_encryption_key"
+    default: []
+  raw_disk:
+    type: list
+    description: "Nested block: raw_disk"
+    default: []
+  shielded_instance_initial_state:
+    type: list
+    description: "Nested block: shielded_instance_initial_state"
+    default: []
+  source_disk_encryption_key:
+    type: list
+    description: "Nested block: source_disk_encryption_key"
+    default: []
+  source_image_encryption_key:
+    type: list
+    description: "Nested block: source_image_encryption_key"
+    default: []
+  source_snapshot_encryption_key:
+    type: list
+    description: "Nested block: source_snapshot_encryption_key"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:Image
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      disk_size_gb: ${var.disk_size_gb}
+      family: ${var.family}
+      id: ${var.id}
+      labels: ${var.labels}
+      licenses: ${var.licenses}
+      project: ${var.project}
+      source_disk: ${var.source_disk}
+      source_image: ${var.source_image}
+      source_snapshot: ${var.source_snapshot}
+      storage_locations: ${var.storage_locations}
+      dynamic:
+        guest_os_features:
+          for_each: ${var.guest_os_features}
+          content:
+            type: ${each.value.type}
+        image_encryption_key:
+          for_each: ${var.image_encryption_key}
+          content:
+            kms_key_self_link: ${each.value.kms_key_self_link}
+            kms_key_service_account: ${each.value.kms_key_service_account}
+            raw_key: ${each.value.raw_key}
+            rsa_encrypted_key: ${each.value.rsa_encrypted_key}
+        raw_disk:
+          for_each: ${var.raw_disk}
+          content:
+            container_type: ${each.value.container_type}
+            sha1: ${each.value.sha1}
+            source: ${each.value.source}
+        shielded_instance_initial_state:
+          for_each: ${var.shielded_instance_initial_state}
+          content:
+            dbs: ${each.value.dbs}
+            dbxs: ${each.value.dbxs}
+            keks: ${each.value.keks}
+            pk: ${each.value.pk}
+        source_disk_encryption_key:
+          for_each: ${var.source_disk_encryption_key}
+          content:
+            kms_key_self_link: ${each.value.kms_key_self_link}
+            kms_key_service_account: ${each.value.kms_key_service_account}
+            raw_key: ${each.value.raw_key}
+            rsa_encrypted_key: ${each.value.rsa_encrypted_key}
+        source_image_encryption_key:
+          for_each: ${var.source_image_encryption_key}
+          content:
+            kms_key_self_link: ${each.value.kms_key_self_link}
+            kms_key_service_account: ${each.value.kms_key_service_account}
+            raw_key: ${each.value.raw_key}
+            rsa_encrypted_key: ${each.value.rsa_encrypted_key}
+        source_snapshot_encryption_key:
+          for_each: ${var.source_snapshot_encryption_key}
+          content:
+            kms_key_self_link: ${each.value.kms_key_self_link}
+            kms_key_service_account: ${each.value.kms_key_service_account}
+            raw_key: ${each.value.raw_key}
+            rsa_encrypted_key: ${each.value.rsa_encrypted_key}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

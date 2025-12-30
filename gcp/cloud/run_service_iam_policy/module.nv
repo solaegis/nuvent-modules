@@ -1,0 +1,29 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for RunServiceIamPolicy"
+  service:
+    type: string
+    description: "Required property for RunServiceIamPolicy"
+  id:
+    type: string
+    description: "Optional property for RunServiceIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for RunServiceIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RunServiceIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:cloud:RunServiceIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      service: ${var.service}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

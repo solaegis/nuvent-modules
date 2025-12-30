@@ -1,0 +1,93 @@
+variables:
+  goal:
+    type: number
+    description: "The fraction of service that must be good in order for this objective to be met. 0 < goal <= 0.999"
+  service:
+    type: string
+    description: "ID of the service to which this SLO belongs."
+  calendar_period:
+    type: string
+    description: "A calendar period, semantically \"since the start of the current <calendarPeriod>\". Possible values: [\"DAY\", \"WEEK\", \"FORTNIGHT\", \"MONTH\"]"
+    default: null
+  display_name:
+    type: string
+    description: "Name used for UI elements listing this SLO."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Slo"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Slo"
+    default: null
+  rolling_period_days:
+    type: number
+    description: "A rolling time period, semantically \"in the past X days\". Must be between 1 to 30 days, inclusive."
+    default: null
+  slo_id:
+    type: string
+    description: "The id to use for this ServiceLevelObjective. If omitted, an id will be generated instead."
+    default: null
+  user_labels:
+    type: object
+    description: "This field is intended to be used for organizing and identifying the AlertPolicy objects.The field can contain up to 64 entries. Each key and value is limited to 63 Unicode characters or 128 bytes, whichever is smaller. Labels and values can contain only lowercase letters, numerals, underscores, and dashes. Keys must begin with a letter."
+    default: null
+  basic_sli:
+    type: list
+    description: "Nested block: basic_sli"
+    default: []
+  request_based_sli:
+    type: list
+    description: "Nested block: request_based_sli"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  windows_based_sli:
+    type: list
+    description: "Nested block: windows_based_sli"
+    default: []
+
+resources:
+  main:
+    type: gcp:monitoring:Slo
+    properties:
+      goal: ${var.goal}
+      service: ${var.service}
+      calendar_period: ${var.calendar_period}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      project: ${var.project}
+      rolling_period_days: ${var.rolling_period_days}
+      slo_id: ${var.slo_id}
+      user_labels: ${var.user_labels}
+      dynamic:
+        basic_sli:
+          for_each: ${var.basic_sli}
+          content:
+            location: ${each.value.location}
+            method: ${each.value.method}
+            version: ${each.value.version}
+            availability: ${each.value.availability}
+            latency: ${each.value.latency}
+        request_based_sli:
+          for_each: ${var.request_based_sli}
+          content:
+            distribution_cut: ${each.value.distribution_cut}
+            good_total_ratio: ${each.value.good_total_ratio}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        windows_based_sli:
+          for_each: ${var.windows_based_sli}
+          content:
+            good_bad_metric_filter: ${each.value.good_bad_metric_filter}
+            window_period: ${each.value.window_period}
+            good_total_ratio_threshold: ${each.value.good_total_ratio_threshold}
+            metric_mean_in_range: ${each.value.metric_mean_in_range}
+            metric_sum_in_range: ${each.value.metric_sum_in_range}

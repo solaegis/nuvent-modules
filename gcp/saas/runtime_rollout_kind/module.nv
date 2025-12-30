@@ -1,0 +1,73 @@
+variables:
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  rollout_kind_id:
+    type: string
+    description: "The ID value for the new rollout kind."
+  unit_kind:
+    type: string
+    description: "UnitKind that this rollout kind corresponds to. Rollouts stemming from this rollout kind will target the units of this unit kind. In other words, this defines the population of target units to be upgraded by rollouts."
+  annotations:
+    type: object
+    description: "Annotations is an unstructured key-value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects.  More info: https://kubernetes.io/docs/user-guide/annotations  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RuntimeRolloutKind"
+    default: null
+  labels:
+    type: object
+    description: "The labels on the resource, which can be used for categorization. similar to Kubernetes resource labels.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for RuntimeRolloutKind"
+    default: null
+  rollout_orchestration_strategy:
+    type: string
+    description: "The strategy used for executing a Rollout. This is a required field.  There are two supported values strategies which are used to control a rollout. - \"Google.Cloud.Simple.AllAtOnce\" - \"Google.Cloud.Simple.OneLocationAtATime\"  A rollout with one of these simple strategies will rollout across all locations defined in the associated UnitKind's Saas Locations."
+    default: null
+  unit_filter:
+    type: string
+    description: "CEL(https://github.com/google/cel-spec) formatted filter string against Unit. The filter will be applied to determine the eligible unit population. This filter can only reduce, but not expand the scope of the rollout."
+    default: null
+  update_unit_kind_strategy:
+    type: string
+    description: "The config for updating the unit kind. By default, the unit kind will be updated on the rollout start. Possible values: UPDATE_UNIT_KIND_STRATEGY_ON_START UPDATE_UNIT_KIND_STRATEGY_NEVER Possible values: [\"UPDATE_UNIT_KIND_STRATEGY_ON_START\", \"UPDATE_UNIT_KIND_STRATEGY_NEVER\"]"
+    default: null
+  error_budget:
+    type: list
+    description: "Nested block: error_budget"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:saas:RuntimeRolloutKind
+    properties:
+      location: ${var.location}
+      rollout_kind_id: ${var.rollout_kind_id}
+      unit_kind: ${var.unit_kind}
+      annotations: ${var.annotations}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      rollout_orchestration_strategy: ${var.rollout_orchestration_strategy}
+      unit_filter: ${var.unit_filter}
+      update_unit_kind_strategy: ${var.update_unit_kind_strategy}
+      dynamic:
+        error_budget:
+          for_each: ${var.error_budget}
+          content:
+            allowed_count: ${each.value.allowed_count}
+            allowed_percentage: ${each.value.allowed_percentage}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,45 @@
+variables:
+  service:
+    type: string
+    description: "The name of the service these settings apply to."
+  id:
+    type: string
+    description: "Optional property for EngineServiceSplitTraffic"
+    default: null
+  migrate_traffic:
+    type: boolean
+    description: "If set to true traffic will be migrated to this version."
+    default: null
+  project:
+    type: string
+    description: "Optional property for EngineServiceSplitTraffic"
+    default: null
+  split:
+    type: list
+    description: "Nested block: split"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:app:EngineServiceSplitTraffic
+    properties:
+      service: ${var.service}
+      id: ${var.id}
+      migrate_traffic: ${var.migrate_traffic}
+      project: ${var.project}
+      dynamic:
+        split:
+          for_each: ${var.split}
+          content:
+            allocations: ${each.value.allocations}
+            shard_by: ${each.value.shard_by}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

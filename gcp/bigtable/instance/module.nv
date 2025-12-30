@@ -1,0 +1,71 @@
+variables:
+  name:
+    type: string
+    description: "The name (also called Instance Id in the Cloud Console) of the Cloud Bigtable instance. Must be 6-33 characters and must only contain hyphens, lowercase letters and numbers."
+  deletion_protection:
+    type: boolean
+    description: "When the field is set to true or unset in Terraform state, a terraform apply or terraform destroy that would delete the instance will fail. When the field is set to false, deleting the instance is allowed."
+    default: null
+  display_name:
+    type: string
+    description: "The human-readable display name of the Bigtable instance. Defaults to the instance name."
+    default: null
+  force_destroy:
+    type: boolean
+    description: "When deleting a BigTable instance, this boolean option will delete all backups within the instance."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Instance"
+    default: null
+  instance_type:
+    type: string
+    description: "The instance type to create. One of \"DEVELOPMENT\" or \"PRODUCTION\". Defaults to \"PRODUCTION\"."
+    default: null
+  labels:
+    type: object
+    description: "A mapping of labels to assign to the resource. 				 				**Note**: This field is non-authoritative, and will only manage the labels present in your configuration. 				Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    default: null
+  cluster:
+    type: list
+    description: "Nested block: cluster"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigtable:Instance
+    properties:
+      name: ${var.name}
+      deletion_protection: ${var.deletion_protection}
+      display_name: ${var.display_name}
+      force_destroy: ${var.force_destroy}
+      id: ${var.id}
+      instance_type: ${var.instance_type}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        cluster:
+          for_each: ${var.cluster}
+          content:
+            cluster_id: ${each.value.cluster_id}
+            kms_key_name: ${each.value.kms_key_name}
+            node_scaling_factor: ${each.value.node_scaling_factor}
+            num_nodes: ${each.value.num_nodes}
+            state: ${each.value.state}
+            storage_type: ${each.value.storage_type}
+            zone: ${each.value.zone}
+            autoscaling_config: ${each.value.autoscaling_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            read: ${each.value.read}
+            update: ${each.value.update}

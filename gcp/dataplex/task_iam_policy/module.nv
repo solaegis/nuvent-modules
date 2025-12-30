@@ -1,0 +1,33 @@
+variables:
+  lake:
+    type: string
+    description: "Required property for TaskIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for TaskIamPolicy"
+  task_id:
+    type: string
+    description: "Required property for TaskIamPolicy"
+  id:
+    type: string
+    description: "Optional property for TaskIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for TaskIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TaskIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:dataplex:TaskIamPolicy
+    properties:
+      lake: ${var.lake}
+      policy_data: ${var.policy_data}
+      task_id: ${var.task_id}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

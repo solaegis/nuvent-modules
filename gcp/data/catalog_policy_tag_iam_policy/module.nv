@@ -1,0 +1,19 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for CatalogPolicyTagIamPolicy"
+  policy_tag:
+    type: string
+    description: "Required property for CatalogPolicyTagIamPolicy"
+  id:
+    type: string
+    description: "Optional property for CatalogPolicyTagIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:data:CatalogPolicyTagIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      policy_tag: ${var.policy_tag}
+      id: ${var.id}

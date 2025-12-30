@@ -1,0 +1,47 @@
+variables:
+  config_id:
+    type: string
+    description: "This must be unique within the organization."
+  organization:
+    type: string
+    description: "The organization whose Cloud Security Command Center the Notification Config lives in."
+  pubsub_topic:
+    type: string
+    description: "The Pub/Sub topic to send notifications to. Its format is \"projects/[project_id]/topics/[topic]\"."
+  description:
+    type: string
+    description: "The description of the notification config (max of 1024 characters)."
+    default: null
+  id:
+    type: string
+    description: "Optional property for NotificationConfig"
+    default: null
+  streaming_config:
+    type: list
+    description: "Nested block: streaming_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:scc:NotificationConfig
+    properties:
+      config_id: ${var.config_id}
+      organization: ${var.organization}
+      pubsub_topic: ${var.pubsub_topic}
+      description: ${var.description}
+      id: ${var.id}
+      dynamic:
+        streaming_config:
+          for_each: ${var.streaming_config}
+          content:
+            filter: ${each.value.filter}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

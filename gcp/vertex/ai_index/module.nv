@@ -1,0 +1,69 @@
+variables:
+  display_name:
+    type: string
+    description: "The display name of the Index. The name can be up to 128 characters long and can consist of any UTF-8 characters."
+  description:
+    type: string
+    description: "The description of the Index."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AiIndex"
+    default: null
+  index_update_method:
+    type: string
+    description: "The update method to use with this Index. The value must be the followings. If not set, BATCH_UPDATE will be used by default. * BATCH_UPDATE: user can call indexes.patch with files on Cloud Storage of datapoints to update. * STREAM_UPDATE: user can call indexes.upsertDatapoints/DeleteDatapoints to update the Index and the updates will be applied in corresponding DeployedIndexes in nearly real-time."
+    default: null
+  labels:
+    type: object
+    description: "The labels with user-defined metadata to organize your Indexes.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiIndex"
+    default: null
+  region:
+    type: string
+    description: "The region of the index. eg us-central1"
+    default: null
+  encryption_spec:
+    type: list
+    description: "Nested block: encryption_spec"
+    default: []
+  metadata:
+    type: list
+    description: "Nested block: metadata"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vertex:AiIndex
+    properties:
+      display_name: ${var.display_name}
+      description: ${var.description}
+      id: ${var.id}
+      index_update_method: ${var.index_update_method}
+      labels: ${var.labels}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        encryption_spec:
+          for_each: ${var.encryption_spec}
+          content:
+            kms_key_name: ${each.value.kms_key_name}
+        metadata:
+          for_each: ${var.metadata}
+          content:
+            contents_delta_uri: ${each.value.contents_delta_uri}
+            is_complete_overwrite: ${each.value.is_complete_overwrite}
+            config: ${each.value.config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

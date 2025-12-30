@@ -1,0 +1,76 @@
+variables:
+  cron:
+    type: string
+    description: "Cron schedule (https://en.wikipedia.org/wiki/Cron) to launch scheduled runs."
+  display_name:
+    type: string
+    description: "Required. The display name of the Schedule."
+  location:
+    type: string
+    description: "The location for the resource: https://cloud.google.com/colab/docs/locations"
+  max_concurrent_run_count:
+    type: string
+    description: "Maximum number of runs that can be started concurrently for this Schedule. This is the limit for starting the scheduled requests and not the execution of the notebook execution jobs created by the requests."
+  allow_queueing:
+    type: boolean
+    description: "Whether new scheduled runs can be queued when max_concurrent_runs limit is reached. If set to true, new runs will be queued instead of skipped. Default to false."
+    default: null
+  desired_state:
+    type: string
+    description: "Desired state of the Colab Schedule. Set this field to 'ACTIVE' to start/resume the schedule, and 'PAUSED' to pause the schedule."
+    default: null
+  end_time:
+    type: string
+    description: "Timestamp after which no new runs can be scheduled. If specified, the schedule will be completed when either end_time is reached or when scheduled_run_count >= max_run_count. Must be in the RFC 3339 (https://www.ietf.org/rfc/rfc3339.txt) format."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Schedule"
+    default: null
+  max_run_count:
+    type: string
+    description: "Maximum run count of the schedule. If specified, The schedule will be completed when either startedRunCount >= maxRunCount or when endTime is reached. If not specified, new runs will keep getting scheduled until this Schedule is paused or deleted. Already scheduled runs will be allowed to complete. Unset if not specified."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Schedule"
+    default: null
+  start_time:
+    type: string
+    description: "The timestamp after which the first run can be scheduled. Defaults to the schedule creation time. Must be in the RFC 3339 (https://www.ietf.org/rfc/rfc3339.txt) format."
+    default: null
+  create_notebook_execution_job_request:
+    type: list
+    description: "Nested block: create_notebook_execution_job_request"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:colab:Schedule
+    properties:
+      cron: ${var.cron}
+      display_name: ${var.display_name}
+      location: ${var.location}
+      max_concurrent_run_count: ${var.max_concurrent_run_count}
+      allow_queueing: ${var.allow_queueing}
+      desired_state: ${var.desired_state}
+      end_time: ${var.end_time}
+      id: ${var.id}
+      max_run_count: ${var.max_run_count}
+      project: ${var.project}
+      start_time: ${var.start_time}
+      dynamic:
+        create_notebook_execution_job_request:
+          for_each: ${var.create_notebook_execution_job_request}
+          content:
+            notebook_execution_job: ${each.value.notebook_execution_job}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

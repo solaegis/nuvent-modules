@@ -1,0 +1,35 @@
+variables:
+  bucket:
+    type: string
+    description: "The name of the bucket."
+  entity:
+    type: string
+    description: "The entity holding the permission, in one of the following forms:   user-userId   user-email   group-groupId   group-email   domain-domain   project-team-projectId   allUsers   allAuthenticatedUsers Examples:   The user liz@example.com would be user-liz@example.com.   The group example@googlegroups.com would be   group-example@googlegroups.com.   To refer to all members of the Google Apps for Business domain   example.com, the entity would be domain-example.com."
+  id:
+    type: string
+    description: "Optional property for BucketAccessControl"
+    default: null
+  role:
+    type: string
+    description: "The access permission for the entity. Possible values: [\"OWNER\", \"READER\", \"WRITER\"]"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:BucketAccessControl
+    properties:
+      bucket: ${var.bucket}
+      entity: ${var.entity}
+      id: ${var.id}
+      role: ${var.role}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

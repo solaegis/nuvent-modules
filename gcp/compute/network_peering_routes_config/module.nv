@@ -1,0 +1,53 @@
+variables:
+  export_custom_routes:
+    type: boolean
+    description: "Whether to export the custom routes to the peer network."
+  import_custom_routes:
+    type: boolean
+    description: "Whether to import the custom routes to the peer network."
+  network:
+    type: string
+    description: "The name of the primary network for the peering."
+  peering:
+    type: string
+    description: "Name of the peering."
+  export_subnet_routes_with_public_ip:
+    type: boolean
+    description: "Whether subnet routes with public IP range are exported. IPv4 special-use ranges are always exported to peers and are not controlled by this field."
+    default: null
+  id:
+    type: string
+    description: "Optional property for NetworkPeeringRoutesConfig"
+    default: null
+  import_subnet_routes_with_public_ip:
+    type: boolean
+    description: "Whether subnet routes with public IP range are imported. IPv4 special-use ranges are always imported from peers and are not controlled by this field."
+    default: null
+  project:
+    type: string
+    description: "Optional property for NetworkPeeringRoutesConfig"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:NetworkPeeringRoutesConfig
+    properties:
+      export_custom_routes: ${var.export_custom_routes}
+      import_custom_routes: ${var.import_custom_routes}
+      network: ${var.network}
+      peering: ${var.peering}
+      export_subnet_routes_with_public_ip: ${var.export_subnet_routes_with_public_ip}
+      id: ${var.id}
+      import_subnet_routes_with_public_ip: ${var.import_subnet_routes_with_public_ip}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

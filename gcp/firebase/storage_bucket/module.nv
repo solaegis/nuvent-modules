@@ -1,0 +1,31 @@
+variables:
+  bucket_id:
+    type: string
+    description: "Required. Immutable. The ID of the underlying Google Cloud Storage bucket"
+    default: null
+  id:
+    type: string
+    description: "Optional property for StorageBucket"
+    default: null
+  project:
+    type: string
+    description: "Optional property for StorageBucket"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:firebase:StorageBucket
+    properties:
+      bucket_id: ${var.bucket_id}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

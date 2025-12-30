@@ -1,0 +1,105 @@
+variables:
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  pipeline_id:
+    type: string
+    description: "The user-provided ID to be assigned to the Pipeline. It should match the format '^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$'."
+  annotations:
+    type: object
+    description: "User-defined annotations. See https://google.aip.dev/128#annotations.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  crypto_key_name:
+    type: string
+    description: "Resource name of a KMS crypto key (managed by the user) used to encrypt/decrypt the event data. If not set, an internal Google-owned key will be used to encrypt messages. It must match the pattern \"projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{key}\"."
+    default: null
+  display_name:
+    type: string
+    description: "Display name of resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Pipeline"
+    default: null
+  labels:
+    type: object
+    description: "User labels attached to the Pipeline that can be used to group resources. An object containing a list of \"key\": value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Pipeline"
+    default: null
+  destinations:
+    type: list
+    description: "Nested block: destinations"
+    default: []
+  input_payload_format:
+    type: list
+    description: "Nested block: input_payload_format"
+    default: []
+  logging_config:
+    type: list
+    description: "Nested block: logging_config"
+    default: []
+  mediations:
+    type: list
+    description: "Nested block: mediations"
+    default: []
+  retry_policy:
+    type: list
+    description: "Nested block: retry_policy"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:eventarc:Pipeline
+    properties:
+      location: ${var.location}
+      pipeline_id: ${var.pipeline_id}
+      annotations: ${var.annotations}
+      crypto_key_name: ${var.crypto_key_name}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        destinations:
+          for_each: ${var.destinations}
+          content:
+            message_bus: ${each.value.message_bus}
+            topic: ${each.value.topic}
+            workflow: ${each.value.workflow}
+            authentication_config: ${each.value.authentication_config}
+            http_endpoint: ${each.value.http_endpoint}
+            network_config: ${each.value.network_config}
+            output_payload_format: ${each.value.output_payload_format}
+        input_payload_format:
+          for_each: ${var.input_payload_format}
+          content:
+            avro: ${each.value.avro}
+            json: ${each.value.json}
+            protobuf: ${each.value.protobuf}
+        logging_config:
+          for_each: ${var.logging_config}
+          content:
+            log_severity: ${each.value.log_severity}
+        mediations:
+          for_each: ${var.mediations}
+          content:
+            transformation: ${each.value.transformation}
+        retry_policy:
+          for_each: ${var.retry_policy}
+          content:
+            max_attempts: ${each.value.max_attempts}
+            max_retry_delay: ${each.value.max_retry_delay}
+            min_retry_delay: ${each.value.min_retry_delay}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

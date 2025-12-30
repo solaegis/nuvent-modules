@@ -1,0 +1,29 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for SourceManagerRepositoryIamPolicy"
+  repository_id:
+    type: string
+    description: "Required property for SourceManagerRepositoryIamPolicy"
+  id:
+    type: string
+    description: "Optional property for SourceManagerRepositoryIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for SourceManagerRepositoryIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for SourceManagerRepositoryIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:secure:SourceManagerRepositoryIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      repository_id: ${var.repository_id}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

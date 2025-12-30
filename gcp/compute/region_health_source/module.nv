@@ -1,0 +1,49 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  region:
+    type: string
+    description: "URL of the region where the health source resides."
+  source_type:
+    type: string
+    description: "Specifies the type of the 'HealthSource'. The only allowed value is 'BACKEND_SERVICE'. Must be specified when the 'HealthSource' is created, and cannot be mutated. Possible values: [\"BACKEND_SERVICE\"]"
+  description:
+    type: string
+    description: "An optional description of this resource. Provide this property when you create the resource."
+    default: null
+  health_aggregation_policy:
+    type: string
+    description: "URL to the 'HealthAggregationPolicy' resource. Must be set. Must be regional and in the same region as the 'HealthSource'. Can be mutated."
+    default: null
+  project:
+    type: string
+    description: "Optional property for RegionHealthSource"
+    default: null
+  sources:
+    type: list
+    description: "URLs to the source resources. Must be size 1. Must be a 'BackendService' if the 'sourceType' is 'BACKEND_SERVICE'. The 'BackendService' must have load balancing scheme 'INTERNAL' or 'INTERNAL_MANAGED' and must be regional and in the same region as the 'HealthSource' (cross-region deployment for 'INTERNAL_MANAGED' is not supported). The 'BackendService' may use only IGs, MIGs, or NEGs of type 'GCE_VM_IP' or 'GCE_VM_IP_PORT'. The 'BackendService' may not use 'haPolicy'. Can be mutated."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:RegionHealthSource
+    properties:
+      name: ${var.name}
+      region: ${var.region}
+      source_type: ${var.source_type}
+      description: ${var.description}
+      health_aggregation_policy: ${var.health_aggregation_policy}
+      project: ${var.project}
+      sources: ${var.sources}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

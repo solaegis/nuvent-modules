@@ -1,0 +1,67 @@
+variables:
+  display_name:
+    type: string
+    description: "Required. The display name of the Runtime."
+  location:
+    type: string
+    description: "The location for the resource: https://cloud.google.com/colab/docs/locations"
+  runtime_user:
+    type: string
+    description: "The user email of the NotebookRuntime."
+  auto_upgrade:
+    type: boolean
+    description: "Triggers an upgrade anytime the runtime is started if it is upgradable."
+    default: null
+  description:
+    type: string
+    description: "The description of the Runtime."
+    default: null
+  desired_state:
+    type: string
+    description: "Desired state of the Colab Runtime. Set this field to 'RUNNING' to start the runtime, and 'STOPPED' to stop it."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Runtime"
+    default: null
+  name:
+    type: string
+    description: "The resource name of the Runtime"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Runtime"
+    default: null
+  notebook_runtime_template_ref:
+    type: list
+    description: "Nested block: notebook_runtime_template_ref"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:colab:Runtime
+    properties:
+      display_name: ${var.display_name}
+      location: ${var.location}
+      runtime_user: ${var.runtime_user}
+      auto_upgrade: ${var.auto_upgrade}
+      description: ${var.description}
+      desired_state: ${var.desired_state}
+      id: ${var.id}
+      name: ${var.name}
+      project: ${var.project}
+      dynamic:
+        notebook_runtime_template_ref:
+          for_each: ${var.notebook_runtime_template_ref}
+          content:
+            notebook_runtime_template: ${each.value.notebook_runtime_template}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

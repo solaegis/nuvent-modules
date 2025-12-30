@@ -1,0 +1,29 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for WebRegionBackendServiceIamPolicy"
+  web_region_backend_service:
+    type: string
+    description: "Required property for WebRegionBackendServiceIamPolicy"
+  id:
+    type: string
+    description: "Optional property for WebRegionBackendServiceIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WebRegionBackendServiceIamPolicy"
+    default: null
+  region:
+    type: string
+    description: "Optional property for WebRegionBackendServiceIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:iap:WebRegionBackendServiceIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      web_region_backend_service: ${var.web_region_backend_service}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}

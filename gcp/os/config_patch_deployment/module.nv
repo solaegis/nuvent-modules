@@ -1,0 +1,100 @@
+variables:
+  patch_deployment_id:
+    type: string
+    description: "A name for the patch deployment in the project. When creating a name the following rules apply: * Must contain only lowercase letters, numbers, and hyphens. * Must start with a letter. * Must be between 1-63 characters. * Must end with a number or a letter. * Must be unique within the project."
+  description:
+    type: string
+    description: "Description of the patch deployment. Length of the description is limited to 1024 characters."
+    default: null
+  duration:
+    type: string
+    description: "Duration of the patch. After the duration ends, the patch times out. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: \"3.5s\""
+    default: null
+  id:
+    type: string
+    description: "Optional property for ConfigPatchDeployment"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ConfigPatchDeployment"
+    default: null
+  instance_filter:
+    type: list
+    description: "Nested block: instance_filter"
+    default: []
+  one_time_schedule:
+    type: list
+    description: "Nested block: one_time_schedule"
+    default: []
+  patch_config:
+    type: list
+    description: "Nested block: patch_config"
+    default: []
+  recurring_schedule:
+    type: list
+    description: "Nested block: recurring_schedule"
+    default: []
+  rollout:
+    type: list
+    description: "Nested block: rollout"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:os:ConfigPatchDeployment
+    properties:
+      patch_deployment_id: ${var.patch_deployment_id}
+      description: ${var.description}
+      duration: ${var.duration}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        instance_filter:
+          for_each: ${var.instance_filter}
+          content:
+            all: ${each.value.all}
+            instance_name_prefixes: ${each.value.instance_name_prefixes}
+            instances: ${each.value.instances}
+            zones: ${each.value.zones}
+            group_labels: ${each.value.group_labels}
+        one_time_schedule:
+          for_each: ${var.one_time_schedule}
+          content:
+            execute_time: ${each.value.execute_time}
+        patch_config:
+          for_each: ${var.patch_config}
+          content:
+            mig_instances_allowed: ${each.value.mig_instances_allowed}
+            reboot_config: ${each.value.reboot_config}
+            apt: ${each.value.apt}
+            goo: ${each.value.goo}
+            post_step: ${each.value.post_step}
+            pre_step: ${each.value.pre_step}
+            windows_update: ${each.value.windows_update}
+            yum: ${each.value.yum}
+            zypper: ${each.value.zypper}
+        recurring_schedule:
+          for_each: ${var.recurring_schedule}
+          content:
+            end_time: ${each.value.end_time}
+            last_execute_time: ${each.value.last_execute_time}
+            next_execute_time: ${each.value.next_execute_time}
+            start_time: ${each.value.start_time}
+            monthly: ${each.value.monthly}
+            time_of_day: ${each.value.time_of_day}
+            time_zone: ${each.value.time_zone}
+            weekly: ${each.value.weekly}
+        rollout:
+          for_each: ${var.rollout}
+          content:
+            mode: ${each.value.mode}
+            disruption_budget: ${each.value.disruption_budget}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

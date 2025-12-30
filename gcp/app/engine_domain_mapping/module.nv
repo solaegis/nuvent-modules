@@ -1,0 +1,46 @@
+variables:
+  domain_name:
+    type: string
+    description: "Relative name of the domain serving the application. Example: example.com."
+  id:
+    type: string
+    description: "Optional property for EngineDomainMapping"
+    default: null
+  override_strategy:
+    type: string
+    description: "Whether the domain creation should override any existing mappings for this domain. By default, overrides are rejected. Default value: \"STRICT\" Possible values: [\"STRICT\", \"OVERRIDE\"]"
+    default: null
+  project:
+    type: string
+    description: "Optional property for EngineDomainMapping"
+    default: null
+  ssl_settings:
+    type: list
+    description: "Nested block: ssl_settings"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:app:EngineDomainMapping
+    properties:
+      domain_name: ${var.domain_name}
+      id: ${var.id}
+      override_strategy: ${var.override_strategy}
+      project: ${var.project}
+      dynamic:
+        ssl_settings:
+          for_each: ${var.ssl_settings}
+          content:
+            certificate_id: ${each.value.certificate_id}
+            pending_managed_certificate_id: ${each.value.pending_managed_certificate_id}
+            ssl_management_type: ${each.value.ssl_management_type}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

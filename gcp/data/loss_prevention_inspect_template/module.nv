@@ -1,0 +1,56 @@
+variables:
+  parent:
+    type: string
+    description: "The parent of the inspect template in any of the following formats:  * 'projects/{{project}}' * 'projects/{{project}}/locations/{{location}}' * 'organizations/{{organization_id}}' * 'organizations/{{organization_id}}/locations/{{location}}'"
+  description:
+    type: string
+    description: "A description of the inspect template."
+    default: null
+  display_name:
+    type: string
+    description: "User set display name of the inspect template."
+    default: null
+  id:
+    type: string
+    description: "Optional property for LossPreventionInspectTemplate"
+    default: null
+  template_id:
+    type: string
+    description: "The template id can contain uppercase and lowercase letters, numbers, and hyphens; that is, it must match the regular expression: [a-zA-Z\d-_]+. The maximum length is 100 characters. Can be empty to allow the system to generate one."
+    default: null
+  inspect_config:
+    type: list
+    description: "Nested block: inspect_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:data:LossPreventionInspectTemplate
+    properties:
+      parent: ${var.parent}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      template_id: ${var.template_id}
+      dynamic:
+        inspect_config:
+          for_each: ${var.inspect_config}
+          content:
+            content_options: ${each.value.content_options}
+            exclude_info_types: ${each.value.exclude_info_types}
+            include_quote: ${each.value.include_quote}
+            min_likelihood: ${each.value.min_likelihood}
+            custom_info_types: ${each.value.custom_info_types}
+            info_types: ${each.value.info_types}
+            limits: ${each.value.limits}
+            rule_set: ${each.value.rule_set}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

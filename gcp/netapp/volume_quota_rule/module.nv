@@ -1,0 +1,63 @@
+variables:
+  disk_limit_mib:
+    type: number
+    description: "The maximum allowed capacity in MiB."
+  name:
+    type: string
+    description: "The resource name of the quotaRule."
+  type:
+    type: string
+    description: "Types of Quota Rule. Possible values: [\"INDIVIDUAL_USER_QUOTA\", \"INDIVIDUAL_GROUP_QUOTA\", \"DEFAULT_USER_QUOTA\", \"DEFAULT_GROUP_QUOTA\"]"
+  volume_name:
+    type: string
+    description: "Name of the volume to create the quotaRule in."
+  description:
+    type: string
+    description: "Description for the quota rule."
+    default: null
+  id:
+    type: string
+    description: "Optional property for VolumeQuotaRule"
+    default: null
+  labels:
+    type: object
+    description: "Labels as key value pairs of the quota rule. Example: '{ \"owner\": \"Bob\", \"department\": \"finance\", \"purpose\": \"testing\" }'.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "Loction of the quotaRule. QuotaRules are child resources of volumes and live in the same location."
+    default: null
+  project:
+    type: string
+    description: "Optional property for VolumeQuotaRule"
+    default: null
+  target:
+    type: string
+    description: "The quota rule applies to the specified user or group. Valid targets for volumes with NFS protocol enabled:   - UNIX UID for individual user quota   - UNIX GID for individual group quota Valid targets for volumes with SMB protocol enabled:   - Windows SID for individual user quota Leave empty for default quotas"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:netapp:VolumeQuotaRule
+    properties:
+      disk_limit_mib: ${var.disk_limit_mib}
+      name: ${var.name}
+      type: ${var.type}
+      volume_name: ${var.volume_name}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      location: ${var.location}
+      project: ${var.project}
+      target: ${var.target}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

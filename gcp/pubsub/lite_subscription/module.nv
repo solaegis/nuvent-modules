@@ -1,0 +1,53 @@
+variables:
+  name:
+    type: string
+    description: "Name of the subscription."
+  topic:
+    type: string
+    description: "A reference to a Topic resource."
+  id:
+    type: string
+    description: "Optional property for LiteSubscription"
+    default: null
+  project:
+    type: string
+    description: "Optional property for LiteSubscription"
+    default: null
+  region:
+    type: string
+    description: "The region of the pubsub lite topic."
+    default: null
+  zone:
+    type: string
+    description: "The zone of the pubsub lite topic."
+    default: null
+  delivery_config:
+    type: list
+    description: "Nested block: delivery_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:pubsub:LiteSubscription
+    properties:
+      name: ${var.name}
+      topic: ${var.topic}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      zone: ${var.zone}
+      dynamic:
+        delivery_config:
+          for_each: ${var.delivery_config}
+          content:
+            delivery_requirement: ${each.value.delivery_requirement}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,80 @@
+variables:
+  display_name:
+    type: string
+    description: "The name of the auth config."
+  location:
+    type: string
+    description: "Location in which client needs to be provisioned."
+  description:
+    type: string
+    description: "A description of the auth config."
+    default: null
+  expiry_notification_duration:
+    type: list
+    description: "User can define the time to receive notification after which the auth config becomes invalid. Support up to 30 days. Support granularity in hours.  A duration in seconds with up to nine fractional digits, ending with 's'. Example: \"3.5s\"."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AuthConfig"
+    default: null
+  override_valid_time:
+    type: string
+    description: "User provided expiry time to override. For the example of Salesforce, username/password credentials can be valid for 6 months depending on the instance settings.  A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    default: null
+  project:
+    type: string
+    description: "Optional property for AuthConfig"
+    default: null
+  visibility:
+    type: string
+    description: "The visibility of the auth config. Possible values: [\"PRIVATE\", \"CLIENT_VISIBLE\"]"
+    default: null
+  client_certificate:
+    type: list
+    description: "Nested block: client_certificate"
+    default: []
+  decrypted_credential:
+    type: list
+    description: "Nested block: decrypted_credential"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:integrations:AuthConfig
+    properties:
+      display_name: ${var.display_name}
+      location: ${var.location}
+      description: ${var.description}
+      expiry_notification_duration: ${var.expiry_notification_duration}
+      id: ${var.id}
+      override_valid_time: ${var.override_valid_time}
+      project: ${var.project}
+      visibility: ${var.visibility}
+      dynamic:
+        client_certificate:
+          for_each: ${var.client_certificate}
+          content:
+            encrypted_private_key: ${each.value.encrypted_private_key}
+            passphrase: ${each.value.passphrase}
+            ssl_certificate: ${each.value.ssl_certificate}
+        decrypted_credential:
+          for_each: ${var.decrypted_credential}
+          content:
+            credential_type: ${each.value.credential_type}
+            auth_token: ${each.value.auth_token}
+            jwt: ${each.value.jwt}
+            oauth2_authorization_code: ${each.value.oauth2_authorization_code}
+            oauth2_client_credentials: ${each.value.oauth2_client_credentials}
+            oidc_token: ${each.value.oidc_token}
+            service_account_credentials: ${each.value.service_account_credentials}
+            username_and_password: ${each.value.username_and_password}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

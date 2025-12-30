@@ -1,0 +1,50 @@
+variables:
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  logging_setting_id:
+    type: string
+    description: "Id of the Logging Setting."
+  id:
+    type: string
+    description: "Optional property for LoggingSetting"
+    default: null
+  labels:
+    type: object
+    description: "Labels as key value pairs.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  log_metadata:
+    type: boolean
+    description: "Whether to log metadata."
+    default: null
+  log_prompts_and_responses:
+    type: boolean
+    description: "Whether to log prompts and responses."
+    default: null
+  project:
+    type: string
+    description: "Optional property for LoggingSetting"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:gemini:LoggingSetting
+    properties:
+      location: ${var.location}
+      logging_setting_id: ${var.logging_setting_id}
+      id: ${var.id}
+      labels: ${var.labels}
+      log_metadata: ${var.log_metadata}
+      log_prompts_and_responses: ${var.log_prompts_and_responses}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

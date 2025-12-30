@@ -1,0 +1,44 @@
+variables:
+  location:
+    type: string
+    description: "GCP region the TraceScope is stored in. Only 'global' is supported."
+  resource_names:
+    type: list
+    description: "Names of the projects that are included in this trace scope.  *  'projects/[PROJECT_ID]'  A trace scope can include a maximum of 20 projects."
+  trace_scope_id:
+    type: string
+    description: "A client-assigned identifier for the trace scope."
+  description:
+    type: string
+    description: "Describes this trace scope.  The maximum length of the description is 8000 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for TraceScope"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TraceScope"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:observability:TraceScope
+    properties:
+      location: ${var.location}
+      resource_names: ${var.resource_names}
+      trace_scope_id: ${var.trace_scope_id}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

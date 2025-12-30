@@ -1,0 +1,29 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for AutoscalingPolicyIamPolicy"
+  policy_id:
+    type: string
+    description: "Required property for AutoscalingPolicyIamPolicy"
+  id:
+    type: string
+    description: "Optional property for AutoscalingPolicyIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for AutoscalingPolicyIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AutoscalingPolicyIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:dataproc:AutoscalingPolicyIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      policy_id: ${var.policy_id}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

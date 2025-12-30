@@ -1,0 +1,69 @@
+variables:
+  data_exchange_id:
+    type: string
+    description: "The ID of the data exchange. Must contain only Unicode letters, numbers (0-9), underscores (_). Should not use characters that require URL-escaping, or characters outside of ASCII, spaces."
+  data_exchange_location:
+    type: string
+    description: "The name of the location of the Data Exchange."
+  data_exchange_project:
+    type: string
+    description: "The ID of the Google Cloud project where the Data Exchange is located."
+  location:
+    type: string
+    description: "The geographic location where the Subscription (and its linked dataset) should reside. This is the subscriber's desired location for the created resources. See https://cloud.google.com/bigquery/docs/locations for supported locations."
+  subscription_id:
+    type: string
+    description: "Name of the subscription to create."
+  id:
+    type: string
+    description: "Optional property for AnalyticsHubDataExchangeSubscription"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AnalyticsHubDataExchangeSubscription"
+    default: null
+  refresh_policy:
+    type: string
+    description: "Controls when the subscription is automatically refreshed by the provider. * 'ON_READ': Default value if not specified. The subscription will be refreshed every time Terraform performs a read operation (e.g., 'terraform plan', 'terraform apply', 'terraform refresh'). This ensures the state is always up-to-date. * 'ON_STALE': The subscription will only be refreshed when its reported 'state' (an output-only field from the API) is 'STATE_STALE' during a Terraform read operation. * 'NEVER': The provider will not automatically refresh the subscription. Default value: \"ON_READ\" Possible values: [\"ON_READ\", \"ON_STALE\", \"NEVER\"]"
+    default: null
+  subscriber_contact:
+    type: string
+    description: "Email of the subscriber."
+    default: null
+  destination_dataset:
+    type: list
+    description: "Nested block: destination_dataset"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigquery:AnalyticsHubDataExchangeSubscription
+    properties:
+      data_exchange_id: ${var.data_exchange_id}
+      data_exchange_location: ${var.data_exchange_location}
+      data_exchange_project: ${var.data_exchange_project}
+      location: ${var.location}
+      subscription_id: ${var.subscription_id}
+      id: ${var.id}
+      project: ${var.project}
+      refresh_policy: ${var.refresh_policy}
+      subscriber_contact: ${var.subscriber_contact}
+      dynamic:
+        destination_dataset:
+          for_each: ${var.destination_dataset}
+          content:
+            description: ${each.value.description}
+            friendly_name: ${each.value.friendly_name}
+            labels: ${each.value.labels}
+            location: ${each.value.location}
+            dataset_reference: ${each.value.dataset_reference}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

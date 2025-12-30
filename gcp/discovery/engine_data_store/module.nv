@@ -1,0 +1,87 @@
+variables:
+  content_config:
+    type: string
+    description: "The content config of the data store. Possible values: [\"NO_CONTENT\", \"CONTENT_REQUIRED\", \"PUBLIC_WEBSITE\"]"
+  data_store_id:
+    type: string
+    description: "The unique id of the data store."
+  display_name:
+    type: string
+    description: "The display name of the data store. This field must be a UTF-8 encoded string with a length limit of 128 characters."
+  industry_vertical:
+    type: string
+    description: "The industry vertical that the data store registers. Possible values: [\"GENERIC\", \"MEDIA\", \"HEALTHCARE_FHIR\"]"
+  location:
+    type: string
+    description: "The geographic location where the data store should reside. The value can only be one of \"global\", \"us\" and \"eu\"."
+  create_advanced_site_search:
+    type: boolean
+    description: "If true, an advanced data store for site search will be created. If the data store is not configured as site search (GENERIC vertical and PUBLIC_WEBSITE contentConfig), this flag will be ignored."
+    default: null
+  id:
+    type: string
+    description: "Optional property for EngineDataStore"
+    default: null
+  kms_key_name:
+    type: string
+    description: "KMS key resource name which will be used to encrypt resources: '/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}' The KMS key to be used to protect this DataStore at creation time. Must be set for requests that need to comply with CMEK Org Policy protections. If this field is set and processed successfully, the DataStore will be protected by the KMS key, as indicated in the cmek_config field."
+    default: null
+  project:
+    type: string
+    description: "Optional property for EngineDataStore"
+    default: null
+  skip_default_schema_creation:
+    type: boolean
+    description: "A boolean flag indicating whether to skip the default schema creation for the data store. Only enable this flag if you are certain that the default schema is incompatible with your use case. If set to true, you must manually create a schema for the data store before any documents can be ingested. This flag cannot be specified if 'data_store.starting_schema' is specified."
+    default: null
+  solution_types:
+    type: list
+    description: "The solutions that the data store enrolls. Possible values: [\"SOLUTION_TYPE_RECOMMENDATION\", \"SOLUTION_TYPE_SEARCH\", \"SOLUTION_TYPE_CHAT\", \"SOLUTION_TYPE_GENERATIVE_CHAT\"]"
+    default: null
+  advanced_site_search_config:
+    type: list
+    description: "Nested block: advanced_site_search_config"
+    default: []
+  document_processing_config:
+    type: list
+    description: "Nested block: document_processing_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:discovery:EngineDataStore
+    properties:
+      content_config: ${var.content_config}
+      data_store_id: ${var.data_store_id}
+      display_name: ${var.display_name}
+      industry_vertical: ${var.industry_vertical}
+      location: ${var.location}
+      create_advanced_site_search: ${var.create_advanced_site_search}
+      id: ${var.id}
+      kms_key_name: ${var.kms_key_name}
+      project: ${var.project}
+      skip_default_schema_creation: ${var.skip_default_schema_creation}
+      solution_types: ${var.solution_types}
+      dynamic:
+        advanced_site_search_config:
+          for_each: ${var.advanced_site_search_config}
+          content:
+            disable_automatic_refresh: ${each.value.disable_automatic_refresh}
+            disable_initial_index: ${each.value.disable_initial_index}
+        document_processing_config:
+          for_each: ${var.document_processing_config}
+          content:
+            name: ${each.value.name}
+            chunking_config: ${each.value.chunking_config}
+            default_parsing_config: ${each.value.default_parsing_config}
+            parsing_config_overrides: ${each.value.parsing_config_overrides}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

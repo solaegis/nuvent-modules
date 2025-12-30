@@ -1,0 +1,19 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for AccountIamPolicy"
+  service_account_id:
+    type: string
+    description: "Required property for AccountIamPolicy"
+  id:
+    type: string
+    description: "Optional property for AccountIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:service:AccountIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      service_account_id: ${var.service_account_id}
+      id: ${var.id}

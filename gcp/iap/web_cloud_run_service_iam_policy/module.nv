@@ -1,0 +1,29 @@
+variables:
+  cloud_run_service_name:
+    type: string
+    description: "Required property for WebCloudRunServiceIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for WebCloudRunServiceIamPolicy"
+  id:
+    type: string
+    description: "Optional property for WebCloudRunServiceIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for WebCloudRunServiceIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WebCloudRunServiceIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:iap:WebCloudRunServiceIamPolicy
+    properties:
+      cloud_run_service_name: ${var.cloud_run_service_name}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

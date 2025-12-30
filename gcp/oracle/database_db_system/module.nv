@@ -1,0 +1,91 @@
+variables:
+  db_system_id:
+    type: string
+    description: "The ID of the DbSystem to create. This value is restricted to (^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$) and must be a maximum of 63 characters in length. The value must start with a letter and end with a letter or a number."
+  display_name:
+    type: string
+    description: "The display name for the System db. The name does not have to be unique within your project."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  odb_subnet:
+    type: string
+    description: "The name of the OdbSubnet associated with the DbSystem for IP allocation. Format: projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}"
+  deletion_protection:
+    type: boolean
+    description: "Whether or not to allow Terraform to destroy the instance. Unless this field is set to false in Terraform state, a terraform destroy or terraform apply that would delete the instance will fail."
+    default: null
+  gcp_oracle_zone:
+    type: string
+    description: "The GCP Oracle zone where Oracle DbSystem is hosted. Example: us-east4-b-r2. If not specified, the system will pick a zone based on availability."
+    default: null
+  id:
+    type: string
+    description: "Optional property for DatabaseDbSystem"
+    default: null
+  labels:
+    type: object
+    description: "The labels or tags associated with the DbSystem.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  odb_network:
+    type: string
+    description: "The name of the OdbNetwork associated with the DbSystem. Format: projects/{project}/locations/{location}/odbNetworks/{odb_network} It is optional but if specified, this should match the parent ODBNetwork of the OdbSubnet."
+    default: null
+  project:
+    type: string
+    description: "Optional property for DatabaseDbSystem"
+    default: null
+  properties:
+    type: list
+    description: "Nested block: properties"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:oracle:DatabaseDbSystem
+    properties:
+      db_system_id: ${var.db_system_id}
+      display_name: ${var.display_name}
+      location: ${var.location}
+      odb_subnet: ${var.odb_subnet}
+      deletion_protection: ${var.deletion_protection}
+      gcp_oracle_zone: ${var.gcp_oracle_zone}
+      id: ${var.id}
+      labels: ${var.labels}
+      odb_network: ${var.odb_network}
+      project: ${var.project}
+      dynamic:
+        properties:
+          for_each: ${var.properties}
+          content:
+            compute_count: ${each.value.compute_count}
+            compute_model: ${each.value.compute_model}
+            data_storage_size_gb: ${each.value.data_storage_size_gb}
+            database_edition: ${each.value.database_edition}
+            domain: ${each.value.domain}
+            hostname: ${each.value.hostname}
+            hostname_prefix: ${each.value.hostname_prefix}
+            initial_data_storage_size_gb: ${each.value.initial_data_storage_size_gb}
+            license_model: ${each.value.license_model}
+            lifecycle_state: ${each.value.lifecycle_state}
+            memory_size_gb: ${each.value.memory_size_gb}
+            node_count: ${each.value.node_count}
+            ocid: ${each.value.ocid}
+            private_ip: ${each.value.private_ip}
+            reco_storage_size_gb: ${each.value.reco_storage_size_gb}
+            shape: ${each.value.shape}
+            ssh_public_keys: ${each.value.ssh_public_keys}
+            data_collection_options: ${each.value.data_collection_options}
+            db_home: ${each.value.db_home}
+            db_system_options: ${each.value.db_system_options}
+            time_zone: ${each.value.time_zone}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

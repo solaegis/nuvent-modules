@@ -1,0 +1,46 @@
+variables:
+  parameter_id:
+    type: string
+    description: "This must be unique within the project."
+  format:
+    type: string
+    description: "The format type of the parameter resource. Default value: \"UNFORMATTED\" Possible values: [\"UNFORMATTED\", \"YAML\", \"JSON\"]"
+    default: null
+  id:
+    type: string
+    description: "Optional property for ManagerParameter"
+    default: null
+  kms_key:
+    type: string
+    description: "The resource name of the Cloud KMS CryptoKey used to encrypt parameter version payload. Format 'projects/{{project}}/locations/global/keyRings/{{key_ring}}/cryptoKeys/{{crypto_key}}'"
+    default: null
+  labels:
+    type: object
+    description: "The labels assigned to this Parameter.  Label keys must be between 1 and 63 characters long, have a UTF-8 encoding of maximum 128 bytes, and must conform to the following PCRE regular expression: [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}  Label values must be between 0 and 63 characters long, have a UTF-8 encoding of maximum 128 bytes, and must conform to the following PCRE regular expression: [\p{Ll}\p{Lo}\p{N}_-]{0,63}  No more than 64 labels can be assigned to a given resource.  An object containing a list of \"key\": value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ManagerParameter"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:parameter:ManagerParameter
+    properties:
+      parameter_id: ${var.parameter_id}
+      format: ${var.format}
+      id: ${var.id}
+      kms_key: ${var.kms_key}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

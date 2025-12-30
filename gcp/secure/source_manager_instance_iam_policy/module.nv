@@ -1,0 +1,29 @@
+variables:
+  instance_id:
+    type: string
+    description: "Required property for SourceManagerInstanceIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for SourceManagerInstanceIamPolicy"
+  id:
+    type: string
+    description: "Optional property for SourceManagerInstanceIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for SourceManagerInstanceIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for SourceManagerInstanceIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:secure:SourceManagerInstanceIamPolicy
+    properties:
+      instance_id: ${var.instance_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

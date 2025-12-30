@@ -1,0 +1,52 @@
+variables:
+  data_policy_id:
+    type: string
+    description: "User-assigned (human readable) ID of the data policy that needs to be unique within a project. Used as {dataPolicyId} in part of the resource name."
+  data_policy_type:
+    type: string
+    description: "The enrollment level of the service. Possible values: [\"COLUMN_LEVEL_SECURITY_POLICY\", \"DATA_MASKING_POLICY\"]"
+  location:
+    type: string
+    description: "The name of the location of the data policy."
+  policy_tag:
+    type: string
+    description: "Policy tag resource name, in the format of projects/{project_number}/locations/{locationId}/taxonomies/{taxonomyId}/policyTags/{policyTag_id}."
+  id:
+    type: string
+    description: "Optional property for DatapolicyDataPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for DatapolicyDataPolicy"
+    default: null
+  data_masking_policy:
+    type: list
+    description: "Nested block: data_masking_policy"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigquery:DatapolicyDataPolicy
+    properties:
+      data_policy_id: ${var.data_policy_id}
+      data_policy_type: ${var.data_policy_type}
+      location: ${var.location}
+      policy_tag: ${var.policy_tag}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        data_masking_policy:
+          for_each: ${var.data_masking_policy}
+          content:
+            predefined_expression: ${each.value.predefined_expression}
+            routine: ${each.value.routine}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

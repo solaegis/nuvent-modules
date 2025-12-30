@@ -1,0 +1,44 @@
+variables:
+  members:
+    type: list
+    description: "Required property for SecurityGatewayIamBinding"
+  role:
+    type: string
+    description: "Required property for SecurityGatewayIamBinding"
+  security_gateway_id:
+    type: string
+    description: "Required property for SecurityGatewayIamBinding"
+  id:
+    type: string
+    description: "Optional property for SecurityGatewayIamBinding"
+    default: null
+  location:
+    type: string
+    description: "Optional property for SecurityGatewayIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for SecurityGatewayIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:beyondcorp:SecurityGatewayIamBinding
+    properties:
+      members: ${var.members}
+      role: ${var.role}
+      security_gateway_id: ${var.security_gateway_id}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

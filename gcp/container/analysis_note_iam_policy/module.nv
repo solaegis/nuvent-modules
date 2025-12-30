@@ -1,0 +1,24 @@
+variables:
+  note:
+    type: string
+    description: "Required property for AnalysisNoteIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for AnalysisNoteIamPolicy"
+  id:
+    type: string
+    description: "Optional property for AnalysisNoteIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AnalysisNoteIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:container:AnalysisNoteIamPolicy
+    properties:
+      note: ${var.note}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}

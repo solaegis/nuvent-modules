@@ -1,0 +1,53 @@
+variables:
+  config:
+    type: string
+    description: "The name of the instance partition's configuration (similar to a region) which defines the geographic placement and replication of data in this instance partition."
+  display_name:
+    type: string
+    description: "The descriptive name for this instance partition as it appears in UIs. Must be unique per project and between 4 and 30 characters in length."
+  instance:
+    type: string
+    description: "The instance to create the instance partition in."
+  name:
+    type: string
+    description: "A unique identifier for the instance partition, which cannot be changed after the instance partition is created. The name must be between 2 and 64 characters and match the regular expression [a-z][a-z0-9\\-]{0,61}[a-z0-9]."
+  id:
+    type: string
+    description: "Optional property for InstancePartition"
+    default: null
+  node_count:
+    type: number
+    description: "The number of nodes allocated to this instance partition. One node equals 1000 processing units. Exactly one of either node_count or processing_units must be present."
+    default: null
+  processing_units:
+    type: number
+    description: "The number of processing units allocated to this instance partition. Exactly one of either node_count or processing_units must be present."
+    default: null
+  project:
+    type: string
+    description: "Optional property for InstancePartition"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:spanner:InstancePartition
+    properties:
+      config: ${var.config}
+      display_name: ${var.display_name}
+      instance: ${var.instance}
+      name: ${var.name}
+      id: ${var.id}
+      node_count: ${var.node_count}
+      processing_units: ${var.processing_units}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

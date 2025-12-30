@@ -1,0 +1,44 @@
+variables:
+  member:
+    type: string
+    description: "Required property for RepositoryIamMember"
+  repository:
+    type: string
+    description: "Required property for RepositoryIamMember"
+  role:
+    type: string
+    description: "Required property for RepositoryIamMember"
+  id:
+    type: string
+    description: "Optional property for RepositoryIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RepositoryIamMember"
+    default: null
+  region:
+    type: string
+    description: "Optional property for RepositoryIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataform:RepositoryIamMember
+    properties:
+      member: ${var.member}
+      repository: ${var.repository}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

@@ -1,0 +1,41 @@
+variables:
+  display_name:
+    type: string
+    description: "The folder's display name. A folder's display name must be unique amongst its siblings, e.g. no two folders with the same parent can share the same display name. The display name must start and end with a letter or digit, may contain letters, digits, spaces, hyphens and underscores and can be no longer than 30 characters."
+  parent:
+    type: string
+    description: "The resource name of the parent Folder or Organization. Must be of the form folders/{folder_id} or organizations/{org_id}."
+  deletion_protection:
+    type: boolean
+    description: "When the field is set to true or unset in Terraform state, a terraform apply or terraform destroy that would delete the instance will fail. When the field is set to false, deleting the instance is allowed."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Folder"
+    default: null
+  tags:
+    type: object
+    description: "A map of resource manager tags. Resource manager tag keys and values have the same definition as resource manager tags. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/456. The field is ignored when empty. This field is only set at create time and modifying this field after creation will trigger recreation. To apply tags to an existing resource, see the google_tags_tag_value resource."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:Folder
+    properties:
+      display_name: ${var.display_name}
+      parent: ${var.parent}
+      deletion_protection: ${var.deletion_protection}
+      id: ${var.id}
+      tags: ${var.tags}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            read: ${each.value.read}
+            update: ${each.value.update}

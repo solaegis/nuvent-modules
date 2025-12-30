@@ -1,0 +1,78 @@
+variables:
+  branch_rule_id:
+    type: string
+    description: "The ID for the BranchRule."
+  include_pattern:
+    type: string
+    description: "The BranchRule matches branches based on the specified regular expression. Use .* to match all branches."
+  location:
+    type: string
+    description: "The location for the Repository."
+  repository_id:
+    type: string
+    description: "The ID for the Repository."
+  allow_stale_reviews:
+    type: boolean
+    description: "Determines if allow stale reviews or approvals before merging to the branch."
+    default: null
+  disabled:
+    type: boolean
+    description: "Determines if the branch rule is disabled or not."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SourceManagerBranchRule"
+    default: null
+  minimum_approvals_count:
+    type: number
+    description: "The minimum number of approvals required for the branch rule to be matched."
+    default: null
+  minimum_reviews_count:
+    type: number
+    description: "The minimum number of reviews required for the branch rule to be matched."
+    default: null
+  project:
+    type: string
+    description: "Optional property for SourceManagerBranchRule"
+    default: null
+  require_comments_resolved:
+    type: boolean
+    description: "Determines if require comments resolved before merging to the branch."
+    default: null
+  require_linear_history:
+    type: boolean
+    description: "Determines if require linear history before merging to the branch."
+    default: null
+  require_pull_request:
+    type: boolean
+    description: "Determines if the branch rule requires a pull request or not."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:secure:SourceManagerBranchRule
+    properties:
+      branch_rule_id: ${var.branch_rule_id}
+      include_pattern: ${var.include_pattern}
+      location: ${var.location}
+      repository_id: ${var.repository_id}
+      allow_stale_reviews: ${var.allow_stale_reviews}
+      disabled: ${var.disabled}
+      id: ${var.id}
+      minimum_approvals_count: ${var.minimum_approvals_count}
+      minimum_reviews_count: ${var.minimum_reviews_count}
+      project: ${var.project}
+      require_comments_resolved: ${var.require_comments_resolved}
+      require_linear_history: ${var.require_linear_history}
+      require_pull_request: ${var.require_pull_request}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

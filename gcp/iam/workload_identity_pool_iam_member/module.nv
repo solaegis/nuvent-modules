@@ -1,0 +1,39 @@
+variables:
+  member:
+    type: string
+    description: "Required property for WorkloadIdentityPoolIamMember"
+  role:
+    type: string
+    description: "Required property for WorkloadIdentityPoolIamMember"
+  workload_identity_pool_id:
+    type: string
+    description: "Required property for WorkloadIdentityPoolIamMember"
+  id:
+    type: string
+    description: "Optional property for WorkloadIdentityPoolIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WorkloadIdentityPoolIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:iam:WorkloadIdentityPoolIamMember
+    properties:
+      member: ${var.member}
+      role: ${var.role}
+      workload_identity_pool_id: ${var.workload_identity_pool_id}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

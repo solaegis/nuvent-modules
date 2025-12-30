@@ -1,0 +1,82 @@
+variables:
+  key_ring:
+    type: string
+    description: "The KeyRing that this key belongs to. Format: ''projects/{{project}}/locations/{{location}}/keyRings/{{keyRing}}''."
+  name:
+    type: string
+    description: "The resource name for the CryptoKey."
+  crypto_key_backend:
+    type: string
+    description: "The resource name of the backend environment associated with all CryptoKeyVersions within this CryptoKey. The resource name is in the format \"projects/*/locations/*/ekmConnections/*\" and only applies to \"EXTERNAL_VPC\" keys."
+    default: null
+  destroy_scheduled_duration:
+    type: string
+    description: "The period of time that versions of this key spend in the DESTROY_SCHEDULED state before transitioning to DESTROYED. If not specified at creation time, the default duration is 30 days."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CryptoKey"
+    default: null
+  import_only:
+    type: boolean
+    description: "Whether this key may contain imported versions only."
+    default: null
+  labels:
+    type: object
+    description: "Labels with user-defined metadata to apply to this resource.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  purpose:
+    type: string
+    description: "The immutable purpose of this CryptoKey. See the [purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose) for possible inputs. Default value is \"ENCRYPT_DECRYPT\"."
+    default: null
+  rotation_period:
+    type: string
+    description: "Every time this period passes, generate a new CryptoKeyVersion and set it as the primary. The first rotation will take place after the specified period. The rotation period has the format of a decimal number with up to 9 fractional digits, followed by the letter 's' (seconds). It must be greater than a day (ie, 86400)."
+    default: null
+  skip_initial_version_creation:
+    type: boolean
+    description: "If set to true, the request will create a CryptoKey without any CryptoKeyVersions. You must use the 'google_kms_crypto_key_version' resource to create a new CryptoKeyVersion or 'google_kms_key_ring_import_job' resource to import the CryptoKeyVersion. This field is only applicable during initial CryptoKey creation."
+    default: null
+  key_access_justifications_policy:
+    type: list
+    description: "Nested block: key_access_justifications_policy"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  version_template:
+    type: list
+    description: "Nested block: version_template"
+    default: []
+
+resources:
+  main:
+    type: gcp:kms:CryptoKey
+    properties:
+      key_ring: ${var.key_ring}
+      name: ${var.name}
+      crypto_key_backend: ${var.crypto_key_backend}
+      destroy_scheduled_duration: ${var.destroy_scheduled_duration}
+      id: ${var.id}
+      import_only: ${var.import_only}
+      labels: ${var.labels}
+      purpose: ${var.purpose}
+      rotation_period: ${var.rotation_period}
+      skip_initial_version_creation: ${var.skip_initial_version_creation}
+      dynamic:
+        key_access_justifications_policy:
+          for_each: ${var.key_access_justifications_policy}
+          content:
+            allowed_access_reasons: ${each.value.allowed_access_reasons}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        version_template:
+          for_each: ${var.version_template}
+          content:
+            algorithm: ${each.value.algorithm}
+            protection_level: ${each.value.protection_level}

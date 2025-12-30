@@ -1,0 +1,76 @@
+variables:
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  multicast_domain:
+    type: string
+    description: "The resource name of the multicast domain in which to create this multicast group range. Use the following format: 'projects/*/locations/global/multicastDomains/*'."
+  multicast_group_range_id:
+    type: string
+    description: "A unique name for the multicast group range. The name is restricted to letters, numbers, and hyphen, with the first character a letter, and the last a letter or a number. The name must not exceed 48 characters."
+  reserved_internal_range:
+    type: string
+    description: "The resource name of the internal range reserved for this multicast group range.  The internal range must be a Class D address (224.0.0.0 to 239.255.255.255) and have a prefix length >= 23.  Use the following format: 'projects/*/locations/global/internalRanges/*'."
+  consumer_accept_list:
+    type: list
+    description: "A list of consumer projects that are allowed to subscribe to the multicast IP addresses within the range defined by this MulticastGroupRange. The project can be specified using its project ID or project number. If left empty, then all consumer projects are allowed (unless require_explicit_accept is set to true) once they have VPC networks associated to the multicast domain. The current max length of the accept list is 100."
+    default: null
+  description:
+    type: string
+    description: "An optional text description of the multicast group range."
+    default: null
+  distribution_scope:
+    type: string
+    description: "Multicast group range's distribution scope. Intra-zone or intra-region cross-zone is supported, with default value being intra-region. Cross region distribution is not supported. Possible values: INTRA_ZONE INTRA_REGION"
+    default: null
+  id:
+    type: string
+    description: "Optional property for ServicesMulticastGroupRange"
+    default: null
+  labels:
+    type: object
+    description: "Labels as key-value pairs.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ServicesMulticastGroupRange"
+    default: null
+  require_explicit_accept:
+    type: boolean
+    description: "Whether an empty consumer_accept_list will deny all consumer projects."
+    default: null
+  log_config:
+    type: list
+    description: "Nested block: log_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ServicesMulticastGroupRange
+    properties:
+      location: ${var.location}
+      multicast_domain: ${var.multicast_domain}
+      multicast_group_range_id: ${var.multicast_group_range_id}
+      reserved_internal_range: ${var.reserved_internal_range}
+      consumer_accept_list: ${var.consumer_accept_list}
+      description: ${var.description}
+      distribution_scope: ${var.distribution_scope}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      require_explicit_accept: ${var.require_explicit_accept}
+      dynamic:
+        log_config:
+          for_each: ${var.log_config}
+          content:
+            enabled: ${each.value.enabled}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

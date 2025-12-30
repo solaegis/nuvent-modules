@@ -1,0 +1,44 @@
+variables:
+  job_id:
+    type: string
+    description: "Required property for JobIamMember"
+  member:
+    type: string
+    description: "Required property for JobIamMember"
+  role:
+    type: string
+    description: "Required property for JobIamMember"
+  id:
+    type: string
+    description: "Optional property for JobIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for JobIamMember"
+    default: null
+  region:
+    type: string
+    description: "Optional property for JobIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataproc:JobIamMember
+    properties:
+      job_id: ${var.job_id}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

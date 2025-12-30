@@ -1,0 +1,94 @@
+variables:
+  name:
+    type: string
+    description: "The name of the resource, provided by the client when initially creating the resource. The resource name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])'? which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  description:
+    type: string
+    description: "An optional description of this resource. Provide this property when you create the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ResourcePolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ResourcePolicy"
+    default: null
+  region:
+    type: string
+    description: "Region where resource policy resides."
+    default: null
+  disk_consistency_group_policy:
+    type: list
+    description: "Nested block: disk_consistency_group_policy"
+    default: []
+  group_placement_policy:
+    type: list
+    description: "Nested block: group_placement_policy"
+    default: []
+  instance_schedule_policy:
+    type: list
+    description: "Nested block: instance_schedule_policy"
+    default: []
+  snapshot_schedule_policy:
+    type: list
+    description: "Nested block: snapshot_schedule_policy"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  workload_policy:
+    type: list
+    description: "Nested block: workload_policy"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:ResourcePolicy
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        disk_consistency_group_policy:
+          for_each: ${var.disk_consistency_group_policy}
+          content:
+            enabled: ${each.value.enabled}
+        group_placement_policy:
+          for_each: ${var.group_placement_policy}
+          content:
+            availability_domain_count: ${each.value.availability_domain_count}
+            collocation: ${each.value.collocation}
+            gpu_topology: ${each.value.gpu_topology}
+            max_distance: ${each.value.max_distance}
+            tpu_topology: ${each.value.tpu_topology}
+            vm_count: ${each.value.vm_count}
+        instance_schedule_policy:
+          for_each: ${var.instance_schedule_policy}
+          content:
+            expiration_time: ${each.value.expiration_time}
+            start_time: ${each.value.start_time}
+            time_zone: ${each.value.time_zone}
+            vm_start_schedule: ${each.value.vm_start_schedule}
+            vm_stop_schedule: ${each.value.vm_stop_schedule}
+        snapshot_schedule_policy:
+          for_each: ${var.snapshot_schedule_policy}
+          content:
+            retention_policy: ${each.value.retention_policy}
+            schedule: ${each.value.schedule}
+            snapshot_properties: ${each.value.snapshot_properties}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        workload_policy:
+          for_each: ${var.workload_policy}
+          content:
+            accelerator_topology: ${each.value.accelerator_topology}
+            max_topology_distance: ${each.value.max_topology_distance}
+            type: ${each.value.type}

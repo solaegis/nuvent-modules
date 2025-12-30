@@ -1,0 +1,39 @@
+variables:
+  machine_image:
+    type: string
+    description: "Required property for MachineImageIamMember"
+  member:
+    type: string
+    description: "Required property for MachineImageIamMember"
+  role:
+    type: string
+    description: "Required property for MachineImageIamMember"
+  id:
+    type: string
+    description: "Optional property for MachineImageIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for MachineImageIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:MachineImageIamMember
+    properties:
+      machine_image: ${var.machine_image}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

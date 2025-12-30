@@ -1,0 +1,139 @@
+variables:
+  display_name:
+    type: string
+    description: "Required. Human readable name for this profile. Max length 1024 bytes."
+  location:
+    type: string
+    description: "desc"
+  id:
+    type: string
+    description: "Optional property for ConversationProfile"
+    default: null
+  language_code:
+    type: string
+    description: "Language code for the conversation profile. This should be a BCP-47 language tag."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ConversationProfile"
+    default: null
+  security_settings:
+    type: string
+    description: "Name of the CX SecuritySettings reference for the agent."
+    default: null
+  time_zone:
+    type: string
+    description: "The time zone of this conversational profile."
+    default: null
+  automated_agent_config:
+    type: list
+    description: "Nested block: automated_agent_config"
+    default: []
+  human_agent_assistant_config:
+    type: list
+    description: "Nested block: human_agent_assistant_config"
+    default: []
+  human_agent_handoff_config:
+    type: list
+    description: "Nested block: human_agent_handoff_config"
+    default: []
+  logging_config:
+    type: list
+    description: "Nested block: logging_config"
+    default: []
+  new_message_event_notification_config:
+    type: list
+    description: "Nested block: new_message_event_notification_config"
+    default: []
+  new_recognition_result_notification_config:
+    type: list
+    description: "Nested block: new_recognition_result_notification_config"
+    default: []
+  notification_config:
+    type: list
+    description: "Nested block: notification_config"
+    default: []
+  stt_config:
+    type: list
+    description: "Nested block: stt_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  tts_config:
+    type: list
+    description: "Nested block: tts_config"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:ConversationProfile
+    properties:
+      display_name: ${var.display_name}
+      location: ${var.location}
+      id: ${var.id}
+      language_code: ${var.language_code}
+      project: ${var.project}
+      security_settings: ${var.security_settings}
+      time_zone: ${var.time_zone}
+      dynamic:
+        automated_agent_config:
+          for_each: ${var.automated_agent_config}
+          content:
+            agent: ${each.value.agent}
+            session_ttl: ${each.value.session_ttl}
+        human_agent_assistant_config:
+          for_each: ${var.human_agent_assistant_config}
+          content:
+            end_user_suggestion_config: ${each.value.end_user_suggestion_config}
+            human_agent_suggestion_config: ${each.value.human_agent_suggestion_config}
+            message_analysis_config: ${each.value.message_analysis_config}
+            notification_config: ${each.value.notification_config}
+        human_agent_handoff_config:
+          for_each: ${var.human_agent_handoff_config}
+          content:
+            live_person_config: ${each.value.live_person_config}
+        logging_config:
+          for_each: ${var.logging_config}
+          content:
+            enable_stackdriver_logging: ${each.value.enable_stackdriver_logging}
+        new_message_event_notification_config:
+          for_each: ${var.new_message_event_notification_config}
+          content:
+            message_format: ${each.value.message_format}
+            topic: ${each.value.topic}
+        new_recognition_result_notification_config:
+          for_each: ${var.new_recognition_result_notification_config}
+          content:
+            message_format: ${each.value.message_format}
+            topic: ${each.value.topic}
+        notification_config:
+          for_each: ${var.notification_config}
+          content:
+            message_format: ${each.value.message_format}
+            topic: ${each.value.topic}
+        stt_config:
+          for_each: ${var.stt_config}
+          content:
+            audio_encoding: ${each.value.audio_encoding}
+            enable_word_info: ${each.value.enable_word_info}
+            language_code: ${each.value.language_code}
+            model: ${each.value.model}
+            sample_rate_hertz: ${each.value.sample_rate_hertz}
+            speech_model_variant: ${each.value.speech_model_variant}
+            use_timeout_based_endpointing: ${each.value.use_timeout_based_endpointing}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        tts_config:
+          for_each: ${var.tts_config}
+          content:
+            effects_profile_id: ${each.value.effects_profile_id}
+            pitch: ${each.value.pitch}
+            speaking_rate: ${each.value.speaking_rate}
+            volume_gain_db: ${each.value.volume_gain_db}
+            voice: ${each.value.voice}

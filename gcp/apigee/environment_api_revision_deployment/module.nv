@@ -1,0 +1,52 @@
+variables:
+  api:
+    type: string
+    description: "Apigee API proxy name."
+  environment:
+    type: string
+    description: "Apigee environment name."
+  org_id:
+    type: string
+    description: "Apigee organization ID."
+  revision:
+    type: number
+    description: "API proxy revision number to deploy."
+  id:
+    type: string
+    description: "Optional property for EnvironmentApiRevisionDeployment"
+    default: null
+  override:
+    type: boolean
+    description: "If true, replaces other deployed revisions of this proxy in the environment."
+    default: null
+  sequenced_rollout:
+    type: boolean
+    description: "If true, enables sequenced rollout for safe traffic switching."
+    default: null
+  service_account:
+    type: string
+    description: "Optional service account the deployed proxy runs as."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:EnvironmentApiRevisionDeployment
+    properties:
+      api: ${var.api}
+      environment: ${var.environment}
+      org_id: ${var.org_id}
+      revision: ${var.revision}
+      id: ${var.id}
+      override: ${var.override}
+      sequenced_rollout: ${var.sequenced_rollout}
+      service_account: ${var.service_account}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

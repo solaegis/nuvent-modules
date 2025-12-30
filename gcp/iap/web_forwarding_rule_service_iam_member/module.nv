@@ -1,0 +1,39 @@
+variables:
+  forwarding_rule_service_name:
+    type: string
+    description: "Required property for WebForwardingRuleServiceIamMember"
+  member:
+    type: string
+    description: "Required property for WebForwardingRuleServiceIamMember"
+  role:
+    type: string
+    description: "Required property for WebForwardingRuleServiceIamMember"
+  id:
+    type: string
+    description: "Optional property for WebForwardingRuleServiceIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WebForwardingRuleServiceIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:iap:WebForwardingRuleServiceIamMember
+    properties:
+      forwarding_rule_service_name: ${var.forwarding_rule_service_name}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

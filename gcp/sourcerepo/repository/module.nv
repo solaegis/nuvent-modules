@@ -1,0 +1,46 @@
+variables:
+  name:
+    type: string
+    description: "Resource name of the repository, of the form '{{repo}}'. The repo name may contain slashes. eg, 'name/with/slash'"
+  create_ignore_already_exists:
+    type: boolean
+    description: "If set to true, skip repository creation if a repository with the same name already exists."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Repository"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Repository"
+    default: null
+  pubsub_configs:
+    type: list
+    description: "Nested block: pubsub_configs"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:sourcerepo:Repository
+    properties:
+      name: ${var.name}
+      create_ignore_already_exists: ${var.create_ignore_already_exists}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        pubsub_configs:
+          for_each: ${var.pubsub_configs}
+          content:
+            message_format: ${each.value.message_format}
+            service_account_email: ${each.value.service_account_email}
+            topic: ${each.value.topic}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,78 @@
+variables:
+  location:
+    type: string
+    description: "The location where the PrivateCloud should reside."
+  name:
+    type: string
+    description: "The ID of the PrivateCloud."
+  deletion_delay_hours:
+    type: number
+    description: "The number of hours to delay this request. You can set this value to an hour between 0 to 8, where setting it to 0 starts the deletion request immediately. If no value is set, a default value is set at the API Level."
+    default: null
+  description:
+    type: string
+    description: "User-provided description for this private cloud."
+    default: null
+  id:
+    type: string
+    description: "Optional property for PrivateCloud"
+    default: null
+  project:
+    type: string
+    description: "Optional property for PrivateCloud"
+    default: null
+  send_deletion_delay_hours_if_zero:
+    type: boolean
+    description: "While set true, deletion_delay_hours value will be sent in the request even for zero value of the field. This field is only useful for setting 0 value to the deletion_delay_hours field. It can be used both alone and together with deletion_delay_hours."
+    default: null
+  type:
+    type: string
+    description: "Initial type of the private cloud. Possible values: [\"STANDARD\", \"TIME_LIMITED\", \"STRETCHED\"]"
+    default: null
+  management_cluster:
+    type: list
+    description: "Nested block: management_cluster"
+    default: []
+  network_config:
+    type: list
+    description: "Nested block: network_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vmwareengine:PrivateCloud
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      deletion_delay_hours: ${var.deletion_delay_hours}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      send_deletion_delay_hours_if_zero: ${var.send_deletion_delay_hours_if_zero}
+      type: ${var.type}
+      dynamic:
+        management_cluster:
+          for_each: ${var.management_cluster}
+          content:
+            cluster_id: ${each.value.cluster_id}
+            autoscaling_settings: ${each.value.autoscaling_settings}
+            node_type_configs: ${each.value.node_type_configs}
+            stretched_cluster_config: ${each.value.stretched_cluster_config}
+        network_config:
+          for_each: ${var.network_config}
+          content:
+            dns_server_ip: ${each.value.dns_server_ip}
+            management_cidr: ${each.value.management_cidr}
+            management_ip_address_layout_version: ${each.value.management_ip_address_layout_version}
+            vmware_engine_network: ${each.value.vmware_engine_network}
+            vmware_engine_network_canonical: ${each.value.vmware_engine_network_canonical}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

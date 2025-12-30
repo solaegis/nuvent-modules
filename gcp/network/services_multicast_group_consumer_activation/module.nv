@@ -1,0 +1,61 @@
+variables:
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  multicast_consumer_association:
+    type: string
+    description: "The resource name of the multicast consumer association that is in the same zone as this multicast group consumer activation. Use the following format: 'projects/*/locations/*/multicastConsumerAssociations/*'."
+  multicast_group_consumer_activation_id:
+    type: string
+    description: "A unique name for the multicast group consumer activation. The name is restricted to letters, numbers, and hyphen, with the first character a letter, and the last a letter or a number. The name must not exceed 48 characters."
+  multicast_group_range_activation:
+    type: string
+    description: "The resource name of the multicast group range activation created by the admin in the same zone as this multicast group consumer activation. Use the following format: // 'projects/*/locations/*/multicastGroupRangeActivations/*'."
+  description:
+    type: string
+    description: "An optional text description of the multicast group consumer activation."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ServicesMulticastGroupConsumerActivation"
+    default: null
+  labels:
+    type: object
+    description: "Labels as key-value pairs  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ServicesMulticastGroupConsumerActivation"
+    default: null
+  log_config:
+    type: list
+    description: "Nested block: log_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ServicesMulticastGroupConsumerActivation
+    properties:
+      location: ${var.location}
+      multicast_consumer_association: ${var.multicast_consumer_association}
+      multicast_group_consumer_activation_id: ${var.multicast_group_consumer_activation_id}
+      multicast_group_range_activation: ${var.multicast_group_range_activation}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        log_config:
+          for_each: ${var.log_config}
+          content:
+            enabled: ${each.value.enabled}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

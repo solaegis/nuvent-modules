@@ -1,0 +1,24 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for SchemaIamPolicy"
+  schema:
+    type: string
+    description: "Required property for SchemaIamPolicy"
+  id:
+    type: string
+    description: "Optional property for SchemaIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for SchemaIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:pubsub:SchemaIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      schema: ${var.schema}
+      id: ${var.id}
+      project: ${var.project}

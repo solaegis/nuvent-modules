@@ -1,0 +1,70 @@
+variables:
+  name:
+    type: string
+    description: "User assigned name for this policy."
+  description:
+    type: string
+    description: "A textual description field. Defaults to 'Managed by Terraform'."
+    default: null
+  enable_inbound_forwarding:
+    type: boolean
+    description: "Allows networks bound to this policy to receive DNS queries sent by VMs or applications over VPN connections. When enabled, a virtual IP address will be allocated from each of the sub-networks that are bound to this policy."
+    default: null
+  enable_logging:
+    type: boolean
+    description: "Controls whether logging is enabled for the networks bound to this policy. Defaults to no logging if not set."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Policy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Policy"
+    default: null
+  alternative_name_server_config:
+    type: list
+    description: "Nested block: alternative_name_server_config"
+    default: []
+  dns64_config:
+    type: list
+    description: "Nested block: dns64_config"
+    default: []
+  networks:
+    type: list
+    description: "Nested block: networks"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dns:Policy
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      enable_inbound_forwarding: ${var.enable_inbound_forwarding}
+      enable_logging: ${var.enable_logging}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        alternative_name_server_config:
+          for_each: ${var.alternative_name_server_config}
+          content:
+            target_name_servers: ${each.value.target_name_servers}
+        dns64_config:
+          for_each: ${var.dns64_config}
+          content:
+            scope: ${each.value.scope}
+        networks:
+          for_each: ${var.networks}
+          content:
+            network_url: ${each.value.network_url}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

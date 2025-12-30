@@ -1,0 +1,69 @@
+variables:
+  instance_id:
+    type: string
+    description: "The name for the Instance."
+  location:
+    type: string
+    description: "The location for the Instance."
+  deletion_policy:
+    type: string
+    description: "The deletion policy for the instance. Setting 'ABANDON' allows the resource to be abandoned, rather than deleted. Setting 'DELETE' deletes the resource and all its contents. Setting 'PREVENT' prevents the resource from accidental deletion by erroring out during plan. Default is 'PREVENT'.  Possible values are:   * DELETE   * PREVENT   * ABANDON"
+    default: null
+  id:
+    type: string
+    description: "Optional property for SourceManagerInstance"
+    default: null
+  kms_key:
+    type: string
+    description: "Customer-managed encryption key name, in the format projects/*/locations/*/keyRings/*/cryptoKeys/*."
+    default: null
+  labels:
+    type: object
+    description: "Labels as key value pairs.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for SourceManagerInstance"
+    default: null
+  private_config:
+    type: list
+    description: "Nested block: private_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  workforce_identity_federation_config:
+    type: list
+    description: "Nested block: workforce_identity_federation_config"
+    default: []
+
+resources:
+  main:
+    type: gcp:secure:SourceManagerInstance
+    properties:
+      instance_id: ${var.instance_id}
+      location: ${var.location}
+      deletion_policy: ${var.deletion_policy}
+      id: ${var.id}
+      kms_key: ${var.kms_key}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        private_config:
+          for_each: ${var.private_config}
+          content:
+            ca_pool: ${each.value.ca_pool}
+            http_service_attachment: ${each.value.http_service_attachment}
+            is_private: ${each.value.is_private}
+            ssh_service_attachment: ${each.value.ssh_service_attachment}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        workforce_identity_federation_config:
+          for_each: ${var.workforce_identity_federation_config}
+          content:
+            enabled: ${each.value.enabled}

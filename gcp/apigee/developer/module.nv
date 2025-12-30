@@ -1,0 +1,51 @@
+variables:
+  email:
+    type: string
+    description: "Email address of the developer. This value is used to uniquely identify the developer in Apigee hybrid. Note that the email address has to be in lowercase only.."
+  first_name:
+    type: string
+    description: "First name of the developer."
+  last_name:
+    type: string
+    description: "Last name of the developer."
+  org_id:
+    type: string
+    description: "The Apigee Organization associated with the Apigee instance, in the format 'organizations/{{org_name}}'."
+  user_name:
+    type: string
+    description: "User name of the developer. Not used by Apigee hybrid."
+  id:
+    type: string
+    description: "Optional property for Developer"
+    default: null
+  attributes:
+    type: list
+    description: "Nested block: attributes"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:Developer
+    properties:
+      email: ${var.email}
+      first_name: ${var.first_name}
+      last_name: ${var.last_name}
+      org_id: ${var.org_id}
+      user_name: ${var.user_name}
+      id: ${var.id}
+      dynamic:
+        attributes:
+          for_each: ${var.attributes}
+          content:
+            name: ${each.value.name}
+            value: ${each.value.value}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

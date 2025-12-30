@@ -1,0 +1,39 @@
+variables:
+  api:
+    type: string
+    description: "Required property for GatewayApiIamBinding"
+  members:
+    type: list
+    description: "Required property for GatewayApiIamBinding"
+  role:
+    type: string
+    description: "Required property for GatewayApiIamBinding"
+  id:
+    type: string
+    description: "Optional property for GatewayApiIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for GatewayApiIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:api:GatewayApiIamBinding
+    properties:
+      api: ${var.api}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

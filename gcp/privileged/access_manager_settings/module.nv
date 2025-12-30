@@ -1,0 +1,47 @@
+variables:
+  location:
+    type: string
+    description: "The region of the PAM settings resource."
+  parent:
+    type: string
+    description: "Format: projects/{project-id|project-number} or organizations/{organization-number} or folders/{folder-number}"
+  id:
+    type: string
+    description: "Optional property for AccessManagerSettings"
+    default: null
+  email_notification_settings:
+    type: list
+    description: "Nested block: email_notification_settings"
+    default: []
+  service_account_approver_settings:
+    type: list
+    description: "Nested block: service_account_approver_settings"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:privileged:AccessManagerSettings
+    properties:
+      location: ${var.location}
+      parent: ${var.parent}
+      id: ${var.id}
+      dynamic:
+        email_notification_settings:
+          for_each: ${var.email_notification_settings}
+          content:
+            custom_notification_behavior: ${each.value.custom_notification_behavior}
+            disable_all_notifications: ${each.value.disable_all_notifications}
+        service_account_approver_settings:
+          for_each: ${var.service_account_approver_settings}
+          content:
+            enabled: ${each.value.enabled}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

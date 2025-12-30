@@ -1,0 +1,29 @@
+variables:
+  forwarding_rule_region_service_name:
+    type: string
+    description: "Required property for WebRegionForwardingRuleServiceIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for WebRegionForwardingRuleServiceIamPolicy"
+  id:
+    type: string
+    description: "Optional property for WebRegionForwardingRuleServiceIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WebRegionForwardingRuleServiceIamPolicy"
+    default: null
+  region:
+    type: string
+    description: "Optional property for WebRegionForwardingRuleServiceIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:iap:WebRegionForwardingRuleServiceIamPolicy
+    properties:
+      forwarding_rule_region_service_name: ${var.forwarding_rule_region_service_name}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}

@@ -1,0 +1,24 @@
+variables:
+  forwarding_rule_service_name:
+    type: string
+    description: "Required property for WebForwardingRuleServiceIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for WebForwardingRuleServiceIamPolicy"
+  id:
+    type: string
+    description: "Optional property for WebForwardingRuleServiceIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WebForwardingRuleServiceIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:iap:WebForwardingRuleServiceIamPolicy
+    properties:
+      forwarding_rule_service_name: ${var.forwarding_rule_service_name}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}

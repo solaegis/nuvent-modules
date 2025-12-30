@@ -1,0 +1,83 @@
+variables:
+  display_name:
+    type: string
+    description: "The human-readable name of the webhook, unique within the agent."
+  disabled:
+    type: boolean
+    description: "Indicates whether the webhook is disabled."
+    default: null
+  enable_spell_correction:
+    type: boolean
+    description: "Deprecated. Indicates if automatic spell correction is enabled in detect intent requests."
+    default: null
+  enable_stackdriver_logging:
+    type: boolean
+    description: "Deprecated. Determines whether this agent should log conversation queries."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CxWebhook"
+    default: null
+  parent:
+    type: string
+    description: "The agent to create a webhook for. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>."
+    default: null
+  security_settings:
+    type: string
+    description: "Deprecated. Name of the SecuritySettings reference for the agent. Format: projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>."
+    default: null
+  timeout:
+    type: string
+    description: "Webhook execution timeout."
+    default: null
+  generic_web_service:
+    type: list
+    description: "Nested block: generic_web_service"
+    default: []
+  service_directory:
+    type: list
+    description: "Nested block: service_directory"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:CxWebhook
+    properties:
+      display_name: ${var.display_name}
+      disabled: ${var.disabled}
+      enable_spell_correction: ${var.enable_spell_correction}
+      enable_stackdriver_logging: ${var.enable_stackdriver_logging}
+      id: ${var.id}
+      parent: ${var.parent}
+      security_settings: ${var.security_settings}
+      timeout: ${var.timeout}
+      dynamic:
+        generic_web_service:
+          for_each: ${var.generic_web_service}
+          content:
+            allowed_ca_certs: ${each.value.allowed_ca_certs}
+            http_method: ${each.value.http_method}
+            parameter_mapping: ${each.value.parameter_mapping}
+            request_body: ${each.value.request_body}
+            request_headers: ${each.value.request_headers}
+            secret_version_for_username_password: ${each.value.secret_version_for_username_password}
+            service_agent_auth: ${each.value.service_agent_auth}
+            uri: ${each.value.uri}
+            webhook_type: ${each.value.webhook_type}
+            oauth_config: ${each.value.oauth_config}
+            secret_versions_for_request_headers: ${each.value.secret_versions_for_request_headers}
+        service_directory:
+          for_each: ${var.service_directory}
+          content:
+            service: ${each.value.service}
+            generic_web_service: ${each.value.generic_web_service}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

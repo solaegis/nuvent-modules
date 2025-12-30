@@ -1,0 +1,57 @@
+variables:
+  instance_group_manager:
+    type: string
+    description: "The reference of the regional instance group manager this ResizeRequest is a part of."
+  name:
+    type: string
+    description: "The name of this resize request. The name must be 1-63 characters long, and comply with RFC1035."
+  resize_by:
+    type: number
+    description: "The number of instances to be created by this resize request. The group's target size will be increased by this number."
+  description:
+    type: string
+    description: "An optional description of this resize-request."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RegionResizeRequest"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RegionResizeRequest"
+    default: null
+  region:
+    type: string
+    description: "The reference of the compute region scoping this request. If it is not provided, the provider region is used."
+    default: null
+  requested_run_duration:
+    type: list
+    description: "Nested block: requested_run_duration"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:RegionResizeRequest
+    properties:
+      instance_group_manager: ${var.instance_group_manager}
+      name: ${var.name}
+      resize_by: ${var.resize_by}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        requested_run_duration:
+          for_each: ${var.requested_run_duration}
+          content:
+            nanos: ${each.value.nanos}
+            seconds: ${each.value.seconds}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

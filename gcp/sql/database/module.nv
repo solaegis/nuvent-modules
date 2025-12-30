@@ -1,0 +1,50 @@
+variables:
+  instance:
+    type: string
+    description: "The name of the Cloud SQL instance. This does not include the project ID."
+  name:
+    type: string
+    description: "The name of the database in the Cloud SQL instance. This does not include the project ID or instance name."
+  charset:
+    type: string
+    description: "The charset value. See MySQL's [Supported Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-charsets.html) and Postgres' [Character Set Support](https://www.postgresql.org/docs/9.6/static/multibyte.html) for more details and supported values. Postgres databases only support a value of 'UTF8' at creation time."
+    default: null
+  collation:
+    type: string
+    description: "The collation value. See MySQL's [Supported Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-charsets.html) and Postgres' [Collation Support](https://www.postgresql.org/docs/9.6/static/collation.html) for more details and supported values. Postgres databases only support a value of 'en_US.UTF8' at creation time."
+    default: null
+  deletion_policy:
+    type: string
+    description: "The deletion policy for the database. Setting ABANDON allows the resource to be abandoned rather than deleted. This is useful for Postgres, where databases cannot be deleted from the API if there are users other than cloudsqlsuperuser with access. Possible values are: \"ABANDON\", \"DELETE\". Defaults to \"DELETE\"."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Database"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Database"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:sql:Database
+    properties:
+      instance: ${var.instance}
+      name: ${var.name}
+      charset: ${var.charset}
+      collation: ${var.collation}
+      deletion_policy: ${var.deletion_policy}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

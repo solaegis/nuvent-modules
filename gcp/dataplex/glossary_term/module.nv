@@ -1,0 +1,60 @@
+variables:
+  location:
+    type: string
+    description: "The location where the glossary term should reside."
+  parent:
+    type: string
+    description: "The immediate parent of the GlossaryTerm in the resource-hierarchy. It can either be a Glossary or a Term. Format: projects/{projectId}/locations/{locationId}/glossaries/{glossaryId} OR projects/{projectId}/locations/{locationId}/glossaries/{glossaryId}/terms/{termId}"
+  description:
+    type: string
+    description: "The user-mutable description of the GlossaryTerm."
+    default: null
+  display_name:
+    type: string
+    description: "User friendly display name of the GlossaryTerm. This is user-mutable. This will be same as the termId, if not specified."
+    default: null
+  glossary_id:
+    type: string
+    description: "The glossary id for creation."
+    default: null
+  id:
+    type: string
+    description: "Optional property for GlossaryTerm"
+    default: null
+  labels:
+    type: object
+    description: "User-defined labels for the GlossaryTerm.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for GlossaryTerm"
+    default: null
+  term_id:
+    type: string
+    description: "The term id for creation."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataplex:GlossaryTerm
+    properties:
+      location: ${var.location}
+      parent: ${var.parent}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      glossary_id: ${var.glossary_id}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      term_id: ${var.term_id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

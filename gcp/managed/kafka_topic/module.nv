@@ -1,0 +1,53 @@
+variables:
+  cluster:
+    type: string
+    description: "The cluster name."
+  location:
+    type: string
+    description: "ID of the location of the Kafka resource. See https://cloud.google.com/managed-kafka/docs/locations for a list of supported locations."
+  replication_factor:
+    type: number
+    description: "The number of replicas of each partition. A replication factor of 3 is recommended for high availability."
+  topic_id:
+    type: string
+    description: "The ID to use for the topic, which will become the final component of the topic's name. This value is structured like: 'my-topic-name'."
+  configs:
+    type: object
+    description: "Configuration for the topic that are overridden from the cluster defaults. The key of the map is a Kafka topic property name, for example: 'cleanup.policy=compact', 'compression.type=producer'."
+    default: null
+  id:
+    type: string
+    description: "Optional property for KafkaTopic"
+    default: null
+  partition_count:
+    type: number
+    description: "The number of partitions in a topic. You can increase the partition count for a topic, but you cannot decrease it. Increasing partitions for a topic that uses a key might change how messages are distributed."
+    default: null
+  project:
+    type: string
+    description: "Optional property for KafkaTopic"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:managed:KafkaTopic
+    properties:
+      cluster: ${var.cluster}
+      location: ${var.location}
+      replication_factor: ${var.replication_factor}
+      topic_id: ${var.topic_id}
+      configs: ${var.configs}
+      id: ${var.id}
+      partition_count: ${var.partition_count}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

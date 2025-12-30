@@ -1,0 +1,93 @@
+variables:
+  engine_id:
+    type: string
+    description: "The engine ID."
+  location:
+    type: string
+    description: "The geographic location where the data store should reside. The value can only be one of \"global\", \"us\" and \"eu\"."
+  collection_id:
+    type: string
+    description: "The collection ID."
+    default: null
+  id:
+    type: string
+    description: "Optional property for EngineWidgetConfig"
+    default: null
+  project:
+    type: string
+    description: "Optional property for EngineWidgetConfig"
+    default: null
+  widget_config_id:
+    type: string
+    description: "The unique ID to use for the WidgetConfig. Currently only accepts \"default_search_widget_config\"."
+    default: null
+  access_settings:
+    type: list
+    description: "Nested block: access_settings"
+    default: []
+  homepage_setting:
+    type: list
+    description: "Nested block: homepage_setting"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  ui_branding:
+    type: list
+    description: "Nested block: ui_branding"
+    default: []
+  ui_settings:
+    type: list
+    description: "Nested block: ui_settings"
+    default: []
+
+resources:
+  main:
+    type: gcp:discovery:EngineWidgetConfig
+    properties:
+      engine_id: ${var.engine_id}
+      location: ${var.location}
+      collection_id: ${var.collection_id}
+      id: ${var.id}
+      project: ${var.project}
+      widget_config_id: ${var.widget_config_id}
+      dynamic:
+        access_settings:
+          for_each: ${var.access_settings}
+          content:
+            allow_public_access: ${each.value.allow_public_access}
+            allowlisted_domains: ${each.value.allowlisted_domains}
+            enable_web_app: ${each.value.enable_web_app}
+            language_code: ${each.value.language_code}
+            workforce_identity_pool_provider: ${each.value.workforce_identity_pool_provider}
+        homepage_setting:
+          for_each: ${var.homepage_setting}
+          content:
+            shortcuts: ${each.value.shortcuts}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        ui_branding:
+          for_each: ${var.ui_branding}
+          content:
+            logo: ${each.value.logo}
+        ui_settings:
+          for_each: ${var.ui_settings}
+          content:
+            default_search_request_order_by: ${each.value.default_search_request_order_by}
+            disable_user_events_collection: ${each.value.disable_user_events_collection}
+            enable_autocomplete: ${each.value.enable_autocomplete}
+            enable_create_agent_button: ${each.value.enable_create_agent_button}
+            enable_people_search: ${each.value.enable_people_search}
+            enable_quality_feedback: ${each.value.enable_quality_feedback}
+            enable_safe_search: ${each.value.enable_safe_search}
+            enable_search_as_you_type: ${each.value.enable_search_as_you_type}
+            enable_visual_content_summary: ${each.value.enable_visual_content_summary}
+            interaction_type: ${each.value.interaction_type}
+            result_description_type: ${each.value.result_description_type}
+            data_store_ui_configs: ${each.value.data_store_ui_configs}
+            generative_answer_config: ${each.value.generative_answer_config}

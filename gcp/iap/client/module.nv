@@ -1,0 +1,29 @@
+variables:
+  brand:
+    type: string
+    description: "Identifier of the brand to which this client is attached to. The format is 'projects/{project_number}/brands/{brand_id}'."
+  display_name:
+    type: string
+    description: "Human-friendly name given to the OAuth client."
+  id:
+    type: string
+    description: "Optional property for Client"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:iap:Client
+    properties:
+      brand: ${var.brand}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

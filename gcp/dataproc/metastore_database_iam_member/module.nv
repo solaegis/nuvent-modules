@@ -1,0 +1,48 @@
+variables:
+  database:
+    type: string
+    description: "Required property for MetastoreDatabaseIamMember"
+  member:
+    type: string
+    description: "Required property for MetastoreDatabaseIamMember"
+  role:
+    type: string
+    description: "Required property for MetastoreDatabaseIamMember"
+  service_id:
+    type: string
+    description: "Required property for MetastoreDatabaseIamMember"
+  id:
+    type: string
+    description: "Optional property for MetastoreDatabaseIamMember"
+    default: null
+  location:
+    type: string
+    description: "Optional property for MetastoreDatabaseIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for MetastoreDatabaseIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataproc:MetastoreDatabaseIamMember
+    properties:
+      database: ${var.database}
+      member: ${var.member}
+      role: ${var.role}
+      service_id: ${var.service_id}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

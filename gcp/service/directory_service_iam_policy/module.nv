@@ -1,0 +1,19 @@
+variables:
+  name:
+    type: string
+    description: "Required property for DirectoryServiceIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for DirectoryServiceIamPolicy"
+  id:
+    type: string
+    description: "Optional property for DirectoryServiceIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:service:DirectoryServiceIamPolicy
+    properties:
+      name: ${var.name}
+      policy_data: ${var.policy_data}
+      id: ${var.id}

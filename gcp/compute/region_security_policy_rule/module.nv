@@ -1,0 +1,101 @@
+variables:
+  action:
+    type: string
+    description: "The Action to perform when the rule is matched. The following are the valid actions:  * allow: allow access to target.  * deny(STATUS): deny access to target, returns the HTTP response code specified. Valid values for STATUS are 403, 404, and 502.  * rate_based_ban: limit client traffic to the configured threshold and ban the client if the traffic exceeds the threshold. Configure parameters for this action in RateLimitOptions. Requires rateLimitOptions to be set.  * redirect: redirect to a different target. This can either be an internal reCAPTCHA redirect, or an external URL-based redirect via a 302 response. Parameters for this action can be configured via redirectOptions. This action is only supported in Global Security Policies of type CLOUD_ARMOR.  * throttle: limit client traffic to the configured threshold. Configure parameters for this action in rateLimitOptions. Requires rateLimitOptions to be set for this."
+  priority:
+    type: number
+    description: "An integer indicating the priority of a rule in the list. The priority must be a positive value between 0 and 2147483647. Rules are evaluated from highest to lowest priority where 0 is the highest priority and 2147483647 is the lowest priority."
+  region:
+    type: string
+    description: "The Region in which the created Region Security Policy rule should reside."
+  security_policy:
+    type: string
+    description: "The name of the security policy this rule belongs to."
+  description:
+    type: string
+    description: "An optional description of this resource. Provide this property when you create the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RegionSecurityPolicyRule"
+    default: null
+  preview:
+    type: boolean
+    description: "If set to true, the specified action is not enforced."
+    default: null
+  project:
+    type: string
+    description: "Optional property for RegionSecurityPolicyRule"
+    default: null
+  match:
+    type: list
+    description: "Nested block: match"
+    default: []
+  network_match:
+    type: list
+    description: "Nested block: network_match"
+    default: []
+  preconfigured_waf_config:
+    type: list
+    description: "Nested block: preconfigured_waf_config"
+    default: []
+  rate_limit_options:
+    type: list
+    description: "Nested block: rate_limit_options"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:RegionSecurityPolicyRule
+    properties:
+      action: ${var.action}
+      priority: ${var.priority}
+      region: ${var.region}
+      security_policy: ${var.security_policy}
+      description: ${var.description}
+      id: ${var.id}
+      preview: ${var.preview}
+      project: ${var.project}
+      dynamic:
+        match:
+          for_each: ${var.match}
+          content:
+            versioned_expr: ${each.value.versioned_expr}
+            config: ${each.value.config}
+            expr: ${each.value.expr}
+        network_match:
+          for_each: ${var.network_match}
+          content:
+            dest_ip_ranges: ${each.value.dest_ip_ranges}
+            dest_ports: ${each.value.dest_ports}
+            ip_protocols: ${each.value.ip_protocols}
+            src_asns: ${each.value.src_asns}
+            src_ip_ranges: ${each.value.src_ip_ranges}
+            src_ports: ${each.value.src_ports}
+            src_region_codes: ${each.value.src_region_codes}
+            user_defined_fields: ${each.value.user_defined_fields}
+        preconfigured_waf_config:
+          for_each: ${var.preconfigured_waf_config}
+          content:
+            exclusion: ${each.value.exclusion}
+        rate_limit_options:
+          for_each: ${var.rate_limit_options}
+          content:
+            ban_duration_sec: ${each.value.ban_duration_sec}
+            conform_action: ${each.value.conform_action}
+            enforce_on_key: ${each.value.enforce_on_key}
+            enforce_on_key_name: ${each.value.enforce_on_key_name}
+            exceed_action: ${each.value.exceed_action}
+            ban_threshold: ${each.value.ban_threshold}
+            enforce_on_key_configs: ${each.value.enforce_on_key_configs}
+            rate_limit_threshold: ${each.value.rate_limit_threshold}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

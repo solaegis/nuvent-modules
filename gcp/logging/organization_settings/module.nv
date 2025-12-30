@@ -1,0 +1,41 @@
+variables:
+  organization:
+    type: string
+    description: "The organization for which to retrieve or configure settings."
+  disable_default_sink:
+    type: boolean
+    description: "If set to true, the _Default sink in newly created projects and folders will created in a disabled state. This can be used to automatically disable log storage if there is already an aggregated sink configured in the hierarchy. The _Default sink can be re-enabled manually if needed."
+    default: null
+  id:
+    type: string
+    description: "Optional property for OrganizationSettings"
+    default: null
+  kms_key_name:
+    type: string
+    description: "The resource name for the configured Cloud KMS key."
+    default: null
+  storage_location:
+    type: string
+    description: "The storage location that Cloud Logging will use to create new resources when a location is needed but not explicitly provided."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:logging:OrganizationSettings
+    properties:
+      organization: ${var.organization}
+      disable_default_sink: ${var.disable_default_sink}
+      id: ${var.id}
+      kms_key_name: ${var.kms_key_name}
+      storage_location: ${var.storage_location}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

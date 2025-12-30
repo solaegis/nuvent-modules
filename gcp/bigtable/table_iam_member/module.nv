@@ -1,0 +1,43 @@
+variables:
+  instance_name:
+    type: string
+    description: "Required property for TableIamMember"
+  member:
+    type: string
+    description: "Required property for TableIamMember"
+  role:
+    type: string
+    description: "Required property for TableIamMember"
+  table:
+    type: string
+    description: "Required property for TableIamMember"
+  id:
+    type: string
+    description: "Optional property for TableIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TableIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigtable:TableIamMember
+    properties:
+      instance_name: ${var.instance_name}
+      member: ${var.member}
+      role: ${var.role}
+      table: ${var.table}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

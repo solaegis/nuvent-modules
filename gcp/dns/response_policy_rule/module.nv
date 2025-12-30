@@ -1,0 +1,52 @@
+variables:
+  dns_name:
+    type: string
+    description: "The DNS name (wildcard or exact) to apply this rule to. Must be unique within the Response Policy Rule."
+  response_policy:
+    type: string
+    description: "Identifies the response policy addressed by this request."
+  rule_name:
+    type: string
+    description: "An identifier for this rule. Must be unique with the ResponsePolicy."
+  behavior:
+    type: string
+    description: "Answer this query with a behavior rather than DNS data. Acceptable values are 'behaviorUnspecified', and 'bypassResponsePolicy'"
+    default: null
+  id:
+    type: string
+    description: "Optional property for ResponsePolicyRule"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ResponsePolicyRule"
+    default: null
+  local_data:
+    type: list
+    description: "Nested block: local_data"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dns:ResponsePolicyRule
+    properties:
+      dns_name: ${var.dns_name}
+      response_policy: ${var.response_policy}
+      rule_name: ${var.rule_name}
+      behavior: ${var.behavior}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        local_data:
+          for_each: ${var.local_data}
+          content:
+            local_datas: ${each.value.local_datas}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

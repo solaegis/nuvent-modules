@@ -1,0 +1,104 @@
+variables:
+  name:
+    type: string
+    description: "The resource name of the instance."
+  node_count:
+    type: number
+    description: "Number of nodes in the memcache instance."
+  authorized_network:
+    type: string
+    description: "The full name of the GCE network to connect the instance to.  If not provided, 'default' will be used."
+    default: null
+  deletion_protection:
+    type: boolean
+    description: "Whether Terraform will be prevented from destroying the instance. When a 'terraform destroy' or 'terraform apply' would delete the instance, the command will fail if this field is not set to false in Terraform state. When the field is set to true or unset in Terraform state, a 'terraform apply' or 'terraform destroy' that would delete the instance will fail. When the field is set to false, deleting the instance is allowed."
+    default: null
+  display_name:
+    type: string
+    description: "A user-visible name for the instance."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Instance"
+    default: null
+  labels:
+    type: object
+    description: "Resource labels to represent user-provided metadata.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  memcache_version:
+    type: string
+    description: "The major version of Memcached software. If not provided, latest supported version will be used. Currently the latest supported major version is MEMCACHE_1_5. The minor version will be automatically determined by our system based on the latest supported minor version. Default value: \"MEMCACHE_1_5\" Possible values: [\"MEMCACHE_1_5\", \"MEMCACHE_1_6_15\"]"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Instance"
+    default: null
+  region:
+    type: string
+    description: "The region of the Memcache instance. If it is not provided, the provider region is used."
+    default: null
+  reserved_ip_range_id:
+    type: list
+    description: "Contains the name of allocated IP address ranges associated with the private service access connection for example, \"test-default\" associated with IP range 10.0.0.0/29."
+    default: null
+  zones:
+    type: list
+    description: "Zones where memcache nodes should be provisioned.  If not provided, all zones will be used."
+    default: null
+  maintenance_policy:
+    type: list
+    description: "Nested block: maintenance_policy"
+    default: []
+  memcache_parameters:
+    type: list
+    description: "Nested block: memcache_parameters"
+    default: []
+  node_config:
+    type: list
+    description: "Nested block: node_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:memcache:Instance
+    properties:
+      name: ${var.name}
+      node_count: ${var.node_count}
+      authorized_network: ${var.authorized_network}
+      deletion_protection: ${var.deletion_protection}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      memcache_version: ${var.memcache_version}
+      project: ${var.project}
+      region: ${var.region}
+      reserved_ip_range_id: ${var.reserved_ip_range_id}
+      zones: ${var.zones}
+      dynamic:
+        maintenance_policy:
+          for_each: ${var.maintenance_policy}
+          content:
+            create_time: ${each.value.create_time}
+            description: ${each.value.description}
+            update_time: ${each.value.update_time}
+            weekly_maintenance_window: ${each.value.weekly_maintenance_window}
+        memcache_parameters:
+          for_each: ${var.memcache_parameters}
+          content:
+            id: ${each.value.id}
+            params: ${each.value.params}
+        node_config:
+          for_each: ${var.node_config}
+          content:
+            cpu_count: ${each.value.cpu_count}
+            memory_size_mb: ${each.value.memory_size_mb}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

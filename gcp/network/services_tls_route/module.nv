@@ -1,0 +1,55 @@
+variables:
+  name:
+    type: string
+    description: "Name of the TlsRoute resource."
+  description:
+    type: string
+    description: "A free-text description of the resource. Max length 1024 characters."
+    default: null
+  gateways:
+    type: list
+    description: "Gateways defines a list of gateways this TlsRoute is attached to, as one of the routing rules to route the requests served by the gateway. Each gateway reference should match the pattern: projects/*/locations/global/gateways/<gateway_name>"
+    default: null
+  id:
+    type: string
+    description: "Optional property for ServicesTlsRoute"
+    default: null
+  meshes:
+    type: list
+    description: "Meshes defines a list of meshes this TlsRoute is attached to, as one of the routing rules to route the requests served by the mesh. Each mesh reference should match the pattern: projects/*/locations/global/meshes/<mesh_name> The attached Mesh should be of a type SIDECAR"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ServicesTlsRoute"
+    default: null
+  rules:
+    type: list
+    description: "Nested block: rules"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ServicesTlsRoute
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      gateways: ${var.gateways}
+      id: ${var.id}
+      meshes: ${var.meshes}
+      project: ${var.project}
+      dynamic:
+        rules:
+          for_each: ${var.rules}
+          content:
+            action: ${each.value.action}
+            matches: ${each.value.matches}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,24 @@
+variables:
+  machine_image:
+    type: string
+    description: "Required property for MachineImageIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for MachineImageIamPolicy"
+  id:
+    type: string
+    description: "Optional property for MachineImageIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for MachineImageIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:compute:MachineImageIamPolicy
+    properties:
+      machine_image: ${var.machine_image}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}

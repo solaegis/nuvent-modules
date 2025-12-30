@@ -1,0 +1,109 @@
+variables:
+  display_name:
+    type: string
+    description: "The human-readable name of the flow."
+  description:
+    type: string
+    description: "The description of the flow. The maximum length is 500 characters. If exceeded, the request is rejected."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CxFlow"
+    default: null
+  is_default_start_flow:
+    type: boolean
+    description: "Marks this as the [Default Start Flow](https://cloud.google.com/dialogflow/cx/docs/concept/flow#start) for an agent. When you create an agent, the Default Start Flow is created automatically. The Default Start Flow cannot be deleted; deleting the 'google_dialogflow_cx_flow' resource does nothing to the underlying GCP resources.  ~> Avoid having multiple 'google_dialogflow_cx_flow' resources linked to the same agent with 'is_default_start_flow = true' because they will compete to control a single Default Start Flow resource in GCP."
+    default: null
+  language_code:
+    type: string
+    description: "The language of the following fields in flow: Flow.event_handlers.trigger_fulfillment.messages Flow.event_handlers.trigger_fulfillment.conditional_cases Flow.transition_routes.trigger_fulfillment.messages Flow.transition_routes.trigger_fulfillment.conditional_cases If not specified, the agent's default language is used. Many languages are supported. Note: languages must be enabled in the agent before they can be used."
+    default: null
+  parent:
+    type: string
+    description: "The agent to create a flow for. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>."
+    default: null
+  transition_route_groups:
+    type: list
+    description: "A flow's transition route group serve two purposes: They are responsible for matching the user's first utterances in the flow. They are inherited by every page's [transition route groups][Page.transition_route_groups]. Transition route groups defined in the page have higher priority than those defined in the flow. Format:projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>."
+    default: null
+  advanced_settings:
+    type: list
+    description: "Nested block: advanced_settings"
+    default: []
+  event_handlers:
+    type: list
+    description: "Nested block: event_handlers"
+    default: []
+  knowledge_connector_settings:
+    type: list
+    description: "Nested block: knowledge_connector_settings"
+    default: []
+  nlu_settings:
+    type: list
+    description: "Nested block: nlu_settings"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  transition_routes:
+    type: list
+    description: "Nested block: transition_routes"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:CxFlow
+    properties:
+      display_name: ${var.display_name}
+      description: ${var.description}
+      id: ${var.id}
+      is_default_start_flow: ${var.is_default_start_flow}
+      language_code: ${var.language_code}
+      parent: ${var.parent}
+      transition_route_groups: ${var.transition_route_groups}
+      dynamic:
+        advanced_settings:
+          for_each: ${var.advanced_settings}
+          content:
+            audio_export_gcs_destination: ${each.value.audio_export_gcs_destination}
+            dtmf_settings: ${each.value.dtmf_settings}
+            logging_settings: ${each.value.logging_settings}
+            speech_settings: ${each.value.speech_settings}
+        event_handlers:
+          for_each: ${var.event_handlers}
+          content:
+            event: ${each.value.event}
+            name: ${each.value.name}
+            target_flow: ${each.value.target_flow}
+            target_page: ${each.value.target_page}
+            trigger_fulfillment: ${each.value.trigger_fulfillment}
+        knowledge_connector_settings:
+          for_each: ${var.knowledge_connector_settings}
+          content:
+            enabled: ${each.value.enabled}
+            target_flow: ${each.value.target_flow}
+            target_page: ${each.value.target_page}
+            data_store_connections: ${each.value.data_store_connections}
+            trigger_fulfillment: ${each.value.trigger_fulfillment}
+        nlu_settings:
+          for_each: ${var.nlu_settings}
+          content:
+            classification_threshold: ${each.value.classification_threshold}
+            model_training_mode: ${each.value.model_training_mode}
+            model_type: ${each.value.model_type}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        transition_routes:
+          for_each: ${var.transition_routes}
+          content:
+            condition: ${each.value.condition}
+            intent: ${each.value.intent}
+            name: ${each.value.name}
+            target_flow: ${each.value.target_flow}
+            target_page: ${each.value.target_page}
+            trigger_fulfillment: ${each.value.trigger_fulfillment}

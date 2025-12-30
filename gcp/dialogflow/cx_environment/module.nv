@@ -1,0 +1,44 @@
+variables:
+  display_name:
+    type: string
+    description: "The human-readable name of the environment (unique in an agent). Limit of 64 characters."
+  description:
+    type: string
+    description: "The human-readable description of the environment. The maximum length is 500 characters. If exceeded, the request is rejected."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CxEnvironment"
+    default: null
+  parent:
+    type: string
+    description: "The Agent to create an Environment for. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  version_configs:
+    type: list
+    description: "Nested block: version_configs"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:CxEnvironment
+    properties:
+      display_name: ${var.display_name}
+      description: ${var.description}
+      id: ${var.id}
+      parent: ${var.parent}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        version_configs:
+          for_each: ${var.version_configs}
+          content:
+            version: ${each.value.version}

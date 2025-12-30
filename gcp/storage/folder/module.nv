@@ -1,0 +1,35 @@
+variables:
+  bucket:
+    type: string
+    description: "The name of the bucket that contains the folder."
+  name:
+    type: string
+    description: "The name of the folder expressed as a path. Must include trailing '/'. For example, 'example_dir/example_dir2/', 'example@#/', 'a-b/d-f/'."
+  force_destroy:
+    type: boolean
+    description: "If set to true, items within folder if any will be force destroyed."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Folder"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:Folder
+    properties:
+      bucket: ${var.bucket}
+      name: ${var.name}
+      force_destroy: ${var.force_destroy}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

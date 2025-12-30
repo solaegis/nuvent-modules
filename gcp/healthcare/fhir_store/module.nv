@@ -1,0 +1,126 @@
+variables:
+  dataset:
+    type: string
+    description: "Identifies the dataset addressed by this request. Must be in the format 'projects/{project}/locations/{location}/datasets/{dataset}'"
+  name:
+    type: string
+    description: "The resource name for the FhirStore.  ** Changing this property may recreate the FHIR store (removing all data) **"
+  complex_data_type_reference_parsing:
+    type: string
+    description: "Enable parsing of references within complex FHIR data types such as Extensions. If this value is set to ENABLED, then features like referential integrity and Bundle reference rewriting apply to all references. If this flag has not been specified the behavior of the FHIR store will not change, references in complex data types will not be parsed. New stores will have this value set to ENABLED by default after a notification period. Warning: turning on this flag causes processing existing resources to fail if they contain references to non-existent resources. Possible values: [\"COMPLEX_DATA_TYPE_REFERENCE_PARSING_UNSPECIFIED\", \"DISABLED\", \"ENABLED\"]"
+    default: null
+  default_search_handling_strict:
+    type: boolean
+    description: "If true, overrides the default search behavior for this FHIR store to handling=strict which returns an error for unrecognized search parameters. If false, uses the FHIR specification default handling=lenient which ignores unrecognized search parameters. The handling can always be changed from the default on an individual API call by setting the HTTP header Prefer: handling=strict or Prefer: handling=lenient."
+    default: null
+  disable_referential_integrity:
+    type: boolean
+    description: "Whether to disable referential integrity in this FHIR store. This field is immutable after FHIR store creation. The default value is false, meaning that the API will enforce referential integrity and fail the requests that will result in inconsistent state in the FHIR store. When this field is set to true, the API will skip referential integrity check. Consequently, operations that rely on references, such as Patient.get$everything, will not return all the results if broken references exist.  ** Changing this property may recreate the FHIR store (removing all data) **"
+    default: null
+  disable_resource_versioning:
+    type: boolean
+    description: "Whether to disable resource versioning for this FHIR store. This field can not be changed after the creation of FHIR store. If set to false, which is the default behavior, all write operations will cause historical versions to be recorded automatically. The historical versions can be fetched through the history APIs, but cannot be updated. If set to true, no historical versions will be kept. The server will send back errors for attempts to read the historical versions.  ** Changing this property may recreate the FHIR store (removing all data) **"
+    default: null
+  enable_history_import:
+    type: boolean
+    description: "Whether to allow the bulk import API to accept history bundles and directly insert historical resource versions into the FHIR store. Importing resource histories creates resource interactions that appear to have occurred in the past, which clients may not want to allow. If set to false, history bundles within an import will fail with an error.  ** Changing this property may recreate the FHIR store (removing all data) **  ** This property can be changed manually in the Google Cloud Healthcare admin console without recreating the FHIR store **"
+    default: null
+  enable_history_modifications:
+    type: boolean
+    description: "Whether to allow the ExecuteBundle API to accept history bundles, and directly insert and overwrite historical resource versions into the FHIR store. If set to false, using history bundles fails with an error."
+    default: null
+  enable_update_create:
+    type: boolean
+    description: "Whether this FHIR store has the updateCreate capability. This determines if the client can use an Update operation to create a new resource with a client-specified ID. If false, all IDs are server-assigned through the Create operation and attempts to Update a non-existent resource will return errors. Please treat the audit logs with appropriate levels of care if client-specified resource IDs contain sensitive data such as patient identifiers, those IDs will be part of the FHIR resource path recorded in Cloud audit logs and Cloud Pub/Sub notifications."
+    default: null
+  id:
+    type: string
+    description: "Optional property for FhirStore"
+    default: null
+  labels:
+    type: object
+    description: "User-supplied key-value pairs used to organize FHIR stores.  Label keys must be between 1 and 63 characters long, have a UTF-8 encoding of maximum 128 bytes, and must conform to the following PCRE regular expression: [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}  Label values are optional, must be between 1 and 63 characters long, have a UTF-8 encoding of maximum 128 bytes, and must conform to the following PCRE regular expression: [\p{Ll}\p{Lo}\p{N}_-]{0,63}  No more than 64 labels can be associated with a given store.  An object containing a list of \"key\": value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  version:
+    type: string
+    description: "The FHIR specification version. Default value: \"STU3\" Possible values: [\"DSTU2\", \"STU3\", \"R4\"]"
+    default: null
+  consent_config:
+    type: list
+    description: "Nested block: consent_config"
+    default: []
+  notification_config:
+    type: list
+    description: "Nested block: notification_config"
+    default: []
+  notification_configs:
+    type: list
+    description: "Nested block: notification_configs"
+    default: []
+  stream_configs:
+    type: list
+    description: "Nested block: stream_configs"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  validation_config:
+    type: list
+    description: "Nested block: validation_config"
+    default: []
+
+resources:
+  main:
+    type: gcp:healthcare:FhirStore
+    properties:
+      dataset: ${var.dataset}
+      name: ${var.name}
+      complex_data_type_reference_parsing: ${var.complex_data_type_reference_parsing}
+      default_search_handling_strict: ${var.default_search_handling_strict}
+      disable_referential_integrity: ${var.disable_referential_integrity}
+      disable_resource_versioning: ${var.disable_resource_versioning}
+      enable_history_import: ${var.enable_history_import}
+      enable_history_modifications: ${var.enable_history_modifications}
+      enable_update_create: ${var.enable_update_create}
+      id: ${var.id}
+      labels: ${var.labels}
+      version: ${var.version}
+      dynamic:
+        consent_config:
+          for_each: ${var.consent_config}
+          content:
+            access_enforced: ${each.value.access_enforced}
+            enforced_admin_consents: ${each.value.enforced_admin_consents}
+            version: ${each.value.version}
+            access_determination_log_config: ${each.value.access_determination_log_config}
+            consent_header_handling: ${each.value.consent_header_handling}
+        notification_config:
+          for_each: ${var.notification_config}
+          content:
+            pubsub_topic: ${each.value.pubsub_topic}
+        notification_configs:
+          for_each: ${var.notification_configs}
+          content:
+            pubsub_topic: ${each.value.pubsub_topic}
+            send_full_resource: ${each.value.send_full_resource}
+            send_previous_resource_on_delete: ${each.value.send_previous_resource_on_delete}
+        stream_configs:
+          for_each: ${var.stream_configs}
+          content:
+            resource_types: ${each.value.resource_types}
+            bigquery_destination: ${each.value.bigquery_destination}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        validation_config:
+          for_each: ${var.validation_config}
+          content:
+            disable_fhirpath_validation: ${each.value.disable_fhirpath_validation}
+            disable_profile_validation: ${each.value.disable_profile_validation}
+            disable_reference_type_validation: ${each.value.disable_reference_type_validation}
+            disable_required_field_validation: ${each.value.disable_required_field_validation}
+            enabled_implementation_guides: ${each.value.enabled_implementation_guides}

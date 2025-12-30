@@ -1,0 +1,46 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource. Provided by the client when the resource is created."
+  description:
+    type: string
+    description: "Free-text description of the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for NetworkEdgeSecurityService"
+    default: null
+  project:
+    type: string
+    description: "Optional property for NetworkEdgeSecurityService"
+    default: null
+  region:
+    type: string
+    description: "The region of the gateway security policy."
+    default: null
+  security_policy:
+    type: string
+    description: "The resource URL for the network edge security service associated with this network edge security service."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:NetworkEdgeSecurityService
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      security_policy: ${var.security_policy}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

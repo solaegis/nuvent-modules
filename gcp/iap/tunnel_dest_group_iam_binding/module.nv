@@ -1,0 +1,44 @@
+variables:
+  dest_group:
+    type: string
+    description: "Required property for TunnelDestGroupIamBinding"
+  members:
+    type: list
+    description: "Required property for TunnelDestGroupIamBinding"
+  role:
+    type: string
+    description: "Required property for TunnelDestGroupIamBinding"
+  id:
+    type: string
+    description: "Optional property for TunnelDestGroupIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TunnelDestGroupIamBinding"
+    default: null
+  region:
+    type: string
+    description: "Optional property for TunnelDestGroupIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:iap:TunnelDestGroupIamBinding
+    properties:
+      dest_group: ${var.dest_group}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

@@ -1,0 +1,97 @@
+variables:
+  name:
+    type: string
+    description: "Unique name for the connectivity test."
+  bypass_firewall_checks:
+    type: boolean
+    description: "Whether the analysis should skip firewall checking. Default value is false."
+    default: null
+  description:
+    type: string
+    description: "The user-supplied description of the Connectivity Test. Maximum of 512 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ManagementConnectivityTest"
+    default: null
+  labels:
+    type: object
+    description: "Resource labels to represent user-provided metadata.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ManagementConnectivityTest"
+    default: null
+  protocol:
+    type: string
+    description: "IP Protocol of the test. When not provided, \"TCP\" is assumed."
+    default: null
+  related_projects:
+    type: list
+    description: "Other projects that may be relevant for reachability analysis. This is applicable to scenarios where a test can cross project boundaries."
+    default: null
+  round_trip:
+    type: boolean
+    description: "Whether run analysis for the return path from destination to source. Default value is false."
+    default: null
+  destination:
+    type: list
+    description: "Nested block: destination"
+    default: []
+  source:
+    type: list
+    description: "Nested block: source"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ManagementConnectivityTest
+    properties:
+      name: ${var.name}
+      bypass_firewall_checks: ${var.bypass_firewall_checks}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      protocol: ${var.protocol}
+      related_projects: ${var.related_projects}
+      round_trip: ${var.round_trip}
+      dynamic:
+        destination:
+          for_each: ${var.destination}
+          content:
+            cloud_sql_instance: ${each.value.cloud_sql_instance}
+            forwarding_rule: ${each.value.forwarding_rule}
+            fqdn: ${each.value.fqdn}
+            gke_master_cluster: ${each.value.gke_master_cluster}
+            instance: ${each.value.instance}
+            ip_address: ${each.value.ip_address}
+            network: ${each.value.network}
+            port: ${each.value.port}
+            project_id: ${each.value.project_id}
+            redis_cluster: ${each.value.redis_cluster}
+            redis_instance: ${each.value.redis_instance}
+        source:
+          for_each: ${var.source}
+          content:
+            cloud_sql_instance: ${each.value.cloud_sql_instance}
+            gke_master_cluster: ${each.value.gke_master_cluster}
+            instance: ${each.value.instance}
+            ip_address: ${each.value.ip_address}
+            network: ${each.value.network}
+            network_type: ${each.value.network_type}
+            port: ${each.value.port}
+            project_id: ${each.value.project_id}
+            app_engine_version: ${each.value.app_engine_version}
+            cloud_function: ${each.value.cloud_function}
+            cloud_run_revision: ${each.value.cloud_run_revision}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

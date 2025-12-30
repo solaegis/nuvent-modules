@@ -1,0 +1,87 @@
+variables:
+  feature_online_store:
+    type: string
+    description: "The name of the FeatureOnlineStore to use for the featureview."
+  id:
+    type: string
+    description: "Optional property for AiFeatureOnlineStoreFeatureview"
+    default: null
+  labels:
+    type: object
+    description: "A set of key/value label pairs to assign to this FeatureView.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  name:
+    type: string
+    description: "Name of the FeatureView. This value may be up to 60 characters, and valid characters are [a-z0-9_]. The first character cannot be a number."
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiFeatureOnlineStoreFeatureview"
+    default: null
+  region:
+    type: string
+    description: "The region for the resource. It should be the same as the featureonlinestore region."
+    default: null
+  big_query_source:
+    type: list
+    description: "Nested block: big_query_source"
+    default: []
+  feature_registry_source:
+    type: list
+    description: "Nested block: feature_registry_source"
+    default: []
+  sync_config:
+    type: list
+    description: "Nested block: sync_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  vector_search_config:
+    type: list
+    description: "Nested block: vector_search_config"
+    default: []
+
+resources:
+  main:
+    type: gcp:vertex:AiFeatureOnlineStoreFeatureview
+    properties:
+      feature_online_store: ${var.feature_online_store}
+      id: ${var.id}
+      labels: ${var.labels}
+      name: ${var.name}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        big_query_source:
+          for_each: ${var.big_query_source}
+          content:
+            entity_id_columns: ${each.value.entity_id_columns}
+            uri: ${each.value.uri}
+        feature_registry_source:
+          for_each: ${var.feature_registry_source}
+          content:
+            project_number: ${each.value.project_number}
+            feature_groups: ${each.value.feature_groups}
+        sync_config:
+          for_each: ${var.sync_config}
+          content:
+            continuous: ${each.value.continuous}
+            cron: ${each.value.cron}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        vector_search_config:
+          for_each: ${var.vector_search_config}
+          content:
+            crowding_column: ${each.value.crowding_column}
+            distance_measure_type: ${each.value.distance_measure_type}
+            embedding_column: ${each.value.embedding_column}
+            embedding_dimension: ${each.value.embedding_dimension}
+            filter_columns: ${each.value.filter_columns}
+            brute_force_config: ${each.value.brute_force_config}
+            tree_ah_config: ${each.value.tree_ah_config}

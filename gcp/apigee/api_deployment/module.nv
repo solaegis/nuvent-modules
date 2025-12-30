@@ -1,0 +1,32 @@
+variables:
+  environment:
+    type: string
+    description: "The Apigee Environment associated with the Apigee API deployment."
+  org_id:
+    type: string
+    description: "The Apigee Organization associated with the Apigee API deployment."
+  proxy_id:
+    type: string
+    description: "The Apigee API associated with the Apigee API deployment."
+  revision:
+    type: string
+    description: "The revision of the API proxy to be deployed."
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:ApiDeployment
+    properties:
+      environment: ${var.environment}
+      org_id: ${var.org_id}
+      proxy_id: ${var.proxy_id}
+      revision: ${var.revision}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

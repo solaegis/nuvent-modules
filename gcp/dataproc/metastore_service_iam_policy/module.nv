@@ -1,0 +1,29 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for MetastoreServiceIamPolicy"
+  service_id:
+    type: string
+    description: "Required property for MetastoreServiceIamPolicy"
+  id:
+    type: string
+    description: "Optional property for MetastoreServiceIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for MetastoreServiceIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for MetastoreServiceIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:dataproc:MetastoreServiceIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      service_id: ${var.service_id}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

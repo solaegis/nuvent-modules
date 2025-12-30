@@ -1,0 +1,75 @@
+variables:
+  column_family:
+    type: string
+    description: "The name of the column family."
+  instance_name:
+    type: string
+    description: "The name of the Bigtable instance."
+  table:
+    type: string
+    description: "The name of the table."
+  deletion_policy:
+    type: string
+    description: "The deletion policy for the GC policy. Setting ABANDON allows the resource 				to be abandoned rather than deleted. This is useful for GC policy as it cannot be deleted 				in a replicated instance. Possible values are: \"ABANDON\"."
+    default: null
+  gc_rules:
+    type: string
+    description: "Serialized JSON string for garbage collection policy. Conflicts with \"mode\", \"max_age\" and \"max_version\"."
+    default: null
+  id:
+    type: string
+    description: "Optional property for GcPolicy"
+    default: null
+  ignore_warnings:
+    type: boolean
+    description: "Allows ignoring warnings when updating the GC policy. This can be used 				to increase the gc policy on replicated clusters. Doing this may make clusters be 				inconsistent for a longer period of time, before using this make sure you understand 				the risks listed at https://cloud.google.com/bigtable/docs/garbage-collection#increasing"
+    default: null
+  mode:
+    type: string
+    description: "NOTE: 'gc_rules' is more flexible, and should be preferred over this field for new resources. This field may be deprecated in the future. If multiple policies are set, you should choose between UNION OR INTERSECTION."
+    default: null
+  project:
+    type: string
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    default: null
+  max_age:
+    type: list
+    description: "Nested block: max_age"
+    default: []
+  max_version:
+    type: list
+    description: "Nested block: max_version"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigtable:GcPolicy
+    properties:
+      column_family: ${var.column_family}
+      instance_name: ${var.instance_name}
+      table: ${var.table}
+      deletion_policy: ${var.deletion_policy}
+      gc_rules: ${var.gc_rules}
+      id: ${var.id}
+      ignore_warnings: ${var.ignore_warnings}
+      mode: ${var.mode}
+      project: ${var.project}
+      dynamic:
+        max_age:
+          for_each: ${var.max_age}
+          content:
+            days: ${each.value.days}
+            duration: ${each.value.duration}
+        max_version:
+          for_each: ${var.max_version}
+          content:
+            number: ${each.value.number}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

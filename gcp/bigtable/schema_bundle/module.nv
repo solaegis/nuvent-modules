@@ -1,0 +1,54 @@
+variables:
+  schema_bundle_id:
+    type: string
+    description: "The unique name of the schema bundle in the form '[_a-zA-Z0-9][-_.a-zA-Z0-9]*'."
+  id:
+    type: string
+    description: "Optional property for SchemaBundle"
+    default: null
+  ignore_warnings:
+    type: boolean
+    description: "If true, allow backwards incompatible changes."
+    default: null
+  instance:
+    type: string
+    description: "The name of the instance to create the schema bundle within."
+    default: null
+  project:
+    type: string
+    description: "Optional property for SchemaBundle"
+    default: null
+  table:
+    type: string
+    description: "The name of the table to create the schema bundle within."
+    default: null
+  proto_schema:
+    type: list
+    description: "Nested block: proto_schema"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigtable:SchemaBundle
+    properties:
+      schema_bundle_id: ${var.schema_bundle_id}
+      id: ${var.id}
+      ignore_warnings: ${var.ignore_warnings}
+      instance: ${var.instance}
+      project: ${var.project}
+      table: ${var.table}
+      dynamic:
+        proto_schema:
+          for_each: ${var.proto_schema}
+          content:
+            proto_descriptors: ${each.value.proto_descriptors}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,79 @@
+variables:
+  location:
+    type: string
+    description: "The location of the ReportConfig. The source and destination buckets specified in the ReportConfig must be in the same location."
+  display_name:
+    type: string
+    description: "The editable display name of the inventory report configuration. Has a limit of 256 characters. Can be empty."
+    default: null
+  force_destroy:
+    type: boolean
+    description: "If set, all the inventory report details associated with this report configuration are deleted."
+    default: null
+  id:
+    type: string
+    description: "Optional property for InsightsReportConfig"
+    default: null
+  project:
+    type: string
+    description: "Optional property for InsightsReportConfig"
+    default: null
+  csv_options:
+    type: list
+    description: "Nested block: csv_options"
+    default: []
+  frequency_options:
+    type: list
+    description: "Nested block: frequency_options"
+    default: []
+  object_metadata_report_options:
+    type: list
+    description: "Nested block: object_metadata_report_options"
+    default: []
+  parquet_options:
+    type: list
+    description: "Nested block: parquet_options"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:InsightsReportConfig
+    properties:
+      location: ${var.location}
+      display_name: ${var.display_name}
+      force_destroy: ${var.force_destroy}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        csv_options:
+          for_each: ${var.csv_options}
+          content:
+            delimiter: ${each.value.delimiter}
+            header_required: ${each.value.header_required}
+            record_separator: ${each.value.record_separator}
+        frequency_options:
+          for_each: ${var.frequency_options}
+          content:
+            frequency: ${each.value.frequency}
+            end_date: ${each.value.end_date}
+            start_date: ${each.value.start_date}
+        object_metadata_report_options:
+          for_each: ${var.object_metadata_report_options}
+          content:
+            metadata_fields: ${each.value.metadata_fields}
+            storage_destination_options: ${each.value.storage_destination_options}
+            storage_filters: ${each.value.storage_filters}
+        parquet_options:
+          for_each: ${var.parquet_options}
+          content:
+            # No specific fields found in schema for parquet_options
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

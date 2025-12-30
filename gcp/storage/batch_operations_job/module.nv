@@ -1,0 +1,84 @@
+variables:
+  delete_protection:
+    type: boolean
+    description: "If set to 'true', the storage batch operation job will not be deleted and new job will be created."
+    default: null
+  id:
+    type: string
+    description: "Optional property for BatchOperationsJob"
+    default: null
+  job_id:
+    type: string
+    description: "The ID of the job."
+    default: null
+  project:
+    type: string
+    description: "Optional property for BatchOperationsJob"
+    default: null
+  bucket_list:
+    type: list
+    description: "Nested block: bucket_list"
+    default: []
+  delete_object:
+    type: list
+    description: "Nested block: delete_object"
+    default: []
+  put_metadata:
+    type: list
+    description: "Nested block: put_metadata"
+    default: []
+  put_object_hold:
+    type: list
+    description: "Nested block: put_object_hold"
+    default: []
+  rewrite_object:
+    type: list
+    description: "Nested block: rewrite_object"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:BatchOperationsJob
+    properties:
+      delete_protection: ${var.delete_protection}
+      id: ${var.id}
+      job_id: ${var.job_id}
+      project: ${var.project}
+      dynamic:
+        bucket_list:
+          for_each: ${var.bucket_list}
+          content:
+            buckets: ${each.value.buckets}
+        delete_object:
+          for_each: ${var.delete_object}
+          content:
+            permanent_object_deletion_enabled: ${each.value.permanent_object_deletion_enabled}
+        put_metadata:
+          for_each: ${var.put_metadata}
+          content:
+            cache_control: ${each.value.cache_control}
+            content_disposition: ${each.value.content_disposition}
+            content_encoding: ${each.value.content_encoding}
+            content_language: ${each.value.content_language}
+            content_type: ${each.value.content_type}
+            custom_metadata: ${each.value.custom_metadata}
+            custom_time: ${each.value.custom_time}
+        put_object_hold:
+          for_each: ${var.put_object_hold}
+          content:
+            event_based_hold: ${each.value.event_based_hold}
+            temporary_hold: ${each.value.temporary_hold}
+        rewrite_object:
+          for_each: ${var.rewrite_object}
+          content:
+            kms_key: ${each.value.kms_key}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

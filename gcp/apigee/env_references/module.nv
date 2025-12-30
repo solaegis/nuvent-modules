@@ -1,0 +1,43 @@
+variables:
+  env_id:
+    type: string
+    description: "The Apigee environment group associated with the Apigee environment, in the format 'organizations/{{org_name}}/environments/{{env_name}}'."
+  name:
+    type: string
+    description: "Required. The resource id of this reference. Values must match the regular expression [\w\s-.]+."
+  refers:
+    type: string
+    description: "Required. The id of the resource to which this reference refers. Must be the id of a resource that exists in the parent environment and is of the given resourceType."
+  resource_type:
+    type: string
+    description: "The type of resource referred to by this reference. Valid values are 'KeyStore' or 'TrustStore'."
+  description:
+    type: string
+    description: "Optional. A human-readable description of this reference."
+    default: null
+  id:
+    type: string
+    description: "Optional property for EnvReferences"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:EnvReferences
+    properties:
+      env_id: ${var.env_id}
+      name: ${var.name}
+      refers: ${var.refers}
+      resource_type: ${var.resource_type}
+      description: ${var.description}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

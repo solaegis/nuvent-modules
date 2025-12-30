@@ -1,0 +1,49 @@
+variables:
+  certificate:
+    type: string
+    description: "The certificate in PEM format. The certificate chain must be no greater than 5 certs long. The chain must include at least one intermediate cert."
+  private_key:
+    type: string
+    description: "The write-only private key in PEM format."
+  description:
+    type: string
+    description: "An optional description of this resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SslCertificate"
+    default: null
+  name:
+    type: string
+    description: "Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.  These are in the same namespace as the managed SSL certificates."
+    default: null
+  name_prefix:
+    type: string
+    description: "Creates a unique name beginning with the specified prefix. Conflicts with name."
+    default: null
+  project:
+    type: string
+    description: "Optional property for SslCertificate"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:SslCertificate
+    properties:
+      certificate: ${var.certificate}
+      private_key: ${var.private_key}
+      description: ${var.description}
+      id: ${var.id}
+      name: ${var.name}
+      name_prefix: ${var.name_prefix}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

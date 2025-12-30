@@ -1,0 +1,31 @@
+variables:
+  billing_account:
+    type: string
+    description: "The ID of the billing account associated with the project, if any. Set to empty string to disable billing for the project. For example, '\"012345-567890-ABCDEF\"' or '\"\"'."
+  id:
+    type: string
+    description: "Optional property for ProjectInfo"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ProjectInfo"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:billing:ProjectInfo
+    properties:
+      billing_account: ${var.billing_account}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

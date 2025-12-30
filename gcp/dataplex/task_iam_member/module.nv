@@ -1,0 +1,48 @@
+variables:
+  lake:
+    type: string
+    description: "Required property for TaskIamMember"
+  member:
+    type: string
+    description: "Required property for TaskIamMember"
+  role:
+    type: string
+    description: "Required property for TaskIamMember"
+  task_id:
+    type: string
+    description: "Required property for TaskIamMember"
+  id:
+    type: string
+    description: "Optional property for TaskIamMember"
+    default: null
+  location:
+    type: string
+    description: "Optional property for TaskIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TaskIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataplex:TaskIamMember
+    properties:
+      lake: ${var.lake}
+      member: ${var.member}
+      role: ${var.role}
+      task_id: ${var.task_id}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

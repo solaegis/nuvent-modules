@@ -1,0 +1,39 @@
+variables:
+  member:
+    type: string
+    description: "Required property for SchemaIamMember"
+  role:
+    type: string
+    description: "Required property for SchemaIamMember"
+  schema:
+    type: string
+    description: "Required property for SchemaIamMember"
+  id:
+    type: string
+    description: "Optional property for SchemaIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for SchemaIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:pubsub:SchemaIamMember
+    properties:
+      member: ${var.member}
+      role: ${var.role}
+      schema: ${var.schema}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

@@ -1,0 +1,99 @@
+variables:
+  display_name:
+    type: string
+    description: "Required. The display name of the Notebook Execution."
+  gcs_output_uri:
+    type: string
+    description: "The Cloud Storage location to upload the result to. Format:'gs://bucket-name'"
+  location:
+    type: string
+    description: "The location for the resource: https://cloud.google.com/colab/docs/locations"
+  execution_timeout:
+    type: string
+    description: "Max running time of the execution job in seconds (default 86400s / 24 hrs)."
+    default: null
+  execution_user:
+    type: string
+    description: "The user email to run the execution as."
+    default: null
+  id:
+    type: string
+    description: "Optional property for NotebookExecution"
+    default: null
+  notebook_execution_job_id:
+    type: string
+    description: "User specified ID for the Notebook Execution Job"
+    default: null
+  notebook_runtime_template_resource_name:
+    type: string
+    description: "The NotebookRuntimeTemplate to source compute configuration from."
+    default: null
+  project:
+    type: string
+    description: "Optional property for NotebookExecution"
+    default: null
+  service_account:
+    type: string
+    description: "The service account to run the execution as."
+    default: null
+  custom_environment_spec:
+    type: list
+    description: "Nested block: custom_environment_spec"
+    default: []
+  dataform_repository_source:
+    type: list
+    description: "Nested block: dataform_repository_source"
+    default: []
+  direct_notebook_source:
+    type: list
+    description: "Nested block: direct_notebook_source"
+    default: []
+  gcs_notebook_source:
+    type: list
+    description: "Nested block: gcs_notebook_source"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:colab:NotebookExecution
+    properties:
+      display_name: ${var.display_name}
+      gcs_output_uri: ${var.gcs_output_uri}
+      location: ${var.location}
+      execution_timeout: ${var.execution_timeout}
+      execution_user: ${var.execution_user}
+      id: ${var.id}
+      notebook_execution_job_id: ${var.notebook_execution_job_id}
+      notebook_runtime_template_resource_name: ${var.notebook_runtime_template_resource_name}
+      project: ${var.project}
+      service_account: ${var.service_account}
+      dynamic:
+        custom_environment_spec:
+          for_each: ${var.custom_environment_spec}
+          content:
+            machine_spec: ${each.value.machine_spec}
+            network_spec: ${each.value.network_spec}
+            persistent_disk_spec: ${each.value.persistent_disk_spec}
+        dataform_repository_source:
+          for_each: ${var.dataform_repository_source}
+          content:
+            commit_sha: ${each.value.commit_sha}
+            dataform_repository_resource_name: ${each.value.dataform_repository_resource_name}
+        direct_notebook_source:
+          for_each: ${var.direct_notebook_source}
+          content:
+            content: ${each.value.content}
+        gcs_notebook_source:
+          for_each: ${var.gcs_notebook_source}
+          content:
+            generation: ${each.value.generation}
+            uri: ${each.value.uri}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

@@ -1,0 +1,220 @@
+variables:
+  description:
+    type: string
+    description: "Human-readable description of the trigger."
+    default: null
+  disabled:
+    type: boolean
+    description: "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
+    default: null
+  filename:
+    type: string
+    description: "Path, from the source root, to a file whose contents is used for the template. Either a filename or build template must be provided. Set this only when using trigger_template or github. When using Pub/Sub, Webhook or Manual set the file name using git_file_source instead."
+    default: null
+  filter:
+    type: string
+    description: "A Common Expression Language string. Used only with Pub/Sub and Webhook."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Trigger"
+    default: null
+  ignored_files:
+    type: list
+    description: "ignoredFiles and includedFiles are file glob matches using https://golang.org/pkg/path/filepath/#Match extended with support for '**'.  If ignoredFiles and changed files are both empty, then they are not used to determine whether or not to trigger a build.  If ignoredFiles is not empty, then we ignore any files that match any of the ignored_file globs. If the change has no files that are outside of the ignoredFiles globs, then we do not trigger a build."
+    default: null
+  include_build_logs:
+    type: string
+    description: "Build logs will be sent back to GitHub as part of the checkrun result.  Values can be INCLUDE_BUILD_LOGS_UNSPECIFIED or INCLUDE_BUILD_LOGS_WITH_STATUS Possible values: [\"INCLUDE_BUILD_LOGS_UNSPECIFIED\", \"INCLUDE_BUILD_LOGS_WITH_STATUS\"]"
+    default: null
+  included_files:
+    type: list
+    description: "ignoredFiles and includedFiles are file glob matches using https://golang.org/pkg/path/filepath/#Match extended with support for '**'.  If any of the files altered in the commit pass the ignoredFiles filter and includedFiles is empty, then as far as this filter is concerned, we should trigger the build.  If any of the files altered in the commit pass the ignoredFiles filter and includedFiles is not empty, then we make sure that at least one of those files matches a includedFiles glob. If not, then we do not trigger a build."
+    default: null
+  location:
+    type: string
+    description: "The [Cloud Build location](https://cloud.google.com/build/docs/locations) for the trigger. If not specified, \"global\" is used."
+    default: null
+  name:
+    type: string
+    description: "Name of the trigger. Must be unique within the project."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Trigger"
+    default: null
+  service_account:
+    type: string
+    description: "The service account used for all user-controlled operations including triggers.patch, triggers.run, builds.create, and builds.cancel.  If no service account is set, then the standard Cloud Build service account ([PROJECT_NUM]@system.gserviceaccount.com) will be used instead.  Format: projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT_ID_OR_EMAIL}"
+    default: null
+  substitutions:
+    type: object
+    description: "Substitutions data for Build resource."
+    default: null
+  tags:
+    type: list
+    description: "Tags for annotation of a BuildTrigger"
+    default: null
+  approval_config:
+    type: list
+    description: "Nested block: approval_config"
+    default: []
+  bitbucket_server_trigger_config:
+    type: list
+    description: "Nested block: bitbucket_server_trigger_config"
+    default: []
+  build:
+    type: list
+    description: "Nested block: build"
+    default: []
+  developer_connect_event_config:
+    type: list
+    description: "Nested block: developer_connect_event_config"
+    default: []
+  git_file_source:
+    type: list
+    description: "Nested block: git_file_source"
+    default: []
+  github:
+    type: list
+    description: "Nested block: github"
+    default: []
+  pubsub_config:
+    type: list
+    description: "Nested block: pubsub_config"
+    default: []
+  repository_event_config:
+    type: list
+    description: "Nested block: repository_event_config"
+    default: []
+  source_to_build:
+    type: list
+    description: "Nested block: source_to_build"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  trigger_template:
+    type: list
+    description: "Nested block: trigger_template"
+    default: []
+  webhook_config:
+    type: list
+    description: "Nested block: webhook_config"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloudbuild:Trigger
+    properties:
+      description: ${var.description}
+      disabled: ${var.disabled}
+      filename: ${var.filename}
+      filter: ${var.filter}
+      id: ${var.id}
+      ignored_files: ${var.ignored_files}
+      include_build_logs: ${var.include_build_logs}
+      included_files: ${var.included_files}
+      location: ${var.location}
+      name: ${var.name}
+      project: ${var.project}
+      service_account: ${var.service_account}
+      substitutions: ${var.substitutions}
+      tags: ${var.tags}
+      dynamic:
+        approval_config:
+          for_each: ${var.approval_config}
+          content:
+            approval_required: ${each.value.approval_required}
+        bitbucket_server_trigger_config:
+          for_each: ${var.bitbucket_server_trigger_config}
+          content:
+            bitbucket_server_config_resource: ${each.value.bitbucket_server_config_resource}
+            project_key: ${each.value.project_key}
+            repo_slug: ${each.value.repo_slug}
+            pull_request: ${each.value.pull_request}
+            push: ${each.value.push}
+        build:
+          for_each: ${var.build}
+          content:
+            images: ${each.value.images}
+            logs_bucket: ${each.value.logs_bucket}
+            queue_ttl: ${each.value.queue_ttl}
+            substitutions: ${each.value.substitutions}
+            tags: ${each.value.tags}
+            timeout: ${each.value.timeout}
+            artifacts: ${each.value.artifacts}
+            available_secrets: ${each.value.available_secrets}
+            options: ${each.value.options}
+            secret: ${each.value.secret}
+            source: ${each.value.source}
+            step: ${each.value.step}
+        developer_connect_event_config:
+          for_each: ${var.developer_connect_event_config}
+          content:
+            git_repository_link: ${each.value.git_repository_link}
+            git_repository_link_type: ${each.value.git_repository_link_type}
+            pull_request: ${each.value.pull_request}
+            push: ${each.value.push}
+        git_file_source:
+          for_each: ${var.git_file_source}
+          content:
+            bitbucket_server_config: ${each.value.bitbucket_server_config}
+            github_enterprise_config: ${each.value.github_enterprise_config}
+            path: ${each.value.path}
+            repo_type: ${each.value.repo_type}
+            repository: ${each.value.repository}
+            revision: ${each.value.revision}
+            uri: ${each.value.uri}
+        github:
+          for_each: ${var.github}
+          content:
+            enterprise_config_resource_name: ${each.value.enterprise_config_resource_name}
+            name: ${each.value.name}
+            owner: ${each.value.owner}
+            pull_request: ${each.value.pull_request}
+            push: ${each.value.push}
+        pubsub_config:
+          for_each: ${var.pubsub_config}
+          content:
+            service_account_email: ${each.value.service_account_email}
+            state: ${each.value.state}
+            subscription: ${each.value.subscription}
+            topic: ${each.value.topic}
+        repository_event_config:
+          for_each: ${var.repository_event_config}
+          content:
+            repository: ${each.value.repository}
+            pull_request: ${each.value.pull_request}
+            push: ${each.value.push}
+        source_to_build:
+          for_each: ${var.source_to_build}
+          content:
+            bitbucket_server_config: ${each.value.bitbucket_server_config}
+            github_enterprise_config: ${each.value.github_enterprise_config}
+            ref: ${each.value.ref}
+            repo_type: ${each.value.repo_type}
+            repository: ${each.value.repository}
+            uri: ${each.value.uri}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        trigger_template:
+          for_each: ${var.trigger_template}
+          content:
+            branch_name: ${each.value.branch_name}
+            commit_sha: ${each.value.commit_sha}
+            dir: ${each.value.dir}
+            invert_regex: ${each.value.invert_regex}
+            project_id: ${each.value.project_id}
+            repo_name: ${each.value.repo_name}
+            tag_name: ${each.value.tag_name}
+        webhook_config:
+          for_each: ${var.webhook_config}
+          content:
+            secret: ${each.value.secret}
+            state: ${each.value.state}

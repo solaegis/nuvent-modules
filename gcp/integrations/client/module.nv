@@ -1,0 +1,52 @@
+variables:
+  location:
+    type: string
+    description: "Location in which client needs to be provisioned."
+  create_sample_integrations:
+    type: boolean
+    description: "Indicates if sample integrations should be created along with provisioning."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Client"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Client"
+    default: null
+  run_as_service_account:
+    type: string
+    description: "User input run-as service account, if empty, will bring up a new default service account."
+    default: null
+  cloud_kms_config:
+    type: list
+    description: "Nested block: cloud_kms_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:integrations:Client
+    properties:
+      location: ${var.location}
+      create_sample_integrations: ${var.create_sample_integrations}
+      id: ${var.id}
+      project: ${var.project}
+      run_as_service_account: ${var.run_as_service_account}
+      dynamic:
+        cloud_kms_config:
+          for_each: ${var.cloud_kms_config}
+          content:
+            key: ${each.value.key}
+            key_version: ${each.value.key_version}
+            kms_location: ${each.value.kms_location}
+            kms_project_id: ${each.value.kms_project_id}
+            kms_ring: ${each.value.kms_ring}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

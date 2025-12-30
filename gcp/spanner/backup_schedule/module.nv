@@ -1,0 +1,78 @@
+variables:
+  database:
+    type: string
+    description: "The database to create the backup schedule on."
+  instance:
+    type: string
+    description: "The instance to create the database on."
+  retention_duration:
+    type: string
+    description: "At what relative time in the future, compared to its creation time, the backup should be deleted, e.g. keep backups for 7 days. A duration in seconds with up to nine fractional digits, ending with 's'. Example: '3.5s'. You can set this to a value up to 366 days."
+  id:
+    type: string
+    description: "Optional property for BackupSchedule"
+    default: null
+  name:
+    type: string
+    description: "A unique identifier for the backup schedule, which cannot be changed after the backup schedule is created. Values are of the form [a-z][-a-z0-9]*[a-z0-9]."
+    default: null
+  project:
+    type: string
+    description: "Optional property for BackupSchedule"
+    default: null
+  encryption_config:
+    type: list
+    description: "Nested block: encryption_config"
+    default: []
+  full_backup_spec:
+    type: list
+    description: "Nested block: full_backup_spec"
+    default: []
+  incremental_backup_spec:
+    type: list
+    description: "Nested block: incremental_backup_spec"
+    default: []
+  spec:
+    type: list
+    description: "Nested block: spec"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:spanner:BackupSchedule
+    properties:
+      database: ${var.database}
+      instance: ${var.instance}
+      retention_duration: ${var.retention_duration}
+      id: ${var.id}
+      name: ${var.name}
+      project: ${var.project}
+      dynamic:
+        encryption_config:
+          for_each: ${var.encryption_config}
+          content:
+            encryption_type: ${each.value.encryption_type}
+            kms_key_name: ${each.value.kms_key_name}
+            kms_key_names: ${each.value.kms_key_names}
+        full_backup_spec:
+          for_each: ${var.full_backup_spec}
+          content:
+            # No specific fields found in schema for full_backup_spec
+        incremental_backup_spec:
+          for_each: ${var.incremental_backup_spec}
+          content:
+            # No specific fields found in schema for incremental_backup_spec
+        spec:
+          for_each: ${var.spec}
+          content:
+            cron_spec: ${each.value.cron_spec}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,19 @@
+variables:
+  hl7_v2_store_id:
+    type: string
+    description: "Required property for Hl7V2StoreIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for Hl7V2StoreIamPolicy"
+  id:
+    type: string
+    description: "Optional property for Hl7V2StoreIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:healthcare:Hl7V2StoreIamPolicy
+    properties:
+      hl7_v2_store_id: ${var.hl7_v2_store_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}

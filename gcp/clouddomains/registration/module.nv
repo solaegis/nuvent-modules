@@ -1,0 +1,89 @@
+variables:
+  domain_name:
+    type: string
+    description: "Required. The domain name. Unicode domain names must be expressed in Punycode format."
+  location:
+    type: string
+    description: "The location for the resource"
+  contact_notices:
+    type: list
+    description: "The list of contact notices that the caller acknowledges. Possible value is PUBLIC_CONTACT_DATA_ACKNOWLEDGEMENT"
+    default: null
+  domain_notices:
+    type: list
+    description: "The list of domain notices that you acknowledge. Possible value is HSTS_PRELOADED"
+    default: null
+  id:
+    type: string
+    description: "Optional property for Registration"
+    default: null
+  labels:
+    type: object
+    description: "Set of labels associated with the Registration.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Registration"
+    default: null
+  contact_settings:
+    type: list
+    description: "Nested block: contact_settings"
+    default: []
+  dns_settings:
+    type: list
+    description: "Nested block: dns_settings"
+    default: []
+  management_settings:
+    type: list
+    description: "Nested block: management_settings"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  yearly_price:
+    type: list
+    description: "Nested block: yearly_price"
+    default: []
+
+resources:
+  main:
+    type: gcp:clouddomains:Registration
+    properties:
+      domain_name: ${var.domain_name}
+      location: ${var.location}
+      contact_notices: ${var.contact_notices}
+      domain_notices: ${var.domain_notices}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        contact_settings:
+          for_each: ${var.contact_settings}
+          content:
+            privacy: ${each.value.privacy}
+            admin_contact: ${each.value.admin_contact}
+            registrant_contact: ${each.value.registrant_contact}
+            technical_contact: ${each.value.technical_contact}
+        dns_settings:
+          for_each: ${var.dns_settings}
+          content:
+            custom_dns: ${each.value.custom_dns}
+            glue_records: ${each.value.glue_records}
+        management_settings:
+          for_each: ${var.management_settings}
+          content:
+            preferred_renewal_method: ${each.value.preferred_renewal_method}
+            renewal_method: ${each.value.renewal_method}
+            transfer_lock_state: ${each.value.transfer_lock_state}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        yearly_price:
+          for_each: ${var.yearly_price}
+          content:
+            currency_code: ${each.value.currency_code}
+            units: ${each.value.units}

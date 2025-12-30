@@ -1,0 +1,164 @@
+variables:
+  runtime:
+    type: string
+    description: "Desired runtime. Example python27."
+  service:
+    type: string
+    description: "AppEngine service resource"
+  app_engine_apis:
+    type: boolean
+    description: "Allows App Engine second generation runtimes to access the legacy bundled services."
+    default: null
+  delete_service_on_destroy:
+    type: boolean
+    description: "If set to 'true', the service will be deleted if it is the last version."
+    default: null
+  env_variables:
+    type: object
+    description: "Environment variables available to the application."
+    default: null
+  id:
+    type: string
+    description: "Optional property for EngineStandardAppVersion"
+    default: null
+  inbound_services:
+    type: list
+    description: "A list of the types of messages that this application is able to receive. Possible values: [\"INBOUND_SERVICE_MAIL\", \"INBOUND_SERVICE_MAIL_BOUNCE\", \"INBOUND_SERVICE_XMPP_ERROR\", \"INBOUND_SERVICE_XMPP_MESSAGE\", \"INBOUND_SERVICE_XMPP_SUBSCRIBE\", \"INBOUND_SERVICE_XMPP_PRESENCE\", \"INBOUND_SERVICE_CHANNEL_PRESENCE\", \"INBOUND_SERVICE_WARMUP\"]"
+    default: null
+  instance_class:
+    type: string
+    description: "Instance class that is used to run this version. Valid values are AutomaticScaling: F1, F2, F4, F4_1G BasicScaling or ManualScaling: B1, B2, B4, B4_1G, B8 Defaults to F1 for AutomaticScaling and B2 for ManualScaling and BasicScaling. If no scaling is specified, AutomaticScaling is chosen."
+    default: null
+  noop_on_destroy:
+    type: boolean
+    description: "If set to 'true', the application version will not be deleted."
+    default: null
+  project:
+    type: string
+    description: "Optional property for EngineStandardAppVersion"
+    default: null
+  runtime_api_version:
+    type: string
+    description: "The version of the API in the given runtime environment. Please see the app.yaml reference for valid values at 'https://cloud.google.com/appengine/docs/standard/<language>/config/appref'\ Substitute '<language>' with 'python', 'java', 'php', 'ruby', 'go' or 'nodejs'."
+    default: null
+  service_account:
+    type: string
+    description: "The identity that the deployed version will run as. Admin API will use the App Engine Appspot service account as default if this field is neither provided in app.yaml file nor through CLI flag."
+    default: null
+  threadsafe:
+    type: boolean
+    description: "Whether multiple requests can be dispatched to this version at once."
+    default: null
+  version_id:
+    type: string
+    description: "Relative name of the version within the service. For example, 'v1'. Version names can contain only lowercase letters, numbers, or hyphens. Reserved names,\"default\", \"latest\", and any name with the prefix \"ah-\"."
+    default: null
+  automatic_scaling:
+    type: list
+    description: "Nested block: automatic_scaling"
+    default: []
+  basic_scaling:
+    type: list
+    description: "Nested block: basic_scaling"
+    default: []
+  deployment:
+    type: list
+    description: "Nested block: deployment"
+    default: []
+  entrypoint:
+    type: list
+    description: "Nested block: entrypoint"
+    default: []
+  handlers:
+    type: list
+    description: "Nested block: handlers"
+    default: []
+  libraries:
+    type: list
+    description: "Nested block: libraries"
+    default: []
+  manual_scaling:
+    type: list
+    description: "Nested block: manual_scaling"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  vpc_access_connector:
+    type: list
+    description: "Nested block: vpc_access_connector"
+    default: []
+
+resources:
+  main:
+    type: gcp:app:EngineStandardAppVersion
+    properties:
+      runtime: ${var.runtime}
+      service: ${var.service}
+      app_engine_apis: ${var.app_engine_apis}
+      delete_service_on_destroy: ${var.delete_service_on_destroy}
+      env_variables: ${var.env_variables}
+      id: ${var.id}
+      inbound_services: ${var.inbound_services}
+      instance_class: ${var.instance_class}
+      noop_on_destroy: ${var.noop_on_destroy}
+      project: ${var.project}
+      runtime_api_version: ${var.runtime_api_version}
+      service_account: ${var.service_account}
+      threadsafe: ${var.threadsafe}
+      version_id: ${var.version_id}
+      dynamic:
+        automatic_scaling:
+          for_each: ${var.automatic_scaling}
+          content:
+            max_concurrent_requests: ${each.value.max_concurrent_requests}
+            max_idle_instances: ${each.value.max_idle_instances}
+            max_pending_latency: ${each.value.max_pending_latency}
+            min_idle_instances: ${each.value.min_idle_instances}
+            min_pending_latency: ${each.value.min_pending_latency}
+            standard_scheduler_settings: ${each.value.standard_scheduler_settings}
+        basic_scaling:
+          for_each: ${var.basic_scaling}
+          content:
+            idle_timeout: ${each.value.idle_timeout}
+            max_instances: ${each.value.max_instances}
+        deployment:
+          for_each: ${var.deployment}
+          content:
+            files: ${each.value.files}
+            zip: ${each.value.zip}
+        entrypoint:
+          for_each: ${var.entrypoint}
+          content:
+            shell: ${each.value.shell}
+        handlers:
+          for_each: ${var.handlers}
+          content:
+            auth_fail_action: ${each.value.auth_fail_action}
+            login: ${each.value.login}
+            redirect_http_response_code: ${each.value.redirect_http_response_code}
+            security_level: ${each.value.security_level}
+            url_regex: ${each.value.url_regex}
+            script: ${each.value.script}
+            static_files: ${each.value.static_files}
+        libraries:
+          for_each: ${var.libraries}
+          content:
+            name: ${each.value.name}
+            version: ${each.value.version}
+        manual_scaling:
+          for_each: ${var.manual_scaling}
+          content:
+            instances: ${each.value.instances}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        vpc_access_connector:
+          for_each: ${var.vpc_access_connector}
+          content:
+            egress_setting: ${each.value.egress_setting}
+            name: ${each.value.name}

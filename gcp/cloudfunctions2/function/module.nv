@@ -1,0 +1,108 @@
+variables:
+  location:
+    type: string
+    description: "The location of this cloud function."
+  name:
+    type: string
+    description: "A user-defined name of the function. Function names must be unique globally and match pattern 'projects/*/locations/*/functions/*'."
+  description:
+    type: string
+    description: "User-provided description of a function."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Function"
+    default: null
+  kms_key_name:
+    type: string
+    description: "Resource name of a KMS crypto key (managed by the user) used to encrypt/decrypt function resources. It must match the pattern projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}."
+    default: null
+  labels:
+    type: object
+    description: "A set of key/value label pairs associated with this Cloud Function.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Function"
+    default: null
+  build_config:
+    type: list
+    description: "Nested block: build_config"
+    default: []
+  event_trigger:
+    type: list
+    description: "Nested block: event_trigger"
+    default: []
+  service_config:
+    type: list
+    description: "Nested block: service_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloudfunctions2:Function
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      kms_key_name: ${var.kms_key_name}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        build_config:
+          for_each: ${var.build_config}
+          content:
+            build: ${each.value.build}
+            docker_repository: ${each.value.docker_repository}
+            entry_point: ${each.value.entry_point}
+            environment_variables: ${each.value.environment_variables}
+            runtime: ${each.value.runtime}
+            service_account: ${each.value.service_account}
+            worker_pool: ${each.value.worker_pool}
+            automatic_update_policy: ${each.value.automatic_update_policy}
+            on_deploy_update_policy: ${each.value.on_deploy_update_policy}
+            source: ${each.value.source}
+        event_trigger:
+          for_each: ${var.event_trigger}
+          content:
+            event_type: ${each.value.event_type}
+            pubsub_topic: ${each.value.pubsub_topic}
+            retry_policy: ${each.value.retry_policy}
+            service_account_email: ${each.value.service_account_email}
+            trigger: ${each.value.trigger}
+            trigger_region: ${each.value.trigger_region}
+            event_filters: ${each.value.event_filters}
+        service_config:
+          for_each: ${var.service_config}
+          content:
+            all_traffic_on_latest_revision: ${each.value.all_traffic_on_latest_revision}
+            available_cpu: ${each.value.available_cpu}
+            available_memory: ${each.value.available_memory}
+            binary_authorization_policy: ${each.value.binary_authorization_policy}
+            direct_vpc_egress: ${each.value.direct_vpc_egress}
+            environment_variables: ${each.value.environment_variables}
+            gcf_uri: ${each.value.gcf_uri}
+            ingress_settings: ${each.value.ingress_settings}
+            max_instance_count: ${each.value.max_instance_count}
+            max_instance_request_concurrency: ${each.value.max_instance_request_concurrency}
+            min_instance_count: ${each.value.min_instance_count}
+            service: ${each.value.service}
+            service_account_email: ${each.value.service_account_email}
+            timeout_seconds: ${each.value.timeout_seconds}
+            uri: ${each.value.uri}
+            vpc_connector: ${each.value.vpc_connector}
+            vpc_connector_egress_settings: ${each.value.vpc_connector_egress_settings}
+            direct_vpc_network_interface: ${each.value.direct_vpc_network_interface}
+            secret_environment_variables: ${each.value.secret_environment_variables}
+            secret_volumes: ${each.value.secret_volumes}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

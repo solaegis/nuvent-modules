@@ -1,0 +1,213 @@
+variables:
+  name:
+    type: string
+    description: "A user-defined name of the function. Function names must be unique globally."
+  runtime:
+    type: string
+    description: "The runtime in which the function is going to run. Eg. \"nodejs20\", \"python37\", \"go111\"."
+  available_memory_mb:
+    type: number
+    description: "Memory (in MB), available to the function. Default value is 256. Possible values include 128, 256, 512, 1024, etc."
+    default: null
+  build_environment_variables:
+    type: object
+    description: " A set of key/value environment variable pairs available during build time."
+    default: null
+  build_service_account:
+    type: string
+    description: "The fully-qualified name of the service account to be used for the build step of deploying this function"
+    default: null
+  build_worker_pool:
+    type: string
+    description: "Name of the Cloud Build Custom Worker Pool that should be used to build the function."
+    default: null
+  description:
+    type: string
+    description: "Description of the function."
+    default: null
+  docker_registry:
+    type: string
+    description: "Docker Registry to use for storing the function's Docker images. Allowed values are ARTIFACT_REGISTRY (default) and CONTAINER_REGISTRY."
+    default: null
+  docker_repository:
+    type: string
+    description: "User managed repository created in Artifact Registry optionally with a customer managed encryption key. If specified, deployments will use Artifact Registry for storing images built with Cloud Build."
+    default: null
+  entry_point:
+    type: string
+    description: "Name of the function that will be executed when the Google Cloud Function is triggered."
+    default: null
+  environment_variables:
+    type: object
+    description: "A set of key/value environment variable pairs to assign to the function."
+    default: null
+  https_trigger_security_level:
+    type: string
+    description: "The security level for the function. Defaults to SECURE_OPTIONAL. Valid only if trigger_http is used."
+    default: null
+  https_trigger_url:
+    type: string
+    description: "URL which triggers function execution. Returned only if trigger_http is used."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Function"
+    default: null
+  ingress_settings:
+    type: string
+    description: "String value that controls what traffic can reach the function. Allowed values are ALLOW_ALL and ALLOW_INTERNAL_ONLY. Changes to this field will recreate the cloud function."
+    default: null
+  kms_key_name:
+    type: string
+    description: "Resource name of a KMS crypto key (managed by the user) used to encrypt/decrypt function resources."
+    default: null
+  labels:
+    type: object
+    description: "A set of key/value label pairs to assign to the function. Label keys must follow the requirements at https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements.  				**Note**: This field is non-authoritative, and will only manage the labels present in your configuration. 				Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  max_instances:
+    type: number
+    description: "The limit on the maximum number of function instances that may coexist at a given time."
+    default: null
+  min_instances:
+    type: number
+    description: "The limit on the minimum number of function instances that may coexist at a given time."
+    default: null
+  project:
+    type: string
+    description: "Project of the function. If it is not provided, the provider project is used."
+    default: null
+  region:
+    type: string
+    description: "Region of function. If it is not provided, the provider region is used."
+    default: null
+  service_account_email:
+    type: string
+    description: " If provided, the self-provided service account to run the function with."
+    default: null
+  source_archive_bucket:
+    type: string
+    description: "The GCS bucket containing the zip archive which contains the function."
+    default: null
+  source_archive_object:
+    type: string
+    description: "The source archive object (file) in archive bucket."
+    default: null
+  timeout:
+    type: number
+    description: "Timeout (in seconds) for the function. Default value is 60 seconds. Cannot be more than 540 seconds."
+    default: null
+  trigger_http:
+    type: boolean
+    description: "Boolean variable. Any HTTP request (of a supported type) to the endpoint will trigger function execution. Supported HTTP request types are: POST, PUT, GET, DELETE, and OPTIONS. Endpoint is returned as https_trigger_url. Cannot be used with trigger_bucket and trigger_topic."
+    default: null
+  vpc_connector:
+    type: string
+    description: "The VPC Network Connector that this cloud function can connect to. It can be either the fully-qualified URI, or the short name of the network connector resource. The format of this field is projects/*/locations/*/connectors/*."
+    default: null
+  vpc_connector_egress_settings:
+    type: string
+    description: "The egress settings for the connector, controlling what traffic is diverted through it. Allowed values are ALL_TRAFFIC and PRIVATE_RANGES_ONLY. Defaults to PRIVATE_RANGES_ONLY. If unset, this field preserves the previously set value."
+    default: null
+  automatic_update_policy:
+    type: list
+    description: "Nested block: automatic_update_policy"
+    default: []
+  event_trigger:
+    type: list
+    description: "Nested block: event_trigger"
+    default: []
+  on_deploy_update_policy:
+    type: list
+    description: "Nested block: on_deploy_update_policy"
+    default: []
+  secret_environment_variables:
+    type: list
+    description: "Nested block: secret_environment_variables"
+    default: []
+  secret_volumes:
+    type: list
+    description: "Nested block: secret_volumes"
+    default: []
+  source_repository:
+    type: list
+    description: "Nested block: source_repository"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloudfunctions:Function
+    properties:
+      name: ${var.name}
+      runtime: ${var.runtime}
+      available_memory_mb: ${var.available_memory_mb}
+      build_environment_variables: ${var.build_environment_variables}
+      build_service_account: ${var.build_service_account}
+      build_worker_pool: ${var.build_worker_pool}
+      description: ${var.description}
+      docker_registry: ${var.docker_registry}
+      docker_repository: ${var.docker_repository}
+      entry_point: ${var.entry_point}
+      environment_variables: ${var.environment_variables}
+      https_trigger_security_level: ${var.https_trigger_security_level}
+      https_trigger_url: ${var.https_trigger_url}
+      id: ${var.id}
+      ingress_settings: ${var.ingress_settings}
+      kms_key_name: ${var.kms_key_name}
+      labels: ${var.labels}
+      max_instances: ${var.max_instances}
+      min_instances: ${var.min_instances}
+      project: ${var.project}
+      region: ${var.region}
+      service_account_email: ${var.service_account_email}
+      source_archive_bucket: ${var.source_archive_bucket}
+      source_archive_object: ${var.source_archive_object}
+      timeout: ${var.timeout}
+      trigger_http: ${var.trigger_http}
+      vpc_connector: ${var.vpc_connector}
+      vpc_connector_egress_settings: ${var.vpc_connector_egress_settings}
+      dynamic:
+        automatic_update_policy:
+          for_each: ${var.automatic_update_policy}
+          content:
+            # No specific fields found in schema for automatic_update_policy
+        event_trigger:
+          for_each: ${var.event_trigger}
+          content:
+            event_type: ${each.value.event_type}
+            resource: ${each.value.resource}
+            failure_policy: ${each.value.failure_policy}
+        on_deploy_update_policy:
+          for_each: ${var.on_deploy_update_policy}
+          content:
+            runtime_version: ${each.value.runtime_version}
+        secret_environment_variables:
+          for_each: ${var.secret_environment_variables}
+          content:
+            key: ${each.value.key}
+            project_id: ${each.value.project_id}
+            secret: ${each.value.secret}
+            version: ${each.value.version}
+        secret_volumes:
+          for_each: ${var.secret_volumes}
+          content:
+            mount_path: ${each.value.mount_path}
+            project_id: ${each.value.project_id}
+            secret: ${each.value.secret}
+            versions: ${each.value.versions}
+        source_repository:
+          for_each: ${var.source_repository}
+          content:
+            deployed_url: ${each.value.deployed_url}
+            url: ${each.value.url}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            read: ${each.value.read}
+            update: ${each.value.update}

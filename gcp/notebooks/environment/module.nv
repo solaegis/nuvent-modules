@@ -1,0 +1,69 @@
+variables:
+  location:
+    type: string
+    description: "A reference to the zone where the machine resides."
+  name:
+    type: string
+    description: "The name specified for the Environment instance. Format: projects/{project_id}/locations/{location}/environments/{environmentId}"
+  description:
+    type: string
+    description: "A brief description of this environment."
+    default: null
+  display_name:
+    type: string
+    description: "Display name of this environment for the UI."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Environment"
+    default: null
+  post_startup_script:
+    type: string
+    description: "Path to a Bash script that automatically runs after a notebook instance fully boots up. The path must be a URL or Cloud Storage path. Example: \"gs://path-to-file/file-name\""
+    default: null
+  project:
+    type: string
+    description: "Optional property for Environment"
+    default: null
+  container_image:
+    type: list
+    description: "Nested block: container_image"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  vm_image:
+    type: list
+    description: "Nested block: vm_image"
+    default: []
+
+resources:
+  main:
+    type: gcp:notebooks:Environment
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      post_startup_script: ${var.post_startup_script}
+      project: ${var.project}
+      dynamic:
+        container_image:
+          for_each: ${var.container_image}
+          content:
+            repository: ${each.value.repository}
+            tag: ${each.value.tag}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        vm_image:
+          for_each: ${var.vm_image}
+          content:
+            image_family: ${each.value.image_family}
+            image_name: ${each.value.image_name}
+            project: ${each.value.project}

@@ -1,0 +1,709 @@
+variables:
+  name:
+    type: string
+    description: "The name of the cluster, unique within the project and location."
+  allow_net_admin:
+    type: boolean
+    description: "Enable NET_ADMIN for this cluster."
+    default: null
+  cluster_ipv4_cidr:
+    type: string
+    description: "The IP address range of the Kubernetes pods in this cluster in CIDR notation (e.g. 10.96.0.0/14). Leave blank to have one automatically chosen or specify a /14 block in 10.0.0.0/8. This field will only work for routes-based clusters, where ip_allocation_policy is not defined."
+    default: null
+  datapath_provider:
+    type: string
+    description: "The desired datapath provider for this cluster. By default, uses the IPTables-based kube-proxy implementation."
+    default: null
+  default_max_pods_per_node:
+    type: number
+    description: "The default maximum number of pods per node in this cluster. This doesn't work on \"routes-based\" clusters, clusters that don't have IP Aliasing enabled."
+    default: null
+  deletion_protection:
+    type: boolean
+    description: "When the field is set to true or unset in Terraform state, a terraform apply or terraform destroy that would delete the cluster will fail. When the field is set to false, deleting the cluster is allowed."
+    default: null
+  description:
+    type: string
+    description: " Description of the cluster."
+    default: null
+  disable_l4_lb_firewall_reconciliation:
+    type: boolean
+    description: "Disable L4 load balancer VPC firewalls to enable firewall policies."
+    default: null
+  enable_autopilot:
+    type: boolean
+    description: "Enable Autopilot for this cluster."
+    default: null
+  enable_cilium_clusterwide_network_policy:
+    type: boolean
+    description: "Whether Cilium cluster-wide network policy is enabled on this cluster."
+    default: null
+  enable_fqdn_network_policy:
+    type: boolean
+    description: "Whether FQDN Network Policy is enabled on this cluster."
+    default: null
+  enable_intranode_visibility:
+    type: boolean
+    description: "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network."
+    default: null
+  enable_kubernetes_alpha:
+    type: boolean
+    description: "Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days."
+    default: null
+  enable_l4_ilb_subsetting:
+    type: boolean
+    description: "Whether L4ILB Subsetting is enabled for this cluster."
+    default: null
+  enable_legacy_abac:
+    type: boolean
+    description: "Whether the ABAC authorizer is enabled for this cluster. When enabled, identities in the system, including service accounts, nodes, and controllers, will have statically granted permissions beyond those provided by the RBAC configuration or IAM. Defaults to false."
+    default: null
+  enable_multi_networking:
+    type: boolean
+    description: "Whether multi-networking is enabled for this cluster."
+    default: null
+  enable_shielded_nodes:
+    type: boolean
+    description: "Enable Shielded Nodes features on all nodes in this cluster. Defaults to true."
+    default: null
+  enable_tpu:
+    type: boolean
+    description: "Whether to enable Cloud TPU resources in this cluster."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Cluster"
+    default: null
+  in_transit_encryption_config:
+    type: string
+    description: "Defines the config of in-transit encryption"
+    default: null
+  initial_node_count:
+    type: number
+    description: "The number of nodes to create in this cluster's default node pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Must be set if node_pool is not set. If you're using google_container_node_pool objects with no default node pool, you'll need to set this to a value of at least 1, alongside setting remove_default_node_pool to true."
+    default: null
+  location:
+    type: string
+    description: "The location (region or zone) in which the cluster master will be created, as well as the default node location. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region, and with default node locations in those zones as well."
+    default: null
+  logging_service:
+    type: string
+    description: "The logging service that the cluster should write logs to. Available options include logging.googleapis.com(Legacy Stackdriver), logging.googleapis.com/kubernetes(Stackdriver Kubernetes Engine Logging), and none. Defaults to logging.googleapis.com/kubernetes."
+    default: null
+  min_master_version:
+    type: string
+    description: "The minimum version of the master. GKE will auto-update the master to new versions, so this does not guarantee the current master version--use the read-only master_version field to obtain that. If unset, the cluster's version will be set by GKE to the version of the most recent official release (which is not necessarily the latest version)."
+    default: null
+  monitoring_service:
+    type: string
+    description: "The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com(Legacy Stackdriver), monitoring.googleapis.com/kubernetes(Stackdriver Kubernetes Engine Monitoring), and none. Defaults to monitoring.googleapis.com/kubernetes."
+    default: null
+  network:
+    type: string
+    description: "The name or self_link of the Google Compute Engine network to which the cluster is connected. For Shared VPC, set this to the self link of the shared network."
+    default: null
+  networking_mode:
+    type: string
+    description: "Determines whether alias IPs or routes will be used for pod IPs in the cluster. Defaults to VPC_NATIVE for new clusters."
+    default: null
+  node_locations:
+    type: list
+    description: "The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. If this is specified for a zonal cluster, omit the cluster's zone."
+    default: null
+  node_version:
+    type: string
+    description: "The Kubernetes version on the nodes. Must either be unset or set to the same value as min_master_version on create. Defaults to the default version set by GKE which is not necessarily the latest version. This only affects nodes in the default node pool. While a fuzzy version can be specified, it's recommended that you specify explicit versions as Terraform will see spurious diffs when fuzzy versions are used. See the google_container_engine_versions data source's version_prefix field to approximate fuzzy versions in a Terraform-compatible way. To update nodes in other node pools, use the version attribute on the node pool."
+    default: null
+  private_ipv6_google_access:
+    type: string
+    description: "The desired state of IPv6 connectivity to Google Services. By default, no private IPv6 access to or from Google Services (all access will be via IPv4)."
+    default: null
+  project:
+    type: string
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    default: null
+  remove_default_node_pool:
+    type: boolean
+    description: "If true, deletes the default node pool upon cluster creation. If you're using google_container_node_pool resources with no default node pool, this should be set to true, alongside setting initial_node_count to at least 1."
+    default: null
+  resource_labels:
+    type: object
+    description: "The GCE resource labels (a map of key/value pairs) to be applied to the cluster.  				**Note**: This field is non-authoritative, and will only manage the labels present in your configuration. 				Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  subnetwork:
+    type: string
+    description: "The name or self_link of the Google Compute Engine subnetwork in which the cluster's instances are launched."
+    default: null
+  addons_config:
+    type: list
+    description: "Nested block: addons_config"
+    default: []
+  anonymous_authentication_config:
+    type: list
+    description: "Nested block: anonymous_authentication_config"
+    default: []
+  authenticator_groups_config:
+    type: list
+    description: "Nested block: authenticator_groups_config"
+    default: []
+  binary_authorization:
+    type: list
+    description: "Nested block: binary_authorization"
+    default: []
+  cluster_autoscaling:
+    type: list
+    description: "Nested block: cluster_autoscaling"
+    default: []
+  cluster_telemetry:
+    type: list
+    description: "Nested block: cluster_telemetry"
+    default: []
+  confidential_nodes:
+    type: list
+    description: "Nested block: confidential_nodes"
+    default: []
+  control_plane_endpoints_config:
+    type: list
+    description: "Nested block: control_plane_endpoints_config"
+    default: []
+  cost_management_config:
+    type: list
+    description: "Nested block: cost_management_config"
+    default: []
+  database_encryption:
+    type: list
+    description: "Nested block: database_encryption"
+    default: []
+  default_snat_status:
+    type: list
+    description: "Nested block: default_snat_status"
+    default: []
+  dns_config:
+    type: list
+    description: "Nested block: dns_config"
+    default: []
+  enable_k8s_beta_apis:
+    type: list
+    description: "Nested block: enable_k8s_beta_apis"
+    default: []
+  enterprise_config:
+    type: list
+    description: "Nested block: enterprise_config"
+    default: []
+  fleet:
+    type: list
+    description: "Nested block: fleet"
+    default: []
+  gateway_api_config:
+    type: list
+    description: "Nested block: gateway_api_config"
+    default: []
+  gke_auto_upgrade_config:
+    type: list
+    description: "Nested block: gke_auto_upgrade_config"
+    default: []
+  identity_service_config:
+    type: list
+    description: "Nested block: identity_service_config"
+    default: []
+  ip_allocation_policy:
+    type: list
+    description: "Nested block: ip_allocation_policy"
+    default: []
+  logging_config:
+    type: list
+    description: "Nested block: logging_config"
+    default: []
+  maintenance_policy:
+    type: list
+    description: "Nested block: maintenance_policy"
+    default: []
+  master_auth:
+    type: list
+    description: "Nested block: master_auth"
+    default: []
+  master_authorized_networks_config:
+    type: list
+    description: "Nested block: master_authorized_networks_config"
+    default: []
+  mesh_certificates:
+    type: list
+    description: "Nested block: mesh_certificates"
+    default: []
+  monitoring_config:
+    type: list
+    description: "Nested block: monitoring_config"
+    default: []
+  network_performance_config:
+    type: list
+    description: "Nested block: network_performance_config"
+    default: []
+  network_policy:
+    type: list
+    description: "Nested block: network_policy"
+    default: []
+  node_config:
+    type: list
+    description: "Nested block: node_config"
+    default: []
+  node_pool:
+    type: list
+    description: "Nested block: node_pool"
+    default: []
+  node_pool_auto_config:
+    type: list
+    description: "Nested block: node_pool_auto_config"
+    default: []
+  node_pool_defaults:
+    type: list
+    description: "Nested block: node_pool_defaults"
+    default: []
+  notification_config:
+    type: list
+    description: "Nested block: notification_config"
+    default: []
+  pod_autoscaling:
+    type: list
+    description: "Nested block: pod_autoscaling"
+    default: []
+  pod_security_policy_config:
+    type: list
+    description: "Nested block: pod_security_policy_config"
+    default: []
+  private_cluster_config:
+    type: list
+    description: "Nested block: private_cluster_config"
+    default: []
+  protect_config:
+    type: list
+    description: "Nested block: protect_config"
+    default: []
+  rbac_binding_config:
+    type: list
+    description: "Nested block: rbac_binding_config"
+    default: []
+  release_channel:
+    type: list
+    description: "Nested block: release_channel"
+    default: []
+  resource_usage_export_config:
+    type: list
+    description: "Nested block: resource_usage_export_config"
+    default: []
+  secret_manager_config:
+    type: list
+    description: "Nested block: secret_manager_config"
+    default: []
+  secret_sync_config:
+    type: list
+    description: "Nested block: secret_sync_config"
+    default: []
+  security_posture_config:
+    type: list
+    description: "Nested block: security_posture_config"
+    default: []
+  service_external_ips_config:
+    type: list
+    description: "Nested block: service_external_ips_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  tpu_config:
+    type: list
+    description: "Nested block: tpu_config"
+    default: []
+  user_managed_keys_config:
+    type: list
+    description: "Nested block: user_managed_keys_config"
+    default: []
+  vertical_pod_autoscaling:
+    type: list
+    description: "Nested block: vertical_pod_autoscaling"
+    default: []
+  workload_alts_config:
+    type: list
+    description: "Nested block: workload_alts_config"
+    default: []
+  workload_identity_config:
+    type: list
+    description: "Nested block: workload_identity_config"
+    default: []
+
+resources:
+  main:
+    type: gcp:container:Cluster
+    properties:
+      name: ${var.name}
+      allow_net_admin: ${var.allow_net_admin}
+      cluster_ipv4_cidr: ${var.cluster_ipv4_cidr}
+      datapath_provider: ${var.datapath_provider}
+      default_max_pods_per_node: ${var.default_max_pods_per_node}
+      deletion_protection: ${var.deletion_protection}
+      description: ${var.description}
+      disable_l4_lb_firewall_reconciliation: ${var.disable_l4_lb_firewall_reconciliation}
+      enable_autopilot: ${var.enable_autopilot}
+      enable_cilium_clusterwide_network_policy: ${var.enable_cilium_clusterwide_network_policy}
+      enable_fqdn_network_policy: ${var.enable_fqdn_network_policy}
+      enable_intranode_visibility: ${var.enable_intranode_visibility}
+      enable_kubernetes_alpha: ${var.enable_kubernetes_alpha}
+      enable_l4_ilb_subsetting: ${var.enable_l4_ilb_subsetting}
+      enable_legacy_abac: ${var.enable_legacy_abac}
+      enable_multi_networking: ${var.enable_multi_networking}
+      enable_shielded_nodes: ${var.enable_shielded_nodes}
+      enable_tpu: ${var.enable_tpu}
+      id: ${var.id}
+      in_transit_encryption_config: ${var.in_transit_encryption_config}
+      initial_node_count: ${var.initial_node_count}
+      location: ${var.location}
+      logging_service: ${var.logging_service}
+      min_master_version: ${var.min_master_version}
+      monitoring_service: ${var.monitoring_service}
+      network: ${var.network}
+      networking_mode: ${var.networking_mode}
+      node_locations: ${var.node_locations}
+      node_version: ${var.node_version}
+      private_ipv6_google_access: ${var.private_ipv6_google_access}
+      project: ${var.project}
+      remove_default_node_pool: ${var.remove_default_node_pool}
+      resource_labels: ${var.resource_labels}
+      subnetwork: ${var.subnetwork}
+      dynamic:
+        addons_config:
+          for_each: ${var.addons_config}
+          content:
+            cloudrun_config: ${each.value.cloudrun_config}
+            config_connector_config: ${each.value.config_connector_config}
+            dns_cache_config: ${each.value.dns_cache_config}
+            gce_persistent_disk_csi_driver_config: ${each.value.gce_persistent_disk_csi_driver_config}
+            gcp_filestore_csi_driver_config: ${each.value.gcp_filestore_csi_driver_config}
+            gcs_fuse_csi_driver_config: ${each.value.gcs_fuse_csi_driver_config}
+            gke_backup_agent_config: ${each.value.gke_backup_agent_config}
+            horizontal_pod_autoscaling: ${each.value.horizontal_pod_autoscaling}
+            http_load_balancing: ${each.value.http_load_balancing}
+            istio_config: ${each.value.istio_config}
+            kalm_config: ${each.value.kalm_config}
+            lustre_csi_driver_config: ${each.value.lustre_csi_driver_config}
+            network_policy_config: ${each.value.network_policy_config}
+            parallelstore_csi_driver_config: ${each.value.parallelstore_csi_driver_config}
+            ray_operator_config: ${each.value.ray_operator_config}
+            stateful_ha_config: ${each.value.stateful_ha_config}
+        anonymous_authentication_config:
+          for_each: ${var.anonymous_authentication_config}
+          content:
+            mode: ${each.value.mode}
+        authenticator_groups_config:
+          for_each: ${var.authenticator_groups_config}
+          content:
+            security_group: ${each.value.security_group}
+        binary_authorization:
+          for_each: ${var.binary_authorization}
+          content:
+            enabled: ${each.value.enabled}
+            evaluation_mode: ${each.value.evaluation_mode}
+        cluster_autoscaling:
+          for_each: ${var.cluster_autoscaling}
+          content:
+            auto_provisioning_locations: ${each.value.auto_provisioning_locations}
+            autoscaling_profile: ${each.value.autoscaling_profile}
+            default_compute_class_enabled: ${each.value.default_compute_class_enabled}
+            enabled: ${each.value.enabled}
+            auto_provisioning_defaults: ${each.value.auto_provisioning_defaults}
+            resource_limits: ${each.value.resource_limits}
+        cluster_telemetry:
+          for_each: ${var.cluster_telemetry}
+          content:
+            type: ${each.value.type}
+        confidential_nodes:
+          for_each: ${var.confidential_nodes}
+          content:
+            confidential_instance_type: ${each.value.confidential_instance_type}
+            enabled: ${each.value.enabled}
+        control_plane_endpoints_config:
+          for_each: ${var.control_plane_endpoints_config}
+          content:
+            dns_endpoint_config: ${each.value.dns_endpoint_config}
+            ip_endpoints_config: ${each.value.ip_endpoints_config}
+        cost_management_config:
+          for_each: ${var.cost_management_config}
+          content:
+            enabled: ${each.value.enabled}
+        database_encryption:
+          for_each: ${var.database_encryption}
+          content:
+            key_name: ${each.value.key_name}
+            state: ${each.value.state}
+        default_snat_status:
+          for_each: ${var.default_snat_status}
+          content:
+            disabled: ${each.value.disabled}
+        dns_config:
+          for_each: ${var.dns_config}
+          content:
+            additive_vpc_scope_dns_domain: ${each.value.additive_vpc_scope_dns_domain}
+            cluster_dns: ${each.value.cluster_dns}
+            cluster_dns_domain: ${each.value.cluster_dns_domain}
+            cluster_dns_scope: ${each.value.cluster_dns_scope}
+        enable_k8s_beta_apis:
+          for_each: ${var.enable_k8s_beta_apis}
+          content:
+            enabled_apis: ${each.value.enabled_apis}
+        enterprise_config:
+          for_each: ${var.enterprise_config}
+          content:
+            cluster_tier: ${each.value.cluster_tier}
+            desired_tier: ${each.value.desired_tier}
+        fleet:
+          for_each: ${var.fleet}
+          content:
+            membership: ${each.value.membership}
+            membership_id: ${each.value.membership_id}
+            membership_location: ${each.value.membership_location}
+            membership_type: ${each.value.membership_type}
+            pre_registered: ${each.value.pre_registered}
+            project: ${each.value.project}
+        gateway_api_config:
+          for_each: ${var.gateway_api_config}
+          content:
+            channel: ${each.value.channel}
+        gke_auto_upgrade_config:
+          for_each: ${var.gke_auto_upgrade_config}
+          content:
+            patch_mode: ${each.value.patch_mode}
+        identity_service_config:
+          for_each: ${var.identity_service_config}
+          content:
+            enabled: ${each.value.enabled}
+        ip_allocation_policy:
+          for_each: ${var.ip_allocation_policy}
+          content:
+            cluster_ipv4_cidr_block: ${each.value.cluster_ipv4_cidr_block}
+            cluster_secondary_range_name: ${each.value.cluster_secondary_range_name}
+            services_ipv4_cidr_block: ${each.value.services_ipv4_cidr_block}
+            services_secondary_range_name: ${each.value.services_secondary_range_name}
+            stack_type: ${each.value.stack_type}
+            additional_ip_ranges_config: ${each.value.additional_ip_ranges_config}
+            additional_pod_ranges_config: ${each.value.additional_pod_ranges_config}
+            auto_ipam_config: ${each.value.auto_ipam_config}
+            network_tier_config: ${each.value.network_tier_config}
+            pod_cidr_overprovision_config: ${each.value.pod_cidr_overprovision_config}
+        logging_config:
+          for_each: ${var.logging_config}
+          content:
+            enable_components: ${each.value.enable_components}
+        maintenance_policy:
+          for_each: ${var.maintenance_policy}
+          content:
+            daily_maintenance_window: ${each.value.daily_maintenance_window}
+            maintenance_exclusion: ${each.value.maintenance_exclusion}
+            recurring_window: ${each.value.recurring_window}
+        master_auth:
+          for_each: ${var.master_auth}
+          content:
+            client_certificate: ${each.value.client_certificate}
+            client_key: ${each.value.client_key}
+            cluster_ca_certificate: ${each.value.cluster_ca_certificate}
+            client_certificate_config: ${each.value.client_certificate_config}
+        master_authorized_networks_config:
+          for_each: ${var.master_authorized_networks_config}
+          content:
+            gcp_public_cidrs_access_enabled: ${each.value.gcp_public_cidrs_access_enabled}
+            private_endpoint_enforcement_enabled: ${each.value.private_endpoint_enforcement_enabled}
+            cidr_blocks: ${each.value.cidr_blocks}
+        mesh_certificates:
+          for_each: ${var.mesh_certificates}
+          content:
+            enable_certificates: ${each.value.enable_certificates}
+        monitoring_config:
+          for_each: ${var.monitoring_config}
+          content:
+            enable_components: ${each.value.enable_components}
+            advanced_datapath_observability_config: ${each.value.advanced_datapath_observability_config}
+            managed_prometheus: ${each.value.managed_prometheus}
+        network_performance_config:
+          for_each: ${var.network_performance_config}
+          content:
+            total_egress_bandwidth_tier: ${each.value.total_egress_bandwidth_tier}
+        network_policy:
+          for_each: ${var.network_policy}
+          content:
+            enabled: ${each.value.enabled}
+            provider: ${each.value.provider}
+        node_config:
+          for_each: ${var.node_config}
+          content:
+            boot_disk_kms_key: ${each.value.boot_disk_kms_key}
+            disk_size_gb: ${each.value.disk_size_gb}
+            disk_type: ${each.value.disk_type}
+            effective_taints: ${each.value.effective_taints}
+            enable_confidential_storage: ${each.value.enable_confidential_storage}
+            flex_start: ${each.value.flex_start}
+            image_type: ${each.value.image_type}
+            labels: ${each.value.labels}
+            local_ssd_count: ${each.value.local_ssd_count}
+            local_ssd_encryption_mode: ${each.value.local_ssd_encryption_mode}
+            logging_variant: ${each.value.logging_variant}
+            machine_type: ${each.value.machine_type}
+            max_run_duration: ${each.value.max_run_duration}
+            metadata: ${each.value.metadata}
+            min_cpu_platform: ${each.value.min_cpu_platform}
+            node_group: ${each.value.node_group}
+            oauth_scopes: ${each.value.oauth_scopes}
+            preemptible: ${each.value.preemptible}
+            resource_labels: ${each.value.resource_labels}
+            resource_manager_tags: ${each.value.resource_manager_tags}
+            service_account: ${each.value.service_account}
+            spot: ${each.value.spot}
+            storage_pools: ${each.value.storage_pools}
+            tags: ${each.value.tags}
+            advanced_machine_features: ${each.value.advanced_machine_features}
+            boot_disk: ${each.value.boot_disk}
+            confidential_nodes: ${each.value.confidential_nodes}
+            containerd_config: ${each.value.containerd_config}
+            ephemeral_storage_config: ${each.value.ephemeral_storage_config}
+            ephemeral_storage_local_ssd_config: ${each.value.ephemeral_storage_local_ssd_config}
+            fast_socket: ${each.value.fast_socket}
+            gcfs_config: ${each.value.gcfs_config}
+            guest_accelerator: ${each.value.guest_accelerator}
+            gvnic: ${each.value.gvnic}
+            host_maintenance_policy: ${each.value.host_maintenance_policy}
+            kubelet_config: ${each.value.kubelet_config}
+            linux_node_config: ${each.value.linux_node_config}
+            local_nvme_ssd_block_config: ${each.value.local_nvme_ssd_block_config}
+            reservation_affinity: ${each.value.reservation_affinity}
+            sandbox_config: ${each.value.sandbox_config}
+            secondary_boot_disks: ${each.value.secondary_boot_disks}
+            shielded_instance_config: ${each.value.shielded_instance_config}
+            sole_tenant_config: ${each.value.sole_tenant_config}
+            taint: ${each.value.taint}
+            windows_node_config: ${each.value.windows_node_config}
+            workload_metadata_config: ${each.value.workload_metadata_config}
+        node_pool:
+          for_each: ${var.node_pool}
+          content:
+            initial_node_count: ${each.value.initial_node_count}
+            instance_group_urls: ${each.value.instance_group_urls}
+            managed_instance_group_urls: ${each.value.managed_instance_group_urls}
+            max_pods_per_node: ${each.value.max_pods_per_node}
+            name: ${each.value.name}
+            name_prefix: ${each.value.name_prefix}
+            node_count: ${each.value.node_count}
+            node_locations: ${each.value.node_locations}
+            version: ${each.value.version}
+            autoscaling: ${each.value.autoscaling}
+            management: ${each.value.management}
+            network_config: ${each.value.network_config}
+            node_config: ${each.value.node_config}
+            placement_policy: ${each.value.placement_policy}
+            queued_provisioning: ${each.value.queued_provisioning}
+            upgrade_settings: ${each.value.upgrade_settings}
+        node_pool_auto_config:
+          for_each: ${var.node_pool_auto_config}
+          content:
+            resource_manager_tags: ${each.value.resource_manager_tags}
+            linux_node_config: ${each.value.linux_node_config}
+            network_tags: ${each.value.network_tags}
+            node_kubelet_config: ${each.value.node_kubelet_config}
+        node_pool_defaults:
+          for_each: ${var.node_pool_defaults}
+          content:
+            node_config_defaults: ${each.value.node_config_defaults}
+        notification_config:
+          for_each: ${var.notification_config}
+          content:
+            pubsub: ${each.value.pubsub}
+        pod_autoscaling:
+          for_each: ${var.pod_autoscaling}
+          content:
+            hpa_profile: ${each.value.hpa_profile}
+        pod_security_policy_config:
+          for_each: ${var.pod_security_policy_config}
+          content:
+            enabled: ${each.value.enabled}
+        private_cluster_config:
+          for_each: ${var.private_cluster_config}
+          content:
+            enable_private_endpoint: ${each.value.enable_private_endpoint}
+            enable_private_nodes: ${each.value.enable_private_nodes}
+            master_ipv4_cidr_block: ${each.value.master_ipv4_cidr_block}
+            peering_name: ${each.value.peering_name}
+            private_endpoint: ${each.value.private_endpoint}
+            private_endpoint_subnetwork: ${each.value.private_endpoint_subnetwork}
+            public_endpoint: ${each.value.public_endpoint}
+            master_global_access_config: ${each.value.master_global_access_config}
+        protect_config:
+          for_each: ${var.protect_config}
+          content:
+            workload_vulnerability_mode: ${each.value.workload_vulnerability_mode}
+            workload_config: ${each.value.workload_config}
+        rbac_binding_config:
+          for_each: ${var.rbac_binding_config}
+          content:
+            enable_insecure_binding_system_authenticated: ${each.value.enable_insecure_binding_system_authenticated}
+            enable_insecure_binding_system_unauthenticated: ${each.value.enable_insecure_binding_system_unauthenticated}
+        release_channel:
+          for_each: ${var.release_channel}
+          content:
+            channel: ${each.value.channel}
+        resource_usage_export_config:
+          for_each: ${var.resource_usage_export_config}
+          content:
+            enable_network_egress_metering: ${each.value.enable_network_egress_metering}
+            enable_resource_consumption_metering: ${each.value.enable_resource_consumption_metering}
+            bigquery_destination: ${each.value.bigquery_destination}
+        secret_manager_config:
+          for_each: ${var.secret_manager_config}
+          content:
+            enabled: ${each.value.enabled}
+            rotation_config: ${each.value.rotation_config}
+        secret_sync_config:
+          for_each: ${var.secret_sync_config}
+          content:
+            enabled: ${each.value.enabled}
+            rotation_config: ${each.value.rotation_config}
+        security_posture_config:
+          for_each: ${var.security_posture_config}
+          content:
+            mode: ${each.value.mode}
+            vulnerability_mode: ${each.value.vulnerability_mode}
+        service_external_ips_config:
+          for_each: ${var.service_external_ips_config}
+          content:
+            enabled: ${each.value.enabled}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            read: ${each.value.read}
+            update: ${each.value.update}
+        tpu_config:
+          for_each: ${var.tpu_config}
+          content:
+            enabled: ${each.value.enabled}
+            ipv4_cidr_block: ${each.value.ipv4_cidr_block}
+            use_service_networking: ${each.value.use_service_networking}
+        user_managed_keys_config:
+          for_each: ${var.user_managed_keys_config}
+          content:
+            aggregation_ca: ${each.value.aggregation_ca}
+            cluster_ca: ${each.value.cluster_ca}
+            control_plane_disk_encryption_key: ${each.value.control_plane_disk_encryption_key}
+            etcd_api_ca: ${each.value.etcd_api_ca}
+            etcd_peer_ca: ${each.value.etcd_peer_ca}
+            gkeops_etcd_backup_encryption_key: ${each.value.gkeops_etcd_backup_encryption_key}
+            service_account_signing_keys: ${each.value.service_account_signing_keys}
+            service_account_verification_keys: ${each.value.service_account_verification_keys}
+        vertical_pod_autoscaling:
+          for_each: ${var.vertical_pod_autoscaling}
+          content:
+            enabled: ${each.value.enabled}
+        workload_alts_config:
+          for_each: ${var.workload_alts_config}
+          content:
+            enable_alts: ${each.value.enable_alts}
+        workload_identity_config:
+          for_each: ${var.workload_identity_config}
+          content:
+            workload_pool: ${each.value.workload_pool}

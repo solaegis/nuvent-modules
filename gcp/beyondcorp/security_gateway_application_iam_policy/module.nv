@@ -1,0 +1,28 @@
+variables:
+  application_id:
+    type: string
+    description: "Required property for SecurityGatewayApplicationIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for SecurityGatewayApplicationIamPolicy"
+  security_gateway_id:
+    type: string
+    description: "Required property for SecurityGatewayApplicationIamPolicy"
+  id:
+    type: string
+    description: "Optional property for SecurityGatewayApplicationIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for SecurityGatewayApplicationIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:beyondcorp:SecurityGatewayApplicationIamPolicy
+    properties:
+      application_id: ${var.application_id}
+      policy_data: ${var.policy_data}
+      security_gateway_id: ${var.security_gateway_id}
+      id: ${var.id}
+      project: ${var.project}

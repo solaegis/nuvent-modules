@@ -1,0 +1,55 @@
+variables:
+  display_name:
+    type: string
+    description: "The user-assigned display name of the AndroidApp."
+  package_name:
+    type: string
+    description: "The canonical package name of the Android app as would appear in the Google Play Developer Console."
+  api_key_id:
+    type: string
+    description: "The globally unique, Google-assigned identifier (UID) for the Firebase API key associated with the AndroidApp. If apiKeyId is not set during creation, then Firebase automatically associates an apiKeyId with the AndroidApp. This auto-associated key may be an existing valid key or, if no valid key exists, a new one will be provisioned."
+    default: null
+  deletion_policy:
+    type: string
+    description: "(Optional) Set to 'ABANDON' to allow the AndroidApp to be untracked from terraform state rather than deleted upon 'terraform destroy'. This is useful because the AndroidApp may be serving traffic. Set to 'DELETE' to delete the AndroidApp. Defaults to 'DELETE'."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AndroidApp"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AndroidApp"
+    default: null
+  sha1_hashes:
+    type: list
+    description: "The SHA1 certificate hashes for the AndroidApp."
+    default: null
+  sha256_hashes:
+    type: list
+    description: "The SHA256 certificate hashes for the AndroidApp."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:firebase:AndroidApp
+    properties:
+      display_name: ${var.display_name}
+      package_name: ${var.package_name}
+      api_key_id: ${var.api_key_id}
+      deletion_policy: ${var.deletion_policy}
+      id: ${var.id}
+      project: ${var.project}
+      sha1_hashes: ${var.sha1_hashes}
+      sha256_hashes: ${var.sha256_hashes}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

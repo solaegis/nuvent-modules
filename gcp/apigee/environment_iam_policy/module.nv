@@ -1,0 +1,23 @@
+variables:
+  env_id:
+    type: string
+    description: "Required property for EnvironmentIamPolicy"
+  org_id:
+    type: string
+    description: "Required property for EnvironmentIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for EnvironmentIamPolicy"
+  id:
+    type: string
+    description: "Optional property for EnvironmentIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:apigee:EnvironmentIamPolicy
+    properties:
+      env_id: ${var.env_id}
+      org_id: ${var.org_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}

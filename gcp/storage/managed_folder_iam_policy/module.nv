@@ -1,0 +1,23 @@
+variables:
+  bucket:
+    type: string
+    description: "Required property for ManagedFolderIamPolicy"
+  managed_folder:
+    type: string
+    description: "Required property for ManagedFolderIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for ManagedFolderIamPolicy"
+  id:
+    type: string
+    description: "Optional property for ManagedFolderIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:storage:ManagedFolderIamPolicy
+    properties:
+      bucket: ${var.bucket}
+      managed_folder: ${var.managed_folder}
+      policy_data: ${var.policy_data}
+      id: ${var.id}

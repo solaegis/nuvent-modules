@@ -1,0 +1,53 @@
+variables:
+  backend:
+    type: string
+    description: "Id of the backend that this Traffic config applies to"
+  location:
+    type: string
+    description: "The location the Backend that this Traffic config applies to"
+  id:
+    type: string
+    description: "Optional property for AppHostingTraffic"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AppHostingTraffic"
+    default: null
+  rollout_policy:
+    type: list
+    description: "Nested block: rollout_policy"
+    default: []
+  target:
+    type: list
+    description: "Nested block: target"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:firebase:AppHostingTraffic
+    properties:
+      backend: ${var.backend}
+      location: ${var.location}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        rollout_policy:
+          for_each: ${var.rollout_policy}
+          content:
+            codebase_branch: ${each.value.codebase_branch}
+            disabled: ${each.value.disabled}
+            disabled_time: ${each.value.disabled_time}
+        target:
+          for_each: ${var.target}
+          content:
+            splits: ${each.value.splits}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

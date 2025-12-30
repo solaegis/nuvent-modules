@@ -1,0 +1,130 @@
+variables:
+  name:
+    type: string
+    description: "The resource name of the instance."
+  tier:
+    type: string
+    description: "The service tier of the instance. Possible values include: STANDARD, PREMIUM, BASIC_HDD, BASIC_SSD, HIGH_SCALE_SSD, ZONAL, REGIONAL and ENTERPRISE"
+  deletion_protection_enabled:
+    type: boolean
+    description: "Indicates whether the instance is protected against deletion."
+    default: null
+  deletion_protection_reason:
+    type: string
+    description: "The reason for enabling deletion protection."
+    default: null
+  description:
+    type: string
+    description: "A description of the instance."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Instance"
+    default: null
+  kms_key_name:
+    type: string
+    description: "KMS key name used for data encryption."
+    default: null
+  labels:
+    type: object
+    description: "Resource labels to represent user-provided metadata.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "The name of the location of the instance. This can be a region for ENTERPRISE tier instances."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Instance"
+    default: null
+  protocol:
+    type: string
+    description: "Either NFSv3, for using NFS version 3 as file sharing protocol, or NFSv4.1, for using NFS version 4.1 as file sharing protocol. NFSv4.1 can be used with HIGH_SCALE_SSD, ZONAL, REGIONAL and ENTERPRISE. The default is NFSv3. Default value: \"NFS_V3\" Possible values: [\"NFS_V3\", \"NFS_V4_1\"]"
+    default: null
+  tags:
+    type: object
+    description: "A map of resource manager tags. Resource manager tag keys and values have the same definition as resource manager tags. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/456. The field is ignored when empty. The field is immutable and causes resource replacement when mutated. This field is only set at create time and modifying this field after creation will trigger recreation. To apply tags to an existing resource, see the 'google_tags_tag_value' resource."
+    default: null
+  zone:
+    type: string
+    description: "The name of the Filestore zone of the instance."
+    default: null
+  directory_services:
+    type: list
+    description: "Nested block: directory_services"
+    default: []
+  file_shares:
+    type: list
+    description: "Nested block: file_shares"
+    default: []
+  initial_replication:
+    type: list
+    description: "Nested block: initial_replication"
+    default: []
+  networks:
+    type: list
+    description: "Nested block: networks"
+    default: []
+  performance_config:
+    type: list
+    description: "Nested block: performance_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:filestore:Instance
+    properties:
+      name: ${var.name}
+      tier: ${var.tier}
+      deletion_protection_enabled: ${var.deletion_protection_enabled}
+      deletion_protection_reason: ${var.deletion_protection_reason}
+      description: ${var.description}
+      id: ${var.id}
+      kms_key_name: ${var.kms_key_name}
+      labels: ${var.labels}
+      location: ${var.location}
+      project: ${var.project}
+      protocol: ${var.protocol}
+      tags: ${var.tags}
+      zone: ${var.zone}
+      dynamic:
+        directory_services:
+          for_each: ${var.directory_services}
+          content:
+            ldap: ${each.value.ldap}
+        file_shares:
+          for_each: ${var.file_shares}
+          content:
+            capacity_gb: ${each.value.capacity_gb}
+            name: ${each.value.name}
+            source_backup: ${each.value.source_backup}
+            nfs_export_options: ${each.value.nfs_export_options}
+        initial_replication:
+          for_each: ${var.initial_replication}
+          content:
+            role: ${each.value.role}
+            replicas: ${each.value.replicas}
+        networks:
+          for_each: ${var.networks}
+          content:
+            connect_mode: ${each.value.connect_mode}
+            ip_addresses: ${each.value.ip_addresses}
+            modes: ${each.value.modes}
+            network: ${each.value.network}
+            reserved_ip_range: ${each.value.reserved_ip_range}
+            psc_config: ${each.value.psc_config}
+        performance_config:
+          for_each: ${var.performance_config}
+          content:
+            fixed_iops: ${each.value.fixed_iops}
+            iops_per_tb: ${each.value.iops_per_tb}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

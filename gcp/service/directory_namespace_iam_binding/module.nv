@@ -1,0 +1,34 @@
+variables:
+  members:
+    type: list
+    description: "Required property for DirectoryNamespaceIamBinding"
+  name:
+    type: string
+    description: "Required property for DirectoryNamespaceIamBinding"
+  role:
+    type: string
+    description: "Required property for DirectoryNamespaceIamBinding"
+  id:
+    type: string
+    description: "Optional property for DirectoryNamespaceIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:service:DirectoryNamespaceIamBinding
+    properties:
+      members: ${var.members}
+      name: ${var.name}
+      role: ${var.role}
+      id: ${var.id}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

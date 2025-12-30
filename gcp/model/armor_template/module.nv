@@ -1,0 +1,67 @@
+variables:
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  template_id:
+    type: string
+    description: "Id of the requesting object If auto-generating Id server-side, remove this field and template_id from the method_signature of Create RPC"
+  id:
+    type: string
+    description: "Optional property for ArmorTemplate"
+    default: null
+  labels:
+    type: object
+    description: "Labels as key value pairs  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ArmorTemplate"
+    default: null
+  filter_config:
+    type: list
+    description: "Nested block: filter_config"
+    default: []
+  template_metadata:
+    type: list
+    description: "Nested block: template_metadata"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:model:ArmorTemplate
+    properties:
+      location: ${var.location}
+      template_id: ${var.template_id}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        filter_config:
+          for_each: ${var.filter_config}
+          content:
+            malicious_uri_filter_settings: ${each.value.malicious_uri_filter_settings}
+            pi_and_jailbreak_filter_settings: ${each.value.pi_and_jailbreak_filter_settings}
+            rai_settings: ${each.value.rai_settings}
+            sdp_settings: ${each.value.sdp_settings}
+        template_metadata:
+          for_each: ${var.template_metadata}
+          content:
+            custom_llm_response_safety_error_code: ${each.value.custom_llm_response_safety_error_code}
+            custom_llm_response_safety_error_message: ${each.value.custom_llm_response_safety_error_message}
+            custom_prompt_safety_error_code: ${each.value.custom_prompt_safety_error_code}
+            custom_prompt_safety_error_message: ${each.value.custom_prompt_safety_error_message}
+            enforcement_type: ${each.value.enforcement_type}
+            ignore_partial_invocation_failures: ${each.value.ignore_partial_invocation_failures}
+            log_sanitize_operations: ${each.value.log_sanitize_operations}
+            log_template_operations: ${each.value.log_template_operations}
+            multi_language_detection: ${each.value.multi_language_detection}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

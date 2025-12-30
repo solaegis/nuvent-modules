@@ -1,0 +1,31 @@
+variables:
+  folder:
+    type: string
+    description: "The folder for which to retrieve config."
+  id:
+    type: string
+    description: "Optional property for AutokeyConfig"
+    default: null
+  key_project:
+    type: string
+    description: "The target key project for a given folder where KMS Autokey will provision a CryptoKey for any new KeyHandle the Developer creates. Should have the form 'projects/<project_id_or_number>'."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:kms:AutokeyConfig
+    properties:
+      folder: ${var.folder}
+      id: ${var.id}
+      key_project: ${var.key_project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

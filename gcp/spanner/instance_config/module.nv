@@ -1,0 +1,56 @@
+variables:
+  display_name:
+    type: string
+    description: "The name of this instance configuration as it appears in UIs."
+  base_config:
+    type: string
+    description: "Base configuration name, e.g. nam3, based on which this configuration is created. Only set for user managed configurations. baseConfig must refer to a configuration of type GOOGLE_MANAGED in the same project as this configuration."
+    default: null
+  id:
+    type: string
+    description: "Optional property for InstanceConfig"
+    default: null
+  labels:
+    type: object
+    description: "An object containing a list of \"key\": value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  name:
+    type: string
+    description: "A unique identifier for the instance configuration. Values are of the form projects/<project>/instanceConfigs/[a-z][-a-z0-9]*"
+    default: null
+  project:
+    type: string
+    description: "Optional property for InstanceConfig"
+    default: null
+  replicas:
+    type: list
+    description: "Nested block: replicas"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:spanner:InstanceConfig
+    properties:
+      display_name: ${var.display_name}
+      base_config: ${var.base_config}
+      id: ${var.id}
+      labels: ${var.labels}
+      name: ${var.name}
+      project: ${var.project}
+      dynamic:
+        replicas:
+          for_each: ${var.replicas}
+          content:
+            default_leader_location: ${each.value.default_leader_location}
+            location: ${each.value.location}
+            type: ${each.value.type}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

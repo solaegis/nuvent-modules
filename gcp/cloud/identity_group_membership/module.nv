@@ -1,0 +1,58 @@
+variables:
+  group:
+    type: string
+    description: "The name of the Group to create this membership in."
+  create_ignore_already_exists:
+    type: boolean
+    description: "If set to true, skip group member creation if a membership with the same name already exists. Defaults to false."
+    default: null
+  id:
+    type: string
+    description: "Optional property for IdentityGroupMembership"
+    default: null
+  member_key:
+    type: list
+    description: "Nested block: member_key"
+    default: []
+  preferred_member_key:
+    type: list
+    description: "Nested block: preferred_member_key"
+    default: []
+  roles:
+    type: list
+    description: "Nested block: roles"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloud:IdentityGroupMembership
+    properties:
+      group: ${var.group}
+      create_ignore_already_exists: ${var.create_ignore_already_exists}
+      id: ${var.id}
+      dynamic:
+        member_key:
+          for_each: ${var.member_key}
+          content:
+            id: ${each.value.id}
+            namespace: ${each.value.namespace}
+        preferred_member_key:
+          for_each: ${var.preferred_member_key}
+          content:
+            id: ${each.value.id}
+            namespace: ${each.value.namespace}
+        roles:
+          for_each: ${var.roles}
+          content:
+            name: ${each.value.name}
+            expiry_detail: ${each.value.expiry_detail}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

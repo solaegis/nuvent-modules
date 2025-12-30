@@ -1,0 +1,56 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035.  Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  description:
+    type: string
+    description: "An optional description of this resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ExternalVpnGateway"
+    default: null
+  labels:
+    type: object
+    description: "Labels for the external VPN gateway resource.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ExternalVpnGateway"
+    default: null
+  redundancy_type:
+    type: string
+    description: "Indicates the redundancy type of this external VPN gateway Possible values: [\"FOUR_IPS_REDUNDANCY\", \"SINGLE_IP_INTERNALLY_REDUNDANT\", \"TWO_IPS_REDUNDANCY\"]"
+    default: null
+  interface:
+    type: list
+    description: "Nested block: interface"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:ExternalVpnGateway
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      redundancy_type: ${var.redundancy_type}
+      dynamic:
+        interface:
+          for_each: ${var.interface}
+          content:
+            id: ${each.value.id}
+            ip_address: ${each.value.ip_address}
+            ipv6_address: ${each.value.ipv6_address}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

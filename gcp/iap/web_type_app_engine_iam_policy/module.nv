@@ -1,0 +1,24 @@
+variables:
+  app_id:
+    type: string
+    description: "Required property for WebTypeAppEngineIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for WebTypeAppEngineIamPolicy"
+  id:
+    type: string
+    description: "Optional property for WebTypeAppEngineIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WebTypeAppEngineIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:iap:WebTypeAppEngineIamPolicy
+    properties:
+      app_id: ${var.app_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}

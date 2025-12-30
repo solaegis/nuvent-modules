@@ -1,0 +1,38 @@
+variables:
+  entitytype:
+    type: string
+    description: "Required property for AiFeaturestoreEntitytypeIamBinding"
+  featurestore:
+    type: string
+    description: "Required property for AiFeaturestoreEntitytypeIamBinding"
+  members:
+    type: list
+    description: "Required property for AiFeaturestoreEntitytypeIamBinding"
+  role:
+    type: string
+    description: "Required property for AiFeaturestoreEntitytypeIamBinding"
+  id:
+    type: string
+    description: "Optional property for AiFeaturestoreEntitytypeIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:vertex:AiFeaturestoreEntitytypeIamBinding
+    properties:
+      entitytype: ${var.entitytype}
+      featurestore: ${var.featurestore}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

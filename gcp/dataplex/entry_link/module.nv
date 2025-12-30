@@ -1,0 +1,52 @@
+variables:
+  entry_group_id:
+    type: string
+    description: "The id of the entry group this entry link is in."
+  entry_link_id:
+    type: string
+    description: "The id of the entry link to create."
+  entry_link_type:
+    type: string
+    description: "Relative resource name of the Entry Link Type used to create this Entry Link. For example: projects/dataplex-types/locations/global/entryLinkTypes/definition"
+  location:
+    type: string
+    description: "The location for the entry."
+  id:
+    type: string
+    description: "Optional property for EntryLink"
+    default: null
+  project:
+    type: string
+    description: "Optional property for EntryLink"
+    default: null
+  entry_references:
+    type: list
+    description: "Nested block: entry_references"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataplex:EntryLink
+    properties:
+      entry_group_id: ${var.entry_group_id}
+      entry_link_id: ${var.entry_link_id}
+      entry_link_type: ${var.entry_link_type}
+      location: ${var.location}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        entry_references:
+          for_each: ${var.entry_references}
+          content:
+            name: ${each.value.name}
+            path: ${each.value.path}
+            type: ${each.value.type}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

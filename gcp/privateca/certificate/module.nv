@@ -1,0 +1,75 @@
+variables:
+  location:
+    type: string
+    description: "Location of the Certificate. A full list of valid locations can be found by running 'gcloud privateca locations list'."
+  name:
+    type: string
+    description: "The name for this Certificate."
+  pool:
+    type: string
+    description: "The name of the CaPool this Certificate belongs to."
+  certificate_authority:
+    type: string
+    description: "The Certificate Authority ID that should issue the certificate. For example, to issue a Certificate from a Certificate Authority with resource name 'projects/my-project/locations/us-central1/caPools/my-pool/certificateAuthorities/my-ca', argument 'pool' should be set to 'projects/my-project/locations/us-central1/caPools/my-pool', argument 'certificate_authority' should be set to 'my-ca'."
+    default: null
+  certificate_template:
+    type: string
+    description: "The resource name for a CertificateTemplate used to issue this certificate, in the format 'projects/*/locations/*/certificateTemplates/*'. If this is specified, the caller must have the necessary permission to use this template. If this is omitted, no template will be used. This template must be in the same location as the Certificate."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Certificate"
+    default: null
+  labels:
+    type: object
+    description: "Labels with user-defined metadata to apply to this resource.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  lifetime:
+    type: string
+    description: "The desired lifetime of the CA certificate. Used to create the \"notBeforeTime\" and \"notAfterTime\" fields inside an X.509 certificate. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: \"3.5s\"."
+    default: null
+  pem_csr:
+    type: string
+    description: "Immutable. A pem-encoded X.509 certificate signing request (CSR)."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Certificate"
+    default: null
+  config:
+    type: list
+    description: "Nested block: config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:privateca:Certificate
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      pool: ${var.pool}
+      certificate_authority: ${var.certificate_authority}
+      certificate_template: ${var.certificate_template}
+      id: ${var.id}
+      labels: ${var.labels}
+      lifetime: ${var.lifetime}
+      pem_csr: ${var.pem_csr}
+      project: ${var.project}
+      dynamic:
+        config:
+          for_each: ${var.config}
+          content:
+            public_key: ${each.value.public_key}
+            subject_config: ${each.value.subject_config}
+            subject_key_id: ${each.value.subject_key_id}
+            x509_config: ${each.value.x509_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

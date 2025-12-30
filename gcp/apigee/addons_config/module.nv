@@ -1,0 +1,38 @@
+variables:
+  org:
+    type: string
+    description: "Name of the Apigee organization."
+  id:
+    type: string
+    description: "Optional property for AddonsConfig"
+    default: null
+  addons_config:
+    type: list
+    description: "Nested block: addons_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:AddonsConfig
+    properties:
+      org: ${var.org}
+      id: ${var.id}
+      dynamic:
+        addons_config:
+          for_each: ${var.addons_config}
+          content:
+            advanced_api_ops_config: ${each.value.advanced_api_ops_config}
+            api_security_config: ${each.value.api_security_config}
+            connectors_platform_config: ${each.value.connectors_platform_config}
+            integration_config: ${each.value.integration_config}
+            monetization_config: ${each.value.monetization_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

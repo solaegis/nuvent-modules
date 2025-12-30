@@ -1,0 +1,75 @@
+variables:
+  location:
+    type: string
+    description: "The location of the service lb policy."
+  name:
+    type: string
+    description: "Name of the ServiceLbPolicy resource. It matches pattern 'projects/{project}/locations/{location}/serviceLbPolicies/{service_lb_policy_name}'."
+  description:
+    type: string
+    description: "A free-text description of the resource. Max length 1024 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ServicesServiceLbPolicies"
+    default: null
+  labels:
+    type: object
+    description: "Set of label tags associated with the ServiceLbPolicy resource.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  load_balancing_algorithm:
+    type: string
+    description: "The type of load balancing algorithm to be used. The default behavior is WATERFALL_BY_REGION. Possible values: [\"SPRAY_TO_REGION\", \"SPRAY_TO_WORLD\", \"WATERFALL_BY_REGION\", \"WATERFALL_BY_ZONE\"]"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ServicesServiceLbPolicies"
+    default: null
+  auto_capacity_drain:
+    type: list
+    description: "Nested block: auto_capacity_drain"
+    default: []
+  failover_config:
+    type: list
+    description: "Nested block: failover_config"
+    default: []
+  isolation_config:
+    type: list
+    description: "Nested block: isolation_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ServicesServiceLbPolicies
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      load_balancing_algorithm: ${var.load_balancing_algorithm}
+      project: ${var.project}
+      dynamic:
+        auto_capacity_drain:
+          for_each: ${var.auto_capacity_drain}
+          content:
+            enable: ${each.value.enable}
+        failover_config:
+          for_each: ${var.failover_config}
+          content:
+            failover_health_threshold: ${each.value.failover_health_threshold}
+        isolation_config:
+          for_each: ${var.isolation_config}
+          content:
+            isolation_granularity: ${each.value.isolation_granularity}
+            isolation_mode: ${each.value.isolation_mode}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

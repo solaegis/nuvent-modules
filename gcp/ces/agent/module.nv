@@ -1,0 +1,167 @@
+variables:
+  app:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  display_name:
+    type: string
+    description: "Display name of the agent."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  agent_id:
+    type: string
+    description: "The ID to use for the agent, which will become the final component of the agent's resource name. If not provided, a unique ID will be automatically assigned for the agent."
+    default: null
+  child_agents:
+    type: list
+    description: "List of child agents in the agent tree. Format: 'projects/{project}/locations/{location}/apps/{app}/agents/{agent}'"
+    default: null
+  description:
+    type: string
+    description: "Human-readable description of the agent."
+    default: null
+  guardrails:
+    type: list
+    description: "List of guardrails for the agent. Format: 'projects/{project}/locations/{location}/apps/{app}/guardrails/{guardrail}'"
+    default: null
+  id:
+    type: string
+    description: "Optional property for Agent"
+    default: null
+  instruction:
+    type: string
+    description: "Instructions for the LLM model to guide the agent's behavior."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Agent"
+    default: null
+  tools:
+    type: list
+    description: "List of available tools for the agent. Format: 'projects/{project}/locations/{location}/apps/{app}/tools/{tool}'"
+    default: null
+  after_agent_callbacks:
+    type: list
+    description: "Nested block: after_agent_callbacks"
+    default: []
+  after_model_callbacks:
+    type: list
+    description: "Nested block: after_model_callbacks"
+    default: []
+  after_tool_callbacks:
+    type: list
+    description: "Nested block: after_tool_callbacks"
+    default: []
+  before_agent_callbacks:
+    type: list
+    description: "Nested block: before_agent_callbacks"
+    default: []
+  before_model_callbacks:
+    type: list
+    description: "Nested block: before_model_callbacks"
+    default: []
+  before_tool_callbacks:
+    type: list
+    description: "Nested block: before_tool_callbacks"
+    default: []
+  llm_agent:
+    type: list
+    description: "Nested block: llm_agent"
+    default: []
+  model_settings:
+    type: list
+    description: "Nested block: model_settings"
+    default: []
+  remote_dialogflow_agent:
+    type: list
+    description: "Nested block: remote_dialogflow_agent"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  toolsets:
+    type: list
+    description: "Nested block: toolsets"
+    default: []
+
+resources:
+  main:
+    type: gcp:ces:Agent
+    properties:
+      app: ${var.app}
+      display_name: ${var.display_name}
+      location: ${var.location}
+      agent_id: ${var.agent_id}
+      child_agents: ${var.child_agents}
+      description: ${var.description}
+      guardrails: ${var.guardrails}
+      id: ${var.id}
+      instruction: ${var.instruction}
+      project: ${var.project}
+      tools: ${var.tools}
+      dynamic:
+        after_agent_callbacks:
+          for_each: ${var.after_agent_callbacks}
+          content:
+            description: ${each.value.description}
+            disabled: ${each.value.disabled}
+            python_code: ${each.value.python_code}
+        after_model_callbacks:
+          for_each: ${var.after_model_callbacks}
+          content:
+            description: ${each.value.description}
+            disabled: ${each.value.disabled}
+            python_code: ${each.value.python_code}
+        after_tool_callbacks:
+          for_each: ${var.after_tool_callbacks}
+          content:
+            description: ${each.value.description}
+            disabled: ${each.value.disabled}
+            python_code: ${each.value.python_code}
+        before_agent_callbacks:
+          for_each: ${var.before_agent_callbacks}
+          content:
+            description: ${each.value.description}
+            disabled: ${each.value.disabled}
+            python_code: ${each.value.python_code}
+        before_model_callbacks:
+          for_each: ${var.before_model_callbacks}
+          content:
+            description: ${each.value.description}
+            disabled: ${each.value.disabled}
+            python_code: ${each.value.python_code}
+        before_tool_callbacks:
+          for_each: ${var.before_tool_callbacks}
+          content:
+            description: ${each.value.description}
+            disabled: ${each.value.disabled}
+            python_code: ${each.value.python_code}
+        llm_agent:
+          for_each: ${var.llm_agent}
+          content:
+            # No specific fields found in schema for llm_agent
+        model_settings:
+          for_each: ${var.model_settings}
+          content:
+            model: ${each.value.model}
+            temperature: ${each.value.temperature}
+        remote_dialogflow_agent:
+          for_each: ${var.remote_dialogflow_agent}
+          content:
+            agent: ${each.value.agent}
+            environment_id: ${each.value.environment_id}
+            flow_id: ${each.value.flow_id}
+            input_variable_mapping: ${each.value.input_variable_mapping}
+            output_variable_mapping: ${each.value.output_variable_mapping}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        toolsets:
+          for_each: ${var.toolsets}
+          content:
+            tool_ids: ${each.value.tool_ids}
+            toolset: ${each.value.toolset}

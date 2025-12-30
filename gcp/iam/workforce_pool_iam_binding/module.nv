@@ -1,0 +1,39 @@
+variables:
+  members:
+    type: list
+    description: "Required property for WorkforcePoolIamBinding"
+  role:
+    type: string
+    description: "Required property for WorkforcePoolIamBinding"
+  workforce_pool_id:
+    type: string
+    description: "Required property for WorkforcePoolIamBinding"
+  id:
+    type: string
+    description: "Optional property for WorkforcePoolIamBinding"
+    default: null
+  location:
+    type: string
+    description: "Optional property for WorkforcePoolIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:iam:WorkforcePoolIamBinding
+    properties:
+      members: ${var.members}
+      role: ${var.role}
+      workforce_pool_id: ${var.workforce_pool_id}
+      id: ${var.id}
+      location: ${var.location}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

@@ -1,0 +1,83 @@
+variables:
+  cluster_id:
+    type: string
+    description: "The ID to use for the cluster, which will become the final component of the cluster's name. The ID must be 1-63 characters long, and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' to comply with RFC 1035. This value is structured like: 'my-cluster-id'."
+  location:
+    type: string
+    description: "ID of the location of the Kafka resource. See https://cloud.google.com/managed-kafka/docs/locations for a list of supported locations."
+  id:
+    type: string
+    description: "Optional property for KafkaCluster"
+    default: null
+  labels:
+    type: object
+    description: "List of label KEY=VALUE pairs to add. Keys must start with a lowercase character and contain only hyphens (-), underscores ( ), lowercase characters, and numbers. Values must contain only hyphens (-), underscores ( ), lowercase characters, and numbers.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for KafkaCluster"
+    default: null
+  broker_capacity_config:
+    type: list
+    description: "Nested block: broker_capacity_config"
+    default: []
+  capacity_config:
+    type: list
+    description: "Nested block: capacity_config"
+    default: []
+  gcp_config:
+    type: list
+    description: "Nested block: gcp_config"
+    default: []
+  rebalance_config:
+    type: list
+    description: "Nested block: rebalance_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  tls_config:
+    type: list
+    description: "Nested block: tls_config"
+    default: []
+
+resources:
+  main:
+    type: gcp:managed:KafkaCluster
+    properties:
+      cluster_id: ${var.cluster_id}
+      location: ${var.location}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        broker_capacity_config:
+          for_each: ${var.broker_capacity_config}
+          content:
+            disk_size_gb: ${each.value.disk_size_gb}
+        capacity_config:
+          for_each: ${var.capacity_config}
+          content:
+            memory_bytes: ${each.value.memory_bytes}
+            vcpu_count: ${each.value.vcpu_count}
+        gcp_config:
+          for_each: ${var.gcp_config}
+          content:
+            kms_key: ${each.value.kms_key}
+            access_config: ${each.value.access_config}
+        rebalance_config:
+          for_each: ${var.rebalance_config}
+          content:
+            mode: ${each.value.mode}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        tls_config:
+          for_each: ${var.tls_config}
+          content:
+            ssl_principal_mapping_rules: ${each.value.ssl_principal_mapping_rules}
+            trust_config: ${each.value.trust_config}

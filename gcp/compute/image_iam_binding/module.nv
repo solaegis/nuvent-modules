@@ -1,0 +1,39 @@
+variables:
+  image:
+    type: string
+    description: "Required property for ImageIamBinding"
+  members:
+    type: list
+    description: "Required property for ImageIamBinding"
+  role:
+    type: string
+    description: "Required property for ImageIamBinding"
+  id:
+    type: string
+    description: "Optional property for ImageIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ImageIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:ImageIamBinding
+    properties:
+      image: ${var.image}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

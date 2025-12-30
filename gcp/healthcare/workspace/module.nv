@@ -1,0 +1,43 @@
+variables:
+  dataset:
+    type: string
+    description: "Identifies the dataset addressed by this request. Must be in the format 'projects/{project}/locations/{location}/datasets/{dataset}'"
+  name:
+    type: string
+    description: "The name of the workspace, in the format 'projects/{projectId}/locations/{location}/datasets/{datasetId}/dataMapperWorkspaces/{workspaceId}'"
+  id:
+    type: string
+    description: "Optional property for Workspace"
+    default: null
+  labels:
+    type: object
+    description: "The user labels. An object containing a list of \"key\": value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  settings:
+    type: list
+    description: "Nested block: settings"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:healthcare:Workspace
+    properties:
+      dataset: ${var.dataset}
+      name: ${var.name}
+      id: ${var.id}
+      labels: ${var.labels}
+      dynamic:
+        settings:
+          for_each: ${var.settings}
+          content:
+            data_project_ids: ${each.value.data_project_ids}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

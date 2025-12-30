@@ -1,0 +1,196 @@
+variables:
+  base_instance_name:
+    type: string
+    description: "The base instance name to use for instances in this group. The value must be a valid RFC1035 name. Supported characters are lowercase letters, numbers, and hyphens (-). Instances are named by appending a hyphen and a random four-character string to the base instance name."
+  name:
+    type: string
+    description: "The name of the instance group manager. Must be 1-63 characters long and comply with RFC1035. Supported characters include lowercase letters, numbers, and hyphens."
+  description:
+    type: string
+    description: "An optional textual description of the instance group manager."
+    default: null
+  id:
+    type: string
+    description: "Optional property for InstanceGroupManager"
+    default: null
+  list_managed_instances_results:
+    type: string
+    description: "Pagination behavior of the listManagedInstances API method for this managed instance group. Valid values are: \"PAGELESS\", \"PAGINATED\". If PAGELESS (default), Pagination is disabled for the group's listManagedInstances API method. maxResults and pageToken query parameters are ignored and all instances are returned in a single response. If PAGINATED, pagination is enabled, maxResults and pageToken query parameters are respected."
+    default: null
+  project:
+    type: string
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    default: null
+  target_pools:
+    type: list
+    description: "The full URL of all target pools to which new instances in the group are added. Updating the target pools attribute does not affect existing instances."
+    default: null
+  target_size:
+    type: number
+    description: "The target number of running instances for this managed instance group. This value should always be explicitly set unless this resource is attached to an autoscaler, in which case it should never be set. Defaults to 0."
+    default: null
+  target_stopped_size:
+    type: number
+    description: "The target number of stopped instances for this managed instance group."
+    default: null
+  target_suspended_size:
+    type: number
+    description: "The target number of suspended instances for this managed instance group."
+    default: null
+  wait_for_instances:
+    type: boolean
+    description: "Whether to wait for all instances to be created/updated before returning. Note that if this is set to true and the operation does not succeed, Terraform will continue trying until it times out."
+    default: null
+  wait_for_instances_status:
+    type: string
+    description: "When used with wait_for_instances specifies the status to wait for. When STABLE is specified this resource will wait until the instances are stable before returning. When UPDATED is set, it will wait for the version target to be reached and any per instance configs to be effective and all instances configs to be effective as well as all instances to be stable before returning."
+    default: null
+  zone:
+    type: string
+    description: "The zone that instances in this group should be created in."
+    default: null
+  all_instances_config:
+    type: list
+    description: "Nested block: all_instances_config"
+    default: []
+  auto_healing_policies:
+    type: list
+    description: "Nested block: auto_healing_policies"
+    default: []
+  instance_lifecycle_policy:
+    type: list
+    description: "Nested block: instance_lifecycle_policy"
+    default: []
+  named_port:
+    type: list
+    description: "Nested block: named_port"
+    default: []
+  params:
+    type: list
+    description: "Nested block: params"
+    default: []
+  resource_policies:
+    type: list
+    description: "Nested block: resource_policies"
+    default: []
+  standby_policy:
+    type: list
+    description: "Nested block: standby_policy"
+    default: []
+  stateful_disk:
+    type: list
+    description: "Nested block: stateful_disk"
+    default: []
+  stateful_external_ip:
+    type: list
+    description: "Nested block: stateful_external_ip"
+    default: []
+  stateful_internal_ip:
+    type: list
+    description: "Nested block: stateful_internal_ip"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  update_policy:
+    type: list
+    description: "Nested block: update_policy"
+    default: []
+  version:
+    type: list
+    description: "Nested block: version"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:InstanceGroupManager
+    properties:
+      base_instance_name: ${var.base_instance_name}
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      list_managed_instances_results: ${var.list_managed_instances_results}
+      project: ${var.project}
+      target_pools: ${var.target_pools}
+      target_size: ${var.target_size}
+      target_stopped_size: ${var.target_stopped_size}
+      target_suspended_size: ${var.target_suspended_size}
+      wait_for_instances: ${var.wait_for_instances}
+      wait_for_instances_status: ${var.wait_for_instances_status}
+      zone: ${var.zone}
+      dynamic:
+        all_instances_config:
+          for_each: ${var.all_instances_config}
+          content:
+            labels: ${each.value.labels}
+            metadata: ${each.value.metadata}
+        auto_healing_policies:
+          for_each: ${var.auto_healing_policies}
+          content:
+            health_check: ${each.value.health_check}
+            initial_delay_sec: ${each.value.initial_delay_sec}
+        instance_lifecycle_policy:
+          for_each: ${var.instance_lifecycle_policy}
+          content:
+            default_action_on_failure: ${each.value.default_action_on_failure}
+            force_update_on_repair: ${each.value.force_update_on_repair}
+            on_failed_health_check: ${each.value.on_failed_health_check}
+            on_repair: ${each.value.on_repair}
+        named_port:
+          for_each: ${var.named_port}
+          content:
+            name: ${each.value.name}
+            port: ${each.value.port}
+        params:
+          for_each: ${var.params}
+          content:
+            resource_manager_tags: ${each.value.resource_manager_tags}
+        resource_policies:
+          for_each: ${var.resource_policies}
+          content:
+            workload_policy: ${each.value.workload_policy}
+        standby_policy:
+          for_each: ${var.standby_policy}
+          content:
+            initial_delay_sec: ${each.value.initial_delay_sec}
+            mode: ${each.value.mode}
+        stateful_disk:
+          for_each: ${var.stateful_disk}
+          content:
+            delete_rule: ${each.value.delete_rule}
+            device_name: ${each.value.device_name}
+        stateful_external_ip:
+          for_each: ${var.stateful_external_ip}
+          content:
+            delete_rule: ${each.value.delete_rule}
+            interface_name: ${each.value.interface_name}
+        stateful_internal_ip:
+          for_each: ${var.stateful_internal_ip}
+          content:
+            delete_rule: ${each.value.delete_rule}
+            interface_name: ${each.value.interface_name}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        update_policy:
+          for_each: ${var.update_policy}
+          content:
+            max_surge_fixed: ${each.value.max_surge_fixed}
+            max_surge_percent: ${each.value.max_surge_percent}
+            max_unavailable_fixed: ${each.value.max_unavailable_fixed}
+            max_unavailable_percent: ${each.value.max_unavailable_percent}
+            min_ready_sec: ${each.value.min_ready_sec}
+            minimal_action: ${each.value.minimal_action}
+            most_disruptive_allowed_action: ${each.value.most_disruptive_allowed_action}
+            replacement_method: ${each.value.replacement_method}
+            type: ${each.value.type}
+        version:
+          for_each: ${var.version}
+          content:
+            instance_template: ${each.value.instance_template}
+            name: ${each.value.name}
+            target_size: ${each.value.target_size}

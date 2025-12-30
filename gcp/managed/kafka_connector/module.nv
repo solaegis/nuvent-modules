@@ -1,0 +1,53 @@
+variables:
+  connect_cluster:
+    type: string
+    description: "The connect cluster name."
+  connector_id:
+    type: string
+    description: "The ID to use for the connector, which will become the final component of the connector's name. This value is structured like: 'my-connector-id'."
+  location:
+    type: string
+    description: "ID of the location of the Kafka Connect resource. See https://cloud.google.com/managed-kafka/docs/locations for a list of supported locations."
+  configs:
+    type: object
+    description: "Connector config as keys/values. The keys of the map are connector property names, for example: 'connector.class', 'tasks.max', 'key.converter'."
+    default: null
+  id:
+    type: string
+    description: "Optional property for KafkaConnector"
+    default: null
+  project:
+    type: string
+    description: "Optional property for KafkaConnector"
+    default: null
+  task_restart_policy:
+    type: list
+    description: "Nested block: task_restart_policy"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:managed:KafkaConnector
+    properties:
+      connect_cluster: ${var.connect_cluster}
+      connector_id: ${var.connector_id}
+      location: ${var.location}
+      configs: ${var.configs}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        task_restart_policy:
+          for_each: ${var.task_restart_policy}
+          content:
+            maximum_backoff: ${each.value.maximum_backoff}
+            minimum_backoff: ${each.value.minimum_backoff}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

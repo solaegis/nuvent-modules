@@ -1,0 +1,44 @@
+variables:
+  ca_pool:
+    type: string
+    description: "Required property for CaPoolIamBinding"
+  members:
+    type: list
+    description: "Required property for CaPoolIamBinding"
+  role:
+    type: string
+    description: "Required property for CaPoolIamBinding"
+  id:
+    type: string
+    description: "Optional property for CaPoolIamBinding"
+    default: null
+  location:
+    type: string
+    description: "Optional property for CaPoolIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for CaPoolIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:privateca:CaPoolIamBinding
+    properties:
+      ca_pool: ${var.ca_pool}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

@@ -1,0 +1,46 @@
+variables:
+  location:
+    type: string
+    description: "LOCATION_DESCRIPTION"
+  id:
+    type: string
+    description: "Optional property for BiReservation"
+    default: null
+  project:
+    type: string
+    description: "Optional property for BiReservation"
+    default: null
+  size:
+    type: number
+    description: "Size of a reservation, in bytes."
+    default: null
+  preferred_tables:
+    type: list
+    description: "Nested block: preferred_tables"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigquery:BiReservation
+    properties:
+      location: ${var.location}
+      id: ${var.id}
+      project: ${var.project}
+      size: ${var.size}
+      dynamic:
+        preferred_tables:
+          for_each: ${var.preferred_tables}
+          content:
+            dataset_id: ${each.value.dataset_id}
+            project_id: ${each.value.project_id}
+            table_id: ${each.value.table_id}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

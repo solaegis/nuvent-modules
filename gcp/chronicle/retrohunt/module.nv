@@ -1,0 +1,52 @@
+variables:
+  instance:
+    type: string
+    description: "The unique identifier for the Chronicle instance, which is the same as the customer ID."
+  location:
+    type: string
+    description: "The location of the resource. This is the geographical region where the Chronicle instance resides, such as \"us\" or \"europe-west2\"."
+  rule:
+    type: string
+    description: "The Rule ID of the rule."
+  id:
+    type: string
+    description: "Optional property for Retrohunt"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Retrohunt"
+    default: null
+  retrohunt:
+    type: string
+    description: "The retrohunt ID of the Retrohunt. A retrohunt is an execution of a Rule over a time range in the past."
+    default: null
+  process_interval:
+    type: list
+    description: "Nested block: process_interval"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:chronicle:Retrohunt
+    properties:
+      instance: ${var.instance}
+      location: ${var.location}
+      rule: ${var.rule}
+      id: ${var.id}
+      project: ${var.project}
+      retrohunt: ${var.retrohunt}
+      dynamic:
+        process_interval:
+          for_each: ${var.process_interval}
+          content:
+            end_time: ${each.value.end_time}
+            start_time: ${each.value.start_time}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

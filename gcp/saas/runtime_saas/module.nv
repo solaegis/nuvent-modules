@@ -1,0 +1,53 @@
+variables:
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  saas_id:
+    type: string
+    description: "The ID value for the new saas."
+  annotations:
+    type: object
+    description: "Annotations is an unstructured key-value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects.  More info: https://kubernetes.io/docs/user-guide/annotations  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RuntimeSaas"
+    default: null
+  labels:
+    type: object
+    description: "The labels on the resource, which can be used for categorization. similar to Kubernetes resource labels.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for RuntimeSaas"
+    default: null
+  locations:
+    type: list
+    description: "Nested block: locations"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:saas:RuntimeSaas
+    properties:
+      location: ${var.location}
+      saas_id: ${var.saas_id}
+      annotations: ${var.annotations}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        locations:
+          for_each: ${var.locations}
+          content:
+            name: ${each.value.name}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,77 @@
+variables:
+  location:
+    type: string
+    description: "A reference to the zone where the machine resides."
+  name:
+    type: string
+    description: "The name specified for the Notebook runtime."
+  id:
+    type: string
+    description: "Optional property for Runtime"
+    default: null
+  labels:
+    type: object
+    description: "The labels to associate with this runtime. Label **keys** must contain 1 to 63 characters, and must conform to [RFC 1035] (https://www.ietf.org/rfc/rfc1035.txt). Label **values** may be empty, but, if present, must contain 1 to 63 characters, and must conform to [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt). No more than 32 labels can be associated with a cluster.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Runtime"
+    default: null
+  access_config:
+    type: list
+    description: "Nested block: access_config"
+    default: []
+  software_config:
+    type: list
+    description: "Nested block: software_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  virtual_machine:
+    type: list
+    description: "Nested block: virtual_machine"
+    default: []
+
+resources:
+  main:
+    type: gcp:notebooks:Runtime
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        access_config:
+          for_each: ${var.access_config}
+          content:
+            access_type: ${each.value.access_type}
+            proxy_uri: ${each.value.proxy_uri}
+            runtime_owner: ${each.value.runtime_owner}
+        software_config:
+          for_each: ${var.software_config}
+          content:
+            custom_gpu_driver_path: ${each.value.custom_gpu_driver_path}
+            enable_health_monitoring: ${each.value.enable_health_monitoring}
+            idle_shutdown: ${each.value.idle_shutdown}
+            idle_shutdown_timeout: ${each.value.idle_shutdown_timeout}
+            install_gpu_driver: ${each.value.install_gpu_driver}
+            notebook_upgrade_schedule: ${each.value.notebook_upgrade_schedule}
+            post_startup_script: ${each.value.post_startup_script}
+            post_startup_script_behavior: ${each.value.post_startup_script_behavior}
+            upgradeable: ${each.value.upgradeable}
+            kernels: ${each.value.kernels}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        virtual_machine:
+          for_each: ${var.virtual_machine}
+          content:
+            instance_id: ${each.value.instance_id}
+            instance_name: ${each.value.instance_name}
+            virtual_machine_config: ${each.value.virtual_machine_config}

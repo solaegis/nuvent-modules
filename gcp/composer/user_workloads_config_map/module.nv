@@ -1,0 +1,45 @@
+variables:
+  environment:
+    type: string
+    description: "Environment where the Kubernetes ConfigMap will be stored and used."
+  name:
+    type: string
+    description: "Name of the Kubernetes ConfigMap."
+  data:
+    type: object
+    description: "The \"data\" field of Kubernetes ConfigMap, organized in key-value pairs. For details see: https://kubernetes.io/docs/concepts/configuration/configmap/"
+    default: null
+  id:
+    type: string
+    description: "Optional property for UserWorkloadsConfigMap"
+    default: null
+  project:
+    type: string
+    description: "Optional property for UserWorkloadsConfigMap"
+    default: null
+  region:
+    type: string
+    description: "The location or Compute Engine region for the environment."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:composer:UserWorkloadsConfigMap
+    properties:
+      environment: ${var.environment}
+      name: ${var.name}
+      data: ${var.data}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

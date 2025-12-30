@@ -1,0 +1,40 @@
+variables:
+  location:
+    type: string
+    description: "The geographic location where the data store should reside. The value can only be one of \"global\", \"us\" and \"eu\"."
+  id:
+    type: string
+    description: "Optional property for EngineAclConfig"
+    default: null
+  project:
+    type: string
+    description: "Optional property for EngineAclConfig"
+    default: null
+  idp_config:
+    type: list
+    description: "Nested block: idp_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:discovery:EngineAclConfig
+    properties:
+      location: ${var.location}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        idp_config:
+          for_each: ${var.idp_config}
+          content:
+            idp_type: ${each.value.idp_type}
+            external_idp_config: ${each.value.external_idp_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

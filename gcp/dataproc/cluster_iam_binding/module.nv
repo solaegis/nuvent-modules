@@ -1,0 +1,44 @@
+variables:
+  cluster:
+    type: string
+    description: "Required property for ClusterIamBinding"
+  members:
+    type: list
+    description: "Required property for ClusterIamBinding"
+  role:
+    type: string
+    description: "Required property for ClusterIamBinding"
+  id:
+    type: string
+    description: "Optional property for ClusterIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ClusterIamBinding"
+    default: null
+  region:
+    type: string
+    description: "Optional property for ClusterIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataproc:ClusterIamBinding
+    properties:
+      cluster: ${var.cluster}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

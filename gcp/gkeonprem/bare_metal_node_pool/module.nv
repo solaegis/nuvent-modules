@@ -1,0 +1,60 @@
+variables:
+  bare_metal_cluster:
+    type: string
+    description: "The cluster this node pool belongs to."
+  location:
+    type: string
+    description: "The location of the resource."
+  name:
+    type: string
+    description: "The bare metal node pool name."
+  annotations:
+    type: object
+    description: "Annotations on the Bare Metal Node Pool. This field has the same restrictions as Kubernetes annotations. The total size of all keys and values combined is limited to 256k. Key can have 2 segments: prefix (optional) and name (required), separated by a slash (/). Prefix must be a DNS subdomain. Name must be 63 characters or less, begin and end with alphanumerics, with dashes (-), underscores (_), dots (.), and alphanumerics between.   **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  display_name:
+    type: string
+    description: "The display name for the Bare Metal Node Pool."
+    default: null
+  id:
+    type: string
+    description: "Optional property for BareMetalNodePool"
+    default: null
+  project:
+    type: string
+    description: "Optional property for BareMetalNodePool"
+    default: null
+  node_pool_config:
+    type: list
+    description: "Nested block: node_pool_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:gkeonprem:BareMetalNodePool
+    properties:
+      bare_metal_cluster: ${var.bare_metal_cluster}
+      location: ${var.location}
+      name: ${var.name}
+      annotations: ${var.annotations}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        node_pool_config:
+          for_each: ${var.node_pool_config}
+          content:
+            labels: ${each.value.labels}
+            operating_system: ${each.value.operating_system}
+            node_configs: ${each.value.node_configs}
+            taints: ${each.value.taints}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

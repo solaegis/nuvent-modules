@@ -1,0 +1,39 @@
+variables:
+  members:
+    type: list
+    description: "Required property for HubScopeIamBinding"
+  role:
+    type: string
+    description: "Required property for HubScopeIamBinding"
+  scope_id:
+    type: string
+    description: "Required property for HubScopeIamBinding"
+  id:
+    type: string
+    description: "Optional property for HubScopeIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for HubScopeIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:gke:HubScopeIamBinding
+    properties:
+      members: ${var.members}
+      role: ${var.role}
+      scope_id: ${var.scope_id}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

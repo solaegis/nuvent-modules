@@ -1,0 +1,19 @@
+variables:
+  fhir_store_id:
+    type: string
+    description: "Required property for FhirStoreIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for FhirStoreIamPolicy"
+  id:
+    type: string
+    description: "Optional property for FhirStoreIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:healthcare:FhirStoreIamPolicy
+    properties:
+      fhir_store_id: ${var.fhir_store_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}

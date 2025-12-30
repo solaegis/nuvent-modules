@@ -1,0 +1,67 @@
+variables:
+  location:
+    type: string
+    description: "Location (region) of the backup vault."
+  name:
+    type: string
+    description: "The resource name of the backup vault. Needs to be unique per location."
+  backup_region:
+    type: string
+    description: "Region in which backup is stored."
+    default: null
+  backup_vault_type:
+    type: string
+    description: "Type of the backup vault to be created. Default is IN_REGION. Possible values: [\"BACKUP_VAULT_TYPE_UNSPECIFIED\", \"IN_REGION\", \"CROSS_REGION\"]"
+    default: null
+  description:
+    type: string
+    description: "An optional description of this resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for BackupVault"
+    default: null
+  labels:
+    type: object
+    description: "Labels as key value pairs. Example: '{ \"owner\": \"Bob\", \"department\": \"finance\", \"purpose\": \"testing\" }'.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for BackupVault"
+    default: null
+  backup_retention_policy:
+    type: list
+    description: "Nested block: backup_retention_policy"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:netapp:BackupVault
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      backup_region: ${var.backup_region}
+      backup_vault_type: ${var.backup_vault_type}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        backup_retention_policy:
+          for_each: ${var.backup_retention_policy}
+          content:
+            backup_minimum_enforced_retention_days: ${each.value.backup_minimum_enforced_retention_days}
+            daily_backup_immutable: ${each.value.daily_backup_immutable}
+            manual_backup_immutable: ${each.value.manual_backup_immutable}
+            monthly_backup_immutable: ${each.value.monthly_backup_immutable}
+            weekly_backup_immutable: ${each.value.weekly_backup_immutable}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

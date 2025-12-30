@@ -1,0 +1,65 @@
+variables:
+  application_id:
+    type: string
+    description: "Part of 'parent'.  Full resource name of a parent Application. Example: projects/{HOST_PROJECT_ID}/locations/{LOCATION}/applications/{APPLICATION_ID}"
+  discovered_workload:
+    type: string
+    description: "Immutable. The resource name of the original discovered workload."
+  location:
+    type: string
+    description: "Part of 'parent'.  Full resource name of a parent Application. Example: projects/{HOST_PROJECT_ID}/locations/{LOCATION}/applications/{APPLICATION_ID}"
+  workload_id:
+    type: string
+    description: "The Workload identifier."
+  description:
+    type: string
+    description: "User-defined description of a Workload."
+    default: null
+  display_name:
+    type: string
+    description: "User-defined name for the Workload."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Workload"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Workload"
+    default: null
+  attributes:
+    type: list
+    description: "Nested block: attributes"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apphub:Workload
+    properties:
+      application_id: ${var.application_id}
+      discovered_workload: ${var.discovered_workload}
+      location: ${var.location}
+      workload_id: ${var.workload_id}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        attributes:
+          for_each: ${var.attributes}
+          content:
+            business_owners: ${each.value.business_owners}
+            criticality: ${each.value.criticality}
+            developer_owners: ${each.value.developer_owners}
+            environment: ${each.value.environment}
+            operator_owners: ${each.value.operator_owners}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,23 @@
+variables:
+  consumer_project:
+    type: string
+    description: "Required property for ServiceConsumersIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for ServiceConsumersIamPolicy"
+  service_name:
+    type: string
+    description: "Required property for ServiceConsumersIamPolicy"
+  id:
+    type: string
+    description: "Optional property for ServiceConsumersIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:endpoints:ServiceConsumersIamPolicy
+    properties:
+      consumer_project: ${var.consumer_project}
+      policy_data: ${var.policy_data}
+      service_name: ${var.service_name}
+      id: ${var.id}

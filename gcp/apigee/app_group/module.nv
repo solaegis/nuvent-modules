@@ -1,0 +1,59 @@
+variables:
+  name:
+    type: string
+    description: "Name of the AppGroup. Characters you can use in the name are restricted to: A-Z0-9._-$ %."
+  org_id:
+    type: string
+    description: "The Apigee Organization associated with the Apigee app group, in the format 'organizations/{{org_name}}'."
+  channel_id:
+    type: string
+    description: "Channel identifier identifies the owner maintaining this grouping."
+    default: null
+  channel_uri:
+    type: string
+    description: "A reference to the associated storefront/marketplace."
+    default: null
+  display_name:
+    type: string
+    description: "App group name displayed in the UI"
+    default: null
+  id:
+    type: string
+    description: "Optional property for AppGroup"
+    default: null
+  status:
+    type: string
+    description: "Valid values are active or inactive. Note that the status of the AppGroup should be updated via UpdateAppGroupRequest by setting the action as active or inactive. Possible values: [\"active\", \"inactive\"]"
+    default: null
+  attributes:
+    type: list
+    description: "Nested block: attributes"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:AppGroup
+    properties:
+      name: ${var.name}
+      org_id: ${var.org_id}
+      channel_id: ${var.channel_id}
+      channel_uri: ${var.channel_uri}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      status: ${var.status}
+      dynamic:
+        attributes:
+          for_each: ${var.attributes}
+          content:
+            name: ${each.value.name}
+            value: ${each.value.value}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

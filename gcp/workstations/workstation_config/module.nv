@@ -1,0 +1,150 @@
+variables:
+  location:
+    type: string
+    description: "The location where the workstation cluster config should reside."
+  workstation_cluster_id:
+    type: string
+    description: "The ID of the parent workstation cluster."
+  workstation_config_id:
+    type: string
+    description: "The ID to be assigned to the workstation cluster config."
+  annotations:
+    type: object
+    description: "Client-specified annotations. This is distinct from labels.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  disable_tcp_connections:
+    type: boolean
+    description: "Disables support for plain TCP connections in the workstation. By default the service supports TCP connections via a websocket relay. Setting this option to true disables that relay, which prevents the usage of services that require plain tcp connections, such as ssh. When enabled, all communication must occur over https or wss."
+    default: null
+  display_name:
+    type: string
+    description: "Human-readable name for this resource."
+    default: null
+  enable_audit_agent:
+    type: boolean
+    description: "Whether to enable Linux 'auditd' logging on the workstation. When enabled, a service account must also be specified that has 'logging.buckets.write' permission on the project. Operating system audit logging is distinct from Cloud Audit Logs."
+    default: null
+  id:
+    type: string
+    description: "Optional property for WorkstationConfig"
+    default: null
+  idle_timeout:
+    type: string
+    description: "How long to wait before automatically stopping an instance that hasn't recently received any user traffic. A value of 0 indicates that this instance should never time out from idleness. Defaults to 20 minutes. A duration in seconds with up to nine fractional digits, ending with 's'. Example: \"3.5s\"."
+    default: null
+  labels:
+    type: object
+    description: "Client-specified labels that are applied to the resource and that are also propagated to the underlying Compute Engine resources.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  max_usable_workstations:
+    type: number
+    description: "Maximum number of workstations under this configuration a user can have workstations.workstation.use permission on. Only enforced on CreateWorkstation API calls on the user issuing the API request."
+    default: null
+  project:
+    type: string
+    description: "Optional property for WorkstationConfig"
+    default: null
+  replica_zones:
+    type: list
+    description: "Specifies the zones used to replicate the VM and disk resources within the region. If set, exactly two zones within the workstation cluster's region must be specified—for example, '['us-central1-a', 'us-central1-f']'. If this field is empty, two default zones within the region are used. Immutable after the workstation configuration is created."
+    default: null
+  running_timeout:
+    type: string
+    description: "How long to wait before automatically stopping a workstation after it was started. A value of 0 indicates that workstations using this configuration should never time out from running duration. Must be greater than 0 and less than 24 hours if 'encryption_key' is set. Defaults to 12 hours. A duration in seconds with up to nine fractional digits, ending with 's'. Example: \"3.5s\"."
+    default: null
+  allowed_ports:
+    type: list
+    description: "Nested block: allowed_ports"
+    default: []
+  container:
+    type: list
+    description: "Nested block: container"
+    default: []
+  encryption_key:
+    type: list
+    description: "Nested block: encryption_key"
+    default: []
+  ephemeral_directories:
+    type: list
+    description: "Nested block: ephemeral_directories"
+    default: []
+  host:
+    type: list
+    description: "Nested block: host"
+    default: []
+  persistent_directories:
+    type: list
+    description: "Nested block: persistent_directories"
+    default: []
+  readiness_checks:
+    type: list
+    description: "Nested block: readiness_checks"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:workstations:WorkstationConfig
+    properties:
+      location: ${var.location}
+      workstation_cluster_id: ${var.workstation_cluster_id}
+      workstation_config_id: ${var.workstation_config_id}
+      annotations: ${var.annotations}
+      disable_tcp_connections: ${var.disable_tcp_connections}
+      display_name: ${var.display_name}
+      enable_audit_agent: ${var.enable_audit_agent}
+      id: ${var.id}
+      idle_timeout: ${var.idle_timeout}
+      labels: ${var.labels}
+      max_usable_workstations: ${var.max_usable_workstations}
+      project: ${var.project}
+      replica_zones: ${var.replica_zones}
+      running_timeout: ${var.running_timeout}
+      dynamic:
+        allowed_ports:
+          for_each: ${var.allowed_ports}
+          content:
+            first: ${each.value.first}
+            last: ${each.value.last}
+        container:
+          for_each: ${var.container}
+          content:
+            args: ${each.value.args}
+            command: ${each.value.command}
+            env: ${each.value.env}
+            image: ${each.value.image}
+            run_as_user: ${each.value.run_as_user}
+            working_dir: ${each.value.working_dir}
+        encryption_key:
+          for_each: ${var.encryption_key}
+          content:
+            kms_key: ${each.value.kms_key}
+            kms_key_service_account: ${each.value.kms_key_service_account}
+        ephemeral_directories:
+          for_each: ${var.ephemeral_directories}
+          content:
+            mount_path: ${each.value.mount_path}
+            gce_pd: ${each.value.gce_pd}
+        host:
+          for_each: ${var.host}
+          content:
+            gce_instance: ${each.value.gce_instance}
+        persistent_directories:
+          for_each: ${var.persistent_directories}
+          content:
+            mount_path: ${each.value.mount_path}
+            gce_pd: ${each.value.gce_pd}
+        readiness_checks:
+          for_each: ${var.readiness_checks}
+          content:
+            path: ${each.value.path}
+            port: ${each.value.port}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,62 @@
+variables:
+  ip_cidr_range:
+    type: string
+    description: "The IP address range, in CIDR format, represented by this public delegated prefix."
+  name:
+    type: string
+    description: "Name of the resource. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  parent_prefix:
+    type: string
+    description: "The URL of parent prefix. Either PublicAdvertisedPrefix or PublicDelegatedPrefix."
+  region:
+    type: string
+    description: "A region where the prefix will reside."
+  allocatable_prefix_length:
+    type: number
+    description: "The allocatable prefix length supported by this public delegated prefix. This field is optional and cannot be set for prefixes in DELEGATION mode. It cannot be set for IPv4 prefixes either, and it always defaults to 32."
+    default: null
+  description:
+    type: string
+    description: "An optional description of this resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for PublicDelegatedPrefix"
+    default: null
+  is_live_migration:
+    type: boolean
+    description: "If true, the prefix will be live migrated."
+    default: null
+  mode:
+    type: string
+    description: "Specifies the mode of this IPv6 PDP. MODE must be one of:   * DELEGATION   * EXTERNAL_IPV6_FORWARDING_RULE_CREATION   * EXTERNAL_IPV6_SUBNETWORK_CREATION   * INTERNAL_IPV6_SUBNETWORK_CREATION Possible values: [\"DELEGATION\", \"EXTERNAL_IPV6_FORWARDING_RULE_CREATION\", \"EXTERNAL_IPV6_SUBNETWORK_CREATION\", \"INTERNAL_IPV6_SUBNETWORK_CREATION\"]"
+    default: null
+  project:
+    type: string
+    description: "Optional property for PublicDelegatedPrefix"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:PublicDelegatedPrefix
+    properties:
+      ip_cidr_range: ${var.ip_cidr_range}
+      name: ${var.name}
+      parent_prefix: ${var.parent_prefix}
+      region: ${var.region}
+      allocatable_prefix_length: ${var.allocatable_prefix_length}
+      description: ${var.description}
+      id: ${var.id}
+      is_live_migration: ${var.is_live_migration}
+      mode: ${var.mode}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

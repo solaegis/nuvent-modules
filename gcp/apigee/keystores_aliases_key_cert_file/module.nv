@@ -1,0 +1,48 @@
+variables:
+  alias:
+    type: string
+    description: "Alias Name."
+  cert:
+    type: string
+    description: "Cert content."
+  environment:
+    type: string
+    description: "Environment associated with the alias."
+  keystore:
+    type: string
+    description: "Keystore Name."
+  org_id:
+    type: string
+    description: "Organization ID associated with the alias."
+  key:
+    type: string
+    description: "Private Key content, omit if uploading to truststore."
+    default: null
+  password:
+    type: string
+    description: "Password for the Private Key if it's encrypted."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:KeystoresAliasesKeyCertFile
+    properties:
+      alias: ${var.alias}
+      cert: ${var.cert}
+      environment: ${var.environment}
+      keystore: ${var.keystore}
+      org_id: ${var.org_id}
+      key: ${var.key}
+      password: ${var.password}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            read: ${each.value.read}
+            update: ${each.value.update}

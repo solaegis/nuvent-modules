@@ -1,0 +1,31 @@
+variables:
+  service:
+    type: string
+    description: "Required property for ServiceIdentity"
+  id:
+    type: string
+    description: "Optional property for ServiceIdentity"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ServiceIdentity"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:project:ServiceIdentity
+    properties:
+      service: ${var.service}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            read: ${each.value.read}

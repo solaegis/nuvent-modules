@@ -1,0 +1,29 @@
+variables:
+  entry_group:
+    type: string
+    description: "Required property for CatalogEntryGroupIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for CatalogEntryGroupIamPolicy"
+  id:
+    type: string
+    description: "Optional property for CatalogEntryGroupIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for CatalogEntryGroupIamPolicy"
+    default: null
+  region:
+    type: string
+    description: "Optional property for CatalogEntryGroupIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:data:CatalogEntryGroupIamPolicy
+    properties:
+      entry_group: ${var.entry_group}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}

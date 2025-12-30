@@ -1,0 +1,69 @@
+variables:
+  name:
+    type: string
+    description: "Unique name for the deployment"
+  create_policy:
+    type: string
+    description: "Set the policy to use for creating new resources. Only used on create and update. Valid values are 'CREATE_OR_ACQUIRE' (default) or 'ACQUIRE'. If set to 'ACQUIRE' and resources do not already exist, the deployment will fail. Note that updating this field does not actually affect the deployment, just how it is updated. Default value: \"CREATE_OR_ACQUIRE\" Possible values: [\"ACQUIRE\", \"CREATE_OR_ACQUIRE\"]"
+    default: null
+  delete_policy:
+    type: string
+    description: "Set the policy to use for deleting new resources on update/delete. Valid values are 'DELETE' (default) or 'ABANDON'. If 'DELETE', resource is deleted after removal from Deployment Manager. If 'ABANDON', the resource is only removed from Deployment Manager and is not actually deleted. Note that updating this field does not actually change the deployment, just how it is updated. Default value: \"DELETE\" Possible values: [\"ABANDON\", \"DELETE\"]"
+    default: null
+  description:
+    type: string
+    description: "Optional user-provided description of deployment."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ManagerDeployment"
+    default: null
+  preview:
+    type: boolean
+    description: "If set to true, a deployment is created with \"shell\" resources that are not actually instantiated. This allows you to preview a deployment. It can be updated to false to actually deploy with real resources.  ~>**NOTE:** Deployment Manager does not allow update of a deployment in preview (unless updating to preview=false). Thus, Terraform will force-recreate deployments if either preview is updated to true or if other fields are updated while preview is true."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ManagerDeployment"
+    default: null
+  labels:
+    type: list
+    description: "Nested block: labels"
+    default: []
+  target:
+    type: list
+    description: "Nested block: target"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:deployment:ManagerDeployment
+    properties:
+      name: ${var.name}
+      create_policy: ${var.create_policy}
+      delete_policy: ${var.delete_policy}
+      description: ${var.description}
+      id: ${var.id}
+      preview: ${var.preview}
+      project: ${var.project}
+      dynamic:
+        labels:
+          for_each: ${var.labels}
+          content:
+            key: ${each.value.key}
+            value: ${each.value.value}
+        target:
+          for_each: ${var.target}
+          content:
+            config: ${each.value.config}
+            imports: ${each.value.imports}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

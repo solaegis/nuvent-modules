@@ -1,0 +1,77 @@
+variables:
+  license_config_id:
+    type: string
+    description: "The unique id of the license config."
+  license_count:
+    type: number
+    description: "Number of licenses purchased."
+  location:
+    type: string
+    description: "The geographic location where the data store should reside. The value can only be one of \"global\", \"us\" and \"eu\"."
+  subscription_term:
+    type: string
+    description: "Subscription term. Possible values: [\"SUBSCRIPTION_TERM_UNSPECIFIED\", \"SUBSCRIPTION_TERM_ONE_MONTH\", \"SUBSCRIPTION_TERM_ONE_YEAR\", \"SUBSCRIPTION_TERM_THREE_YEARS\", \"SUBSCRIPTION_TERM_THREE_MONTHS\", \"SUBSCRIPTION_TERM_FOURTEEN_DAYS\", \"SUBSCRIPTION_TERM_CUSTOM\"]"
+  subscription_tier:
+    type: string
+    description: "Subscription tier information for the license config. Possible values: [\"SUBSCRIPTION_TIER_UNSPECIFIED\", \"SUBSCRIPTION_TIER_SEARCH\", \"SUBSCRIPTION_TIER_SEARCH_AND_ASSISTANT\", \"SUBSCRIPTION_TIER_NOTEBOOK_LM\", \"SUBSCRIPTION_TIER_FRONTLINE_WORKER\", \"SUBSCRIPTION_TIER_AGENTSPACE_STARTER\", \"SUBSCRIPTION_TIER_AGENTSPACE_BUSINESS\", \"SUBSCRIPTION_TIER_ENTERPRISE\", \"SUBSCRIPTION_TIER_EDU\", \"SUBSCRIPTION_TIER_EDU_PRO\"]"
+  auto_renew:
+    type: boolean
+    description: "Whether the license config should be auto renewed when it reaches the end date."
+    default: null
+  free_trial:
+    type: boolean
+    description: "Whether the license config is for free trial."
+    default: null
+  id:
+    type: string
+    description: "Optional property for EngineLicenseConfig"
+    default: null
+  project:
+    type: string
+    description: "Optional property for EngineLicenseConfig"
+    default: null
+  end_date:
+    type: list
+    description: "Nested block: end_date"
+    default: []
+  start_date:
+    type: list
+    description: "Nested block: start_date"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:discovery:EngineLicenseConfig
+    properties:
+      license_config_id: ${var.license_config_id}
+      license_count: ${var.license_count}
+      location: ${var.location}
+      subscription_term: ${var.subscription_term}
+      subscription_tier: ${var.subscription_tier}
+      auto_renew: ${var.auto_renew}
+      free_trial: ${var.free_trial}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        end_date:
+          for_each: ${var.end_date}
+          content:
+            day: ${each.value.day}
+            month: ${each.value.month}
+            year: ${each.value.year}
+        start_date:
+          for_each: ${var.start_date}
+          content:
+            day: ${each.value.day}
+            month: ${each.value.month}
+            year: ${each.value.year}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

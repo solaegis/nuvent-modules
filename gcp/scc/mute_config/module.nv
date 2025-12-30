@@ -1,0 +1,49 @@
+variables:
+  filter:
+    type: string
+    description: "An expression that defines the filter to apply across create/update events of findings. While creating a filter string, be mindful of the scope in which the mute configuration is being created. E.g., If a filter contains project = X but is created under the project = Y scope, it might not match any findings."
+  mute_config_id:
+    type: string
+    description: "Unique identifier provided by the client within the parent scope."
+  parent:
+    type: string
+    description: "Resource name of the new mute configs's parent. Its format is \"organizations/[organization_id]\", \"folders/[folder_id]\", or \"projects/[project_id]\"."
+  description:
+    type: string
+    description: "A description of the mute config."
+    default: null
+  expiry_time:
+    type: string
+    description: "Optional. The expiry of the mute config. Only applicable for dynamic configs. If the expiry is set, when the config expires, it is removed from all findings.  A timestamp in RFC3339 UTC \"Zulu\" format, with nanosecond resolution and up to nine fractional digits. Examples: \"2014-10-02T15:01:23Z\" and \"2014-10-02T15:01:23.045123456Z\"."
+    default: null
+  id:
+    type: string
+    description: "Optional property for MuteConfig"
+    default: null
+  type:
+    type: string
+    description: "The type of the mute config, which determines what type of mute state the config affects. Default value: \"DYNAMIC\" Possible values: [\"MUTE_CONFIG_TYPE_UNSPECIFIED\", \"STATIC\", \"DYNAMIC\"]"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:scc:MuteConfig
+    properties:
+      filter: ${var.filter}
+      mute_config_id: ${var.mute_config_id}
+      parent: ${var.parent}
+      description: ${var.description}
+      expiry_time: ${var.expiry_time}
+      id: ${var.id}
+      type: ${var.type}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

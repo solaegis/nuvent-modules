@@ -1,0 +1,62 @@
+variables:
+  app:
+    type: string
+    description: "Resource ID segment making up resource 'name', defining the app the example belongs to. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  display_name:
+    type: string
+    description: "Display name of the example."
+  example_id:
+    type: string
+    description: "The ID to use for the example, which will become the final component of the example's resource name. In Terraform, this field is required."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name', defining what region the parent app is in. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  description:
+    type: string
+    description: "Human-readable description of the example."
+    default: null
+  entry_agent:
+    type: string
+    description: "The agent that initially handles the conversation. If not specified, the example represents a conversation that is handled by the root agent. Format: 'projects/{project}/locations/{location}/apps/{app}/agents/{agent}'"
+    default: null
+  id:
+    type: string
+    description: "Optional property for Example"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Example"
+    default: null
+  messages:
+    type: list
+    description: "Nested block: messages"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:ces:Example
+    properties:
+      app: ${var.app}
+      display_name: ${var.display_name}
+      example_id: ${var.example_id}
+      location: ${var.location}
+      description: ${var.description}
+      entry_agent: ${var.entry_agent}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        messages:
+          for_each: ${var.messages}
+          content:
+            role: ${each.value.role}
+            chunks: ${each.value.chunks}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

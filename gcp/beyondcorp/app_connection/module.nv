@@ -1,0 +1,76 @@
+variables:
+  name:
+    type: string
+    description: "ID of the AppConnection."
+  connectors:
+    type: list
+    description: "List of AppConnectors that are authorised to be associated with this AppConnection"
+    default: null
+  display_name:
+    type: string
+    description: "An arbitrary user-provided name for the AppConnection."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AppConnection"
+    default: null
+  labels:
+    type: object
+    description: "Resource labels to represent user provided metadata.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for AppConnection"
+    default: null
+  region:
+    type: string
+    description: "The region of the AppConnection."
+    default: null
+  type:
+    type: string
+    description: "The type of network connectivity used by the AppConnection. Refer to https://cloud.google.com/beyondcorp/docs/reference/rest/v1/projects.locations.appConnections#type for a list of possible values."
+    default: null
+  application_endpoint:
+    type: list
+    description: "Nested block: application_endpoint"
+    default: []
+  gateway:
+    type: list
+    description: "Nested block: gateway"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:beyondcorp:AppConnection
+    properties:
+      name: ${var.name}
+      connectors: ${var.connectors}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      region: ${var.region}
+      type: ${var.type}
+      dynamic:
+        application_endpoint:
+          for_each: ${var.application_endpoint}
+          content:
+            host: ${each.value.host}
+            port: ${each.value.port}
+        gateway:
+          for_each: ${var.gateway}
+          content:
+            app_gateway: ${each.value.app_gateway}
+            ingress_port: ${each.value.ingress_port}
+            type: ${each.value.type}
+            uri: ${each.value.uri}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,69 @@
+variables:
+  name:
+    type: string
+    description: "Name of the ClientTlsPolicy resource."
+  description:
+    type: string
+    description: "A free-text description of the resource. Max length 1024 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SecurityClientTlsPolicy"
+    default: null
+  labels:
+    type: object
+    description: "Set of label tags associated with the ClientTlsPolicy resource.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "The location of the client tls policy. The default value is 'global'."
+    default: null
+  project:
+    type: string
+    description: "Optional property for SecurityClientTlsPolicy"
+    default: null
+  sni:
+    type: string
+    description: "Server Name Indication string to present to the server during TLS handshake. E.g: \"secure.example.com\"."
+    default: null
+  client_certificate:
+    type: list
+    description: "Nested block: client_certificate"
+    default: []
+  server_validation_ca:
+    type: list
+    description: "Nested block: server_validation_ca"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:SecurityClientTlsPolicy
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      location: ${var.location}
+      project: ${var.project}
+      sni: ${var.sni}
+      dynamic:
+        client_certificate:
+          for_each: ${var.client_certificate}
+          content:
+            certificate_provider_instance: ${each.value.certificate_provider_instance}
+            grpc_endpoint: ${each.value.grpc_endpoint}
+        server_validation_ca:
+          for_each: ${var.server_validation_ca}
+          content:
+            certificate_provider_instance: ${each.value.certificate_provider_instance}
+            grpc_endpoint: ${each.value.grpc_endpoint}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,23 @@
+variables:
+  consent_store_id:
+    type: string
+    description: "Required property for ConsentStoreIamPolicy"
+  dataset:
+    type: string
+    description: "Required property for ConsentStoreIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for ConsentStoreIamPolicy"
+  id:
+    type: string
+    description: "Optional property for ConsentStoreIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:healthcare:ConsentStoreIamPolicy
+    properties:
+      consent_store_id: ${var.consent_store_id}
+      dataset: ${var.dataset}
+      policy_data: ${var.policy_data}
+      id: ${var.id}

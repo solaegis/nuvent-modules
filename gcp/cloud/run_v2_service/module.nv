@@ -1,0 +1,176 @@
+variables:
+  location:
+    type: string
+    description: "The location of the cloud run service"
+  name:
+    type: string
+    description: "Name of the Service."
+  annotations:
+    type: object
+    description: "Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects.  Cloud Run API v2 does not support annotations with 'run.googleapis.com', 'cloud.googleapis.com', 'serving.knative.dev', or 'autoscaling.knative.dev' namespaces, and they will be rejected in new resources. All system annotations in v1 now have a corresponding field in v2 Service.  This field follows Kubernetes annotations' namespacing, limits, and rules.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  client:
+    type: string
+    description: "Arbitrary identifier for the API client."
+    default: null
+  client_version:
+    type: string
+    description: "Arbitrary version identifier for the API client."
+    default: null
+  custom_audiences:
+    type: list
+    description: "One or more custom audiences that you want this service to support. Specify each custom audience as the full URL in a string. The custom audiences are encoded in the token and used to authenticate requests. For more information, see https://cloud.google.com/run/docs/configuring/custom-audiences."
+    default: null
+  default_uri_disabled:
+    type: boolean
+    description: "Disables public resolution of the default URI of this service."
+    default: null
+  deletion_protection:
+    type: boolean
+    description: "Whether Terraform will be prevented from destroying the service. Defaults to true. When a'terraform destroy' or 'terraform apply' would delete the service, the command will fail if this field is not set to false in Terraform state. When the field is set to true or unset in Terraform state, a 'terraform apply' or 'terraform destroy' that would delete the service will fail. When the field is set to false, deleting the service is allowed."
+    default: null
+  description:
+    type: string
+    description: "User-provided description of the Service. This field currently has a 512-character limit."
+    default: null
+  iap_enabled:
+    type: boolean
+    description: "Used to enable/disable IAP for the service."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RunV2Service"
+    default: null
+  ingress:
+    type: string
+    description: "Provides the ingress settings for this Service. On output, returns the currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED if no revision is active. Possible values: [\"INGRESS_TRAFFIC_ALL\", \"INGRESS_TRAFFIC_INTERNAL_ONLY\", \"INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER\"]"
+    default: null
+  invoker_iam_disabled:
+    type: boolean
+    description: "Disables IAM permission check for run.routes.invoke for callers of this service. For more information, visit https://cloud.google.com/run/docs/securing/managing-access#invoker_check."
+    default: null
+  labels:
+    type: object
+    description: "Unstructured key value map that can be used to organize and categorize objects. User-provided labels are shared with Google's billing system, so they can be used to filter, or break down billing charges by team, component, environment, state, etc. For more information, visit https://cloud.google.com/resource-manager/docs/creating-managing-labels or https://cloud.google.com/run/docs/configuring/labels.  Cloud Run API v2 does not support labels with  'run.googleapis.com', 'cloud.googleapis.com', 'serving.knative.dev', or 'autoscaling.knative.dev' namespaces, and they will be rejected. All system labels in v1 now have a corresponding field in v2 Service.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  launch_stage:
+    type: string
+    description: "The launch stage as defined by [Google Cloud Platform Launch Stages](https://cloud.google.com/products#product-launch-stages). Cloud Run supports ALPHA, BETA, and GA. If no value is specified, GA is assumed. Set the launch stage to a preview stage on input to allow use of preview features in that stage. On read (or output), describes whether the resource uses preview features.  For example, if ALPHA is provided as input, but only BETA and GA-level features are used, this field will be BETA on output. Possible values: [\"UNIMPLEMENTED\", \"PRELAUNCH\", \"EARLY_ACCESS\", \"ALPHA\", \"BETA\", \"GA\", \"DEPRECATED\"]"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RunV2Service"
+    default: null
+  binary_authorization:
+    type: list
+    description: "Nested block: binary_authorization"
+    default: []
+  build_config:
+    type: list
+    description: "Nested block: build_config"
+    default: []
+  multi_region_settings:
+    type: list
+    description: "Nested block: multi_region_settings"
+    default: []
+  scaling:
+    type: list
+    description: "Nested block: scaling"
+    default: []
+  template:
+    type: list
+    description: "Nested block: template"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  traffic:
+    type: list
+    description: "Nested block: traffic"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloud:RunV2Service
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      annotations: ${var.annotations}
+      client: ${var.client}
+      client_version: ${var.client_version}
+      custom_audiences: ${var.custom_audiences}
+      default_uri_disabled: ${var.default_uri_disabled}
+      deletion_protection: ${var.deletion_protection}
+      description: ${var.description}
+      iap_enabled: ${var.iap_enabled}
+      id: ${var.id}
+      ingress: ${var.ingress}
+      invoker_iam_disabled: ${var.invoker_iam_disabled}
+      labels: ${var.labels}
+      launch_stage: ${var.launch_stage}
+      project: ${var.project}
+      dynamic:
+        binary_authorization:
+          for_each: ${var.binary_authorization}
+          content:
+            breakglass_justification: ${each.value.breakglass_justification}
+            policy: ${each.value.policy}
+            use_default: ${each.value.use_default}
+        build_config:
+          for_each: ${var.build_config}
+          content:
+            base_image: ${each.value.base_image}
+            enable_automatic_updates: ${each.value.enable_automatic_updates}
+            environment_variables: ${each.value.environment_variables}
+            function_target: ${each.value.function_target}
+            image_uri: ${each.value.image_uri}
+            name: ${each.value.name}
+            service_account: ${each.value.service_account}
+            source_location: ${each.value.source_location}
+            worker_pool: ${each.value.worker_pool}
+        multi_region_settings:
+          for_each: ${var.multi_region_settings}
+          content:
+            multi_region_id: ${each.value.multi_region_id}
+            regions: ${each.value.regions}
+        scaling:
+          for_each: ${var.scaling}
+          content:
+            manual_instance_count: ${each.value.manual_instance_count}
+            max_instance_count: ${each.value.max_instance_count}
+            min_instance_count: ${each.value.min_instance_count}
+            scaling_mode: ${each.value.scaling_mode}
+        template:
+          for_each: ${var.template}
+          content:
+            annotations: ${each.value.annotations}
+            encryption_key: ${each.value.encryption_key}
+            execution_environment: ${each.value.execution_environment}
+            gpu_zonal_redundancy_disabled: ${each.value.gpu_zonal_redundancy_disabled}
+            health_check_disabled: ${each.value.health_check_disabled}
+            labels: ${each.value.labels}
+            max_instance_request_concurrency: ${each.value.max_instance_request_concurrency}
+            revision: ${each.value.revision}
+            service_account: ${each.value.service_account}
+            session_affinity: ${each.value.session_affinity}
+            timeout: ${each.value.timeout}
+            containers: ${each.value.containers}
+            node_selector: ${each.value.node_selector}
+            scaling: ${each.value.scaling}
+            service_mesh: ${each.value.service_mesh}
+            volumes: ${each.value.volumes}
+            vpc_access: ${each.value.vpc_access}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        traffic:
+          for_each: ${var.traffic}
+          content:
+            percent: ${each.value.percent}
+            revision: ${each.value.revision}
+            tag: ${each.value.tag}
+            type: ${each.value.type}

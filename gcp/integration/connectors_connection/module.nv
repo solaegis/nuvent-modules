@@ -1,0 +1,156 @@
+variables:
+  connector_version:
+    type: string
+    description: "connectorVersion of the Connector."
+  location:
+    type: string
+    description: "Location in which Connection needs to be created."
+  name:
+    type: string
+    description: "Name of Connection needs to be created."
+  description:
+    type: string
+    description: "An arbitrary description for the Connection."
+    default: null
+  eventing_enablement_type:
+    type: string
+    description: "Eventing enablement type. Will be nil if eventing is not enabled. Possible values: [\"EVENTING_AND_CONNECTION\", \"ONLY_EVENTING\"]"
+    default: null
+  id:
+    type: string
+    description: "Optional property for ConnectorsConnection"
+    default: null
+  labels:
+    type: object
+    description: "Resource labels to represent user provided metadata.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ConnectorsConnection"
+    default: null
+  service_account:
+    type: string
+    description: "Service account needed for runtime plane to access Google Cloud resources."
+    default: null
+  suspended:
+    type: boolean
+    description: "Suspended indicates if a user has suspended a connection or not."
+    default: null
+  auth_config:
+    type: list
+    description: "Nested block: auth_config"
+    default: []
+  config_variable:
+    type: list
+    description: "Nested block: config_variable"
+    default: []
+  destination_config:
+    type: list
+    description: "Nested block: destination_config"
+    default: []
+  eventing_config:
+    type: list
+    description: "Nested block: eventing_config"
+    default: []
+  lock_config:
+    type: list
+    description: "Nested block: lock_config"
+    default: []
+  log_config:
+    type: list
+    description: "Nested block: log_config"
+    default: []
+  node_config:
+    type: list
+    description: "Nested block: node_config"
+    default: []
+  ssl_config:
+    type: list
+    description: "Nested block: ssl_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:integration:ConnectorsConnection
+    properties:
+      connector_version: ${var.connector_version}
+      location: ${var.location}
+      name: ${var.name}
+      description: ${var.description}
+      eventing_enablement_type: ${var.eventing_enablement_type}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      service_account: ${var.service_account}
+      suspended: ${var.suspended}
+      dynamic:
+        auth_config:
+          for_each: ${var.auth_config}
+          content:
+            auth_key: ${each.value.auth_key}
+            auth_type: ${each.value.auth_type}
+            additional_variable: ${each.value.additional_variable}
+            oauth2_auth_code_flow: ${each.value.oauth2_auth_code_flow}
+            oauth2_client_credentials: ${each.value.oauth2_client_credentials}
+            oauth2_jwt_bearer: ${each.value.oauth2_jwt_bearer}
+            ssh_public_key: ${each.value.ssh_public_key}
+            user_password: ${each.value.user_password}
+        config_variable:
+          for_each: ${var.config_variable}
+          content:
+            boolean_value: ${each.value.boolean_value}
+            integer_value: ${each.value.integer_value}
+            key: ${each.value.key}
+            string_value: ${each.value.string_value}
+            encryption_key_value: ${each.value.encryption_key_value}
+            secret_value: ${each.value.secret_value}
+        destination_config:
+          for_each: ${var.destination_config}
+          content:
+            key: ${each.value.key}
+            destination: ${each.value.destination}
+        eventing_config:
+          for_each: ${var.eventing_config}
+          content:
+            enrichment_enabled: ${each.value.enrichment_enabled}
+            additional_variable: ${each.value.additional_variable}
+            auth_config: ${each.value.auth_config}
+            registration_destination_config: ${each.value.registration_destination_config}
+        lock_config:
+          for_each: ${var.lock_config}
+          content:
+            locked: ${each.value.locked}
+            reason: ${each.value.reason}
+        log_config:
+          for_each: ${var.log_config}
+          content:
+            enabled: ${each.value.enabled}
+            level: ${each.value.level}
+        node_config:
+          for_each: ${var.node_config}
+          content:
+            max_node_count: ${each.value.max_node_count}
+            min_node_count: ${each.value.min_node_count}
+        ssl_config:
+          for_each: ${var.ssl_config}
+          content:
+            client_cert_type: ${each.value.client_cert_type}
+            server_cert_type: ${each.value.server_cert_type}
+            trust_model: ${each.value.trust_model}
+            type: ${each.value.type}
+            use_ssl: ${each.value.use_ssl}
+            additional_variable: ${each.value.additional_variable}
+            client_certificate: ${each.value.client_certificate}
+            client_private_key: ${each.value.client_private_key}
+            client_private_key_pass: ${each.value.client_private_key_pass}
+            private_server_certificate: ${each.value.private_server_certificate}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

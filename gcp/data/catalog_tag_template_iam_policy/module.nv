@@ -1,0 +1,29 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for CatalogTagTemplateIamPolicy"
+  tag_template:
+    type: string
+    description: "Required property for CatalogTagTemplateIamPolicy"
+  id:
+    type: string
+    description: "Optional property for CatalogTagTemplateIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for CatalogTagTemplateIamPolicy"
+    default: null
+  region:
+    type: string
+    description: "Optional property for CatalogTagTemplateIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:data:CatalogTagTemplateIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      tag_template: ${var.tag_template}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}

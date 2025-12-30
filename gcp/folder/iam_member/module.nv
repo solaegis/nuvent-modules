@@ -1,0 +1,34 @@
+variables:
+  folder:
+    type: string
+    description: "Required property for IamMember"
+  member:
+    type: string
+    description: "Required property for IamMember"
+  role:
+    type: string
+    description: "Required property for IamMember"
+  id:
+    type: string
+    description: "Optional property for IamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:folder:IamMember
+    properties:
+      folder: ${var.folder}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

@@ -1,0 +1,43 @@
+variables:
+  application_id:
+    type: string
+    description: "Required property for SecurityGatewayApplicationIamBinding"
+  members:
+    type: list
+    description: "Required property for SecurityGatewayApplicationIamBinding"
+  role:
+    type: string
+    description: "Required property for SecurityGatewayApplicationIamBinding"
+  security_gateway_id:
+    type: string
+    description: "Required property for SecurityGatewayApplicationIamBinding"
+  id:
+    type: string
+    description: "Optional property for SecurityGatewayApplicationIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for SecurityGatewayApplicationIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:beyondcorp:SecurityGatewayApplicationIamBinding
+    properties:
+      application_id: ${var.application_id}
+      members: ${var.members}
+      role: ${var.role}
+      security_gateway_id: ${var.security_gateway_id}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

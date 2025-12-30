@@ -1,0 +1,44 @@
+variables:
+  members:
+    type: list
+    description: "Required property for RepositoryIamBinding"
+  repository:
+    type: string
+    description: "Required property for RepositoryIamBinding"
+  role:
+    type: string
+    description: "Required property for RepositoryIamBinding"
+  id:
+    type: string
+    description: "Optional property for RepositoryIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RepositoryIamBinding"
+    default: null
+  region:
+    type: string
+    description: "Optional property for RepositoryIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataform:RepositoryIamBinding
+    properties:
+      members: ${var.members}
+      repository: ${var.repository}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

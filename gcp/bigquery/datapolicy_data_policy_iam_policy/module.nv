@@ -1,0 +1,29 @@
+variables:
+  data_policy_id:
+    type: string
+    description: "Required property for DatapolicyDataPolicyIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for DatapolicyDataPolicyIamPolicy"
+  id:
+    type: string
+    description: "Optional property for DatapolicyDataPolicyIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for DatapolicyDataPolicyIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for DatapolicyDataPolicyIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:bigquery:DatapolicyDataPolicyIamPolicy
+    properties:
+      data_policy_id: ${var.data_policy_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

@@ -1,0 +1,139 @@
+variables:
+  name:
+    type: string
+    description: "The immutable name of the TPU."
+  runtime_version:
+    type: string
+    description: "Runtime version for the TPU."
+  accelerator_type:
+    type: string
+    description: "TPU accelerator type for the TPU. 'accelerator_type' cannot be used at the same time as 'accelerator_config'. If neither is specified, 'accelerator_type' defaults to 'v2-8'."
+    default: null
+  cidr_block:
+    type: string
+    description: "The CIDR block that the TPU node will use when selecting an IP address. This CIDR block must be a /29 block; the Compute Engine networks API forbids a smaller block, and using a larger block would be wasteful (a node can only consume one IP address). Errors will occur if the CIDR block has already been used for a currently existing TPU node, the CIDR block conflicts with any subnetworks in the user's provided network, or the provided network is peered with another network that is using that CIDR block."
+    default: null
+  description:
+    type: string
+    description: "Text description of the TPU."
+    default: null
+  id:
+    type: string
+    description: "Optional property for V2Vm"
+    default: null
+  labels:
+    type: object
+    description: "Resource labels to represent user-provided metadata.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  metadata:
+    type: object
+    description: "Custom metadata to apply to the TPU Node. Can set startup-script and shutdown-script."
+    default: null
+  project:
+    type: string
+    description: "Optional property for V2Vm"
+    default: null
+  tags:
+    type: list
+    description: "Tags to apply to the TPU Node. Tags are used to identify valid sources or targets for network firewalls."
+    default: null
+  zone:
+    type: string
+    description: "The GCP location for the TPU. If it is not provided, the provider zone is used."
+    default: null
+  accelerator_config:
+    type: list
+    description: "Nested block: accelerator_config"
+    default: []
+  data_disks:
+    type: list
+    description: "Nested block: data_disks"
+    default: []
+  network_config:
+    type: list
+    description: "Nested block: network_config"
+    default: []
+  network_configs:
+    type: list
+    description: "Nested block: network_configs"
+    default: []
+  scheduling_config:
+    type: list
+    description: "Nested block: scheduling_config"
+    default: []
+  service_account:
+    type: list
+    description: "Nested block: service_account"
+    default: []
+  shielded_instance_config:
+    type: list
+    description: "Nested block: shielded_instance_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:tpu:V2Vm
+    properties:
+      name: ${var.name}
+      runtime_version: ${var.runtime_version}
+      accelerator_type: ${var.accelerator_type}
+      cidr_block: ${var.cidr_block}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      metadata: ${var.metadata}
+      project: ${var.project}
+      tags: ${var.tags}
+      zone: ${var.zone}
+      dynamic:
+        accelerator_config:
+          for_each: ${var.accelerator_config}
+          content:
+            topology: ${each.value.topology}
+            type: ${each.value.type}
+        data_disks:
+          for_each: ${var.data_disks}
+          content:
+            mode: ${each.value.mode}
+            source_disk: ${each.value.source_disk}
+        network_config:
+          for_each: ${var.network_config}
+          content:
+            can_ip_forward: ${each.value.can_ip_forward}
+            enable_external_ips: ${each.value.enable_external_ips}
+            network: ${each.value.network}
+            queue_count: ${each.value.queue_count}
+            subnetwork: ${each.value.subnetwork}
+        network_configs:
+          for_each: ${var.network_configs}
+          content:
+            can_ip_forward: ${each.value.can_ip_forward}
+            enable_external_ips: ${each.value.enable_external_ips}
+            network: ${each.value.network}
+            queue_count: ${each.value.queue_count}
+            subnetwork: ${each.value.subnetwork}
+        scheduling_config:
+          for_each: ${var.scheduling_config}
+          content:
+            preemptible: ${each.value.preemptible}
+            reserved: ${each.value.reserved}
+            spot: ${each.value.spot}
+        service_account:
+          for_each: ${var.service_account}
+          content:
+            email: ${each.value.email}
+            scope: ${each.value.scope}
+        shielded_instance_config:
+          for_each: ${var.shielded_instance_config}
+          content:
+            enable_secure_boot: ${each.value.enable_secure_boot}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

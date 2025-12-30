@@ -1,0 +1,38 @@
+variables:
+  consumer_project:
+    type: string
+    description: "Required property for ServiceConsumersIamBinding"
+  members:
+    type: list
+    description: "Required property for ServiceConsumersIamBinding"
+  role:
+    type: string
+    description: "Required property for ServiceConsumersIamBinding"
+  service_name:
+    type: string
+    description: "Required property for ServiceConsumersIamBinding"
+  id:
+    type: string
+    description: "Optional property for ServiceConsumersIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:endpoints:ServiceConsumersIamBinding
+    properties:
+      consumer_project: ${var.consumer_project}
+      members: ${var.members}
+      role: ${var.role}
+      service_name: ${var.service_name}
+      id: ${var.id}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

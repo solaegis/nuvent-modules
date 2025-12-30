@@ -1,0 +1,34 @@
+variables:
+  folder:
+    type: string
+    description: "The numeric folder number for which to retrieve config."
+  id:
+    type: string
+    description: "Optional property for FolderKajPolicyConfig"
+    default: null
+  default_key_access_justification_policy:
+    type: list
+    description: "Nested block: default_key_access_justification_policy"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:kms:FolderKajPolicyConfig
+    properties:
+      folder: ${var.folder}
+      id: ${var.id}
+      dynamic:
+        default_key_access_justification_policy:
+          for_each: ${var.default_key_access_justification_policy}
+          content:
+            allowed_access_reasons: ${each.value.allowed_access_reasons}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

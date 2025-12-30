@@ -1,0 +1,29 @@
+variables:
+  cloud_function:
+    type: string
+    description: "Required property for FunctionIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for FunctionIamPolicy"
+  id:
+    type: string
+    description: "Optional property for FunctionIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for FunctionIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for FunctionIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:cloudfunctions2:FunctionIamPolicy
+    properties:
+      cloud_function: ${var.cloud_function}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

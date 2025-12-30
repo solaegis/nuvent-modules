@@ -1,0 +1,44 @@
+variables:
+  location:
+    type: string
+    description: "The location where the VMwareEngineNetwork should reside."
+  name:
+    type: string
+    description: "The ID of the VMwareEngineNetwork."
+  type:
+    type: string
+    description: "VMware Engine network type. Possible values: [\"LEGACY\", \"STANDARD\"]"
+  description:
+    type: string
+    description: "User-provided description for this VMware Engine network."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Network"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Network"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vmwareengine:Network
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      type: ${var.type}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

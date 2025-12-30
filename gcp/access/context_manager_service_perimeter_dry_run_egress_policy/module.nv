@@ -1,0 +1,52 @@
+variables:
+  perimeter:
+    type: string
+    description: "The name of the Service Perimeter to add this resource to."
+  id:
+    type: string
+    description: "Optional property for ContextManagerServicePerimeterDryRunEgressPolicy"
+    default: null
+  title:
+    type: string
+    description: "Human readable title. Must be unique within the perimeter. Does not affect behavior."
+    default: null
+  egress_from:
+    type: list
+    description: "Nested block: egress_from"
+    default: []
+  egress_to:
+    type: list
+    description: "Nested block: egress_to"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:access:ContextManagerServicePerimeterDryRunEgressPolicy
+    properties:
+      perimeter: ${var.perimeter}
+      id: ${var.id}
+      title: ${var.title}
+      dynamic:
+        egress_from:
+          for_each: ${var.egress_from}
+          content:
+            identities: ${each.value.identities}
+            identity_type: ${each.value.identity_type}
+            source_restriction: ${each.value.source_restriction}
+            sources: ${each.value.sources}
+        egress_to:
+          for_each: ${var.egress_to}
+          content:
+            external_resources: ${each.value.external_resources}
+            resources: ${each.value.resources}
+            roles: ${each.value.roles}
+            operations: ${each.value.operations}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

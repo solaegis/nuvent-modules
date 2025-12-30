@@ -1,0 +1,45 @@
+variables:
+  folder_id:
+    type: string
+    description: "ID of the folder of the access approval settings."
+  active_key_version:
+    type: string
+    description: "The asymmetric crypto key version to use for signing approval requests. Empty active_key_version indicates that a Google-managed key should be used for signing. This property will be ignored if set by an ancestor of the resource, and new non-empty values may not be set."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AccessApprovalSettings"
+    default: null
+  notification_emails:
+    type: list
+    description: "A list of email addresses to which notifications relating to approval requests should be sent. Notifications relating to a resource will be sent to all emails in the settings of ancestor resources of that resource. A maximum of 50 email addresses are allowed."
+    default: null
+  enrolled_services:
+    type: list
+    description: "Nested block: enrolled_services"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:folder:AccessApprovalSettings
+    properties:
+      folder_id: ${var.folder_id}
+      active_key_version: ${var.active_key_version}
+      id: ${var.id}
+      notification_emails: ${var.notification_emails}
+      dynamic:
+        enrolled_services:
+          for_each: ${var.enrolled_services}
+          content:
+            cloud_product: ${each.value.cloud_product}
+            enrollment_level: ${each.value.enrollment_level}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

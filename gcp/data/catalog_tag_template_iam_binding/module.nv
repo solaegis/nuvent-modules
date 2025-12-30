@@ -1,0 +1,44 @@
+variables:
+  members:
+    type: list
+    description: "Required property for CatalogTagTemplateIamBinding"
+  role:
+    type: string
+    description: "Required property for CatalogTagTemplateIamBinding"
+  tag_template:
+    type: string
+    description: "Required property for CatalogTagTemplateIamBinding"
+  id:
+    type: string
+    description: "Optional property for CatalogTagTemplateIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for CatalogTagTemplateIamBinding"
+    default: null
+  region:
+    type: string
+    description: "Optional property for CatalogTagTemplateIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:data:CatalogTagTemplateIamBinding
+    properties:
+      members: ${var.members}
+      role: ${var.role}
+      tag_template: ${var.tag_template}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

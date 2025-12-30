@@ -1,0 +1,19 @@
+variables:
+  billing_account_id:
+    type: string
+    description: "Required property for AccountIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for AccountIamPolicy"
+  id:
+    type: string
+    description: "Optional property for AccountIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:billing:AccountIamPolicy
+    properties:
+      billing_account_id: ${var.billing_account_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}

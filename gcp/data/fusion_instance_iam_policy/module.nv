@@ -1,0 +1,29 @@
+variables:
+  name:
+    type: string
+    description: "Required property for FusionInstanceIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for FusionInstanceIamPolicy"
+  id:
+    type: string
+    description: "Optional property for FusionInstanceIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for FusionInstanceIamPolicy"
+    default: null
+  region:
+    type: string
+    description: "Optional property for FusionInstanceIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:data:FusionInstanceIamPolicy
+    properties:
+      name: ${var.name}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}

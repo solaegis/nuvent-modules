@@ -1,0 +1,80 @@
+variables:
+  entitlement_id:
+    type: string
+    description: "The ID to use for this Entitlement. This will become the last part of the resource name. This value should be 4-63 characters, and valid characters are \"[a-z]\", \"[0-9]\", and \"-\". The first character should be from [a-z]. This value should be unique among all other Entitlements under the specified 'parent'."
+  location:
+    type: string
+    description: "The region of the Entitlement resource."
+  max_request_duration:
+    type: string
+    description: "The maximum amount of time for which access would be granted for a request. A requester can choose to ask for access for less than this duration but never more. Format: calculate the time in seconds and concatenate it with 's' i.e. 2 hours = \"7200s\", 45 minutes = \"2700s\""
+  parent:
+    type: string
+    description: "Format: projects/{project-id|project-number} or organizations/{organization-number} or folders/{folder-number}"
+  id:
+    type: string
+    description: "Optional property for AccessManagerEntitlement"
+    default: null
+  additional_notification_targets:
+    type: list
+    description: "Nested block: additional_notification_targets"
+    default: []
+  approval_workflow:
+    type: list
+    description: "Nested block: approval_workflow"
+    default: []
+  eligible_users:
+    type: list
+    description: "Nested block: eligible_users"
+    default: []
+  privileged_access:
+    type: list
+    description: "Nested block: privileged_access"
+    default: []
+  requester_justification_config:
+    type: list
+    description: "Nested block: requester_justification_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:privileged:AccessManagerEntitlement
+    properties:
+      entitlement_id: ${var.entitlement_id}
+      location: ${var.location}
+      max_request_duration: ${var.max_request_duration}
+      parent: ${var.parent}
+      id: ${var.id}
+      dynamic:
+        additional_notification_targets:
+          for_each: ${var.additional_notification_targets}
+          content:
+            admin_email_recipients: ${each.value.admin_email_recipients}
+            requester_email_recipients: ${each.value.requester_email_recipients}
+        approval_workflow:
+          for_each: ${var.approval_workflow}
+          content:
+            manual_approvals: ${each.value.manual_approvals}
+        eligible_users:
+          for_each: ${var.eligible_users}
+          content:
+            principals: ${each.value.principals}
+        privileged_access:
+          for_each: ${var.privileged_access}
+          content:
+            gcp_iam_access: ${each.value.gcp_iam_access}
+        requester_justification_config:
+          for_each: ${var.requester_justification_config}
+          content:
+            not_mandatory: ${each.value.not_mandatory}
+            unstructured: ${each.value.unstructured}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

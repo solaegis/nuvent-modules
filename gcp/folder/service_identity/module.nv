@@ -1,0 +1,30 @@
+variables:
+  folder:
+    type: string
+    description: "Required property for ServiceIdentity"
+  service:
+    type: string
+    description: "Required property for ServiceIdentity"
+  id:
+    type: string
+    description: "Optional property for ServiceIdentity"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:folder:ServiceIdentity
+    properties:
+      folder: ${var.folder}
+      service: ${var.service}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            read: ${each.value.read}

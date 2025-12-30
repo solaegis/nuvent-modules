@@ -1,0 +1,70 @@
+variables:
+  name:
+    type: string
+    description: "Name of the ServerTlsPolicy resource."
+  allow_open:
+    type: boolean
+    description: "This field applies only for Traffic Director policies. It is must be set to false for external HTTPS load balancer policies. Determines if server allows plaintext connections. If set to true, server allows plain text connections. By default, it is set to false. This setting is not exclusive of other encryption modes. For example, if allowOpen and mtlsPolicy are set, server allows both plain text and mTLS connections. See documentation of other encryption modes to confirm compatibility. Consider using it if you wish to upgrade in place your deployment to TLS while having mixed TLS and non-TLS traffic reaching port :80."
+    default: null
+  description:
+    type: string
+    description: "A free-text description of the resource. Max length 1024 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SecurityServerTlsPolicy"
+    default: null
+  labels:
+    type: object
+    description: "Set of label tags associated with the ServerTlsPolicy resource.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "The location of the server tls policy. The default value is 'global'."
+    default: null
+  project:
+    type: string
+    description: "Optional property for SecurityServerTlsPolicy"
+    default: null
+  mtls_policy:
+    type: list
+    description: "Nested block: mtls_policy"
+    default: []
+  server_certificate:
+    type: list
+    description: "Nested block: server_certificate"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:SecurityServerTlsPolicy
+    properties:
+      name: ${var.name}
+      allow_open: ${var.allow_open}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        mtls_policy:
+          for_each: ${var.mtls_policy}
+          content:
+            client_validation_mode: ${each.value.client_validation_mode}
+            client_validation_trust_config: ${each.value.client_validation_trust_config}
+            client_validation_ca: ${each.value.client_validation_ca}
+        server_certificate:
+          for_each: ${var.server_certificate}
+          content:
+            certificate_provider_instance: ${each.value.certificate_provider_instance}
+            grpc_endpoint: ${each.value.grpc_endpoint}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

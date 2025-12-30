@@ -1,0 +1,19 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for ServiceIamPolicy"
+  service_name:
+    type: string
+    description: "Required property for ServiceIamPolicy"
+  id:
+    type: string
+    description: "Optional property for ServiceIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:endpoints:ServiceIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      service_name: ${var.service_name}
+      id: ${var.id}

@@ -1,0 +1,89 @@
+variables:
+  cluster:
+    type: string
+    description: "The source cluster from which Backups will be created via this BackupPlan."
+  location:
+    type: string
+    description: "The region of the Backup Plan."
+  name:
+    type: string
+    description: "The full name of the BackupPlan Resource."
+  deactivated:
+    type: boolean
+    description: "This flag indicates whether this BackupPlan has been deactivated. Setting this field to True locks the BackupPlan such that no further updates will be allowed (except deletes), including the deactivated field itself. It also prevents any new Backups from being created via this BackupPlan (including scheduled Backups)."
+    default: null
+  description:
+    type: string
+    description: "User specified descriptive string for this BackupPlan."
+    default: null
+  id:
+    type: string
+    description: "Optional property for BackupBackupPlan"
+    default: null
+  labels:
+    type: object
+    description: "Description: A set of custom labels supplied by the user. A list of key->value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for BackupBackupPlan"
+    default: null
+  backup_config:
+    type: list
+    description: "Nested block: backup_config"
+    default: []
+  backup_schedule:
+    type: list
+    description: "Nested block: backup_schedule"
+    default: []
+  retention_policy:
+    type: list
+    description: "Nested block: retention_policy"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:gke:BackupBackupPlan
+    properties:
+      cluster: ${var.cluster}
+      location: ${var.location}
+      name: ${var.name}
+      deactivated: ${var.deactivated}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        backup_config:
+          for_each: ${var.backup_config}
+          content:
+            all_namespaces: ${each.value.all_namespaces}
+            include_secrets: ${each.value.include_secrets}
+            include_volume_data: ${each.value.include_volume_data}
+            permissive_mode: ${each.value.permissive_mode}
+            encryption_key: ${each.value.encryption_key}
+            selected_applications: ${each.value.selected_applications}
+            selected_namespace_labels: ${each.value.selected_namespace_labels}
+            selected_namespaces: ${each.value.selected_namespaces}
+        backup_schedule:
+          for_each: ${var.backup_schedule}
+          content:
+            cron_schedule: ${each.value.cron_schedule}
+            paused: ${each.value.paused}
+            rpo_config: ${each.value.rpo_config}
+        retention_policy:
+          for_each: ${var.retention_policy}
+          content:
+            backup_delete_lock_days: ${each.value.backup_delete_lock_days}
+            backup_retain_days: ${each.value.backup_retain_days}
+            locked: ${each.value.locked}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

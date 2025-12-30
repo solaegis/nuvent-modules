@@ -1,0 +1,126 @@
+variables:
+  display_name:
+    type: string
+    description: "A human-friendly name for the uptime check configuration. The display name should be unique within a Stackdriver Workspace in order to make it easier to identify; however, uniqueness is not enforced."
+  timeout:
+    type: string
+    description: "The maximum amount of time to wait for the request to complete (must be between 1 and 60 seconds). [See the accepted formats]( https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.Duration)"
+  checker_type:
+    type: string
+    description: "The checker type to use for the check. If the monitored resource type is 'servicedirectory_service', 'checker_type' must be set to 'VPC_CHECKERS'. Possible values: [\"STATIC_IP_CHECKERS\", \"VPC_CHECKERS\"]"
+    default: null
+  id:
+    type: string
+    description: "Optional property for UptimeCheckConfig"
+    default: null
+  log_check_failures:
+    type: boolean
+    description: "Specifies whether to log the results of failed probes to Cloud Logging."
+    default: null
+  period:
+    type: string
+    description: "How often, in seconds, the uptime check is performed. Currently, the only supported values are 60s (1 minute), 300s (5 minutes), 600s (10 minutes), and 900s (15 minutes). Optional, defaults to 300s."
+    default: null
+  project:
+    type: string
+    description: "Optional property for UptimeCheckConfig"
+    default: null
+  selected_regions:
+    type: list
+    description: "The list of regions from which the check will be run. Some regions contain one location, and others contain more than one. If this field is specified, enough regions to include a minimum of 3 locations must be provided, or an error message is returned. Not specifying this field will result in uptime checks running from all regions."
+    default: null
+  user_labels:
+    type: object
+    description: "User-supplied key/value data to be used for organizing and identifying the 'UptimeCheckConfig' objects. The field can contain up to 64 entries. Each key and value is limited to 63 Unicode characters or 128 bytes, whichever is smaller. Labels and values can contain only lowercase letters, numerals, underscores, and dashes. Keys must begin with a letter."
+    default: null
+  content_matchers:
+    type: list
+    description: "Nested block: content_matchers"
+    default: []
+  http_check:
+    type: list
+    description: "Nested block: http_check"
+    default: []
+  monitored_resource:
+    type: list
+    description: "Nested block: monitored_resource"
+    default: []
+  resource_group:
+    type: list
+    description: "Nested block: resource_group"
+    default: []
+  synthetic_monitor:
+    type: list
+    description: "Nested block: synthetic_monitor"
+    default: []
+  tcp_check:
+    type: list
+    description: "Nested block: tcp_check"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:monitoring:UptimeCheckConfig
+    properties:
+      display_name: ${var.display_name}
+      timeout: ${var.timeout}
+      checker_type: ${var.checker_type}
+      id: ${var.id}
+      log_check_failures: ${var.log_check_failures}
+      period: ${var.period}
+      project: ${var.project}
+      selected_regions: ${var.selected_regions}
+      user_labels: ${var.user_labels}
+      dynamic:
+        content_matchers:
+          for_each: ${var.content_matchers}
+          content:
+            content: ${each.value.content}
+            matcher: ${each.value.matcher}
+            json_path_matcher: ${each.value.json_path_matcher}
+        http_check:
+          for_each: ${var.http_check}
+          content:
+            body: ${each.value.body}
+            content_type: ${each.value.content_type}
+            custom_content_type: ${each.value.custom_content_type}
+            headers: ${each.value.headers}
+            mask_headers: ${each.value.mask_headers}
+            path: ${each.value.path}
+            port: ${each.value.port}
+            request_method: ${each.value.request_method}
+            use_ssl: ${each.value.use_ssl}
+            validate_ssl: ${each.value.validate_ssl}
+            accepted_response_status_codes: ${each.value.accepted_response_status_codes}
+            auth_info: ${each.value.auth_info}
+            ping_config: ${each.value.ping_config}
+            service_agent_authentication: ${each.value.service_agent_authentication}
+        monitored_resource:
+          for_each: ${var.monitored_resource}
+          content:
+            labels: ${each.value.labels}
+            type: ${each.value.type}
+        resource_group:
+          for_each: ${var.resource_group}
+          content:
+            group_id: ${each.value.group_id}
+            resource_type: ${each.value.resource_type}
+        synthetic_monitor:
+          for_each: ${var.synthetic_monitor}
+          content:
+            cloud_function_v2: ${each.value.cloud_function_v2}
+        tcp_check:
+          for_each: ${var.tcp_check}
+          content:
+            port: ${each.value.port}
+            ping_config: ${each.value.ping_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

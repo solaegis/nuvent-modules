@@ -1,0 +1,84 @@
+variables:
+  collection_id:
+    type: string
+    description: "The collection ID."
+  data_store_ids:
+    type: list
+    description: "The data stores associated with this engine. For SOLUTION_TYPE_SEARCH type of engines, they can only associate with at most one data store."
+  display_name:
+    type: string
+    description: "Required. The display name of the engine. Should be human readable. UTF-8 encoded string with limit of 1024 characters."
+  engine_id:
+    type: string
+    description: "Unique ID to use for Search Engine App."
+  location:
+    type: string
+    description: "Location."
+  app_type:
+    type: string
+    description: "This is the application type this engine resource represents. The supported values: 'APP_TYPE_UNSPECIFIED', 'APP_TYPE_INTRANET'."
+    default: null
+  features:
+    type: object
+    description: "A map of the feature config for the engine to opt in or opt out of features."
+    default: null
+  id:
+    type: string
+    description: "Optional property for EngineSearchEngine"
+    default: null
+  industry_vertical:
+    type: string
+    description: "The industry vertical that the engine registers. The restriction of the Engine industry vertical is based on DataStore: If unspecified, default to GENERIC. Vertical on Engine has to match vertical of the DataStore liniked to the engine. Default value: \"GENERIC\" Possible values: [\"GENERIC\", \"MEDIA\", \"HEALTHCARE_FHIR\"]"
+    default: null
+  kms_key_name:
+    type: string
+    description: "The KMS key to be used to protect this Engine at creation time.  Must be set for requests that need to comply with CMEK Org Policy protections.  If this field is set and processed successfully, the Engine will be protected by the KMS key, as indicated in the cmek_config field."
+    default: null
+  project:
+    type: string
+    description: "Optional property for EngineSearchEngine"
+    default: null
+  common_config:
+    type: list
+    description: "Nested block: common_config"
+    default: []
+  search_engine_config:
+    type: list
+    description: "Nested block: search_engine_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:discovery:EngineSearchEngine
+    properties:
+      collection_id: ${var.collection_id}
+      data_store_ids: ${var.data_store_ids}
+      display_name: ${var.display_name}
+      engine_id: ${var.engine_id}
+      location: ${var.location}
+      app_type: ${var.app_type}
+      features: ${var.features}
+      id: ${var.id}
+      industry_vertical: ${var.industry_vertical}
+      kms_key_name: ${var.kms_key_name}
+      project: ${var.project}
+      dynamic:
+        common_config:
+          for_each: ${var.common_config}
+          content:
+            company_name: ${each.value.company_name}
+        search_engine_config:
+          for_each: ${var.search_engine_config}
+          content:
+            search_add_ons: ${each.value.search_add_ons}
+            search_tier: ${each.value.search_tier}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

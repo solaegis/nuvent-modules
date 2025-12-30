@@ -1,0 +1,19 @@
+variables:
+  key_ring_id:
+    type: string
+    description: "Required property for KeyRingIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for KeyRingIamPolicy"
+  id:
+    type: string
+    description: "Optional property for KeyRingIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:kms:KeyRingIamPolicy
+    properties:
+      key_ring_id: ${var.key_ring_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}

@@ -1,0 +1,92 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource."
+  cpu_overcommit_type:
+    type: string
+    description: "CPU overcommit. Default value: \"NONE\" Possible values: [\"ENABLED\", \"NONE\"]"
+    default: null
+  description:
+    type: string
+    description: "An optional textual description of the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for NodeTemplate"
+    default: null
+  node_affinity_labels:
+    type: object
+    description: "Labels to use for node affinity, which will be used in instance scheduling."
+    default: null
+  node_type:
+    type: string
+    description: "Node type to use for nodes group that are created from this template. Only one of nodeTypeFlexibility and nodeType can be specified."
+    default: null
+  project:
+    type: string
+    description: "Optional property for NodeTemplate"
+    default: null
+  region:
+    type: string
+    description: "Region where nodes using the node template will be created. If it is not provided, the provider region is used."
+    default: null
+  accelerators:
+    type: list
+    description: "Nested block: accelerators"
+    default: []
+  disks:
+    type: list
+    description: "Nested block: disks"
+    default: []
+  node_type_flexibility:
+    type: list
+    description: "Nested block: node_type_flexibility"
+    default: []
+  server_binding:
+    type: list
+    description: "Nested block: server_binding"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:NodeTemplate
+    properties:
+      name: ${var.name}
+      cpu_overcommit_type: ${var.cpu_overcommit_type}
+      description: ${var.description}
+      id: ${var.id}
+      node_affinity_labels: ${var.node_affinity_labels}
+      node_type: ${var.node_type}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        accelerators:
+          for_each: ${var.accelerators}
+          content:
+            accelerator_count: ${each.value.accelerator_count}
+            accelerator_type: ${each.value.accelerator_type}
+        disks:
+          for_each: ${var.disks}
+          content:
+            disk_count: ${each.value.disk_count}
+            disk_size_gb: ${each.value.disk_size_gb}
+            disk_type: ${each.value.disk_type}
+        node_type_flexibility:
+          for_each: ${var.node_type_flexibility}
+          content:
+            cpus: ${each.value.cpus}
+            local_ssd: ${each.value.local_ssd}
+            memory: ${each.value.memory}
+        server_binding:
+          for_each: ${var.server_binding}
+          content:
+            type: ${each.value.type}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

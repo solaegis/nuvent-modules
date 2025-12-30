@@ -1,0 +1,46 @@
+variables:
+  condition_id:
+    type: string
+    description: "Resource ID of the security monitoring condition."
+  org_id:
+    type: string
+    description: "The Apigee Organization associated with the Apigee Security Monitoring Condition, in the format 'organizations/{{org_name}}'."
+  profile:
+    type: string
+    description: "ID of security profile of the security monitoring condition."
+  scope:
+    type: string
+    description: "ID of security profile of the security monitoring condition."
+  id:
+    type: string
+    description: "Optional property for SecurityMonitoringCondition"
+    default: null
+  include_all_resources:
+    type: list
+    description: "Nested block: include_all_resources"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:SecurityMonitoringCondition
+    properties:
+      condition_id: ${var.condition_id}
+      org_id: ${var.org_id}
+      profile: ${var.profile}
+      scope: ${var.scope}
+      id: ${var.id}
+      dynamic:
+        include_all_resources:
+          for_each: ${var.include_all_resources}
+          content:
+            # No specific fields found in schema for include_all_resources
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

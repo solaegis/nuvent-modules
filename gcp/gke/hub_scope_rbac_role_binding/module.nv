@@ -1,0 +1,59 @@
+variables:
+  scope_id:
+    type: string
+    description: "Id of the scope"
+  scope_rbac_role_binding_id:
+    type: string
+    description: "The client-provided identifier of the RBAC Role Binding."
+  group:
+    type: string
+    description: "Principal that is be authorized in the cluster (at least of one the oneof is required). Updating one will unset the other automatically. group is the group, as seen by the kubernetes cluster."
+    default: null
+  id:
+    type: string
+    description: "Optional property for HubScopeRbacRoleBinding"
+    default: null
+  labels:
+    type: object
+    description: "Labels for this ScopeRBACRoleBinding.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for HubScopeRbacRoleBinding"
+    default: null
+  user:
+    type: string
+    description: "Principal that is be authorized in the cluster (at least of one the oneof is required). Updating one will unset the other automatically. user is the name of the user as seen by the kubernetes cluster, example \"alice\" or \"alice@domain.tld\""
+    default: null
+  role:
+    type: list
+    description: "Nested block: role"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:gke:HubScopeRbacRoleBinding
+    properties:
+      scope_id: ${var.scope_id}
+      scope_rbac_role_binding_id: ${var.scope_rbac_role_binding_id}
+      group: ${var.group}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      user: ${var.user}
+      dynamic:
+        role:
+          for_each: ${var.role}
+          content:
+            custom_role: ${each.value.custom_role}
+            predefined_role: ${each.value.predefined_role}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

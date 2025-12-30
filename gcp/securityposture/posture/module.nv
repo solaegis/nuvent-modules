@@ -1,0 +1,53 @@
+variables:
+  location:
+    type: string
+    description: "Location of the resource, eg: global."
+  parent:
+    type: string
+    description: "The parent of the resource, an organization. Format should be 'organizations/{organization_id}'."
+  posture_id:
+    type: string
+    description: "Id of the posture. It is an immutable field."
+  state:
+    type: string
+    description: "State of the posture. Update to state field should not be triggered along with with other field updates. Possible values: [\"DEPRECATED\", \"DRAFT\", \"ACTIVE\"]"
+  description:
+    type: string
+    description: "Description of the posture."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Posture"
+    default: null
+  policy_sets:
+    type: list
+    description: "Nested block: policy_sets"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:securityposture:Posture
+    properties:
+      location: ${var.location}
+      parent: ${var.parent}
+      posture_id: ${var.posture_id}
+      state: ${var.state}
+      description: ${var.description}
+      id: ${var.id}
+      dynamic:
+        policy_sets:
+          for_each: ${var.policy_sets}
+          content:
+            description: ${each.value.description}
+            policy_set_id: ${each.value.policy_set_id}
+            policies: ${each.value.policies}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,84 @@
+variables:
+  display_name:
+    type: string
+    description: "The display name of the plugin. Max length is 50 characters (Unicode code points)."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  plugin_id:
+    type: string
+    description: "The ID to use for the Plugin resource, which will become the final component of the Plugin's resource name. This field is optional.  * If provided, the same will be used. The service will throw an error if the specified id is already used by another Plugin resource in the API hub instance. * If not provided, a system generated id will be used.  This value should be 4-63 characters, overall resource name which will be of format 'projects/{project}/locations/{location}/plugins/{plugin}', its length is limited to 1000 characters and valid characters are /a-z[0-9]-_/."
+  description:
+    type: string
+    description: "The plugin description. Max length is 2000 characters (Unicode code points)."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Plugin"
+    default: null
+  plugin_category:
+    type: string
+    description: "Possible values: PLUGIN_CATEGORY_UNSPECIFIED API_GATEWAY API_PRODUCER"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Plugin"
+    default: null
+  actions_config:
+    type: list
+    description: "Nested block: actions_config"
+    default: []
+  config_template:
+    type: list
+    description: "Nested block: config_template"
+    default: []
+  documentation:
+    type: list
+    description: "Nested block: documentation"
+    default: []
+  hosting_service:
+    type: list
+    description: "Nested block: hosting_service"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apihub:Plugin
+    properties:
+      display_name: ${var.display_name}
+      location: ${var.location}
+      plugin_id: ${var.plugin_id}
+      description: ${var.description}
+      id: ${var.id}
+      plugin_category: ${var.plugin_category}
+      project: ${var.project}
+      dynamic:
+        actions_config:
+          for_each: ${var.actions_config}
+          content:
+            description: ${each.value.description}
+            display_name: ${each.value.display_name}
+            id: ${each.value.id}
+            trigger_mode: ${each.value.trigger_mode}
+        config_template:
+          for_each: ${var.config_template}
+          content:
+            additional_config_template: ${each.value.additional_config_template}
+            auth_config_template: ${each.value.auth_config_template}
+        documentation:
+          for_each: ${var.documentation}
+          content:
+            external_uri: ${each.value.external_uri}
+        hosting_service:
+          for_each: ${var.hosting_service}
+          content:
+            service_uri: ${each.value.service_uri}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

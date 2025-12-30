@@ -1,0 +1,33 @@
+variables:
+  attachment_id:
+    type: string
+    description: "The resource that the security policy is attached to."
+  name:
+    type: string
+    description: "The name for an association."
+  policy_id:
+    type: string
+    description: "The security policy ID of the association."
+  id:
+    type: string
+    description: "Optional property for OrganizationSecurityPolicyAssociation"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:OrganizationSecurityPolicyAssociation
+    properties:
+      attachment_id: ${var.attachment_id}
+      name: ${var.name}
+      policy_id: ${var.policy_id}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

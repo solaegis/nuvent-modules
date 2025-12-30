@@ -1,0 +1,60 @@
+variables:
+  instance:
+    type: string
+    description: "The unique identifier for the Chronicle instance, which is the same as the customer ID."
+  location:
+    type: string
+    description: "The location of the resource. This is the geographical region where the Chronicle instance resides, such as \"us\" or \"europe-west2\"."
+  deletion_policy:
+    type: string
+    description: "Policy to determine if the rule should be deleted forcefully. If deletion_policy = \"FORCE\", any retrohunts and any detections associated with the rule will also be deleted. If deletion_policy = \"DEFAULT\", the call will only succeed if the rule has no associated retrohunts, including completed retrohunts, and no associated detections. Regardless of this field's value, the rule deployment associated with this rule will also be deleted. Possible values: DEFAULT, FORCE"
+    default: null
+  etag:
+    type: string
+    description: "The etag for this rule. If this is provided on update, the request will succeed if and only if it matches the server-computed value, and will fail with an ABORTED error otherwise. Populated in BASIC view and FULL view."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Rule"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Rule"
+    default: null
+  rule_id:
+    type: string
+    description: "Rule Id is the ID of the Rule."
+    default: null
+  scope:
+    type: string
+    description: "Resource name of the DataAccessScope bound to this rule. Populated in BASIC view and FULL view. If reference lists are used in the rule, validations will be performed against this scope to ensure that the reference lists are compatible with both the user's and the rule's scopes. The scope should be in the format: \"projects/{project}/locations/{location}/instances/{instance}/dataAccessScopes/{scope}\"."
+    default: null
+  text:
+    type: string
+    description: "The YARA-L content of the rule. Populated in FULL view."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:chronicle:Rule
+    properties:
+      instance: ${var.instance}
+      location: ${var.location}
+      deletion_policy: ${var.deletion_policy}
+      etag: ${var.etag}
+      id: ${var.id}
+      project: ${var.project}
+      rule_id: ${var.rule_id}
+      scope: ${var.scope}
+      text: ${var.text}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

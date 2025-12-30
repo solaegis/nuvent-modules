@@ -1,0 +1,82 @@
+variables:
+  location:
+    type: string
+    description: "The location for the resource"
+  name:
+    type: string
+    description: "The resource name for this CertificateTemplate in the format 'projects/*/locations/*/certificateTemplates/*'."
+  description:
+    type: string
+    description: "Optional. A human-readable description of scenarios this template is intended for."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CertificateTemplate"
+    default: null
+  labels:
+    type: object
+    description: "Optional. Labels with user-defined metadata.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  maximum_lifetime:
+    type: string
+    description: "Optional. The maximum lifetime allowed for all issued certificates that use this template. If the issuing CaPool's IssuancePolicy specifies a maximum lifetime the minimum of the two durations will be the maximum lifetime for issued. Note that if the issuing CertificateAuthority expires before a Certificate's requested maximum_lifetime, the effective lifetime will be explicitly truncated to match it."
+    default: null
+  project:
+    type: string
+    description: "Optional property for CertificateTemplate"
+    default: null
+  identity_constraints:
+    type: list
+    description: "Nested block: identity_constraints"
+    default: []
+  passthrough_extensions:
+    type: list
+    description: "Nested block: passthrough_extensions"
+    default: []
+  predefined_values:
+    type: list
+    description: "Nested block: predefined_values"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:privateca:CertificateTemplate
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      maximum_lifetime: ${var.maximum_lifetime}
+      project: ${var.project}
+      dynamic:
+        identity_constraints:
+          for_each: ${var.identity_constraints}
+          content:
+            allow_subject_alt_names_passthrough: ${each.value.allow_subject_alt_names_passthrough}
+            allow_subject_passthrough: ${each.value.allow_subject_passthrough}
+            cel_expression: ${each.value.cel_expression}
+        passthrough_extensions:
+          for_each: ${var.passthrough_extensions}
+          content:
+            known_extensions: ${each.value.known_extensions}
+            additional_extensions: ${each.value.additional_extensions}
+        predefined_values:
+          for_each: ${var.predefined_values}
+          content:
+            aia_ocsp_servers: ${each.value.aia_ocsp_servers}
+            additional_extensions: ${each.value.additional_extensions}
+            ca_options: ${each.value.ca_options}
+            key_usage: ${each.value.key_usage}
+            name_constraints: ${each.value.name_constraints}
+            policy_ids: ${each.value.policy_ids}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

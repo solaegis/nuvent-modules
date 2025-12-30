@@ -1,0 +1,40 @@
+variables:
+  key:
+    type: string
+    description: "Public key text in SSH format, defined by RFC4253 section 6.6."
+  user:
+    type: string
+    description: "The user email."
+  expiration_time_usec:
+    type: string
+    description: "An expiration time in microseconds since epoch."
+    default: null
+  id:
+    type: string
+    description: "Optional property for LoginSshPublicKey"
+    default: null
+  project:
+    type: string
+    description: "The project ID of the Google Cloud Platform project."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:os:LoginSshPublicKey
+    properties:
+      key: ${var.key}
+      user: ${var.user}
+      expiration_time_usec: ${var.expiration_time_usec}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,72 @@
+variables:
+  cross_site_network:
+    type: string
+    description: "Required cross site network to which wire group belongs."
+  name:
+    type: string
+    description: "Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  admin_enabled:
+    type: boolean
+    description: "Indicates whether the wire group is administratively enabled."
+    default: null
+  description:
+    type: string
+    description: "An optional description of this resource. Provide this property when you create the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for WireGroup"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WireGroup"
+    default: null
+  endpoints:
+    type: list
+    description: "Nested block: endpoints"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  wire_group_properties:
+    type: list
+    description: "Nested block: wire_group_properties"
+    default: []
+  wire_properties:
+    type: list
+    description: "Nested block: wire_properties"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:WireGroup
+    properties:
+      cross_site_network: ${var.cross_site_network}
+      name: ${var.name}
+      admin_enabled: ${var.admin_enabled}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        endpoints:
+          for_each: ${var.endpoints}
+          content:
+            endpoint: ${each.value.endpoint}
+            interconnects: ${each.value.interconnects}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        wire_group_properties:
+          for_each: ${var.wire_group_properties}
+          content:
+            type: ${each.value.type}
+        wire_properties:
+          for_each: ${var.wire_properties}
+          content:
+            bandwidth_allocation: ${each.value.bandwidth_allocation}
+            bandwidth_unmetered: ${each.value.bandwidth_unmetered}
+            fault_response: ${each.value.fault_response}

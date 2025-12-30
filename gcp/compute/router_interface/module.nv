@@ -1,0 +1,74 @@
+variables:
+  name:
+    type: string
+    description: "A unique name for the interface, required by GCE. Changing this forces a new interface to be created."
+  router:
+    type: string
+    description: "The name of the router this interface will be attached to. Changing this forces a new interface to be created."
+  id:
+    type: string
+    description: "Optional property for RouterInterface"
+    default: null
+  interconnect_attachment:
+    type: string
+    description: "The name or resource link to the VLAN interconnect for this interface. Changing this forces a new interface to be created. Only one of interconnect_attachment, subnetwork or vpn_tunnel can be specified."
+    default: null
+  ip_range:
+    type: string
+    description: "The IP address and range of the interface. The IP range must be in the RFC3927 link-local IP space. Changing this forces a new interface to be created."
+    default: null
+  ip_version:
+    type: string
+    description: "IP version of this interface."
+    default: null
+  private_ip_address:
+    type: string
+    description: "The regional private internal IP address that is used to establish BGP sessions to a VM instance acting as a third-party Router Appliance. Changing this forces a new interface to be created."
+    default: null
+  project:
+    type: string
+    description: "The ID of the project in which this interface's router belongs. If it is not provided, the provider project is used. Changing this forces a new interface to be created."
+    default: null
+  redundant_interface:
+    type: string
+    description: "The name of the interface that is redundant to this interface. Changing this forces a new interface to be created."
+    default: null
+  region:
+    type: string
+    description: "The region this interface's router sits in. If not specified, the project region will be used. Changing this forces a new interface to be created."
+    default: null
+  subnetwork:
+    type: string
+    description: "The URI of the subnetwork resource that this interface belongs to, which must be in the same region as the Cloud Router. Changing this forces a new interface to be created. Only one of subnetwork, interconnect_attachment or vpn_tunnel can be specified."
+    default: null
+  vpn_tunnel:
+    type: string
+    description: "The name or resource link to the VPN tunnel this interface will be linked to. Changing this forces a new interface to be created. Only one of vpn_tunnel, interconnect_attachment or subnetwork can be specified."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:RouterInterface
+    properties:
+      name: ${var.name}
+      router: ${var.router}
+      id: ${var.id}
+      interconnect_attachment: ${var.interconnect_attachment}
+      ip_range: ${var.ip_range}
+      ip_version: ${var.ip_version}
+      private_ip_address: ${var.private_ip_address}
+      project: ${var.project}
+      redundant_interface: ${var.redundant_interface}
+      region: ${var.region}
+      subnetwork: ${var.subnetwork}
+      vpn_tunnel: ${var.vpn_tunnel}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

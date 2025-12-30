@@ -1,0 +1,38 @@
+variables:
+  parent:
+    type: string
+    description: "The AccessPolicy this AccessLevel lives in. Format: accessPolicies/{policy_id}"
+  id:
+    type: string
+    description: "Optional property for ContextManagerAccessLevels"
+    default: null
+  access_levels:
+    type: list
+    description: "Nested block: access_levels"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:access:ContextManagerAccessLevels
+    properties:
+      parent: ${var.parent}
+      id: ${var.id}
+      dynamic:
+        access_levels:
+          for_each: ${var.access_levels}
+          content:
+            description: ${each.value.description}
+            name: ${each.value.name}
+            title: ${each.value.title}
+            basic: ${each.value.basic}
+            custom: ${each.value.custom}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,121 @@
+variables:
+  dataset_config_id:
+    type: string
+    description: "The user-defined ID of the DatasetConfig"
+  location:
+    type: string
+    description: "The location of the DatasetConfig."
+  retention_period_days:
+    type: number
+    description: "Number of days of history that must be retained."
+  description:
+    type: string
+    description: "An optional user-provided description for the dataset configuration with a maximum length of 256 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for InsightsDatasetConfig"
+    default: null
+  include_newly_created_buckets:
+    type: boolean
+    description: "If set to true, the request includes all the newly created buckets in the dataset that meet the inclusion and exclusion rules."
+    default: null
+  link_dataset:
+    type: boolean
+    description: "A boolean terraform only flag to link/unlink dataset.  Setting this field to true while creation will automatically link the created dataset as an additional functionality. -> **Note** A dataset config resource can only be destroyed once it is unlinked, so users must set this field to false to unlink the dataset and destroy the dataset config resource."
+    default: null
+  organization_number:
+    type: string
+    description: "Organization resource ID that the source projects should belong to. Projects that do not belong to the provided organization are not considered when creating the dataset."
+    default: null
+  organization_scope:
+    type: boolean
+    description: "Defines the options for providing a source organization for the DatasetConfig."
+    default: null
+  project:
+    type: string
+    description: "Optional property for InsightsDatasetConfig"
+    default: null
+  exclude_cloud_storage_buckets:
+    type: list
+    description: "Nested block: exclude_cloud_storage_buckets"
+    default: []
+  exclude_cloud_storage_locations:
+    type: list
+    description: "Nested block: exclude_cloud_storage_locations"
+    default: []
+  identity:
+    type: list
+    description: "Nested block: identity"
+    default: []
+  include_cloud_storage_buckets:
+    type: list
+    description: "Nested block: include_cloud_storage_buckets"
+    default: []
+  include_cloud_storage_locations:
+    type: list
+    description: "Nested block: include_cloud_storage_locations"
+    default: []
+  source_folders:
+    type: list
+    description: "Nested block: source_folders"
+    default: []
+  source_projects:
+    type: list
+    description: "Nested block: source_projects"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:InsightsDatasetConfig
+    properties:
+      dataset_config_id: ${var.dataset_config_id}
+      location: ${var.location}
+      retention_period_days: ${var.retention_period_days}
+      description: ${var.description}
+      id: ${var.id}
+      include_newly_created_buckets: ${var.include_newly_created_buckets}
+      link_dataset: ${var.link_dataset}
+      organization_number: ${var.organization_number}
+      organization_scope: ${var.organization_scope}
+      project: ${var.project}
+      dynamic:
+        exclude_cloud_storage_buckets:
+          for_each: ${var.exclude_cloud_storage_buckets}
+          content:
+            cloud_storage_buckets: ${each.value.cloud_storage_buckets}
+        exclude_cloud_storage_locations:
+          for_each: ${var.exclude_cloud_storage_locations}
+          content:
+            locations: ${each.value.locations}
+        identity:
+          for_each: ${var.identity}
+          content:
+            name: ${each.value.name}
+            type: ${each.value.type}
+        include_cloud_storage_buckets:
+          for_each: ${var.include_cloud_storage_buckets}
+          content:
+            cloud_storage_buckets: ${each.value.cloud_storage_buckets}
+        include_cloud_storage_locations:
+          for_each: ${var.include_cloud_storage_locations}
+          content:
+            locations: ${each.value.locations}
+        source_folders:
+          for_each: ${var.source_folders}
+          content:
+            folder_numbers: ${each.value.folder_numbers}
+        source_projects:
+          for_each: ${var.source_projects}
+          content:
+            project_numbers: ${each.value.project_numbers}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

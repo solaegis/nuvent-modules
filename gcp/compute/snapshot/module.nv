@@ -1,0 +1,88 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource; provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  source_disk:
+    type: string
+    description: "A reference to the disk used to create this snapshot."
+  chain_name:
+    type: string
+    description: "Creates the new snapshot in the snapshot chain labeled with the specified name. The chain name must be 1-63 characters long and comply with RFC1035. This is an uncommon option only for advanced service owners who needs to create separate snapshot chains, for example, for chargeback tracking.  When you describe your snapshot resource, this field is visible only if it has a non-empty value."
+    default: null
+  description:
+    type: string
+    description: "An optional description of this resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Snapshot"
+    default: null
+  labels:
+    type: object
+    description: "Labels to apply to this Snapshot.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Snapshot"
+    default: null
+  snapshot_type:
+    type: string
+    description: "Indicates the type of the snapshot. Possible values: [\"ARCHIVE\", \"STANDARD\"]"
+    default: null
+  storage_locations:
+    type: list
+    description: "Cloud Storage bucket storage location of the snapshot (regional or multi-regional)."
+    default: null
+  zone:
+    type: string
+    description: "A reference to the zone where the disk is hosted."
+    default: null
+  snapshot_encryption_key:
+    type: list
+    description: "Nested block: snapshot_encryption_key"
+    default: []
+  source_disk_encryption_key:
+    type: list
+    description: "Nested block: source_disk_encryption_key"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:Snapshot
+    properties:
+      name: ${var.name}
+      source_disk: ${var.source_disk}
+      chain_name: ${var.chain_name}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      snapshot_type: ${var.snapshot_type}
+      storage_locations: ${var.storage_locations}
+      zone: ${var.zone}
+      dynamic:
+        snapshot_encryption_key:
+          for_each: ${var.snapshot_encryption_key}
+          content:
+            kms_key_self_link: ${each.value.kms_key_self_link}
+            kms_key_service_account: ${each.value.kms_key_service_account}
+            raw_key: ${each.value.raw_key}
+            rsa_encrypted_key: ${each.value.rsa_encrypted_key}
+            sha256: ${each.value.sha256}
+        source_disk_encryption_key:
+          for_each: ${var.source_disk_encryption_key}
+          content:
+            kms_key_self_link: ${each.value.kms_key_self_link}
+            kms_key_service_account: ${each.value.kms_key_service_account}
+            raw_key: ${each.value.raw_key}
+            rsa_encrypted_key: ${each.value.rsa_encrypted_key}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

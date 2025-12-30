@@ -1,0 +1,63 @@
+variables:
+  location:
+    type: string
+    description: "The location for the resource."
+  parent:
+    type: string
+    description: "Immutable. The resource name of the parent. Format: 'organizations/{org-id}'."
+  workforce_pool_id:
+    type: string
+    description: "The name of the pool. The ID must be a globally unique string of 6 to 63 lowercase letters, digits, or hyphens. It must start with a letter, and cannot have a trailing hyphen. The prefix 'gcp-' is reserved for use by Google, and may not be specified."
+  description:
+    type: string
+    description: "A user-specified description of the pool. Cannot exceed 256 characters."
+    default: null
+  disabled:
+    type: boolean
+    description: "Whether the pool is disabled. You cannot use a disabled pool to exchange tokens, or use existing tokens to access resources. If the pool is re-enabled, existing tokens grant access again."
+    default: null
+  display_name:
+    type: string
+    description: "A user-specified display name of the pool in Google Cloud Console. Cannot exceed 32 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for WorkforcePool"
+    default: null
+  session_duration:
+    type: string
+    description: "Duration that the Google Cloud access tokens, console sign-in sessions, and 'gcloud' sign-in sessions from this pool are valid. Must be greater than 15 minutes (900s) and less than 12 hours (43200s). If 'sessionDuration' is not configured, minted credentials have a default duration of one hour (3600s). A duration in seconds with up to nine fractional digits, ending with ''s''. Example: \"'3.5s'\"."
+    default: null
+  access_restrictions:
+    type: list
+    description: "Nested block: access_restrictions"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:iam:WorkforcePool
+    properties:
+      location: ${var.location}
+      parent: ${var.parent}
+      workforce_pool_id: ${var.workforce_pool_id}
+      description: ${var.description}
+      disabled: ${var.disabled}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      session_duration: ${var.session_duration}
+      dynamic:
+        access_restrictions:
+          for_each: ${var.access_restrictions}
+          content:
+            disable_programmatic_signin: ${each.value.disable_programmatic_signin}
+            allowed_services: ${each.value.allowed_services}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

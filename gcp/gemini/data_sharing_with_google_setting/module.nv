@@ -1,0 +1,51 @@
+variables:
+  data_sharing_with_google_setting_id:
+    type: string
+    description: "Id of the Data Sharing With Google Setting."
+  enable_data_sharing:
+    type: boolean
+    description: "Whether data sharing should be enabled in GA products."
+    default: null
+  enable_preview_data_sharing:
+    type: boolean
+    description: "Whether data sharing should be enabled in Preview products."
+    default: null
+  id:
+    type: string
+    description: "Optional property for DataSharingWithGoogleSetting"
+    default: null
+  labels:
+    type: object
+    description: "Labels as key value pairs.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+    default: null
+  project:
+    type: string
+    description: "Optional property for DataSharingWithGoogleSetting"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:gemini:DataSharingWithGoogleSetting
+    properties:
+      data_sharing_with_google_setting_id: ${var.data_sharing_with_google_setting_id}
+      enable_data_sharing: ${var.enable_data_sharing}
+      enable_preview_data_sharing: ${var.enable_preview_data_sharing}
+      id: ${var.id}
+      labels: ${var.labels}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

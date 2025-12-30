@@ -1,0 +1,91 @@
+variables:
+  name:
+    type: string
+    description: "The name of the security policy."
+  description:
+    type: string
+    description: "An optional description of this security policy. Max size is 2048."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SecurityPolicy"
+    default: null
+  labels:
+    type: object
+    description: "Labels to apply to this address.  A list of key->value pairs.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "The project in which the resource belongs. If it is not provided, the provider project is used."
+    default: null
+  type:
+    type: string
+    description: "The type indicates the intended use of the security policy. CLOUD_ARMOR - Cloud Armor backend security policies can be configured to filter incoming HTTP requests targeting backend services. They filter requests before they hit the origin servers. CLOUD_ARMOR_EDGE - Cloud Armor edge security policies can be configured to filter incoming HTTP requests targeting backend services (including Cloud CDN-enabled) as well as backend buckets (Cloud Storage). They filter requests before the request is served from Google's cache."
+    default: null
+  adaptive_protection_config:
+    type: list
+    description: "Nested block: adaptive_protection_config"
+    default: []
+  advanced_options_config:
+    type: list
+    description: "Nested block: advanced_options_config"
+    default: []
+  recaptcha_options_config:
+    type: list
+    description: "Nested block: recaptcha_options_config"
+    default: []
+  rule:
+    type: list
+    description: "Nested block: rule"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:SecurityPolicy
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      type: ${var.type}
+      dynamic:
+        adaptive_protection_config:
+          for_each: ${var.adaptive_protection_config}
+          content:
+            auto_deploy_config: ${each.value.auto_deploy_config}
+            layer_7_ddos_defense_config: ${each.value.layer_7_ddos_defense_config}
+        advanced_options_config:
+          for_each: ${var.advanced_options_config}
+          content:
+            json_parsing: ${each.value.json_parsing}
+            log_level: ${each.value.log_level}
+            request_body_inspection_size: ${each.value.request_body_inspection_size}
+            user_ip_request_headers: ${each.value.user_ip_request_headers}
+            json_custom_config: ${each.value.json_custom_config}
+        recaptcha_options_config:
+          for_each: ${var.recaptcha_options_config}
+          content:
+            redirect_site_key: ${each.value.redirect_site_key}
+        rule:
+          for_each: ${var.rule}
+          content:
+            action: ${each.value.action}
+            description: ${each.value.description}
+            preview: ${each.value.preview}
+            priority: ${each.value.priority}
+            header_action: ${each.value.header_action}
+            match: ${each.value.match}
+            preconfigured_waf_config: ${each.value.preconfigured_waf_config}
+            rate_limit_options: ${each.value.rate_limit_options}
+            redirect_options: ${each.value.redirect_options}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

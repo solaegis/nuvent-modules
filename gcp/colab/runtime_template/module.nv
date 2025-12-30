@@ -1,0 +1,125 @@
+variables:
+  display_name:
+    type: string
+    description: "Required. The display name of the Runtime Template."
+  location:
+    type: string
+    description: "The location for the resource: https://cloud.google.com/colab/docs/locations"
+  description:
+    type: string
+    description: "The description of the Runtime Template."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RuntimeTemplate"
+    default: null
+  labels:
+    type: object
+    description: "Labels to identify and group the runtime template.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  name:
+    type: string
+    description: "The resource name of the Runtime Template"
+    default: null
+  network_tags:
+    type: list
+    description: "Applies the given Compute Engine tags to the runtime."
+    default: null
+  project:
+    type: string
+    description: "Optional property for RuntimeTemplate"
+    default: null
+  data_persistent_disk_spec:
+    type: list
+    description: "Nested block: data_persistent_disk_spec"
+    default: []
+  encryption_spec:
+    type: list
+    description: "Nested block: encryption_spec"
+    default: []
+  euc_config:
+    type: list
+    description: "Nested block: euc_config"
+    default: []
+  idle_shutdown_config:
+    type: list
+    description: "Nested block: idle_shutdown_config"
+    default: []
+  machine_spec:
+    type: list
+    description: "Nested block: machine_spec"
+    default: []
+  network_spec:
+    type: list
+    description: "Nested block: network_spec"
+    default: []
+  shielded_vm_config:
+    type: list
+    description: "Nested block: shielded_vm_config"
+    default: []
+  software_config:
+    type: list
+    description: "Nested block: software_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:colab:RuntimeTemplate
+    properties:
+      display_name: ${var.display_name}
+      location: ${var.location}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      name: ${var.name}
+      network_tags: ${var.network_tags}
+      project: ${var.project}
+      dynamic:
+        data_persistent_disk_spec:
+          for_each: ${var.data_persistent_disk_spec}
+          content:
+            disk_size_gb: ${each.value.disk_size_gb}
+            disk_type: ${each.value.disk_type}
+        encryption_spec:
+          for_each: ${var.encryption_spec}
+          content:
+            kms_key_name: ${each.value.kms_key_name}
+        euc_config:
+          for_each: ${var.euc_config}
+          content:
+            euc_disabled: ${each.value.euc_disabled}
+        idle_shutdown_config:
+          for_each: ${var.idle_shutdown_config}
+          content:
+            idle_timeout: ${each.value.idle_timeout}
+        machine_spec:
+          for_each: ${var.machine_spec}
+          content:
+            accelerator_count: ${each.value.accelerator_count}
+            accelerator_type: ${each.value.accelerator_type}
+            machine_type: ${each.value.machine_type}
+        network_spec:
+          for_each: ${var.network_spec}
+          content:
+            enable_internet_access: ${each.value.enable_internet_access}
+            network: ${each.value.network}
+            subnetwork: ${each.value.subnetwork}
+        shielded_vm_config:
+          for_each: ${var.shielded_vm_config}
+          content:
+            enable_secure_boot: ${each.value.enable_secure_boot}
+        software_config:
+          for_each: ${var.software_config}
+          content:
+            env: ${each.value.env}
+            post_startup_script_config: ${each.value.post_startup_script_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

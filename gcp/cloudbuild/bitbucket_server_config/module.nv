@@ -1,0 +1,76 @@
+variables:
+  api_key:
+    type: string
+    description: "Immutable. API Key that will be attached to webhook. Once this field has been set, it cannot be changed. Changing this field will result in deleting/ recreating the resource."
+  config_id:
+    type: string
+    description: "The ID to use for the BitbucketServerConfig, which will become the final component of the BitbucketServerConfig's resource name."
+  host_uri:
+    type: string
+    description: "Immutable. The URI of the Bitbucket Server host. Once this field has been set, it cannot be changed. If you need to change it, please create another BitbucketServerConfig."
+  location:
+    type: string
+    description: "The location of this bitbucket server config."
+  username:
+    type: string
+    description: "Username of the account Cloud Build will use on Bitbucket Server."
+  id:
+    type: string
+    description: "Optional property for BitbucketServerConfig"
+    default: null
+  peered_network:
+    type: string
+    description: "The network to be used when reaching out to the Bitbucket Server instance. The VPC network must be enabled for private service connection. This should be set if the Bitbucket Server instance is hosted on-premises and not reachable by public internet. If this field is left empty, no network peering will occur and calls to the Bitbucket Server instance will be made over the public internet. Must be in the format projects/{project}/global/networks/{network}, where {project} is a project number or id and {network} is the name of a VPC network in the project."
+    default: null
+  project:
+    type: string
+    description: "Optional property for BitbucketServerConfig"
+    default: null
+  ssl_ca:
+    type: string
+    description: "SSL certificate to use for requests to Bitbucket Server. The format should be PEM format but the extension can be one of .pem, .cer, or .crt."
+    default: null
+  connected_repositories:
+    type: list
+    description: "Nested block: connected_repositories"
+    default: []
+  secrets:
+    type: list
+    description: "Nested block: secrets"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloudbuild:BitbucketServerConfig
+    properties:
+      api_key: ${var.api_key}
+      config_id: ${var.config_id}
+      host_uri: ${var.host_uri}
+      location: ${var.location}
+      username: ${var.username}
+      id: ${var.id}
+      peered_network: ${var.peered_network}
+      project: ${var.project}
+      ssl_ca: ${var.ssl_ca}
+      dynamic:
+        connected_repositories:
+          for_each: ${var.connected_repositories}
+          content:
+            project_key: ${each.value.project_key}
+            repo_slug: ${each.value.repo_slug}
+        secrets:
+          for_each: ${var.secrets}
+          content:
+            admin_access_token_version_name: ${each.value.admin_access_token_version_name}
+            read_access_token_version_name: ${each.value.read_access_token_version_name}
+            webhook_secret_version_name: ${each.value.webhook_secret_version_name}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

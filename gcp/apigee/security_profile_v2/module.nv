@@ -1,0 +1,44 @@
+variables:
+  org_id:
+    type: string
+    description: "The Apigee Organization associated with the Apigee Security Profile V2, in the format 'organizations/{{org_name}}'."
+  profile_id:
+    type: string
+    description: "Resource ID of the security profile."
+  description:
+    type: string
+    description: "Description of the security profile."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SecurityProfileV2"
+    default: null
+  profile_assessment_configs:
+    type: list
+    description: "Nested block: profile_assessment_configs"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:SecurityProfileV2
+    properties:
+      org_id: ${var.org_id}
+      profile_id: ${var.profile_id}
+      description: ${var.description}
+      id: ${var.id}
+      dynamic:
+        profile_assessment_configs:
+          for_each: ${var.profile_assessment_configs}
+          content:
+            assessment: ${each.value.assessment}
+            weight: ${each.value.weight}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

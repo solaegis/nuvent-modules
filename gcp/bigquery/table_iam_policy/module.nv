@@ -1,0 +1,28 @@
+variables:
+  dataset_id:
+    type: string
+    description: "Required property for TableIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for TableIamPolicy"
+  table_id:
+    type: string
+    description: "Required property for TableIamPolicy"
+  id:
+    type: string
+    description: "Optional property for TableIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TableIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:bigquery:TableIamPolicy
+    properties:
+      dataset_id: ${var.dataset_id}
+      policy_data: ${var.policy_data}
+      table_id: ${var.table_id}
+      id: ${var.id}
+      project: ${var.project}

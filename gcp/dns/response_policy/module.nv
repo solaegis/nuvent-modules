@@ -1,0 +1,52 @@
+variables:
+  response_policy_name:
+    type: string
+    description: "The user assigned name for this Response Policy, such as 'myresponsepolicy'."
+  description:
+    type: string
+    description: "The description of the response policy, such as 'My new response policy'."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ResponsePolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ResponsePolicy"
+    default: null
+  gke_clusters:
+    type: list
+    description: "Nested block: gke_clusters"
+    default: []
+  networks:
+    type: list
+    description: "Nested block: networks"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dns:ResponsePolicy
+    properties:
+      response_policy_name: ${var.response_policy_name}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        gke_clusters:
+          for_each: ${var.gke_clusters}
+          content:
+            gke_cluster_name: ${each.value.gke_cluster_name}
+        networks:
+          for_each: ${var.networks}
+          content:
+            network_url: ${each.value.network_url}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

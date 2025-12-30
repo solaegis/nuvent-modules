@@ -1,0 +1,86 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  description:
+    type: string
+    description: "An optional description of this resource."
+    default: null
+  encrypted_interconnect_router:
+    type: boolean
+    description: "Indicates if a router is dedicated for use with encrypted VLAN attachments (interconnectAttachments)."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Router"
+    default: null
+  ncc_gateway:
+    type: string
+    description: "A URI of an NCC Gateway spoke"
+    default: null
+  network:
+    type: string
+    description: "A reference to the network to which this router belongs."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Router"
+    default: null
+  region:
+    type: string
+    description: "Region where the router resides."
+    default: null
+  bgp:
+    type: list
+    description: "Nested block: bgp"
+    default: []
+  md5_authentication_keys:
+    type: list
+    description: "Nested block: md5_authentication_keys"
+    default: []
+  params:
+    type: list
+    description: "Nested block: params"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:Router
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      encrypted_interconnect_router: ${var.encrypted_interconnect_router}
+      id: ${var.id}
+      ncc_gateway: ${var.ncc_gateway}
+      network: ${var.network}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        bgp:
+          for_each: ${var.bgp}
+          content:
+            advertise_mode: ${each.value.advertise_mode}
+            advertised_groups: ${each.value.advertised_groups}
+            asn: ${each.value.asn}
+            identifier_range: ${each.value.identifier_range}
+            keepalive_interval: ${each.value.keepalive_interval}
+            advertised_ip_ranges: ${each.value.advertised_ip_ranges}
+        md5_authentication_keys:
+          for_each: ${var.md5_authentication_keys}
+          content:
+            key: ${each.value.key}
+            name: ${each.value.name}
+        params:
+          for_each: ${var.params}
+          content:
+            resource_manager_tags: ${each.value.resource_manager_tags}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

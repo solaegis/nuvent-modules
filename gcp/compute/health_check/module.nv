@@ -1,0 +1,158 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035.  Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  check_interval_sec:
+    type: number
+    description: "How often (in seconds) to send a health check. The default value is 5 seconds."
+    default: null
+  description:
+    type: string
+    description: "An optional description of this resource. Provide this property when you create the resource."
+    default: null
+  healthy_threshold:
+    type: number
+    description: "A so-far unhealthy instance will be marked healthy after this many consecutive successes. The default value is 2."
+    default: null
+  id:
+    type: string
+    description: "Optional property for HealthCheck"
+    default: null
+  project:
+    type: string
+    description: "Optional property for HealthCheck"
+    default: null
+  source_regions:
+    type: list
+    description: "The list of cloud regions from which health checks are performed. If any regions are specified, then exactly 3 regions should be specified. The region names must be valid names of Google Cloud regions. This can only be set for global health check. If this list is non-empty, then there are restrictions on what other health check fields are supported and what other resources can use this health check:  * SSL, HTTP2, and GRPC protocols are not supported.  * The TCP request field is not supported.  * The proxyHeader field for HTTP, HTTPS, and TCP is not supported.  * The checkIntervalSec field must be at least 30.  * The health check cannot be used with BackendService nor with managed instance group auto-healing."
+    default: null
+  timeout_sec:
+    type: number
+    description: "How long (in seconds) to wait before claiming failure. The default value is 5 seconds.  It is invalid for timeoutSec to have greater value than checkIntervalSec."
+    default: null
+  unhealthy_threshold:
+    type: number
+    description: "A so-far healthy instance will be marked unhealthy after this many consecutive failures. The default value is 2."
+    default: null
+  grpc_health_check:
+    type: list
+    description: "Nested block: grpc_health_check"
+    default: []
+  grpc_tls_health_check:
+    type: list
+    description: "Nested block: grpc_tls_health_check"
+    default: []
+  http2_health_check:
+    type: list
+    description: "Nested block: http2_health_check"
+    default: []
+  http_health_check:
+    type: list
+    description: "Nested block: http_health_check"
+    default: []
+  https_health_check:
+    type: list
+    description: "Nested block: https_health_check"
+    default: []
+  log_config:
+    type: list
+    description: "Nested block: log_config"
+    default: []
+  ssl_health_check:
+    type: list
+    description: "Nested block: ssl_health_check"
+    default: []
+  tcp_health_check:
+    type: list
+    description: "Nested block: tcp_health_check"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:HealthCheck
+    properties:
+      name: ${var.name}
+      check_interval_sec: ${var.check_interval_sec}
+      description: ${var.description}
+      healthy_threshold: ${var.healthy_threshold}
+      id: ${var.id}
+      project: ${var.project}
+      source_regions: ${var.source_regions}
+      timeout_sec: ${var.timeout_sec}
+      unhealthy_threshold: ${var.unhealthy_threshold}
+      dynamic:
+        grpc_health_check:
+          for_each: ${var.grpc_health_check}
+          content:
+            grpc_service_name: ${each.value.grpc_service_name}
+            port: ${each.value.port}
+            port_name: ${each.value.port_name}
+            port_specification: ${each.value.port_specification}
+        grpc_tls_health_check:
+          for_each: ${var.grpc_tls_health_check}
+          content:
+            grpc_service_name: ${each.value.grpc_service_name}
+            port: ${each.value.port}
+            port_specification: ${each.value.port_specification}
+        http2_health_check:
+          for_each: ${var.http2_health_check}
+          content:
+            host: ${each.value.host}
+            port: ${each.value.port}
+            port_name: ${each.value.port_name}
+            port_specification: ${each.value.port_specification}
+            proxy_header: ${each.value.proxy_header}
+            request_path: ${each.value.request_path}
+            response: ${each.value.response}
+        http_health_check:
+          for_each: ${var.http_health_check}
+          content:
+            host: ${each.value.host}
+            port: ${each.value.port}
+            port_name: ${each.value.port_name}
+            port_specification: ${each.value.port_specification}
+            proxy_header: ${each.value.proxy_header}
+            request_path: ${each.value.request_path}
+            response: ${each.value.response}
+        https_health_check:
+          for_each: ${var.https_health_check}
+          content:
+            host: ${each.value.host}
+            port: ${each.value.port}
+            port_name: ${each.value.port_name}
+            port_specification: ${each.value.port_specification}
+            proxy_header: ${each.value.proxy_header}
+            request_path: ${each.value.request_path}
+            response: ${each.value.response}
+        log_config:
+          for_each: ${var.log_config}
+          content:
+            enable: ${each.value.enable}
+        ssl_health_check:
+          for_each: ${var.ssl_health_check}
+          content:
+            port: ${each.value.port}
+            port_name: ${each.value.port_name}
+            port_specification: ${each.value.port_specification}
+            proxy_header: ${each.value.proxy_header}
+            request: ${each.value.request}
+            response: ${each.value.response}
+        tcp_health_check:
+          for_each: ${var.tcp_health_check}
+          content:
+            port: ${each.value.port}
+            port_name: ${each.value.port_name}
+            port_specification: ${each.value.port_specification}
+            proxy_header: ${each.value.proxy_header}
+            request: ${each.value.request}
+            response: ${each.value.response}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

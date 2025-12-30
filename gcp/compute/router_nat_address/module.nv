@@ -1,0 +1,49 @@
+variables:
+  nat_ips:
+    type: list
+    description: "Self-links of NAT IPs to be used in a Nat service. Only valid if the referenced RouterNat natIpAllocateOption is set to MANUAL_ONLY."
+  router:
+    type: string
+    description: "The name of the Cloud Router in which the referenced NAT service is configured."
+  router_nat:
+    type: string
+    description: "The name of the Nat service in which this address will be configured."
+  drain_nat_ips:
+    type: list
+    description: "A list of URLs of the IP resources to be drained. These IPs must be valid static external IPs that have been assigned to the NAT."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RouterNatAddress"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RouterNatAddress"
+    default: null
+  region:
+    type: string
+    description: "Region where the NAT service reside."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:RouterNatAddress
+    properties:
+      nat_ips: ${var.nat_ips}
+      router: ${var.router}
+      router_nat: ${var.router_nat}
+      drain_nat_ips: ${var.drain_nat_ips}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

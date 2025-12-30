@@ -1,0 +1,47 @@
+variables:
+  backup_plan:
+    type: string
+    description: "The BP with which resource needs to be created Note: - A Backup Plan configured for 'compute.googleapis.com/Instance', can only protect instance type resources. - A Backup Plan configured for 'compute.googleapis.com/Disk' can be used to protect both standard Disks and Regional Disks resources."
+  backup_plan_association_id:
+    type: string
+    description: "The id of backupplan association"
+  location:
+    type: string
+    description: "The location for the backupplan association"
+  resource:
+    type: string
+    description: "The resource for which BPA needs to be created"
+  resource_type:
+    type: string
+    description: "The resource type of workload on which backupplan is applied. Examples include, \"compute.googleapis.com/Instance\", \"compute.googleapis.com/Disk\", and \"compute.googleapis.com/RegionDisk\""
+  id:
+    type: string
+    description: "Optional property for DrBackupPlanAssociation"
+    default: null
+  project:
+    type: string
+    description: "Optional property for DrBackupPlanAssociation"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:backup:DrBackupPlanAssociation
+    properties:
+      backup_plan: ${var.backup_plan}
+      backup_plan_association_id: ${var.backup_plan_association_id}
+      location: ${var.location}
+      resource: ${var.resource}
+      resource_type: ${var.resource_type}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

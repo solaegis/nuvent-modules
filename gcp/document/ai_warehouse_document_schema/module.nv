@@ -1,0 +1,62 @@
+variables:
+  display_name:
+    type: string
+    description: "Name of the schema given by the user."
+  location:
+    type: string
+    description: "The location of the resource."
+  project_number:
+    type: string
+    description: "The unique identifier of the project."
+  document_is_folder:
+    type: boolean
+    description: "Tells whether the document is a folder or a typical document."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AiWarehouseDocumentSchema"
+    default: null
+  property_definitions:
+    type: list
+    description: "Nested block: property_definitions"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:document:AiWarehouseDocumentSchema
+    properties:
+      display_name: ${var.display_name}
+      location: ${var.location}
+      project_number: ${var.project_number}
+      document_is_folder: ${var.document_is_folder}
+      id: ${var.id}
+      dynamic:
+        property_definitions:
+          for_each: ${var.property_definitions}
+          content:
+            display_name: ${each.value.display_name}
+            is_filterable: ${each.value.is_filterable}
+            is_metadata: ${each.value.is_metadata}
+            is_repeatable: ${each.value.is_repeatable}
+            is_required: ${each.value.is_required}
+            is_searchable: ${each.value.is_searchable}
+            name: ${each.value.name}
+            retrieval_importance: ${each.value.retrieval_importance}
+            date_time_type_options: ${each.value.date_time_type_options}
+            enum_type_options: ${each.value.enum_type_options}
+            float_type_options: ${each.value.float_type_options}
+            integer_type_options: ${each.value.integer_type_options}
+            map_type_options: ${each.value.map_type_options}
+            property_type_options: ${each.value.property_type_options}
+            schema_sources: ${each.value.schema_sources}
+            text_type_options: ${each.value.text_type_options}
+            timestamp_type_options: ${each.value.timestamp_type_options}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

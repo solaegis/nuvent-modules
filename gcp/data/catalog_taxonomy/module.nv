@@ -1,0 +1,46 @@
+variables:
+  display_name:
+    type: string
+    description: "User defined name of this taxonomy. The taxonomy display name must be unique within an organization. It must: contain only unicode letters, numbers, underscores, dashes and spaces; not start or end with spaces; and be at most 200 bytes long when encoded in UTF-8."
+  activated_policy_types:
+    type: list
+    description: "A list of policy types that are activated for this taxonomy. If not set, defaults to an empty list. Possible values: [\"POLICY_TYPE_UNSPECIFIED\", \"FINE_GRAINED_ACCESS_CONTROL\"]"
+    default: null
+  description:
+    type: string
+    description: "Description of this taxonomy. It must: contain only unicode characters, tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes long when encoded in UTF-8. If not set, defaults to an empty description."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CatalogTaxonomy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for CatalogTaxonomy"
+    default: null
+  region:
+    type: string
+    description: "Taxonomy location region."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:data:CatalogTaxonomy
+    properties:
+      display_name: ${var.display_name}
+      activated_policy_types: ${var.activated_policy_types}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

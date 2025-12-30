@@ -1,0 +1,143 @@
+variables:
+  autonomous_database_id:
+    type: string
+    description: "The ID of the Autonomous Database to create. This value is restricted to (^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$) and must be a maximum of 63 characters in length. The value must start with a letter and end with a letter or a number."
+  database:
+    type: string
+    description: "The name of the Autonomous Database. The database name must be unique in the project. The name must begin with a letter and can contain a maximum of 30 alphanumeric characters."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. See documentation for resource type 'oracledatabase.googleapis.com/AutonomousDatabaseBackup'."
+  admin_password:
+    type: string
+    description: "The password for the default ADMIN user."
+    default: null
+  cidr:
+    type: string
+    description: "The subnet CIDR range for the Autonmous Database."
+    default: null
+  deletion_protection:
+    type: boolean
+    description: "Whether or not to allow Terraform to destroy the instance. Unless this field is set to false in Terraform state, a terraform destroy or terraform apply that would delete the instance will fail."
+    default: null
+  display_name:
+    type: string
+    description: "The display name for the Autonomous Database. The name does not have to be unique within your project."
+    default: null
+  id:
+    type: string
+    description: "Optional property for DatabaseAutonomousDatabase"
+    default: null
+  labels:
+    type: object
+    description: "The labels or tags associated with the Autonomous Database.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  network:
+    type: string
+    description: "The name of the VPC network used by the Autonomous Database. Format: projects/{project}/global/networks/{network}"
+    default: null
+  odb_network:
+    type: string
+    description: "The name of the OdbNetwork associated with the Autonomous Database. Format: projects/{project}/locations/{location}/odbNetworks/{odb_network} It is optional but if specified, this should match the parent ODBNetwork of the odb_subnet and backup_odb_subnet."
+    default: null
+  odb_subnet:
+    type: string
+    description: "The name of the OdbSubnet associated with the Autonomous Database for IP allocation. Format: projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}"
+    default: null
+  project:
+    type: string
+    description: "Optional property for DatabaseAutonomousDatabase"
+    default: null
+  properties:
+    type: list
+    description: "Nested block: properties"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:oracle:DatabaseAutonomousDatabase
+    properties:
+      autonomous_database_id: ${var.autonomous_database_id}
+      database: ${var.database}
+      location: ${var.location}
+      admin_password: ${var.admin_password}
+      cidr: ${var.cidr}
+      deletion_protection: ${var.deletion_protection}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      network: ${var.network}
+      odb_network: ${var.odb_network}
+      odb_subnet: ${var.odb_subnet}
+      project: ${var.project}
+      dynamic:
+        properties:
+          for_each: ${var.properties}
+          content:
+            actual_used_data_storage_size_tb: ${each.value.actual_used_data_storage_size_tb}
+            allocated_storage_size_tb: ${each.value.allocated_storage_size_tb}
+            apex_details: ${each.value.apex_details}
+            are_primary_allowlisted_ips_used: ${each.value.are_primary_allowlisted_ips_used}
+            autonomous_container_database_id: ${each.value.autonomous_container_database_id}
+            available_upgrade_versions: ${each.value.available_upgrade_versions}
+            backup_retention_period_days: ${each.value.backup_retention_period_days}
+            character_set: ${each.value.character_set}
+            compute_count: ${each.value.compute_count}
+            connection_strings: ${each.value.connection_strings}
+            connection_urls: ${each.value.connection_urls}
+            cpu_core_count: ${each.value.cpu_core_count}
+            data_safe_state: ${each.value.data_safe_state}
+            data_storage_size_gb: ${each.value.data_storage_size_gb}
+            data_storage_size_tb: ${each.value.data_storage_size_tb}
+            database_management_state: ${each.value.database_management_state}
+            db_edition: ${each.value.db_edition}
+            db_version: ${each.value.db_version}
+            db_workload: ${each.value.db_workload}
+            failed_data_recovery_duration: ${each.value.failed_data_recovery_duration}
+            is_auto_scaling_enabled: ${each.value.is_auto_scaling_enabled}
+            is_local_data_guard_enabled: ${each.value.is_local_data_guard_enabled}
+            is_storage_auto_scaling_enabled: ${each.value.is_storage_auto_scaling_enabled}
+            license_type: ${each.value.license_type}
+            lifecycle_details: ${each.value.lifecycle_details}
+            local_adg_auto_failover_max_data_loss_limit: ${each.value.local_adg_auto_failover_max_data_loss_limit}
+            local_disaster_recovery_type: ${each.value.local_disaster_recovery_type}
+            local_standby_db: ${each.value.local_standby_db}
+            maintenance_begin_time: ${each.value.maintenance_begin_time}
+            maintenance_end_time: ${each.value.maintenance_end_time}
+            maintenance_schedule_type: ${each.value.maintenance_schedule_type}
+            memory_per_oracle_compute_unit_gbs: ${each.value.memory_per_oracle_compute_unit_gbs}
+            memory_table_gbs: ${each.value.memory_table_gbs}
+            mtls_connection_required: ${each.value.mtls_connection_required}
+            n_character_set: ${each.value.n_character_set}
+            next_long_term_backup_time: ${each.value.next_long_term_backup_time}
+            oci_url: ${each.value.oci_url}
+            ocid: ${each.value.ocid}
+            open_mode: ${each.value.open_mode}
+            operations_insights_state: ${each.value.operations_insights_state}
+            peer_db_ids: ${each.value.peer_db_ids}
+            permission_level: ${each.value.permission_level}
+            private_endpoint: ${each.value.private_endpoint}
+            private_endpoint_ip: ${each.value.private_endpoint_ip}
+            private_endpoint_label: ${each.value.private_endpoint_label}
+            refreshable_mode: ${each.value.refreshable_mode}
+            refreshable_state: ${each.value.refreshable_state}
+            role: ${each.value.role}
+            scheduled_operation_details: ${each.value.scheduled_operation_details}
+            secret_id: ${each.value.secret_id}
+            sql_web_developer_url: ${each.value.sql_web_developer_url}
+            state: ${each.value.state}
+            supported_clone_regions: ${each.value.supported_clone_regions}
+            total_auto_backup_storage_size_gbs: ${each.value.total_auto_backup_storage_size_gbs}
+            used_data_storage_size_tbs: ${each.value.used_data_storage_size_tbs}
+            vault_id: ${each.value.vault_id}
+            customer_contacts: ${each.value.customer_contacts}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

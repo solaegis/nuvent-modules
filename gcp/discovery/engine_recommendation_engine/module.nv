@@ -1,0 +1,68 @@
+variables:
+  data_store_ids:
+    type: list
+    description: "The data stores associated with this engine. For SOLUTION_TYPE_RECOMMENDATION type of engines, they can only associate with at most one data store."
+  display_name:
+    type: string
+    description: "Required. The display name of the engine. Should be human readable. UTF-8 encoded string with limit of 1024 characters."
+  engine_id:
+    type: string
+    description: "Unique ID to use for Recommendation Engine."
+  location:
+    type: string
+    description: "The geographic location where the data store should reside. The value can only be one of \"global\", \"us\" and \"eu\"."
+  id:
+    type: string
+    description: "Optional property for EngineRecommendationEngine"
+    default: null
+  industry_vertical:
+    type: string
+    description: "The industry vertical that the engine registers. The restriction of the Engine industry vertical is based on DataStore: If unspecified, default to GENERIC. Vertical on Engine has to match vertical of the DataStore liniked to the engine. Default value: \"GENERIC\" Possible values: [\"GENERIC\", \"MEDIA\"]"
+    default: null
+  project:
+    type: string
+    description: "Optional property for EngineRecommendationEngine"
+    default: null
+  common_config:
+    type: list
+    description: "Nested block: common_config"
+    default: []
+  media_recommendation_engine_config:
+    type: list
+    description: "Nested block: media_recommendation_engine_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:discovery:EngineRecommendationEngine
+    properties:
+      data_store_ids: ${var.data_store_ids}
+      display_name: ${var.display_name}
+      engine_id: ${var.engine_id}
+      location: ${var.location}
+      id: ${var.id}
+      industry_vertical: ${var.industry_vertical}
+      project: ${var.project}
+      dynamic:
+        common_config:
+          for_each: ${var.common_config}
+          content:
+            company_name: ${each.value.company_name}
+        media_recommendation_engine_config:
+          for_each: ${var.media_recommendation_engine_config}
+          content:
+            optimization_objective: ${each.value.optimization_objective}
+            training_state: ${each.value.training_state}
+            type: ${each.value.type}
+            engine_features_config: ${each.value.engine_features_config}
+            optimization_objective_config: ${each.value.optimization_objective_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

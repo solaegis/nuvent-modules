@@ -1,0 +1,72 @@
+variables:
+  instance_name:
+    type: string
+    description: "The name of the Bigtable instance."
+  name:
+    type: string
+    description: "The name of the table. Must be 1-50 characters and must only contain hyphens, underscores, periods, letters and numbers."
+  change_stream_retention:
+    type: string
+    description: "Duration to retain change stream data for the table. Set to 0 to disable. Must be between 1 and 7 days."
+    default: null
+  deletion_protection:
+    type: string
+    description: "A field to make the table protected against data loss i.e. when set to PROTECTED, deleting the table, the column families in the table, and the instance containing the table would be prohibited. If not provided, currently deletion protection will be set to UNPROTECTED as it is the API default value."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Table"
+    default: null
+  project:
+    type: string
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    default: null
+  row_key_schema:
+    type: string
+    description: "Defines the row key schema of a table. To create or update a table with a row key schema, specify this argument. 					Note that in-place update is not supported, and any in-place modification to the schema will lead to failure. 				    To update a schema, please clear it (by omitting the field), and update the resource again with a new schema.\n 					 					The schema must be a valid JSON encoded string representing a Type's struct protobuf message. Note that for bytes sequence (like delimited_bytes.delimiter) 					the delimiter must be base64 encoded. For example, if you want to set a delimiter to a single byte character \"#\", it should be set to \"Iw==\", which is the base64 encoding of the byte sequence \"#\"."
+    default: null
+  split_keys:
+    type: list
+    description: "A list of predefined keys to split the table on. !> Warning: Modifying the split_keys of an existing table will cause Terraform to delete/recreate the entire google_bigtable_table resource."
+    default: null
+  automated_backup_policy:
+    type: list
+    description: "Nested block: automated_backup_policy"
+    default: []
+  column_family:
+    type: list
+    description: "Nested block: column_family"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigtable:Table
+    properties:
+      instance_name: ${var.instance_name}
+      name: ${var.name}
+      change_stream_retention: ${var.change_stream_retention}
+      deletion_protection: ${var.deletion_protection}
+      id: ${var.id}
+      project: ${var.project}
+      row_key_schema: ${var.row_key_schema}
+      split_keys: ${var.split_keys}
+      dynamic:
+        automated_backup_policy:
+          for_each: ${var.automated_backup_policy}
+          content:
+            frequency: ${each.value.frequency}
+            retention_period: ${each.value.retention_period}
+        column_family:
+          for_each: ${var.column_family}
+          content:
+            family: ${each.value.family}
+            type: ${each.value.type}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            update: ${each.value.update}

@@ -1,0 +1,139 @@
+variables:
+  data_exchange_id:
+    type: string
+    description: "The ID of the data exchange. Must contain only Unicode letters, numbers (0-9), underscores (_). Should not use characters that require URL-escaping, or characters outside of ASCII, spaces."
+  display_name:
+    type: string
+    description: "Human-readable display name of the listing. The display name must contain only Unicode letters, numbers (0-9), underscores (_), dashes (-), spaces ( ), ampersands (&) and can't start or end with spaces."
+  listing_id:
+    type: string
+    description: "The ID of the listing. Must contain only Unicode letters, numbers (0-9), underscores (_). Should not use characters that require URL-escaping, or characters outside of ASCII, spaces."
+  location:
+    type: string
+    description: "The name of the location this data exchange listing."
+  allow_only_metadata_sharing:
+    type: boolean
+    description: "If true, the listing is only available to get the resource metadata. Listing is non subscribable."
+    default: null
+  categories:
+    type: list
+    description: "Categories of the listing. Up to two categories are allowed."
+    default: null
+  delete_commercial:
+    type: boolean
+    description: "If the listing is commercial then this field must be set to true, otherwise a failure is thrown. This acts as a safety guard to avoid deleting commercial listings accidentally."
+    default: null
+  description:
+    type: string
+    description: "Short description of the listing. The description must not contain Unicode non-characters and C0 and C1 control codes except tabs (HT), new lines (LF), carriage returns (CR), and page breaks (FF)."
+    default: null
+  discovery_type:
+    type: string
+    description: "Specifies the type of discovery on the discovery page. Cannot be set for a restricted listing. Note that this does not control the visibility of the exchange/listing which is defined by IAM permission. Possible values: [\"DISCOVERY_TYPE_PRIVATE\", \"DISCOVERY_TYPE_PUBLIC\"]"
+    default: null
+  documentation:
+    type: string
+    description: "Documentation describing the listing."
+    default: null
+  icon:
+    type: string
+    description: "Base64 encoded image representing the listing."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AnalyticsHubListing"
+    default: null
+  log_linked_dataset_query_user_email:
+    type: boolean
+    description: "If true, subscriber email logging is enabled and all queries on the linked dataset will log the email address of the querying user. Once enabled, this setting cannot be turned off."
+    default: null
+  primary_contact:
+    type: string
+    description: "Email or URL of the primary point of contact of the listing."
+    default: null
+  project:
+    type: string
+    description: "Optional property for AnalyticsHubListing"
+    default: null
+  request_access:
+    type: string
+    description: "Email or URL of the request access of the listing. Subscribers can use this reference to request access."
+    default: null
+  bigquery_dataset:
+    type: list
+    description: "Nested block: bigquery_dataset"
+    default: []
+  data_provider:
+    type: list
+    description: "Nested block: data_provider"
+    default: []
+  publisher:
+    type: list
+    description: "Nested block: publisher"
+    default: []
+  pubsub_topic:
+    type: list
+    description: "Nested block: pubsub_topic"
+    default: []
+  restricted_export_config:
+    type: list
+    description: "Nested block: restricted_export_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigquery:AnalyticsHubListing
+    properties:
+      data_exchange_id: ${var.data_exchange_id}
+      display_name: ${var.display_name}
+      listing_id: ${var.listing_id}
+      location: ${var.location}
+      allow_only_metadata_sharing: ${var.allow_only_metadata_sharing}
+      categories: ${var.categories}
+      delete_commercial: ${var.delete_commercial}
+      description: ${var.description}
+      discovery_type: ${var.discovery_type}
+      documentation: ${var.documentation}
+      icon: ${var.icon}
+      id: ${var.id}
+      log_linked_dataset_query_user_email: ${var.log_linked_dataset_query_user_email}
+      primary_contact: ${var.primary_contact}
+      project: ${var.project}
+      request_access: ${var.request_access}
+      dynamic:
+        bigquery_dataset:
+          for_each: ${var.bigquery_dataset}
+          content:
+            dataset: ${each.value.dataset}
+            selected_resources: ${each.value.selected_resources}
+        data_provider:
+          for_each: ${var.data_provider}
+          content:
+            name: ${each.value.name}
+            primary_contact: ${each.value.primary_contact}
+        publisher:
+          for_each: ${var.publisher}
+          content:
+            name: ${each.value.name}
+            primary_contact: ${each.value.primary_contact}
+        pubsub_topic:
+          for_each: ${var.pubsub_topic}
+          content:
+            data_affinity_regions: ${each.value.data_affinity_regions}
+            topic: ${each.value.topic}
+        restricted_export_config:
+          for_each: ${var.restricted_export_config}
+          content:
+            enabled: ${each.value.enabled}
+            restrict_direct_table_access: ${each.value.restrict_direct_table_access}
+            restrict_query_result: ${each.value.restrict_query_result}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

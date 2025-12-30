@@ -1,0 +1,70 @@
+variables:
+  security_gateway_id:
+    type: string
+    description: "Optional. User-settable SecurityGateway resource ID. * Must start with a letter. * Must contain between 4-63 characters from '/a-z-/'. * Must end with a number or letter."
+  display_name:
+    type: string
+    description: "Optional. An arbitrary user-provided name for the SecurityGateway. Cannot exceed 64 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SecurityGateway"
+    default: null
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122. Must be omitted or set to 'global'."
+    default: null
+  project:
+    type: string
+    description: "Optional property for SecurityGateway"
+    default: null
+  hubs:
+    type: list
+    description: "Nested block: hubs"
+    default: []
+  proxy_protocol_config:
+    type: list
+    description: "Nested block: proxy_protocol_config"
+    default: []
+  service_discovery:
+    type: list
+    description: "Nested block: service_discovery"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:beyondcorp:SecurityGateway
+    properties:
+      security_gateway_id: ${var.security_gateway_id}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        hubs:
+          for_each: ${var.hubs}
+          content:
+            region: ${each.value.region}
+            internet_gateway: ${each.value.internet_gateway}
+        proxy_protocol_config:
+          for_each: ${var.proxy_protocol_config}
+          content:
+            allowed_client_headers: ${each.value.allowed_client_headers}
+            client_ip: ${each.value.client_ip}
+            gateway_identity: ${each.value.gateway_identity}
+            metadata_headers: ${each.value.metadata_headers}
+            contextual_headers: ${each.value.contextual_headers}
+        service_discovery:
+          for_each: ${var.service_discovery}
+          content:
+            api_gateway: ${each.value.api_gateway}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

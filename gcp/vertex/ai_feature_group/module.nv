@@ -1,0 +1,56 @@
+variables:
+  description:
+    type: string
+    description: "The description of the FeatureGroup."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AiFeatureGroup"
+    default: null
+  labels:
+    type: object
+    description: "The labels with user-defined metadata to organize your FeatureGroup.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  name:
+    type: string
+    description: "The resource name of the Feature Group."
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiFeatureGroup"
+    default: null
+  region:
+    type: string
+    description: "The region of feature group. eg us-central1"
+    default: null
+  big_query:
+    type: list
+    description: "Nested block: big_query"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vertex:AiFeatureGroup
+    properties:
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      name: ${var.name}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        big_query:
+          for_each: ${var.big_query}
+          content:
+            entity_id_columns: ${each.value.entity_id_columns}
+            big_query_source: ${each.value.big_query_source}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,61 @@
+variables:
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  multicast_domain_activation:
+    type: string
+    description: "The resource name of a multicast domain activation that is in the same zone as this multicast group. Use the following format: 'projects/*/locations/*/multicastDomainActivations/*'"
+  multicast_group_range:
+    type: string
+    description: "The resource name of the global multicast group range for the group. Use the following format: 'projects/*/locations/global/multicastGroupRanges/*'"
+  multicast_group_range_activation_id:
+    type: string
+    description: "A unique name for the multicast group range activation. The name is restricted to letters, numbers, and hyphen, with the first character a letter, and the last a letter or a number. The name must not exceed 48 characters."
+  description:
+    type: string
+    description: "An optional text description of the multicast group range activation."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ServicesMulticastGroupRangeActivation"
+    default: null
+  labels:
+    type: object
+    description: "Labels as key-value pairs.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ServicesMulticastGroupRangeActivation"
+    default: null
+  log_config:
+    type: list
+    description: "Nested block: log_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ServicesMulticastGroupRangeActivation
+    properties:
+      location: ${var.location}
+      multicast_domain_activation: ${var.multicast_domain_activation}
+      multicast_group_range: ${var.multicast_group_range}
+      multicast_group_range_activation_id: ${var.multicast_group_range_activation_id}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        log_config:
+          for_each: ${var.log_config}
+          content:
+            enabled: ${each.value.enabled}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

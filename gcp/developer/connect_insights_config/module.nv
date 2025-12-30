@@ -1,0 +1,59 @@
+variables:
+  app_hub_application:
+    type: string
+    description: "The name of the App Hub Application. Format: projects/{project}/locations/{location}/applications/{application}"
+  insights_config_id:
+    type: string
+    description: "ID of the requesting InsightsConfig."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  annotations:
+    type: object
+    description: "User specified annotations. See https://google.aip.dev/148#annotations for more details such as format and size limitations.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ConnectInsightsConfig"
+    default: null
+  labels:
+    type: object
+    description: "Set of labels associated with an InsightsConfig.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ConnectInsightsConfig"
+    default: null
+  artifact_configs:
+    type: list
+    description: "Nested block: artifact_configs"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:developer:ConnectInsightsConfig
+    properties:
+      app_hub_application: ${var.app_hub_application}
+      insights_config_id: ${var.insights_config_id}
+      location: ${var.location}
+      annotations: ${var.annotations}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        artifact_configs:
+          for_each: ${var.artifact_configs}
+          content:
+            uri: ${each.value.uri}
+            google_artifact_analysis: ${each.value.google_artifact_analysis}
+            google_artifact_registry: ${each.value.google_artifact_registry}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

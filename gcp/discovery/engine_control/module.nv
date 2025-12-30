@@ -1,0 +1,112 @@
+variables:
+  control_id:
+    type: string
+    description: "The unique id of the control."
+  display_name:
+    type: string
+    description: "The display name of the control. This field must be a UTF-8 encoded string with a length limit of 128 characters."
+  engine_id:
+    type: string
+    description: "The engine to add the control to."
+  location:
+    type: string
+    description: "The geographic location where the data store should reside. The value can only be one of \"global\", \"us\" and \"eu\"."
+  solution_type:
+    type: string
+    description: "The solution type that the control belongs to. Possible values: [\"SOLUTION_TYPE_RECOMMENDATION\", \"SOLUTION_TYPE_SEARCH\", \"SOLUTION_TYPE_CHAT\", \"SOLUTION_TYPE_GENERATIVE_CHAT\"]"
+  collection_id:
+    type: string
+    description: "The collection ID. Currently only accepts \"default_collection\"."
+    default: null
+  id:
+    type: string
+    description: "Optional property for EngineControl"
+    default: null
+  project:
+    type: string
+    description: "Optional property for EngineControl"
+    default: null
+  use_cases:
+    type: list
+    description: "The use cases that the control is used for. Possible values: [\"SEARCH_USE_CASE_SEARCH\", \"SEARCH_USE_CASE_BROWSE\"]"
+    default: null
+  boost_action:
+    type: list
+    description: "Nested block: boost_action"
+    default: []
+  conditions:
+    type: list
+    description: "Nested block: conditions"
+    default: []
+  filter_action:
+    type: list
+    description: "Nested block: filter_action"
+    default: []
+  promote_action:
+    type: list
+    description: "Nested block: promote_action"
+    default: []
+  redirect_action:
+    type: list
+    description: "Nested block: redirect_action"
+    default: []
+  synonyms_action:
+    type: list
+    description: "Nested block: synonyms_action"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:discovery:EngineControl
+    properties:
+      control_id: ${var.control_id}
+      display_name: ${var.display_name}
+      engine_id: ${var.engine_id}
+      location: ${var.location}
+      solution_type: ${var.solution_type}
+      collection_id: ${var.collection_id}
+      id: ${var.id}
+      project: ${var.project}
+      use_cases: ${var.use_cases}
+      dynamic:
+        boost_action:
+          for_each: ${var.boost_action}
+          content:
+            data_store: ${each.value.data_store}
+            filter: ${each.value.filter}
+            fixed_boost: ${each.value.fixed_boost}
+            interpolation_boost_spec: ${each.value.interpolation_boost_spec}
+        conditions:
+          for_each: ${var.conditions}
+          content:
+            query_regex: ${each.value.query_regex}
+            active_time_range: ${each.value.active_time_range}
+            query_terms: ${each.value.query_terms}
+        filter_action:
+          for_each: ${var.filter_action}
+          content:
+            data_store: ${each.value.data_store}
+            filter: ${each.value.filter}
+        promote_action:
+          for_each: ${var.promote_action}
+          content:
+            data_store: ${each.value.data_store}
+            search_link_promotion: ${each.value.search_link_promotion}
+        redirect_action:
+          for_each: ${var.redirect_action}
+          content:
+            redirect_uri: ${each.value.redirect_uri}
+        synonyms_action:
+          for_each: ${var.synonyms_action}
+          content:
+            synonyms: ${each.value.synonyms}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

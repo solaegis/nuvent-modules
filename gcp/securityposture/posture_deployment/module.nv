@@ -1,0 +1,51 @@
+variables:
+  location:
+    type: string
+    description: "The location of the resource, eg. global'."
+  parent:
+    type: string
+    description: "The parent of the resource, an organization. Format should be 'organizations/{organization_id}'."
+  posture_deployment_id:
+    type: string
+    description: "ID of the posture deployment."
+  posture_id:
+    type: string
+    description: "Relative name of the posture which needs to be deployed. It should be in the format:   organizations/{organization_id}/locations/{location}/postures/{posture_id}"
+  posture_revision_id:
+    type: string
+    description: "Revision_id the posture which needs to be deployed."
+  target_resource:
+    type: string
+    description: "The resource on which the posture should be deployed. This can be in one of the following formats: projects/{project_number}, folders/{folder_number}, organizations/{organization_id}"
+  description:
+    type: string
+    description: "Description of the posture deployment."
+    default: null
+  id:
+    type: string
+    description: "Optional property for PostureDeployment"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:securityposture:PostureDeployment
+    properties:
+      location: ${var.location}
+      parent: ${var.parent}
+      posture_deployment_id: ${var.posture_deployment_id}
+      posture_id: ${var.posture_id}
+      posture_revision_id: ${var.posture_revision_id}
+      target_resource: ${var.target_resource}
+      description: ${var.description}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

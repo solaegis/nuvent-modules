@@ -1,0 +1,73 @@
+variables:
+  action:
+    type: string
+    description: "The action that the external access rule performs. Possible values: [\"ALLOW\", \"DENY\"]"
+  destination_ports:
+    type: list
+    description: "A list of destination ports to which the external access rule applies."
+  ip_protocol:
+    type: string
+    description: "The IP protocol to which the external access rule applies."
+  name:
+    type: string
+    description: "The ID of the external access rule."
+  parent:
+    type: string
+    description: "The resource name of the network policy. Resource names are schemeless URIs that follow the conventions in https://cloud.google.com/apis/design/resource_names. For example: projects/my-project/locations/us-west1-a/networkPolicies/my-policy"
+  priority:
+    type: number
+    description: "External access rule priority, which determines the external access rule to use when multiple rules apply."
+  source_ports:
+    type: list
+    description: "A list of source ports to which the external access rule applies."
+  description:
+    type: string
+    description: "User-provided description for the external access rule."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ExternalAccessRule"
+    default: null
+  destination_ip_ranges:
+    type: list
+    description: "Nested block: destination_ip_ranges"
+    default: []
+  source_ip_ranges:
+    type: list
+    description: "Nested block: source_ip_ranges"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vmwareengine:ExternalAccessRule
+    properties:
+      action: ${var.action}
+      destination_ports: ${var.destination_ports}
+      ip_protocol: ${var.ip_protocol}
+      name: ${var.name}
+      parent: ${var.parent}
+      priority: ${var.priority}
+      source_ports: ${var.source_ports}
+      description: ${var.description}
+      id: ${var.id}
+      dynamic:
+        destination_ip_ranges:
+          for_each: ${var.destination_ip_ranges}
+          content:
+            external_address: ${each.value.external_address}
+            ip_address_range: ${each.value.ip_address_range}
+        source_ip_ranges:
+          for_each: ${var.source_ip_ranges}
+          content:
+            ip_address: ${each.value.ip_address}
+            ip_address_range: ${each.value.ip_address_range}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

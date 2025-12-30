@@ -1,0 +1,45 @@
+variables:
+  logical_view_id:
+    type: string
+    description: "The unique name of the logical view in the form '[_a-zA-Z0-9][-_.a-zA-Z0-9]*'."
+  query:
+    type: string
+    description: "The logical view's select query."
+  deletion_protection:
+    type: boolean
+    description: "Set to true to make the logical view protected against deletion."
+    default: null
+  id:
+    type: string
+    description: "Optional property for LogicalView"
+    default: null
+  instance:
+    type: string
+    description: "The name of the instance to create the logical view within."
+    default: null
+  project:
+    type: string
+    description: "Optional property for LogicalView"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigtable:LogicalView
+    properties:
+      logical_view_id: ${var.logical_view_id}
+      query: ${var.query}
+      deletion_protection: ${var.deletion_protection}
+      id: ${var.id}
+      instance: ${var.instance}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,66 @@
+variables:
+  description:
+    type: string
+    description: "A descriptive comment."
+    default: null
+  global_policy_evaluation_mode:
+    type: string
+    description: "Controls the evaluation of a Google-maintained global admission policy for common system-level images. Images not covered by the global policy will be subject to the project admission policy. Possible values: [\"ENABLE\", \"DISABLE\"]"
+    default: null
+  id:
+    type: string
+    description: "Optional property for AuthorizationPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AuthorizationPolicy"
+    default: null
+  admission_whitelist_patterns:
+    type: list
+    description: "Nested block: admission_whitelist_patterns"
+    default: []
+  cluster_admission_rules:
+    type: list
+    description: "Nested block: cluster_admission_rules"
+    default: []
+  default_admission_rule:
+    type: list
+    description: "Nested block: default_admission_rule"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:binary:AuthorizationPolicy
+    properties:
+      description: ${var.description}
+      global_policy_evaluation_mode: ${var.global_policy_evaluation_mode}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        admission_whitelist_patterns:
+          for_each: ${var.admission_whitelist_patterns}
+          content:
+            name_pattern: ${each.value.name_pattern}
+        cluster_admission_rules:
+          for_each: ${var.cluster_admission_rules}
+          content:
+            cluster: ${each.value.cluster}
+            enforcement_mode: ${each.value.enforcement_mode}
+            evaluation_mode: ${each.value.evaluation_mode}
+            require_attestations_by: ${each.value.require_attestations_by}
+        default_admission_rule:
+          for_each: ${var.default_admission_rule}
+          content:
+            enforcement_mode: ${each.value.enforcement_mode}
+            evaluation_mode: ${each.value.evaluation_mode}
+            require_attestations_by: ${each.value.require_attestations_by}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,85 @@
+variables:
+  api:
+    type: string
+    description: "The API to attach the config to."
+  api_config_id:
+    type: string
+    description: "Identifier to assign to the API Config. Must be unique within scope of the parent resource(api)."
+    default: null
+  api_config_id_prefix:
+    type: string
+    description: "Creates a unique name beginning with the specified prefix. If this and api_config_id are unspecified, a random value is chosen for the name."
+    default: null
+  display_name:
+    type: string
+    description: "A user-visible name for the API."
+    default: null
+  id:
+    type: string
+    description: "Optional property for GatewayApiConfig"
+    default: null
+  labels:
+    type: object
+    description: "Resource labels to represent user-provided metadata.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for GatewayApiConfig"
+    default: null
+  gateway_config:
+    type: list
+    description: "Nested block: gateway_config"
+    default: []
+  grpc_services:
+    type: list
+    description: "Nested block: grpc_services"
+    default: []
+  managed_service_configs:
+    type: list
+    description: "Nested block: managed_service_configs"
+    default: []
+  openapi_documents:
+    type: list
+    description: "Nested block: openapi_documents"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:api:GatewayApiConfig
+    properties:
+      api: ${var.api}
+      api_config_id: ${var.api_config_id}
+      api_config_id_prefix: ${var.api_config_id_prefix}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        gateway_config:
+          for_each: ${var.gateway_config}
+          content:
+            backend_config: ${each.value.backend_config}
+        grpc_services:
+          for_each: ${var.grpc_services}
+          content:
+            file_descriptor_set: ${each.value.file_descriptor_set}
+            source: ${each.value.source}
+        managed_service_configs:
+          for_each: ${var.managed_service_configs}
+          content:
+            contents: ${each.value.contents}
+            path: ${each.value.path}
+        openapi_documents:
+          for_each: ${var.openapi_documents}
+          content:
+            document: ${each.value.document}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,29 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for RuntimeIamPolicy"
+  runtime_name:
+    type: string
+    description: "Required property for RuntimeIamPolicy"
+  id:
+    type: string
+    description: "Optional property for RuntimeIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for RuntimeIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RuntimeIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:notebooks:RuntimeIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      runtime_name: ${var.runtime_name}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

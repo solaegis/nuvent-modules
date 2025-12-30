@@ -1,0 +1,44 @@
+variables:
+  dns_suffix:
+    type: string
+    description: "The DNS domain name suffix of the peered DNS domain."
+  name:
+    type: string
+    description: "Name of the peered DNS domain."
+  network:
+    type: string
+    description: "Network in the consumer project to peer with."
+  id:
+    type: string
+    description: "Optional property for NetworkingPeeredDnsDomain"
+    default: null
+  project:
+    type: string
+    description: "The ID of the project that the service account will be created in. Defaults to the provider project configuration."
+    default: null
+  service:
+    type: string
+    description: "The name of the service to create a peered DNS domain for, e.g. servicenetworking.googleapis.com"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:service:NetworkingPeeredDnsDomain
+    properties:
+      dns_suffix: ${var.dns_suffix}
+      name: ${var.name}
+      network: ${var.network}
+      id: ${var.id}
+      project: ${var.project}
+      service: ${var.service}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            read: ${each.value.read}

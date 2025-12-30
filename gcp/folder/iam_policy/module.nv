@@ -1,0 +1,19 @@
+variables:
+  folder:
+    type: string
+    description: "Required property for IamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for IamPolicy"
+  id:
+    type: string
+    description: "Optional property for IamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:folder:IamPolicy
+    properties:
+      folder: ${var.folder}
+      policy_data: ${var.policy_data}
+      id: ${var.id}

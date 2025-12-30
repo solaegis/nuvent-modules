@@ -1,0 +1,72 @@
+variables:
+  display_name:
+    type: string
+    description: "The human-readable name of the entity type, unique within the agent."
+  kind:
+    type: string
+    description: "Indicates whether the entity type can be automatically expanded. * KIND_MAP: Map entity types allow mapping of a group of synonyms to a canonical value. * KIND_LIST: List entity types contain a set of entries that do not map to canonical values. However, list entity types can contain references to other entity types (with or without aliases). * KIND_REGEXP: Regexp entity types allow to specify regular expressions in entries values. Possible values: [\"KIND_MAP\", \"KIND_LIST\", \"KIND_REGEXP\"]"
+  auto_expansion_mode:
+    type: string
+    description: "Represents kinds of entities. * AUTO_EXPANSION_MODE_UNSPECIFIED: Auto expansion disabled for the entity. * AUTO_EXPANSION_MODE_DEFAULT: Allows an agent to recognize values that have not been explicitly listed in the entity. Possible values: [\"AUTO_EXPANSION_MODE_DEFAULT\", \"AUTO_EXPANSION_MODE_UNSPECIFIED\"]"
+    default: null
+  enable_fuzzy_extraction:
+    type: boolean
+    description: "Enables fuzzy entity extraction during classification."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CxEntityType"
+    default: null
+  language_code:
+    type: string
+    description: "The language of the following fields in entityType: EntityType.entities.value EntityType.entities.synonyms EntityType.excluded_phrases.value If not specified, the agent's default language is used. Many languages are supported. Note: languages must be enabled in the agent before they can be used."
+    default: null
+  parent:
+    type: string
+    description: "The agent to create a entity type for. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>."
+    default: null
+  redact:
+    type: boolean
+    description: "Indicates whether parameters of the entity type should be redacted in log. If redaction is enabled, page parameters and intent parameters referring to the entity type will be replaced by parameter name when logging."
+    default: null
+  entities:
+    type: list
+    description: "Nested block: entities"
+    default: []
+  excluded_phrases:
+    type: list
+    description: "Nested block: excluded_phrases"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:CxEntityType
+    properties:
+      display_name: ${var.display_name}
+      kind: ${var.kind}
+      auto_expansion_mode: ${var.auto_expansion_mode}
+      enable_fuzzy_extraction: ${var.enable_fuzzy_extraction}
+      id: ${var.id}
+      language_code: ${var.language_code}
+      parent: ${var.parent}
+      redact: ${var.redact}
+      dynamic:
+        entities:
+          for_each: ${var.entities}
+          content:
+            synonyms: ${each.value.synonyms}
+            value: ${each.value.value}
+        excluded_phrases:
+          for_each: ${var.excluded_phrases}
+          content:
+            value: ${each.value.value}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,68 @@
+variables:
+  location:
+    type: string
+    description: "The location where the workstation parent resources reside."
+  workstation_cluster_id:
+    type: string
+    description: "The ID of the parent workstation cluster."
+  workstation_config_id:
+    type: string
+    description: "The ID of the parent workstation cluster config."
+  workstation_id:
+    type: string
+    description: "ID to use for the workstation."
+  annotations:
+    type: object
+    description: "Client-specified annotations. This is distinct from labels.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  display_name:
+    type: string
+    description: "Human-readable name for this resource."
+    default: null
+  env:
+    type: object
+    description: "'Client-specified environment variables passed to the workstation container's entrypoint.'"
+    default: null
+  id:
+    type: string
+    description: "Optional property for Workstation"
+    default: null
+  labels:
+    type: object
+    description: "Client-specified labels that are applied to the resource and that are also propagated to the underlying Compute Engine resources.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Workstation"
+    default: null
+  source_workstation:
+    type: string
+    description: "Full resource name of the source workstation from which the workstation's persistent directories will be cloned from during creation."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:workstations:Workstation
+    properties:
+      location: ${var.location}
+      workstation_cluster_id: ${var.workstation_cluster_id}
+      workstation_config_id: ${var.workstation_config_id}
+      workstation_id: ${var.workstation_id}
+      annotations: ${var.annotations}
+      display_name: ${var.display_name}
+      env: ${var.env}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      source_workstation: ${var.source_workstation}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

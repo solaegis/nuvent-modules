@@ -1,0 +1,68 @@
+variables:
+  destination:
+    type: string
+    description: "The destination of the sink (or, in other words, where logs are written to). Can be a Cloud Storage bucket, a PubSub topic, or a BigQuery dataset. Examples: \"storage.googleapis.com/[GCS_BUCKET]\" \"bigquery.googleapis.com/projects/[PROJECT_ID]/datasets/[DATASET]\" \"pubsub.googleapis.com/projects/[PROJECT_ID]/topics/[TOPIC_ID]\" The writer associated with the sink must have access to write to the above resource."
+  folder:
+    type: string
+    description: "The folder to be exported to the sink. Note that either [FOLDER_ID] or \"folders/[FOLDER_ID]\" is accepted."
+  name:
+    type: string
+    description: "The name of the logging sink."
+  description:
+    type: string
+    description: "A description of this sink. The maximum length of the description is 8000 characters."
+    default: null
+  disabled:
+    type: boolean
+    description: "If set to True, then this sink is disabled and it does not export any log entries."
+    default: null
+  filter:
+    type: string
+    description: "The filter to apply when exporting logs. Only log entries that match the filter are exported."
+    default: null
+  id:
+    type: string
+    description: "Optional property for FolderSink"
+    default: null
+  include_children:
+    type: boolean
+    description: "Whether or not to include children folders in the sink export. If true, logs associated with child projects are also exported; otherwise only logs relating to the provided folder are included."
+    default: null
+  intercept_children:
+    type: boolean
+    description: "Whether or not to intercept logs from child projects. If true, matching logs will not match with sinks in child resources, except _Required sinks. This sink will be visible to child resources when listing sinks."
+    default: null
+  bigquery_options:
+    type: list
+    description: "Nested block: bigquery_options"
+    default: []
+  exclusions:
+    type: list
+    description: "Nested block: exclusions"
+    default: []
+
+resources:
+  main:
+    type: gcp:logging:FolderSink
+    properties:
+      destination: ${var.destination}
+      folder: ${var.folder}
+      name: ${var.name}
+      description: ${var.description}
+      disabled: ${var.disabled}
+      filter: ${var.filter}
+      id: ${var.id}
+      include_children: ${var.include_children}
+      intercept_children: ${var.intercept_children}
+      dynamic:
+        bigquery_options:
+          for_each: ${var.bigquery_options}
+          content:
+            use_partitioned_tables: ${each.value.use_partitioned_tables}
+        exclusions:
+          for_each: ${var.exclusions}
+          content:
+            description: ${each.value.description}
+            disabled: ${each.value.disabled}
+            filter: ${each.value.filter}
+            name: ${each.value.name}

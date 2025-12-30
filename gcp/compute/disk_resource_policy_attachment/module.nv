@@ -1,0 +1,39 @@
+variables:
+  disk:
+    type: string
+    description: "The name of the disk in which the resource policies are attached to."
+  name:
+    type: string
+    description: "The resource policy to be attached to the disk for scheduling snapshot creation. Do not specify the self link."
+  id:
+    type: string
+    description: "Optional property for DiskResourcePolicyAttachment"
+    default: null
+  project:
+    type: string
+    description: "Optional property for DiskResourcePolicyAttachment"
+    default: null
+  zone:
+    type: string
+    description: "A reference to the zone where the disk resides."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:DiskResourcePolicyAttachment
+    properties:
+      disk: ${var.disk}
+      name: ${var.name}
+      id: ${var.id}
+      project: ${var.project}
+      zone: ${var.zone}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

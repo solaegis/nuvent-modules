@@ -1,0 +1,53 @@
+variables:
+  location:
+    type: string
+    description: "The location for the endpoint."
+  name:
+    type: string
+    description: "Name of the endpoint in the format projects/{project_id}/locations/{locationId}/endpoints/{endpointId}."
+  network:
+    type: string
+    description: "Name of the VPC network that is connected to the IDS endpoint. This can either contain the VPC network name itself (like \"src-net\") or the full URL to the network (like \"projects/{project_id}/global/networks/src-net\")."
+  severity:
+    type: string
+    description: "The minimum alert severity level that is reported by the endpoint. Possible values: [\"INFORMATIONAL\", \"LOW\", \"MEDIUM\", \"HIGH\", \"CRITICAL\"]"
+  description:
+    type: string
+    description: "An optional description of the endpoint."
+    default: null
+  id:
+    type: string
+    description: "Optional property for IdsEndpoint"
+    default: null
+  project:
+    type: string
+    description: "Optional property for IdsEndpoint"
+    default: null
+  threat_exceptions:
+    type: list
+    description: "Configuration for threat IDs excluded from generating alerts. Limit: 99 IDs."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloud:IdsEndpoint
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      network: ${var.network}
+      severity: ${var.severity}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      threat_exceptions: ${var.threat_exceptions}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

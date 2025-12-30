@@ -1,0 +1,71 @@
+variables:
+  language_code:
+    type: string
+    description: "Language for this settings."
+  id:
+    type: string
+    description: "Optional property for CxGenerativeSettings"
+    default: null
+  parent:
+    type: string
+    description: "The agent to create a flow for. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>."
+    default: null
+  fallback_settings:
+    type: list
+    description: "Nested block: fallback_settings"
+    default: []
+  generative_safety_settings:
+    type: list
+    description: "Nested block: generative_safety_settings"
+    default: []
+  knowledge_connector_settings:
+    type: list
+    description: "Nested block: knowledge_connector_settings"
+    default: []
+  llm_model_settings:
+    type: list
+    description: "Nested block: llm_model_settings"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:CxGenerativeSettings
+    properties:
+      language_code: ${var.language_code}
+      id: ${var.id}
+      parent: ${var.parent}
+      dynamic:
+        fallback_settings:
+          for_each: ${var.fallback_settings}
+          content:
+            selected_prompt: ${each.value.selected_prompt}
+            prompt_templates: ${each.value.prompt_templates}
+        generative_safety_settings:
+          for_each: ${var.generative_safety_settings}
+          content:
+            default_banned_phrase_match_strategy: ${each.value.default_banned_phrase_match_strategy}
+            banned_phrases: ${each.value.banned_phrases}
+        knowledge_connector_settings:
+          for_each: ${var.knowledge_connector_settings}
+          content:
+            agent: ${each.value.agent}
+            agent_identity: ${each.value.agent_identity}
+            agent_scope: ${each.value.agent_scope}
+            business: ${each.value.business}
+            business_description: ${each.value.business_description}
+            disable_data_store_fallback: ${each.value.disable_data_store_fallback}
+        llm_model_settings:
+          for_each: ${var.llm_model_settings}
+          content:
+            model: ${each.value.model}
+            prompt_text: ${each.value.prompt_text}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

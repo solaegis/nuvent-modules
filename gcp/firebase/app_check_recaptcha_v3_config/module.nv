@@ -1,0 +1,40 @@
+variables:
+  app_id:
+    type: string
+    description: "The ID of an [Web App](https://firebase.google.com/docs/reference/firebase-management/rest/v1beta1/projects.webApps#WebApp.FIELDS.app_id)."
+  site_secret:
+    type: string
+    description: "The site secret used to identify your service for reCAPTCHA v3 verification. For security reasons, this field will never be populated in any response."
+  id:
+    type: string
+    description: "Optional property for AppCheckRecaptchaV3Config"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AppCheckRecaptchaV3Config"
+    default: null
+  token_ttl:
+    type: string
+    description: "Specifies the duration for which App Check tokens exchanged from reCAPTCHA V3 artifacts will be valid. If unset, a default value of 1 hour is assumed. Must be between 30 minutes and 7 days, inclusive.  A duration in seconds with up to nine fractional digits, ending with 's'. Example: \"3.5s\"."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:firebase:AppCheckRecaptchaV3Config
+    properties:
+      app_id: ${var.app_id}
+      site_secret: ${var.site_secret}
+      id: ${var.id}
+      project: ${var.project}
+      token_ttl: ${var.token_ttl}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

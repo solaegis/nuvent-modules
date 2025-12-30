@@ -1,0 +1,47 @@
+variables:
+  location:
+    type: string
+    description: "The location for the resource."
+  provider_id:
+    type: string
+    description: "The ID of the Provider."
+  scim_tenant_id:
+    type: string
+    description: "The ID of the SCIM Tenant."
+  scim_token_id:
+    type: string
+    description: "The ID to use for the SCIM Token, which becomes the final component of the resource name. This value should be 4-32 characters and follow the pattern: '([a-z]([a-z0-9\\-]{2,30}[a-z0-9]))'."
+  workforce_pool_id:
+    type: string
+    description: "The ID of the Workforce Pool."
+  display_name:
+    type: string
+    description: "A user-specified display name for the scim token. Cannot exceed 32 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for WorkforcePoolProviderScimToken"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:iam:WorkforcePoolProviderScimToken
+    properties:
+      location: ${var.location}
+      provider_id: ${var.provider_id}
+      scim_tenant_id: ${var.scim_tenant_id}
+      scim_token_id: ${var.scim_token_id}
+      workforce_pool_id: ${var.workforce_pool_id}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

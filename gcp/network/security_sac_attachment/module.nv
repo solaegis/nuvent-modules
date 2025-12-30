@@ -1,0 +1,67 @@
+variables:
+  location:
+    type: string
+    description: "The location of the SACAttachment resource. eg us-central1"
+  name:
+    type: string
+    description: "Identifier. Resource name"
+  ncc_gateway:
+    type: string
+    description: "NCC Gateway associated with the attachment. This can be input as an ID or a full resource name."
+  sac_realm:
+    type: string
+    description: "SAC Realm which owns the attachment. This can be input as an ID or a full resource name."
+  country:
+    type: string
+    description: "Case-insensitive ISO-3166 alpha-2 country code used for localization. Only valid for Symantec attachments."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SecuritySacAttachment"
+    default: null
+  labels:
+    type: object
+    description: "Optional labels in key:value format. For more information about labels, see [Requirements for labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements).   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for SecuritySacAttachment"
+    default: null
+  time_zone:
+    type: string
+    description: "Case-sensitive tzinfo identifier used for localization. Only valid for Symantec attachments."
+    default: null
+  symantec_options:
+    type: list
+    description: "Nested block: symantec_options"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:SecuritySacAttachment
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      ncc_gateway: ${var.ncc_gateway}
+      sac_realm: ${var.sac_realm}
+      country: ${var.country}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      time_zone: ${var.time_zone}
+      dynamic:
+        symantec_options:
+          for_each: ${var.symantec_options}
+          content:
+            symantec_location_name: ${each.value.symantec_location_name}
+            symantec_site: ${each.value.symantec_site}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

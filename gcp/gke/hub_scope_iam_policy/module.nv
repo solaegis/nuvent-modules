@@ -1,0 +1,24 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for HubScopeIamPolicy"
+  scope_id:
+    type: string
+    description: "Required property for HubScopeIamPolicy"
+  id:
+    type: string
+    description: "Optional property for HubScopeIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for HubScopeIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:gke:HubScopeIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      scope_id: ${var.scope_id}
+      id: ${var.id}
+      project: ${var.project}

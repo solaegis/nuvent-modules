@@ -1,0 +1,63 @@
+variables:
+  forwarding_rules:
+    type: list
+    description: "A list of references to the forwarding rules to which this service extension is attached. At least one forwarding rule is required. Only one LbEdgeExtension resource can be associated with a forwarding rule."
+  load_balancing_scheme:
+    type: string
+    description: "All forwarding rules referenced by this extension must share the same load balancing scheme. Possible values: [\"EXTERNAL_MANAGED\"]"
+  location:
+    type: string
+    description: "The location of the edge extension"
+  name:
+    type: string
+    description: "Name of the LbEdgeExtension resource in the following format: projects/{project}/locations/{location}/lbEdgeExtensions/{lbEdgeExtensions}"
+  description:
+    type: string
+    description: "A human-readable description of the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ServicesLbEdgeExtension"
+    default: null
+  labels:
+    type: object
+    description: "Set of labels associated with the LbEdgeExtension resource.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ServicesLbEdgeExtension"
+    default: null
+  extension_chains:
+    type: list
+    description: "Nested block: extension_chains"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ServicesLbEdgeExtension
+    properties:
+      forwarding_rules: ${var.forwarding_rules}
+      load_balancing_scheme: ${var.load_balancing_scheme}
+      location: ${var.location}
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        extension_chains:
+          for_each: ${var.extension_chains}
+          content:
+            name: ${each.value.name}
+            extensions: ${each.value.extensions}
+            match_condition: ${each.value.match_condition}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,47 @@
+variables:
+  app_id:
+    type: string
+    description: "Required property for AppEngineVersionIamMember"
+  member:
+    type: string
+    description: "Required property for AppEngineVersionIamMember"
+  role:
+    type: string
+    description: "Required property for AppEngineVersionIamMember"
+  service:
+    type: string
+    description: "Required property for AppEngineVersionIamMember"
+  version_id:
+    type: string
+    description: "Required property for AppEngineVersionIamMember"
+  id:
+    type: string
+    description: "Optional property for AppEngineVersionIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AppEngineVersionIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:iap:AppEngineVersionIamMember
+    properties:
+      app_id: ${var.app_id}
+      member: ${var.member}
+      role: ${var.role}
+      service: ${var.service}
+      version_id: ${var.version_id}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

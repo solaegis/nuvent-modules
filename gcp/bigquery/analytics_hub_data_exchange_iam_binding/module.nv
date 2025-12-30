@@ -1,0 +1,44 @@
+variables:
+  data_exchange_id:
+    type: string
+    description: "Required property for AnalyticsHubDataExchangeIamBinding"
+  members:
+    type: list
+    description: "Required property for AnalyticsHubDataExchangeIamBinding"
+  role:
+    type: string
+    description: "Required property for AnalyticsHubDataExchangeIamBinding"
+  id:
+    type: string
+    description: "Optional property for AnalyticsHubDataExchangeIamBinding"
+    default: null
+  location:
+    type: string
+    description: "Optional property for AnalyticsHubDataExchangeIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AnalyticsHubDataExchangeIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigquery:AnalyticsHubDataExchangeIamBinding
+    properties:
+      data_exchange_id: ${var.data_exchange_id}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

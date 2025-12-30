@@ -1,0 +1,43 @@
+variables:
+  catalog:
+    type: string
+    description: "The parent catalog."
+  name:
+    type: string
+    description: "The name of the database."
+  type:
+    type: string
+    description: "The database type."
+  id:
+    type: string
+    description: "Optional property for Database"
+    default: null
+  hive_options:
+    type: list
+    description: "Nested block: hive_options"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:biglake:Database
+    properties:
+      catalog: ${var.catalog}
+      name: ${var.name}
+      type: ${var.type}
+      id: ${var.id}
+      dynamic:
+        hive_options:
+          for_each: ${var.hive_options}
+          content:
+            location_uri: ${each.value.location_uri}
+            parameters: ${each.value.parameters}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

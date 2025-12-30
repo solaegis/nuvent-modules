@@ -1,0 +1,25 @@
+variables:
+  project:
+    type: string
+    description: "The ID of the project that will serve as a Shared VPC host project"
+  id:
+    type: string
+    description: "Optional property for SharedVpcHostProject"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:SharedVpcHostProject
+    properties:
+      project: ${var.project}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

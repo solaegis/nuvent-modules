@@ -1,0 +1,54 @@
+variables:
+  location:
+    type: string
+    description: "Location in which Endpoint Attachment needs to be created."
+  name:
+    type: string
+    description: "Name of Endpoint Attachment needs to be created."
+  service_attachment:
+    type: string
+    description: "The path of the service attachment."
+  description:
+    type: string
+    description: "Description of the resource."
+    default: null
+  endpoint_global_access:
+    type: boolean
+    description: "Enable global access for endpoint attachment."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ConnectorsEndpointAttachment"
+    default: null
+  labels:
+    type: object
+    description: "Resource labels to represent user provided metadata.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ConnectorsEndpointAttachment"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:integration:ConnectorsEndpointAttachment
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      service_attachment: ${var.service_attachment}
+      description: ${var.description}
+      endpoint_global_access: ${var.endpoint_global_access}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,112 @@
+variables:
+  authorized_domains:
+    type: list
+    description: "List of domains authorized for OAuth redirects."
+    default: null
+  autodelete_anonymous_users:
+    type: boolean
+    description: "Whether anonymous users will be auto-deleted after a period of 30 days"
+    default: null
+  id:
+    type: string
+    description: "Optional property for PlatformConfig"
+    default: null
+  project:
+    type: string
+    description: "Optional property for PlatformConfig"
+    default: null
+  blocking_functions:
+    type: list
+    description: "Nested block: blocking_functions"
+    default: []
+  client:
+    type: list
+    description: "Nested block: client"
+    default: []
+  mfa:
+    type: list
+    description: "Nested block: mfa"
+    default: []
+  monitoring:
+    type: list
+    description: "Nested block: monitoring"
+    default: []
+  multi_tenant:
+    type: list
+    description: "Nested block: multi_tenant"
+    default: []
+  quota:
+    type: list
+    description: "Nested block: quota"
+    default: []
+  sign_in:
+    type: list
+    description: "Nested block: sign_in"
+    default: []
+  sms_region_config:
+    type: list
+    description: "Nested block: sms_region_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:identity:PlatformConfig
+    properties:
+      authorized_domains: ${var.authorized_domains}
+      autodelete_anonymous_users: ${var.autodelete_anonymous_users}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        blocking_functions:
+          for_each: ${var.blocking_functions}
+          content:
+            forward_inbound_credentials: ${each.value.forward_inbound_credentials}
+            triggers: ${each.value.triggers}
+        client:
+          for_each: ${var.client}
+          content:
+            api_key: ${each.value.api_key}
+            firebase_subdomain: ${each.value.firebase_subdomain}
+            permissions: ${each.value.permissions}
+        mfa:
+          for_each: ${var.mfa}
+          content:
+            enabled_providers: ${each.value.enabled_providers}
+            state: ${each.value.state}
+            provider_configs: ${each.value.provider_configs}
+        monitoring:
+          for_each: ${var.monitoring}
+          content:
+            request_logging: ${each.value.request_logging}
+        multi_tenant:
+          for_each: ${var.multi_tenant}
+          content:
+            allow_tenants: ${each.value.allow_tenants}
+            default_tenant_location: ${each.value.default_tenant_location}
+        quota:
+          for_each: ${var.quota}
+          content:
+            sign_up_quota_config: ${each.value.sign_up_quota_config}
+        sign_in:
+          for_each: ${var.sign_in}
+          content:
+            allow_duplicate_emails: ${each.value.allow_duplicate_emails}
+            hash_config: ${each.value.hash_config}
+            anonymous: ${each.value.anonymous}
+            email: ${each.value.email}
+            phone_number: ${each.value.phone_number}
+        sms_region_config:
+          for_each: ${var.sms_region_config}
+          content:
+            allow_by_default: ${each.value.allow_by_default}
+            allowlist_only: ${each.value.allowlist_only}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

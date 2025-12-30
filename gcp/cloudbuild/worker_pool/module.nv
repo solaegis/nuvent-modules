@@ -1,0 +1,74 @@
+variables:
+  location:
+    type: string
+    description: "The location for the resource"
+  name:
+    type: string
+    description: "User-defined name of the `WorkerPool`."
+  annotations:
+    type: object
+    description: "User specified annotations. See https://google.aip.dev/128#annotations for more details such as format and size limitations.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field `effective_annotations` for all of the annotations present on the resource."
+    default: null
+  display_name:
+    type: string
+    description: "A user-specified, human-readable name for the `WorkerPool`. If provided, this value must be 1-63 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for WorkerPool"
+    default: null
+  project:
+    type: string
+    description: "The project for the resource"
+    default: null
+  network_config:
+    type: list
+    description: "Nested block: network_config"
+    default: []
+  private_service_connect:
+    type: list
+    description: "Nested block: private_service_connect"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  worker_config:
+    type: list
+    description: "Nested block: worker_config"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloudbuild:WorkerPool
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      annotations: ${var.annotations}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        network_config:
+          for_each: ${var.network_config}
+          content:
+            peered_network: ${each.value.peered_network}
+            peered_network_ip_range: ${each.value.peered_network_ip_range}
+        private_service_connect:
+          for_each: ${var.private_service_connect}
+          content:
+            network_attachment: ${each.value.network_attachment}
+            route_all_traffic: ${each.value.route_all_traffic}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        worker_config:
+          for_each: ${var.worker_config}
+          content:
+            disk_size_gb: ${each.value.disk_size_gb}
+            enable_nested_virtualization: ${each.value.enable_nested_virtualization}
+            machine_type: ${each.value.machine_type}
+            no_external_ip: ${each.value.no_external_ip}

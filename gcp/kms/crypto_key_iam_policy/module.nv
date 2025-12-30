@@ -1,0 +1,19 @@
+variables:
+  crypto_key_id:
+    type: string
+    description: "Required property for CryptoKeyIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for CryptoKeyIamPolicy"
+  id:
+    type: string
+    description: "Optional property for CryptoKeyIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:kms:CryptoKeyIamPolicy
+    properties:
+      crypto_key_id: ${var.crypto_key_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}

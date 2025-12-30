@@ -1,0 +1,48 @@
+variables:
+  filter:
+    type: string
+    description: "An expression that defines the filter to apply across create/update events of findings. While creating a filter string, be mindful of the scope in which the mute configuration is being created. E.g., If a filter contains project = X but is created under the project = Y scope, it might not match any findings."
+  mute_config_id:
+    type: string
+    description: "Unique identifier provided by the client within the parent scope."
+  organization:
+    type: string
+    description: "The organization whose Cloud Security Command Center the Mute Config lives in."
+  type:
+    type: string
+    description: "The type of the mute config."
+  description:
+    type: string
+    description: "A description of the mute config."
+    default: null
+  id:
+    type: string
+    description: "Optional property for V2OrganizationMuteConfig"
+    default: null
+  location:
+    type: string
+    description: "location Id is provided by organization. If not provided, Use global as default."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:scc:V2OrganizationMuteConfig
+    properties:
+      filter: ${var.filter}
+      mute_config_id: ${var.mute_config_id}
+      organization: ${var.organization}
+      type: ${var.type}
+      description: ${var.description}
+      id: ${var.id}
+      location: ${var.location}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

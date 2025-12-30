@@ -1,0 +1,59 @@
+variables:
+  port:
+    type: number
+    description: "Port number of network endpoint."
+  region_network_endpoint_group:
+    type: string
+    description: "The network endpoint group this endpoint is part of."
+  client_destination_port:
+    type: number
+    description: "Client destination port for the 'GCE_VM_IP_PORTMAP' NEG."
+    default: null
+  fqdn:
+    type: string
+    description: "Fully qualified domain name of network endpoint.  This can only be specified when network_endpoint_type of the NEG is INTERNET_FQDN_PORT."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RegionNetworkEndpoint"
+    default: null
+  instance:
+    type: string
+    description: "The name for a specific VM instance that the IP address belongs to. This is required for network endpoints of type GCE_VM_IP_PORTMAP."
+    default: null
+  ip_address:
+    type: string
+    description: "IPv4 address external endpoint.  This can only be specified when network_endpoint_type of the NEG is INTERNET_IP_PORT."
+    default: null
+  project:
+    type: string
+    description: "Optional property for RegionNetworkEndpoint"
+    default: null
+  region:
+    type: string
+    description: "Region where the containing network endpoint group is located."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:RegionNetworkEndpoint
+    properties:
+      port: ${var.port}
+      region_network_endpoint_group: ${var.region_network_endpoint_group}
+      client_destination_port: ${var.client_destination_port}
+      fqdn: ${var.fqdn}
+      id: ${var.id}
+      instance: ${var.instance}
+      ip_address: ${var.ip_address}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

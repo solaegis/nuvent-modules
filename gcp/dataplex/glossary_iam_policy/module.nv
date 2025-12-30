@@ -1,0 +1,29 @@
+variables:
+  glossary_id:
+    type: string
+    description: "Required property for GlossaryIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for GlossaryIamPolicy"
+  id:
+    type: string
+    description: "Optional property for GlossaryIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for GlossaryIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for GlossaryIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:dataplex:GlossaryIamPolicy
+    properties:
+      glossary_id: ${var.glossary_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

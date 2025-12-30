@@ -1,0 +1,35 @@
+variables:
+  bucket_name:
+    type: string
+    description: "The bucket to store reports in."
+  id:
+    type: string
+    description: "Optional property for UsageExportBucket"
+    default: null
+  prefix:
+    type: string
+    description: "A prefix for the reports, for instance, the project name."
+    default: null
+  project:
+    type: string
+    description: "The project to set the export bucket on. If it is not provided, the provider project is used."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:project:UsageExportBucket
+    properties:
+      bucket_name: ${var.bucket_name}
+      id: ${var.id}
+      prefix: ${var.prefix}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

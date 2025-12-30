@@ -1,0 +1,93 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression [a-z]([-a-z0-9]*[a-z0-9])? which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  description:
+    type: string
+    description: "An optional description of this resource. Provide this property when you create the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RegionSecurityPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RegionSecurityPolicy"
+    default: null
+  region:
+    type: string
+    description: "The Region in which the created Region Security Policy should reside. If it is not provided, the provider region is used."
+    default: null
+  type:
+    type: string
+    description: "The type indicates the intended use of the security policy. - CLOUD_ARMOR: Cloud Armor backend security policies can be configured to filter incoming HTTP requests targeting backend services. They filter requests before they hit the origin servers. - CLOUD_ARMOR_EDGE: Cloud Armor edge security policies can be configured to filter incoming HTTP requests targeting backend services (including Cloud CDN-enabled) as well as backend buckets (Cloud Storage). They filter requests before the request is served from Google's cache. - CLOUD_ARMOR_NETWORK: Cloud Armor network policies can be configured to filter packets targeting network load balancing resources such as backend services, target pools, target instances, and instances with external IPs. They filter requests before the request is served from the application. This field can be set only at resource creation time. Possible values: [\"CLOUD_ARMOR\", \"CLOUD_ARMOR_EDGE\", \"CLOUD_ARMOR_NETWORK\"]"
+    default: null
+  advanced_options_config:
+    type: list
+    description: "Nested block: advanced_options_config"
+    default: []
+  ddos_protection_config:
+    type: list
+    description: "Nested block: ddos_protection_config"
+    default: []
+  rules:
+    type: list
+    description: "Nested block: rules"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  user_defined_fields:
+    type: list
+    description: "Nested block: user_defined_fields"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:RegionSecurityPolicy
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      type: ${var.type}
+      dynamic:
+        advanced_options_config:
+          for_each: ${var.advanced_options_config}
+          content:
+            json_parsing: ${each.value.json_parsing}
+            log_level: ${each.value.log_level}
+            request_body_inspection_size: ${each.value.request_body_inspection_size}
+            user_ip_request_headers: ${each.value.user_ip_request_headers}
+            json_custom_config: ${each.value.json_custom_config}
+        ddos_protection_config:
+          for_each: ${var.ddos_protection_config}
+          content:
+            ddos_protection: ${each.value.ddos_protection}
+        rules:
+          for_each: ${var.rules}
+          content:
+            action: ${each.value.action}
+            description: ${each.value.description}
+            preview: ${each.value.preview}
+            priority: ${each.value.priority}
+            match: ${each.value.match}
+            network_match: ${each.value.network_match}
+            preconfigured_waf_config: ${each.value.preconfigured_waf_config}
+            rate_limit_options: ${each.value.rate_limit_options}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        user_defined_fields:
+          for_each: ${var.user_defined_fields}
+          content:
+            base: ${each.value.base}
+            mask: ${each.value.mask}
+            name: ${each.value.name}
+            offset: ${each.value.offset}
+            size: ${each.value.size}

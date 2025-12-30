@@ -1,0 +1,82 @@
+variables:
+  name:
+    type: string
+    description: "The name of the packet mirroring rule"
+  description:
+    type: string
+    description: "A human-readable description of the rule."
+    default: null
+  id:
+    type: string
+    description: "Optional property for PacketMirroring"
+    default: null
+  priority:
+    type: number
+    description: "Since only one rule can be active at a time, priority is used to break ties in the case of two rules that apply to the same instances."
+    default: null
+  project:
+    type: string
+    description: "Optional property for PacketMirroring"
+    default: null
+  region:
+    type: string
+    description: "The Region in which the created address should reside. If it is not provided, the provider region is used."
+    default: null
+  collector_ilb:
+    type: list
+    description: "Nested block: collector_ilb"
+    default: []
+  filter:
+    type: list
+    description: "Nested block: filter"
+    default: []
+  mirrored_resources:
+    type: list
+    description: "Nested block: mirrored_resources"
+    default: []
+  network:
+    type: list
+    description: "Nested block: network"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:PacketMirroring
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      priority: ${var.priority}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        collector_ilb:
+          for_each: ${var.collector_ilb}
+          content:
+            url: ${each.value.url}
+        filter:
+          for_each: ${var.filter}
+          content:
+            cidr_ranges: ${each.value.cidr_ranges}
+            direction: ${each.value.direction}
+            ip_protocols: ${each.value.ip_protocols}
+        mirrored_resources:
+          for_each: ${var.mirrored_resources}
+          content:
+            tags: ${each.value.tags}
+            instances: ${each.value.instances}
+            subnetworks: ${each.value.subnetworks}
+        network:
+          for_each: ${var.network}
+          content:
+            url: ${each.value.url}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

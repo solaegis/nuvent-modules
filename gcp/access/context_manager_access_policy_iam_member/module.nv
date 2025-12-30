@@ -1,0 +1,34 @@
+variables:
+  member:
+    type: string
+    description: "Required property for ContextManagerAccessPolicyIamMember"
+  name:
+    type: string
+    description: "Required property for ContextManagerAccessPolicyIamMember"
+  role:
+    type: string
+    description: "Required property for ContextManagerAccessPolicyIamMember"
+  id:
+    type: string
+    description: "Optional property for ContextManagerAccessPolicyIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:access:ContextManagerAccessPolicyIamMember
+    properties:
+      member: ${var.member}
+      name: ${var.name}
+      role: ${var.role}
+      id: ${var.id}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

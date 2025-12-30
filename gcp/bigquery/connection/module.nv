@@ -1,0 +1,117 @@
+variables:
+  connection_id:
+    type: string
+    description: "Optional connection id that should be assigned to the created connection."
+    default: null
+  description:
+    type: string
+    description: "A descriptive description for the connection"
+    default: null
+  friendly_name:
+    type: string
+    description: "A descriptive name for the connection"
+    default: null
+  id:
+    type: string
+    description: "Optional property for Connection"
+    default: null
+  kms_key_name:
+    type: string
+    description: "Optional. The Cloud KMS key that is used for encryption.  Example: projects/[kms_project_id]/locations/[region]/keyRings/[key_region]/cryptoKeys/[key]"
+    default: null
+  location:
+    type: string
+    description: "The geographic location where the connection should reside. Cloud SQL instance must be in the same location as the connection with following exceptions: Cloud SQL us-central1 maps to BigQuery US, Cloud SQL europe-west1 maps to BigQuery EU. Examples: US, EU, asia-northeast1, us-central1, europe-west1. Spanner Connections same as spanner region AWS allowed regions are aws-us-east-1 Azure allowed regions are azure-eastus2"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Connection"
+    default: null
+  aws:
+    type: list
+    description: "Nested block: aws"
+    default: []
+  azure:
+    type: list
+    description: "Nested block: azure"
+    default: []
+  cloud_resource:
+    type: list
+    description: "Nested block: cloud_resource"
+    default: []
+  cloud_spanner:
+    type: list
+    description: "Nested block: cloud_spanner"
+    default: []
+  cloud_sql:
+    type: list
+    description: "Nested block: cloud_sql"
+    default: []
+  spark:
+    type: list
+    description: "Nested block: spark"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigquery:Connection
+    properties:
+      connection_id: ${var.connection_id}
+      description: ${var.description}
+      friendly_name: ${var.friendly_name}
+      id: ${var.id}
+      kms_key_name: ${var.kms_key_name}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        aws:
+          for_each: ${var.aws}
+          content:
+            access_role: ${each.value.access_role}
+        azure:
+          for_each: ${var.azure}
+          content:
+            application: ${each.value.application}
+            client_id: ${each.value.client_id}
+            customer_tenant_id: ${each.value.customer_tenant_id}
+            federated_application_client_id: ${each.value.federated_application_client_id}
+            identity: ${each.value.identity}
+            object_id: ${each.value.object_id}
+            redirect_uri: ${each.value.redirect_uri}
+        cloud_resource:
+          for_each: ${var.cloud_resource}
+          content:
+            service_account_id: ${each.value.service_account_id}
+        cloud_spanner:
+          for_each: ${var.cloud_spanner}
+          content:
+            database: ${each.value.database}
+            database_role: ${each.value.database_role}
+            max_parallelism: ${each.value.max_parallelism}
+            use_data_boost: ${each.value.use_data_boost}
+            use_parallelism: ${each.value.use_parallelism}
+            use_serverless_analytics: ${each.value.use_serverless_analytics}
+        cloud_sql:
+          for_each: ${var.cloud_sql}
+          content:
+            database: ${each.value.database}
+            instance_id: ${each.value.instance_id}
+            service_account_id: ${each.value.service_account_id}
+            type: ${each.value.type}
+            credential: ${each.value.credential}
+        spark:
+          for_each: ${var.spark}
+          content:
+            service_account_id: ${each.value.service_account_id}
+            metastore_service_config: ${each.value.metastore_service_config}
+            spark_history_server_config: ${each.value.spark_history_server_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

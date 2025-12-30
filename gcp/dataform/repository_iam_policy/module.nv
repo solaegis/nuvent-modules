@@ -1,0 +1,29 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for RepositoryIamPolicy"
+  repository:
+    type: string
+    description: "Required property for RepositoryIamPolicy"
+  id:
+    type: string
+    description: "Optional property for RepositoryIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RepositoryIamPolicy"
+    default: null
+  region:
+    type: string
+    description: "Optional property for RepositoryIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:dataform:RepositoryIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      repository: ${var.repository}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}

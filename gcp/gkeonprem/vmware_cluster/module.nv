@@ -1,0 +1,175 @@
+variables:
+  admin_cluster_membership:
+    type: string
+    description: "The admin cluster this VMware User Cluster belongs to. This is the full resource name of the admin cluster's hub membership. In the future, references to other resource types might be allowed if admin clusters are modeled as their own resources."
+  location:
+    type: string
+    description: "The location of the resource."
+  name:
+    type: string
+    description: "The VMware cluster name."
+  on_prem_version:
+    type: string
+    description: "The Anthos clusters on the VMware version for your user cluster."
+  annotations:
+    type: object
+    description: "Annotations on the VMware User Cluster. This field has the same restrictions as Kubernetes annotations. The total size of all keys and values combined is limited to 256k. Key can have 2 segments: prefix (optional) and name (required), separated by a slash (/). Prefix must be a DNS subdomain. Name must be 63 characters or less, begin and end with alphanumerics, with dashes (-), underscores (_), dots (.), and alphanumerics between.   **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  description:
+    type: string
+    description: "A human readable description of this VMware User Cluster."
+    default: null
+  disable_bundled_ingress:
+    type: boolean
+    description: "Disable bundled ingress."
+    default: null
+  enable_advanced_cluster:
+    type: boolean
+    description: "Enable advanced cluster. Default to false."
+    default: null
+  enable_control_plane_v2:
+    type: boolean
+    description: "Enable control plane V2. Default to false."
+    default: null
+  id:
+    type: string
+    description: "Optional property for VmwareCluster"
+    default: null
+  project:
+    type: string
+    description: "Optional property for VmwareCluster"
+    default: null
+  vm_tracking_enabled:
+    type: boolean
+    description: "Enable VM tracking."
+    default: null
+  anti_affinity_groups:
+    type: list
+    description: "Nested block: anti_affinity_groups"
+    default: []
+  authorization:
+    type: list
+    description: "Nested block: authorization"
+    default: []
+  auto_repair_config:
+    type: list
+    description: "Nested block: auto_repair_config"
+    default: []
+  control_plane_node:
+    type: list
+    description: "Nested block: control_plane_node"
+    default: []
+  dataplane_v2:
+    type: list
+    description: "Nested block: dataplane_v2"
+    default: []
+  load_balancer:
+    type: list
+    description: "Nested block: load_balancer"
+    default: []
+  network_config:
+    type: list
+    description: "Nested block: network_config"
+    default: []
+  storage:
+    type: list
+    description: "Nested block: storage"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  upgrade_policy:
+    type: list
+    description: "Nested block: upgrade_policy"
+    default: []
+  vcenter:
+    type: list
+    description: "Nested block: vcenter"
+    default: []
+
+resources:
+  main:
+    type: gcp:gkeonprem:VmwareCluster
+    properties:
+      admin_cluster_membership: ${var.admin_cluster_membership}
+      location: ${var.location}
+      name: ${var.name}
+      on_prem_version: ${var.on_prem_version}
+      annotations: ${var.annotations}
+      description: ${var.description}
+      disable_bundled_ingress: ${var.disable_bundled_ingress}
+      enable_advanced_cluster: ${var.enable_advanced_cluster}
+      enable_control_plane_v2: ${var.enable_control_plane_v2}
+      id: ${var.id}
+      project: ${var.project}
+      vm_tracking_enabled: ${var.vm_tracking_enabled}
+      dynamic:
+        anti_affinity_groups:
+          for_each: ${var.anti_affinity_groups}
+          content:
+            aag_config_disabled: ${each.value.aag_config_disabled}
+        authorization:
+          for_each: ${var.authorization}
+          content:
+            admin_users: ${each.value.admin_users}
+        auto_repair_config:
+          for_each: ${var.auto_repair_config}
+          content:
+            enabled: ${each.value.enabled}
+        control_plane_node:
+          for_each: ${var.control_plane_node}
+          content:
+            cpus: ${each.value.cpus}
+            memory: ${each.value.memory}
+            replicas: ${each.value.replicas}
+            vsphere_config: ${each.value.vsphere_config}
+            auto_resize_config: ${each.value.auto_resize_config}
+        dataplane_v2:
+          for_each: ${var.dataplane_v2}
+          content:
+            advanced_networking: ${each.value.advanced_networking}
+            dataplane_v2_enabled: ${each.value.dataplane_v2_enabled}
+            windows_dataplane_v2_enabled: ${each.value.windows_dataplane_v2_enabled}
+        load_balancer:
+          for_each: ${var.load_balancer}
+          content:
+            f5_config: ${each.value.f5_config}
+            manual_lb_config: ${each.value.manual_lb_config}
+            metal_lb_config: ${each.value.metal_lb_config}
+            vip_config: ${each.value.vip_config}
+        network_config:
+          for_each: ${var.network_config}
+          content:
+            pod_address_cidr_blocks: ${each.value.pod_address_cidr_blocks}
+            service_address_cidr_blocks: ${each.value.service_address_cidr_blocks}
+            vcenter_network: ${each.value.vcenter_network}
+            control_plane_v2_config: ${each.value.control_plane_v2_config}
+            dhcp_ip_config: ${each.value.dhcp_ip_config}
+            host_config: ${each.value.host_config}
+            static_ip_config: ${each.value.static_ip_config}
+        storage:
+          for_each: ${var.storage}
+          content:
+            vsphere_csi_disabled: ${each.value.vsphere_csi_disabled}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        upgrade_policy:
+          for_each: ${var.upgrade_policy}
+          content:
+            control_plane_only: ${each.value.control_plane_only}
+        vcenter:
+          for_each: ${var.vcenter}
+          content:
+            address: ${each.value.address}
+            ca_cert_data: ${each.value.ca_cert_data}
+            cluster: ${each.value.cluster}
+            datacenter: ${each.value.datacenter}
+            datastore: ${each.value.datastore}
+            folder: ${each.value.folder}
+            resource_pool: ${each.value.resource_pool}
+            storage_policy_name: ${each.value.storage_policy_name}

@@ -1,0 +1,122 @@
+variables:
+  capacity_gib:
+    type: string
+    description: "Capacity of the storage pool (in GiB)."
+  location:
+    type: string
+    description: "Name of the location. For zonal Flex pools specify a zone name, in all other cases a region name."
+  name:
+    type: string
+    description: "The resource name of the storage pool. Needs to be unique per location/region."
+  network:
+    type: string
+    description: "VPC network name with format: 'projects/{{project}}/global/networks/{{network}}'"
+  service_level:
+    type: string
+    description: "Service level of the storage pool. Possible values: [\"PREMIUM\", \"EXTREME\", \"STANDARD\", \"FLEX\"]"
+  active_directory:
+    type: string
+    description: "Specifies the Active Directory policy to be used. Format: 'projects/{{project}}/locations/{{location}}/activeDirectories/{{name}}'. The policy needs to be in the same location as the storage pool."
+    default: null
+  allow_auto_tiering:
+    type: boolean
+    description: "Optional. True if the storage pool supports Auto Tiering enabled volumes. Default is false. Auto-tiering can be enabled after storage pool creation but it can't be disabled once enabled."
+    default: null
+  custom_performance_enabled:
+    type: boolean
+    description: "Optional. True if using Independent Scaling of capacity and performance (Hyperdisk). Default is false."
+    default: null
+  description:
+    type: string
+    description: "An optional description of this resource."
+    default: null
+  enable_hot_tier_auto_resize:
+    type: boolean
+    description: "Flag indicating that the hot-tier threshold will be auto-increased by 10% of the hot-tier when it hits 100%. Default is true. The increment will kick in only if the new size after increment is still less than or equal to storage pool size."
+    default: null
+  hot_tier_size_gib:
+    type: string
+    description: "Total hot tier capacity for the Storage Pool. It is applicable only to Flex service level. It should be less than the minimum storage pool size and cannot be more than the current storage pool size. It cannot be decreased once set."
+    default: null
+  id:
+    type: string
+    description: "Optional property for StoragePool"
+    default: null
+  kms_config:
+    type: string
+    description: "Specifies the CMEK policy to be used for volume encryption. Format: 'projects/{{project}}/locations/{{location}}/kmsConfigs/{{name}}'. The policy needs to be in the same location as the storage pool."
+    default: null
+  labels:
+    type: object
+    description: "Labels as key value pairs. Example: '{ \"owner\": \"Bob\", \"department\": \"finance\", \"purpose\": \"testing\" }'.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  ldap_enabled:
+    type: boolean
+    description: "When enabled, the volumes uses Active Directory as LDAP name service for UID/GID lookups. Required to enable extended group support for NFSv3, using security identifiers for NFSv4.1 or principal names for kerberized NFSv4.1."
+    default: null
+  project:
+    type: string
+    description: "Optional property for StoragePool"
+    default: null
+  qos_type:
+    type: string
+    description: "QoS (Quality of Service) type of the storage pool. Possible values are: AUTO, MANUAL. Possible values: [\"QOS_TYPE_UNSPECIFIED\", \"AUTO\", \"MANUAL\"]"
+    default: null
+  replica_zone:
+    type: string
+    description: "Specifies the replica zone for regional Flex pools. 'zone' and 'replica_zone' values can be swapped to initiate a [zone switch](https://cloud.google.com/netapp/volumes/docs/configure-and-use/storage-pools/edit-or-delete-storage-pool#switch_active_and_replica_zones)."
+    default: null
+  total_iops:
+    type: string
+    description: "Optional. Custom Performance Total IOPS of the pool If not provided, it will be calculated based on the totalThroughputMibps"
+    default: null
+  total_throughput_mibps:
+    type: string
+    description: "Optional. Custom Performance Total Throughput of the pool (in MiB/s)."
+    default: null
+  type:
+    type: string
+    description: "Type of the storage pool. This field is used to control whether the pool supports FILE based volumes only or UNIFIED (both FILE and BLOCK) volumes. If not specified during creation, it defaults to FILE. Possible values: [\"STORAGE_POOL_TYPE_UNSPECIFIED\", \"FILE\", \"UNIFIED\"]"
+    default: null
+  zone:
+    type: string
+    description: "Specifies the active zone for regional Flex pools. 'zone' and 'replica_zone' values can be swapped to initiate a [zone switch](https://cloud.google.com/netapp/volumes/docs/configure-and-use/storage-pools/edit-or-delete-storage-pool#switch_active_and_replica_zones). If you want to create a zonal Flex pool, specify a zone name for 'location' and omit 'zone'."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:netapp:StoragePool
+    properties:
+      capacity_gib: ${var.capacity_gib}
+      location: ${var.location}
+      name: ${var.name}
+      network: ${var.network}
+      service_level: ${var.service_level}
+      active_directory: ${var.active_directory}
+      allow_auto_tiering: ${var.allow_auto_tiering}
+      custom_performance_enabled: ${var.custom_performance_enabled}
+      description: ${var.description}
+      enable_hot_tier_auto_resize: ${var.enable_hot_tier_auto_resize}
+      hot_tier_size_gib: ${var.hot_tier_size_gib}
+      id: ${var.id}
+      kms_config: ${var.kms_config}
+      labels: ${var.labels}
+      ldap_enabled: ${var.ldap_enabled}
+      project: ${var.project}
+      qos_type: ${var.qos_type}
+      replica_zone: ${var.replica_zone}
+      total_iops: ${var.total_iops}
+      total_throughput_mibps: ${var.total_throughput_mibps}
+      type: ${var.type}
+      zone: ${var.zone}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

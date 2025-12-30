@@ -1,0 +1,39 @@
+variables:
+  zone:
+    type: string
+    description: "A reference to the zone where the machine resides."
+  id:
+    type: string
+    description: "Optional property for InstanceSettings"
+    default: null
+  project:
+    type: string
+    description: "Optional property for InstanceSettings"
+    default: null
+  metadata:
+    type: list
+    description: "Nested block: metadata"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:InstanceSettings
+    properties:
+      zone: ${var.zone}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        metadata:
+          for_each: ${var.metadata}
+          content:
+            items: ${each.value.items}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

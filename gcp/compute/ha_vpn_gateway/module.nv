@@ -1,0 +1,70 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035.  Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  network:
+    type: string
+    description: "The network this VPN gateway is accepting traffic for."
+  description:
+    type: string
+    description: "An optional description of this resource."
+    default: null
+  gateway_ip_version:
+    type: string
+    description: "The IP family of the gateway IPs for the HA-VPN gateway interfaces. If not specified, IPV4 will be used. Default value: \"IPV4\" Possible values: [\"IPV4\", \"IPV6\"]"
+    default: null
+  id:
+    type: string
+    description: "Optional property for HaVpnGateway"
+    default: null
+  labels:
+    type: object
+    description: "Labels for this resource. These can only be added or modified by the setLabels method. Each label key/value pair must comply with RFC1035. Label values may be empty.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for HaVpnGateway"
+    default: null
+  region:
+    type: string
+    description: "The region this gateway should sit in."
+    default: null
+  stack_type:
+    type: string
+    description: "The stack type for this VPN gateway to identify the IP protocols that are enabled. If not specified, IPV4_ONLY will be used. Default value: \"IPV4_ONLY\" Possible values: [\"IPV4_ONLY\", \"IPV4_IPV6\", \"IPV6_ONLY\"]"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  vpn_interfaces:
+    type: list
+    description: "Nested block: vpn_interfaces"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:HaVpnGateway
+    properties:
+      name: ${var.name}
+      network: ${var.network}
+      description: ${var.description}
+      gateway_ip_version: ${var.gateway_ip_version}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      region: ${var.region}
+      stack_type: ${var.stack_type}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        vpn_interfaces:
+          for_each: ${var.vpn_interfaces}
+          content:
+            id: ${each.value.id}
+            interconnect_attachment: ${each.value.interconnect_attachment}
+            ip_address: ${each.value.ip_address}

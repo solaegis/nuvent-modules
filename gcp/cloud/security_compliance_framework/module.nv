@@ -1,0 +1,54 @@
+variables:
+  framework_id:
+    type: string
+    description: "ID of the framework. This is not the full name of the framework. This is the last part of the full name of the framework."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  organization:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  description:
+    type: string
+    description: "The description of the framework. The maximum length is 2000 characters."
+    default: null
+  display_name:
+    type: string
+    description: "Display name of the framework. The maximum length is 200 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SecurityComplianceFramework"
+    default: null
+  cloud_control_details:
+    type: list
+    description: "Nested block: cloud_control_details"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloud:SecurityComplianceFramework
+    properties:
+      framework_id: ${var.framework_id}
+      location: ${var.location}
+      organization: ${var.organization}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      dynamic:
+        cloud_control_details:
+          for_each: ${var.cloud_control_details}
+          content:
+            major_revision_id: ${each.value.major_revision_id}
+            name: ${each.value.name}
+            parameters: ${each.value.parameters}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

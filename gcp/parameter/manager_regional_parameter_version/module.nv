@@ -1,0 +1,39 @@
+variables:
+  parameter:
+    type: string
+    description: "Parameter Manager Regional Parameter resource."
+  parameter_data:
+    type: string
+    description: "The Regional Parameter data."
+  parameter_version_id:
+    type: string
+    description: "Version ID of the Regional Parameter Version Resource. This must be unique within the Regional Parameter."
+  disabled:
+    type: boolean
+    description: "The current state of Regional Parameter Version. This field is only applicable for updating Regional Parameter Version."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ManagerRegionalParameterVersion"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:parameter:ManagerRegionalParameterVersion
+    properties:
+      parameter: ${var.parameter}
+      parameter_data: ${var.parameter_data}
+      parameter_version_id: ${var.parameter_version_id}
+      disabled: ${var.disabled}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

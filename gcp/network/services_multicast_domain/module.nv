@@ -1,0 +1,63 @@
+variables:
+  admin_network:
+    type: string
+    description: "The resource name of the multicast admin VPC network. Use the following format: 'projects/{project}/locations/global/networks/{network}'."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  multicast_domain_id:
+    type: string
+    description: "A unique name for the multicast domain. The name is restricted to letters, numbers, and hyphen, with the first character a letter, and the last a letter or a number. The name must not exceed 48 characters."
+  description:
+    type: string
+    description: "An optional text description of the multicast domain."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ServicesMulticastDomain"
+    default: null
+  labels:
+    type: object
+    description: "Labels as key-value pairs.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  multicast_domain_group:
+    type: string
+    description: "The multicast domain group this domain should be associated with. Use the following format: 'projects/{project}/locations/global/multicastDomainGroups/{multicast_domain_group}'."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ServicesMulticastDomain"
+    default: null
+  connection_config:
+    type: list
+    description: "Nested block: connection_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ServicesMulticastDomain
+    properties:
+      admin_network: ${var.admin_network}
+      location: ${var.location}
+      multicast_domain_id: ${var.multicast_domain_id}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      multicast_domain_group: ${var.multicast_domain_group}
+      project: ${var.project}
+      dynamic:
+        connection_config:
+          for_each: ${var.connection_config}
+          content:
+            connection_type: ${each.value.connection_type}
+            ncc_hub: ${each.value.ncc_hub}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

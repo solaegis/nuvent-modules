@@ -1,0 +1,34 @@
+variables:
+  members:
+    type: list
+    description: "Required property for ServiceIamBinding"
+  role:
+    type: string
+    description: "Required property for ServiceIamBinding"
+  service_name:
+    type: string
+    description: "Required property for ServiceIamBinding"
+  id:
+    type: string
+    description: "Optional property for ServiceIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:endpoints:ServiceIamBinding
+    properties:
+      members: ${var.members}
+      role: ${var.role}
+      service_name: ${var.service_name}
+      id: ${var.id}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

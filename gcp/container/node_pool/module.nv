@@ -1,0 +1,190 @@
+variables:
+  cluster:
+    type: string
+    description: "The cluster to create the node pool for. Cluster must be present in location provided for zonal clusters."
+  id:
+    type: string
+    description: "Optional property for NodePool"
+    default: null
+  initial_node_count:
+    type: number
+    description: "The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource."
+    default: null
+  location:
+    type: string
+    description: "The location (region or zone) of the cluster."
+    default: null
+  max_pods_per_node:
+    type: number
+    description: "The maximum number of pods per node in this node pool. Note that this does not work on node pools which are \"route-based\" - that is, node pools belonging to clusters that do not have IP Aliasing enabled."
+    default: null
+  name:
+    type: string
+    description: "The name of the node pool. If left blank, Terraform will auto-generate a unique name."
+    default: null
+  name_prefix:
+    type: string
+    description: "Creates a unique name for the node pool beginning with the specified prefix. Conflicts with name."
+    default: null
+  node_count:
+    type: number
+    description: "The number of nodes per instance group. This field can be used to update the number of nodes per instance group but should not be used alongside autoscaling."
+    default: null
+  node_locations:
+    type: list
+    description: "The list of zones in which the node pool's nodes should be located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. If unspecified, the cluster-level node_locations will be used."
+    default: null
+  project:
+    type: string
+    description: "The ID of the project in which to create the node pool. If blank, the provider-configured project will be used."
+    default: null
+  version:
+    type: string
+    description: "The Kubernetes version for the nodes in this pool. Note that if this field and auto_upgrade are both specified, they will fight each other for what the node version should be, so setting both is highly discouraged. While a fuzzy version can be specified, it's recommended that you specify explicit versions as Terraform will see spurious diffs when fuzzy versions are used. See the google_container_engine_versions data source's version_prefix field to approximate fuzzy versions in a Terraform-compatible way."
+    default: null
+  autoscaling:
+    type: list
+    description: "Nested block: autoscaling"
+    default: []
+  management:
+    type: list
+    description: "Nested block: management"
+    default: []
+  network_config:
+    type: list
+    description: "Nested block: network_config"
+    default: []
+  node_config:
+    type: list
+    description: "Nested block: node_config"
+    default: []
+  placement_policy:
+    type: list
+    description: "Nested block: placement_policy"
+    default: []
+  queued_provisioning:
+    type: list
+    description: "Nested block: queued_provisioning"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  upgrade_settings:
+    type: list
+    description: "Nested block: upgrade_settings"
+    default: []
+
+resources:
+  main:
+    type: gcp:container:NodePool
+    properties:
+      cluster: ${var.cluster}
+      id: ${var.id}
+      initial_node_count: ${var.initial_node_count}
+      location: ${var.location}
+      max_pods_per_node: ${var.max_pods_per_node}
+      name: ${var.name}
+      name_prefix: ${var.name_prefix}
+      node_count: ${var.node_count}
+      node_locations: ${var.node_locations}
+      project: ${var.project}
+      version: ${var.version}
+      dynamic:
+        autoscaling:
+          for_each: ${var.autoscaling}
+          content:
+            location_policy: ${each.value.location_policy}
+            max_node_count: ${each.value.max_node_count}
+            min_node_count: ${each.value.min_node_count}
+            total_max_node_count: ${each.value.total_max_node_count}
+            total_min_node_count: ${each.value.total_min_node_count}
+        management:
+          for_each: ${var.management}
+          content:
+            auto_repair: ${each.value.auto_repair}
+            auto_upgrade: ${each.value.auto_upgrade}
+        network_config:
+          for_each: ${var.network_config}
+          content:
+            create_pod_range: ${each.value.create_pod_range}
+            enable_private_nodes: ${each.value.enable_private_nodes}
+            pod_ipv4_cidr_block: ${each.value.pod_ipv4_cidr_block}
+            pod_range: ${each.value.pod_range}
+            subnetwork: ${each.value.subnetwork}
+            additional_node_network_configs: ${each.value.additional_node_network_configs}
+            additional_pod_network_configs: ${each.value.additional_pod_network_configs}
+            network_performance_config: ${each.value.network_performance_config}
+            pod_cidr_overprovision_config: ${each.value.pod_cidr_overprovision_config}
+        node_config:
+          for_each: ${var.node_config}
+          content:
+            boot_disk_kms_key: ${each.value.boot_disk_kms_key}
+            disk_size_gb: ${each.value.disk_size_gb}
+            disk_type: ${each.value.disk_type}
+            effective_taints: ${each.value.effective_taints}
+            enable_confidential_storage: ${each.value.enable_confidential_storage}
+            flex_start: ${each.value.flex_start}
+            image_type: ${each.value.image_type}
+            labels: ${each.value.labels}
+            local_ssd_count: ${each.value.local_ssd_count}
+            local_ssd_encryption_mode: ${each.value.local_ssd_encryption_mode}
+            logging_variant: ${each.value.logging_variant}
+            machine_type: ${each.value.machine_type}
+            max_run_duration: ${each.value.max_run_duration}
+            metadata: ${each.value.metadata}
+            min_cpu_platform: ${each.value.min_cpu_platform}
+            node_group: ${each.value.node_group}
+            oauth_scopes: ${each.value.oauth_scopes}
+            preemptible: ${each.value.preemptible}
+            resource_labels: ${each.value.resource_labels}
+            resource_manager_tags: ${each.value.resource_manager_tags}
+            service_account: ${each.value.service_account}
+            spot: ${each.value.spot}
+            storage_pools: ${each.value.storage_pools}
+            tags: ${each.value.tags}
+            advanced_machine_features: ${each.value.advanced_machine_features}
+            boot_disk: ${each.value.boot_disk}
+            confidential_nodes: ${each.value.confidential_nodes}
+            containerd_config: ${each.value.containerd_config}
+            ephemeral_storage_config: ${each.value.ephemeral_storage_config}
+            ephemeral_storage_local_ssd_config: ${each.value.ephemeral_storage_local_ssd_config}
+            fast_socket: ${each.value.fast_socket}
+            gcfs_config: ${each.value.gcfs_config}
+            guest_accelerator: ${each.value.guest_accelerator}
+            gvnic: ${each.value.gvnic}
+            host_maintenance_policy: ${each.value.host_maintenance_policy}
+            kubelet_config: ${each.value.kubelet_config}
+            linux_node_config: ${each.value.linux_node_config}
+            local_nvme_ssd_block_config: ${each.value.local_nvme_ssd_block_config}
+            reservation_affinity: ${each.value.reservation_affinity}
+            sandbox_config: ${each.value.sandbox_config}
+            secondary_boot_disks: ${each.value.secondary_boot_disks}
+            shielded_instance_config: ${each.value.shielded_instance_config}
+            sole_tenant_config: ${each.value.sole_tenant_config}
+            taint: ${each.value.taint}
+            windows_node_config: ${each.value.windows_node_config}
+            workload_metadata_config: ${each.value.workload_metadata_config}
+        placement_policy:
+          for_each: ${var.placement_policy}
+          content:
+            policy_name: ${each.value.policy_name}
+            tpu_topology: ${each.value.tpu_topology}
+            type: ${each.value.type}
+        queued_provisioning:
+          for_each: ${var.queued_provisioning}
+          content:
+            enabled: ${each.value.enabled}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        upgrade_settings:
+          for_each: ${var.upgrade_settings}
+          content:
+            max_surge: ${each.value.max_surge}
+            max_unavailable: ${each.value.max_unavailable}
+            strategy: ${each.value.strategy}
+            blue_green_settings: ${each.value.blue_green_settings}

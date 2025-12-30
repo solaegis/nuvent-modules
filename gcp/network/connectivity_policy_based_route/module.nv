@@ -1,0 +1,87 @@
+variables:
+  name:
+    type: string
+    description: "The name of the policy based route."
+  network:
+    type: string
+    description: "Fully-qualified URL of the network that this route applies to, for example: projects/my-project/global/networks/my-network."
+  description:
+    type: string
+    description: "An optional description of this resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ConnectivityPolicyBasedRoute"
+    default: null
+  labels:
+    type: object
+    description: "User-defined labels.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  next_hop_ilb_ip:
+    type: string
+    description: "The IP address of a global-access-enabled L4 ILB that is the next hop for matching packets."
+    default: null
+  next_hop_other_routes:
+    type: string
+    description: "Other routes that will be referenced to determine the next hop of the packet. Possible values: [\"DEFAULT_ROUTING\"]"
+    default: null
+  priority:
+    type: number
+    description: "The priority of this policy-based route. Priority is used to break ties in cases where there are more than one matching policy-based routes found. In cases where multiple policy-based routes are matched, the one with the lowest-numbered priority value wins. The default value is 1000. The priority value must be from 1 to 65535, inclusive."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ConnectivityPolicyBasedRoute"
+    default: null
+  filter:
+    type: list
+    description: "Nested block: filter"
+    default: []
+  interconnect_attachment:
+    type: list
+    description: "Nested block: interconnect_attachment"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  virtual_machine:
+    type: list
+    description: "Nested block: virtual_machine"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ConnectivityPolicyBasedRoute
+    properties:
+      name: ${var.name}
+      network: ${var.network}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      next_hop_ilb_ip: ${var.next_hop_ilb_ip}
+      next_hop_other_routes: ${var.next_hop_other_routes}
+      priority: ${var.priority}
+      project: ${var.project}
+      dynamic:
+        filter:
+          for_each: ${var.filter}
+          content:
+            dest_range: ${each.value.dest_range}
+            ip_protocol: ${each.value.ip_protocol}
+            protocol_version: ${each.value.protocol_version}
+            src_range: ${each.value.src_range}
+        interconnect_attachment:
+          for_each: ${var.interconnect_attachment}
+          content:
+            region: ${each.value.region}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        virtual_machine:
+          for_each: ${var.virtual_machine}
+          content:
+            tags: ${each.value.tags}

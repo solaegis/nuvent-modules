@@ -1,0 +1,43 @@
+variables:
+  display_name:
+    type: string
+    description: "The display name. Must be unique."
+  location:
+    type: string
+    description: "The location of the resource."
+  type:
+    type: string
+    description: "The type of processor. For possible types see the [official list](https://cloud.google.com/document-ai/docs/reference/rest/v1/projects.locations/fetchProcessorTypes#google.cloud.documentai.v1.DocumentProcessorService.FetchProcessorTypes)"
+  id:
+    type: string
+    description: "Optional property for AiProcessor"
+    default: null
+  kms_key_name:
+    type: string
+    description: "The KMS key used for encryption/decryption in CMEK scenarios. See https://cloud.google.com/security-key-management."
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiProcessor"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:document:AiProcessor
+    properties:
+      display_name: ${var.display_name}
+      location: ${var.location}
+      type: ${var.type}
+      id: ${var.id}
+      kms_key_name: ${var.kms_key_name}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

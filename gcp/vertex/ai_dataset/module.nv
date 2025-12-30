@@ -1,0 +1,53 @@
+variables:
+  display_name:
+    type: string
+    description: "The user-defined name of the Dataset. The name can be up to 128 characters long and can be consist of any UTF-8 characters."
+  metadata_schema_uri:
+    type: string
+    description: "Points to a YAML file stored on Google Cloud Storage describing additional information about the Dataset. The schema is defined as an OpenAPI 3.0.2 Schema Object. The schema files that can be used here are found in gs://google-cloud-aiplatform/schema/dataset/metadata/."
+  id:
+    type: string
+    description: "Optional property for AiDataset"
+    default: null
+  labels:
+    type: object
+    description: "A set of key/value label pairs to assign to this Workflow.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiDataset"
+    default: null
+  region:
+    type: string
+    description: "The region of the dataset. eg us-central1"
+    default: null
+  encryption_spec:
+    type: list
+    description: "Nested block: encryption_spec"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vertex:AiDataset
+    properties:
+      display_name: ${var.display_name}
+      metadata_schema_uri: ${var.metadata_schema_uri}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        encryption_spec:
+          for_each: ${var.encryption_spec}
+          content:
+            kms_key_name: ${each.value.kms_key_name}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

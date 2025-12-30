@@ -1,0 +1,43 @@
+variables:
+  environment:
+    type: string
+    description: "The resource ID of the environment."
+  org_id:
+    type: string
+    description: "The Apigee Organization associated with the Apigee instance"
+  revision:
+    type: string
+    description: "Revision of the Sharedflow to be deployed."
+  sharedflow_id:
+    type: string
+    description: "Id of the Sharedflow to be deployed."
+  id:
+    type: string
+    description: "Optional property for SharedflowDeployment"
+    default: null
+  service_account:
+    type: string
+    description: "The service account represents the identity of the deployed proxy, and determines what permissions it has. The format must be {ACCOUNT_ID}@{PROJECT}.iam.gserviceaccount.com."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:SharedflowDeployment
+    properties:
+      environment: ${var.environment}
+      org_id: ${var.org_id}
+      revision: ${var.revision}
+      sharedflow_id: ${var.sharedflow_id}
+      id: ${var.id}
+      service_account: ${var.service_account}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,121 @@
+variables:
+  certificate_authority_id:
+    type: string
+    description: "The user provided Resource ID for this Certificate Authority."
+  location:
+    type: string
+    description: "Location of the CertificateAuthority. A full list of valid locations can be found by running 'gcloud privateca locations list'."
+  pool:
+    type: string
+    description: "The name of the CaPool this Certificate Authority belongs to."
+  deletion_protection:
+    type: boolean
+    description: "Whether Terraform will be prevented from destroying the CertificateAuthority. When the field is set to true or unset in Terraform state, a 'terraform apply' or 'terraform destroy' that would delete the CertificateAuthority will fail. When the field is set to false, deleting the CertificateAuthority is allowed."
+    default: null
+  desired_state:
+    type: string
+    description: "Desired state of the CertificateAuthority. Set this field to 'STAGED' to create a 'STAGED' root CA. Possible values: ENABLED, DISABLED, STAGED."
+    default: null
+  gcs_bucket:
+    type: string
+    description: "The name of a Cloud Storage bucket where this CertificateAuthority will publish content, such as the CA certificate and CRLs. This must be a bucket name, without any prefixes (such as 'gs://') or suffixes (such as '.googleapis.com'). For example, to use a bucket named my-bucket, you would simply specify 'my-bucket'. If not specified, a managed bucket will be created."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CertificateAuthority"
+    default: null
+  ignore_active_certificates_on_deletion:
+    type: boolean
+    description: "This field allows the CA to be deleted even if the CA has active certs. Active certs include both unrevoked and unexpired certs. Use with care. Defaults to 'false'."
+    default: null
+  labels:
+    type: object
+    description: "Labels with user-defined metadata.  An object containing a list of \"key\": value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  lifetime:
+    type: string
+    description: "The desired lifetime of the CA certificate. Used to create the \"notBeforeTime\" and \"notAfterTime\" fields inside an X.509 certificate. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: \"3.5s\"."
+    default: null
+  pem_ca_certificate:
+    type: string
+    description: "The signed CA certificate issued from the subordinated CA's CSR. This is needed when activating the subordiante CA with a third party issuer."
+    default: null
+  project:
+    type: string
+    description: "Optional property for CertificateAuthority"
+    default: null
+  skip_grace_period:
+    type: boolean
+    description: "If this flag is set, the Certificate Authority will be deleted as soon as possible without a 30-day grace period where undeletion would have been allowed. If you proceed, there will be no way to recover this CA. Use with care. Defaults to 'false'."
+    default: null
+  type:
+    type: string
+    description: "The Type of this CertificateAuthority.  ~> **Note:** For 'SUBORDINATE' Certificate Authorities, they need to be activated before they can issue certificates. Default value: \"SELF_SIGNED\" Possible values: [\"SELF_SIGNED\", \"SUBORDINATE\"]"
+    default: null
+  config:
+    type: list
+    description: "Nested block: config"
+    default: []
+  key_spec:
+    type: list
+    description: "Nested block: key_spec"
+    default: []
+  subordinate_config:
+    type: list
+    description: "Nested block: subordinate_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  user_defined_access_urls:
+    type: list
+    description: "Nested block: user_defined_access_urls"
+    default: []
+
+resources:
+  main:
+    type: gcp:privateca:CertificateAuthority
+    properties:
+      certificate_authority_id: ${var.certificate_authority_id}
+      location: ${var.location}
+      pool: ${var.pool}
+      deletion_protection: ${var.deletion_protection}
+      desired_state: ${var.desired_state}
+      gcs_bucket: ${var.gcs_bucket}
+      id: ${var.id}
+      ignore_active_certificates_on_deletion: ${var.ignore_active_certificates_on_deletion}
+      labels: ${var.labels}
+      lifetime: ${var.lifetime}
+      pem_ca_certificate: ${var.pem_ca_certificate}
+      project: ${var.project}
+      skip_grace_period: ${var.skip_grace_period}
+      type: ${var.type}
+      dynamic:
+        config:
+          for_each: ${var.config}
+          content:
+            subject_config: ${each.value.subject_config}
+            subject_key_id: ${each.value.subject_key_id}
+            x509_config: ${each.value.x509_config}
+        key_spec:
+          for_each: ${var.key_spec}
+          content:
+            algorithm: ${each.value.algorithm}
+            cloud_kms_key_version: ${each.value.cloud_kms_key_version}
+        subordinate_config:
+          for_each: ${var.subordinate_config}
+          content:
+            certificate_authority: ${each.value.certificate_authority}
+            pem_issuer_chain: ${each.value.pem_issuer_chain}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        user_defined_access_urls:
+          for_each: ${var.user_defined_access_urls}
+          content:
+            aia_issuing_certificate_urls: ${each.value.aia_issuing_certificate_urls}
+            crl_access_urls: ${each.value.crl_access_urls}

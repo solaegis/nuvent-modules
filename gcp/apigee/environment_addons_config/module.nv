@@ -1,0 +1,31 @@
+variables:
+  env_id:
+    type: string
+    description: "The Apigee environment group associated with the Apigee environment, in the format 'organizations/{{org_name}}/environments/{{env_name}}'."
+  analytics_enabled:
+    type: boolean
+    description: "Flag to enable/disable Analytics."
+    default: null
+  id:
+    type: string
+    description: "Optional property for EnvironmentAddonsConfig"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:EnvironmentAddonsConfig
+    properties:
+      env_id: ${var.env_id}
+      analytics_enabled: ${var.analytics_enabled}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

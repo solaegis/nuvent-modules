@@ -1,0 +1,51 @@
+variables:
+  billing_project_id:
+    type: string
+    description: "Project to bill on endpoint uptime usage."
+  location:
+    type: string
+    description: "The location (zone) of the firewall endpoint."
+  name:
+    type: string
+    description: "The name of the firewall endpoint resource."
+  parent:
+    type: string
+    description: "The name of the parent this firewall endpoint belongs to. Format: organizations/{organization_id}."
+  id:
+    type: string
+    description: "Optional property for SecurityFirewallEndpoint"
+    default: null
+  labels:
+    type: object
+    description: "A map of key/value label pairs to assign to the resource.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  endpoint_settings:
+    type: list
+    description: "Nested block: endpoint_settings"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:SecurityFirewallEndpoint
+    properties:
+      billing_project_id: ${var.billing_project_id}
+      location: ${var.location}
+      name: ${var.name}
+      parent: ${var.parent}
+      id: ${var.id}
+      labels: ${var.labels}
+      dynamic:
+        endpoint_settings:
+          for_each: ${var.endpoint_settings}
+          content:
+            jumbo_frames_enabled: ${each.value.jumbo_frames_enabled}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,34 @@
+variables:
+  name:
+    type: string
+    description: "Format: `projects/{project_id}/releases/{release_id}`\Firestore Rules Releases will **always** have the name 'cloud.firestore'"
+  ruleset_name:
+    type: string
+    description: "Name of the `Ruleset` referred to by this `Release`. The `Ruleset` must exist for the `Release` to be created."
+  id:
+    type: string
+    description: "Optional property for Release"
+    default: null
+  project:
+    type: string
+    description: "The project for the resource"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:firebaserules:Release
+    properties:
+      name: ${var.name}
+      ruleset_name: ${var.ruleset_name}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

@@ -1,0 +1,72 @@
+variables:
+  backup_id:
+    type: string
+    description: "The ID of the alloydb backup."
+  cluster_name:
+    type: string
+    description: "The full resource name of the backup source cluster (e.g., projects/{project}/locations/{location}/clusters/{clusterId})."
+  location:
+    type: string
+    description: "The location where the alloydb backup should reside."
+  annotations:
+    type: object
+    description: "Annotations to allow client tools to store small amount of arbitrary data. This is distinct from labels. https://google.aip.dev/128 An object containing a list of \"key\": value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }.   **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  description:
+    type: string
+    description: "User-provided description of the backup."
+    default: null
+  display_name:
+    type: string
+    description: "User-settable and human-readable display name for the Backup."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Backup"
+    default: null
+  labels:
+    type: object
+    description: "User-defined labels for the alloydb backup. An object containing a list of \"key\": value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Backup"
+    default: null
+  type:
+    type: string
+    description: "The backup type, which suggests the trigger for the backup. Possible values: [\"TYPE_UNSPECIFIED\", \"ON_DEMAND\", \"AUTOMATED\", \"CONTINUOUS\"]"
+    default: null
+  encryption_config:
+    type: list
+    description: "Nested block: encryption_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:alloydb:Backup
+    properties:
+      backup_id: ${var.backup_id}
+      cluster_name: ${var.cluster_name}
+      location: ${var.location}
+      annotations: ${var.annotations}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      type: ${var.type}
+      dynamic:
+        encryption_config:
+          for_each: ${var.encryption_config}
+          content:
+            kms_key_name: ${each.value.kms_key_name}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

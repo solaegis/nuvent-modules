@@ -1,0 +1,62 @@
+variables:
+  aspect_type_id:
+    type: string
+    description: "The aspect type id of the aspect type."
+    default: null
+  data_classification:
+    type: string
+    description: "Classifies the data stored by the aspect. 'DATA_CLASSIFICATION_UNSPECIFIED' denotes that the aspect contains only metadata while 'METADATA_AND_DATA' indicates data derived content. <br><br> Possible values: [\"DATA_CLASSIFICATION_UNSPECIFIED\", \"METADATA_AND_DATA\"]"
+    default: null
+  description:
+    type: string
+    description: "Description of the AspectType."
+    default: null
+  display_name:
+    type: string
+    description: "User friendly display name."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AspectType"
+    default: null
+  labels:
+    type: object
+    description: "User-defined labels for the AspectType.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "The location where aspect type will be created in."
+    default: null
+  metadata_template:
+    type: string
+    description: "MetadataTemplate of the Aspect."
+    default: null
+  project:
+    type: string
+    description: "Optional property for AspectType"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataplex:AspectType
+    properties:
+      aspect_type_id: ${var.aspect_type_id}
+      data_classification: ${var.data_classification}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      location: ${var.location}
+      metadata_template: ${var.metadata_template}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

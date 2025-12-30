@@ -1,0 +1,45 @@
+variables:
+  display_name:
+    type: string
+    description: "A user-assigned name for this group, used only for display purposes."
+  filter:
+    type: string
+    description: "The filter used to determine which monitored resources belong to this group."
+  id:
+    type: string
+    description: "Optional property for Group"
+    default: null
+  is_cluster:
+    type: boolean
+    description: "If true, the members of this group are considered to be a cluster. The system can perform additional analysis on groups that are clusters."
+    default: null
+  parent_name:
+    type: string
+    description: "The name of the group's parent, if it has one. The format is \"projects/{project_id_or_number}/groups/{group_id}\". For groups with no parent, parentName is the empty string, \"\"."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Group"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:monitoring:Group
+    properties:
+      display_name: ${var.display_name}
+      filter: ${var.filter}
+      id: ${var.id}
+      is_cluster: ${var.is_cluster}
+      parent_name: ${var.parent_name}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

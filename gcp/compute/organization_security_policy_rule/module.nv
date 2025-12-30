@@ -1,0 +1,74 @@
+variables:
+  action:
+    type: string
+    description: "The Action to perform when the client connection triggers the rule. Can currently be either \"allow\", \"deny\" or \"goto_next\"."
+  policy_id:
+    type: string
+    description: "The ID of the OrganizationSecurityPolicy this rule applies to."
+  priority:
+    type: number
+    description: "An integer indicating the priority of a rule in the list. The priority must be a value between 0 and 2147483647. Rules are evaluated from highest to lowest priority where 0 is the highest priority and 2147483647 is the lowest prority."
+  description:
+    type: string
+    description: "A description of the rule."
+    default: null
+  direction:
+    type: string
+    description: "The direction in which this rule applies. If unspecified an INGRESS rule is created. Possible values: [\"INGRESS\", \"EGRESS\"]"
+    default: null
+  enable_logging:
+    type: boolean
+    description: "Denotes whether to enable logging for a particular rule. If logging is enabled, logs will be exported to the configured export destination in Stackdriver."
+    default: null
+  id:
+    type: string
+    description: "Optional property for OrganizationSecurityPolicyRule"
+    default: null
+  preview:
+    type: boolean
+    description: "If set to true, the specified action is not enforced."
+    default: null
+  target_resources:
+    type: list
+    description: "A list of network resource URLs to which this rule applies. This field allows you to control which network's VMs get this rule. If this field is left blank, all VMs within the organization will receive the rule."
+    default: null
+  target_service_accounts:
+    type: list
+    description: "A list of service accounts indicating the sets of instances that are applied with this rule."
+    default: null
+  match:
+    type: list
+    description: "Nested block: match"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:OrganizationSecurityPolicyRule
+    properties:
+      action: ${var.action}
+      policy_id: ${var.policy_id}
+      priority: ${var.priority}
+      description: ${var.description}
+      direction: ${var.direction}
+      enable_logging: ${var.enable_logging}
+      id: ${var.id}
+      preview: ${var.preview}
+      target_resources: ${var.target_resources}
+      target_service_accounts: ${var.target_service_accounts}
+      dynamic:
+        match:
+          for_each: ${var.match}
+          content:
+            description: ${each.value.description}
+            versioned_expr: ${each.value.versioned_expr}
+            config: ${each.value.config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

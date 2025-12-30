@@ -1,0 +1,175 @@
+variables:
+  interface:
+    type: string
+    description: "Name of the interface the BGP peer is associated with."
+  name:
+    type: string
+    description: "Name of this BGP peer. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  peer_asn:
+    type: number
+    description: "Peer BGP Autonomous System Number (ASN). Each BGP interface may use a different value."
+  router:
+    type: string
+    description: "The name of the Cloud Router in which this BgpPeer will be configured."
+  advertise_mode:
+    type: string
+    description: "User-specified flag to indicate which mode to use for advertisement. Valid values of this enum field are: 'DEFAULT', 'CUSTOM' Default value: \"DEFAULT\" Possible values: [\"DEFAULT\", \"CUSTOM\"]"
+    default: null
+  advertised_groups:
+    type: list
+    description: "User-specified list of prefix groups to advertise in custom mode, which currently supports the following option:  * 'ALL_SUBNETS': Advertises all of the router's own VPC subnets. This excludes any routes learned for subnets that use VPC Network Peering.   Note that this field can only be populated if advertiseMode is 'CUSTOM' and overrides the list defined for the router (in the \"bgp\" message). These groups are advertised in addition to any specified prefixes. Leave this field blank to advertise no custom groups."
+    default: null
+  advertised_route_priority:
+    type: number
+    description: "The priority of routes advertised to this BGP peer. Where there is more than one matching route of maximum length, the routes with the lowest priority value win."
+    default: null
+  custom_learned_route_priority:
+    type: number
+    description: "The user-defined custom learned route priority for a BGP session. This value is applied to all custom learned route ranges for the session. You can choose a value from 0 to 65335. If you don't provide a value, Google Cloud assigns a priority of 100 to the ranges."
+    default: null
+  enable:
+    type: boolean
+    description: "The status of the BGP peer connection. If set to false, any active session with the peer is terminated and all associated routing information is removed. If set to true, the peer connection can be established with routing information. The default is true."
+    default: null
+  enable_ipv4:
+    type: boolean
+    description: "Enable IPv4 traffic over BGP Peer. It is enabled by default if the peerIpAddress is version 4."
+    default: null
+  enable_ipv6:
+    type: boolean
+    description: "Enable IPv6 traffic over BGP Peer. If not specified, it is disabled by default."
+    default: null
+  export_policies:
+    type: list
+    description: "routers.list of export policies applied to this peer, in the order they must be evaluated.  The name must correspond to an existing policy that has ROUTE_POLICY_TYPE_EXPORT type."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RouterPeer"
+    default: null
+  import_policies:
+    type: list
+    description: "routers.list of import policies applied to this peer, in the order they must be evaluated.  The name must correspond to an existing policy that has ROUTE_POLICY_TYPE_IMPORT type."
+    default: null
+  ip_address:
+    type: string
+    description: "IP address of the interface inside Google Cloud Platform. Only IPv4 is supported."
+    default: null
+  ipv4_nexthop_address:
+    type: string
+    description: "IPv4 address of the interface inside Google Cloud Platform."
+    default: null
+  ipv6_nexthop_address:
+    type: string
+    description: "IPv6 address of the interface inside Google Cloud Platform. The address must be in the range 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64. If you do not specify the next hop addresses, Google Cloud automatically assigns unused addresses from the 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64 range for you."
+    default: null
+  peer_ip_address:
+    type: string
+    description: "IP address of the BGP interface outside Google Cloud Platform. Only IPv4 is supported. Required if 'ip_address' is set."
+    default: null
+  peer_ipv4_nexthop_address:
+    type: string
+    description: "IPv4 address of the BGP interface outside Google Cloud Platform."
+    default: null
+  peer_ipv6_nexthop_address:
+    type: string
+    description: "IPv6 address of the BGP interface outside Google Cloud Platform. The address must be in the range 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64. If you do not specify the next hop addresses, Google Cloud automatically assigns unused addresses from the 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64 range for you."
+    default: null
+  project:
+    type: string
+    description: "Optional property for RouterPeer"
+    default: null
+  region:
+    type: string
+    description: "Region where the router and BgpPeer reside. If it is not provided, the provider region is used."
+    default: null
+  router_appliance_instance:
+    type: string
+    description: "The URI of the VM instance that is used as third-party router appliances such as Next Gen Firewalls, Virtual Routers, or Router Appliances. The VM instance must be located in zones contained in the same region as this Cloud Router. The VM instance is the peer side of the BGP session."
+    default: null
+  zero_advertised_route_priority:
+    type: boolean
+    description: "Force the advertised_route_priority to be 0."
+    default: null
+  zero_custom_learned_route_priority:
+    type: boolean
+    description: "Force the custom_learned_route_priority to be 0."
+    default: null
+  advertised_ip_ranges:
+    type: list
+    description: "Nested block: advertised_ip_ranges"
+    default: []
+  bfd:
+    type: list
+    description: "Nested block: bfd"
+    default: []
+  custom_learned_ip_ranges:
+    type: list
+    description: "Nested block: custom_learned_ip_ranges"
+    default: []
+  md5_authentication_key:
+    type: list
+    description: "Nested block: md5_authentication_key"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:RouterPeer
+    properties:
+      interface: ${var.interface}
+      name: ${var.name}
+      peer_asn: ${var.peer_asn}
+      router: ${var.router}
+      advertise_mode: ${var.advertise_mode}
+      advertised_groups: ${var.advertised_groups}
+      advertised_route_priority: ${var.advertised_route_priority}
+      custom_learned_route_priority: ${var.custom_learned_route_priority}
+      enable: ${var.enable}
+      enable_ipv4: ${var.enable_ipv4}
+      enable_ipv6: ${var.enable_ipv6}
+      export_policies: ${var.export_policies}
+      id: ${var.id}
+      import_policies: ${var.import_policies}
+      ip_address: ${var.ip_address}
+      ipv4_nexthop_address: ${var.ipv4_nexthop_address}
+      ipv6_nexthop_address: ${var.ipv6_nexthop_address}
+      peer_ip_address: ${var.peer_ip_address}
+      peer_ipv4_nexthop_address: ${var.peer_ipv4_nexthop_address}
+      peer_ipv6_nexthop_address: ${var.peer_ipv6_nexthop_address}
+      project: ${var.project}
+      region: ${var.region}
+      router_appliance_instance: ${var.router_appliance_instance}
+      zero_advertised_route_priority: ${var.zero_advertised_route_priority}
+      zero_custom_learned_route_priority: ${var.zero_custom_learned_route_priority}
+      dynamic:
+        advertised_ip_ranges:
+          for_each: ${var.advertised_ip_ranges}
+          content:
+            description: ${each.value.description}
+            range: ${each.value.range}
+        bfd:
+          for_each: ${var.bfd}
+          content:
+            min_receive_interval: ${each.value.min_receive_interval}
+            min_transmit_interval: ${each.value.min_transmit_interval}
+            multiplier: ${each.value.multiplier}
+            session_initialization_mode: ${each.value.session_initialization_mode}
+        custom_learned_ip_ranges:
+          for_each: ${var.custom_learned_ip_ranges}
+          content:
+            range: ${each.value.range}
+        md5_authentication_key:
+          for_each: ${var.md5_authentication_key}
+          content:
+            key: ${each.value.key}
+            name: ${each.value.name}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

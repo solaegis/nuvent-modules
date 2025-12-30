@@ -1,0 +1,164 @@
+variables:
+  connection_profile_id:
+    type: string
+    description: "The connection profile identifier."
+  display_name:
+    type: string
+    description: "Display name."
+  location:
+    type: string
+    description: "The name of the location this connection profile is located in."
+  create_without_validation:
+    type: boolean
+    description: "Create the connection profile without validating it."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ConnectionProfile"
+    default: null
+  labels:
+    type: object
+    description: "Labels.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ConnectionProfile"
+    default: null
+  bigquery_profile:
+    type: list
+    description: "Nested block: bigquery_profile"
+    default: []
+  forward_ssh_connectivity:
+    type: list
+    description: "Nested block: forward_ssh_connectivity"
+    default: []
+  gcs_profile:
+    type: list
+    description: "Nested block: gcs_profile"
+    default: []
+  mongodb_profile:
+    type: list
+    description: "Nested block: mongodb_profile"
+    default: []
+  mysql_profile:
+    type: list
+    description: "Nested block: mysql_profile"
+    default: []
+  oracle_profile:
+    type: list
+    description: "Nested block: oracle_profile"
+    default: []
+  postgresql_profile:
+    type: list
+    description: "Nested block: postgresql_profile"
+    default: []
+  private_connectivity:
+    type: list
+    description: "Nested block: private_connectivity"
+    default: []
+  salesforce_profile:
+    type: list
+    description: "Nested block: salesforce_profile"
+    default: []
+  sql_server_profile:
+    type: list
+    description: "Nested block: sql_server_profile"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:datastream:ConnectionProfile
+    properties:
+      connection_profile_id: ${var.connection_profile_id}
+      display_name: ${var.display_name}
+      location: ${var.location}
+      create_without_validation: ${var.create_without_validation}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        bigquery_profile:
+          for_each: ${var.bigquery_profile}
+          content:
+            # No specific fields found in schema for bigquery_profile
+        forward_ssh_connectivity:
+          for_each: ${var.forward_ssh_connectivity}
+          content:
+            hostname: ${each.value.hostname}
+            password: ${each.value.password}
+            port: ${each.value.port}
+            private_key: ${each.value.private_key}
+            username: ${each.value.username}
+        gcs_profile:
+          for_each: ${var.gcs_profile}
+          content:
+            bucket: ${each.value.bucket}
+            root_path: ${each.value.root_path}
+        mongodb_profile:
+          for_each: ${var.mongodb_profile}
+          content:
+            password: ${each.value.password}
+            replica_set: ${each.value.replica_set}
+            secret_manager_stored_password: ${each.value.secret_manager_stored_password}
+            username: ${each.value.username}
+            host_addresses: ${each.value.host_addresses}
+            srv_connection_format: ${each.value.srv_connection_format}
+            ssl_config: ${each.value.ssl_config}
+            standard_connection_format: ${each.value.standard_connection_format}
+        mysql_profile:
+          for_each: ${var.mysql_profile}
+          content:
+            hostname: ${each.value.hostname}
+            password: ${each.value.password}
+            port: ${each.value.port}
+            secret_manager_stored_password: ${each.value.secret_manager_stored_password}
+            username: ${each.value.username}
+            ssl_config: ${each.value.ssl_config}
+        oracle_profile:
+          for_each: ${var.oracle_profile}
+          content:
+            connection_attributes: ${each.value.connection_attributes}
+            database_service: ${each.value.database_service}
+            hostname: ${each.value.hostname}
+            password: ${each.value.password}
+            port: ${each.value.port}
+            secret_manager_stored_password: ${each.value.secret_manager_stored_password}
+            username: ${each.value.username}
+        postgresql_profile:
+          for_each: ${var.postgresql_profile}
+          content:
+            database: ${each.value.database}
+            hostname: ${each.value.hostname}
+            password: ${each.value.password}
+            port: ${each.value.port}
+            secret_manager_stored_password: ${each.value.secret_manager_stored_password}
+            username: ${each.value.username}
+        private_connectivity:
+          for_each: ${var.private_connectivity}
+          content:
+            private_connection: ${each.value.private_connection}
+        salesforce_profile:
+          for_each: ${var.salesforce_profile}
+          content:
+            domain: ${each.value.domain}
+            oauth2_client_credentials: ${each.value.oauth2_client_credentials}
+            user_credentials: ${each.value.user_credentials}
+        sql_server_profile:
+          for_each: ${var.sql_server_profile}
+          content:
+            database: ${each.value.database}
+            hostname: ${each.value.hostname}
+            password: ${each.value.password}
+            port: ${each.value.port}
+            secret_manager_stored_password: ${each.value.secret_manager_stored_password}
+            username: ${each.value.username}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

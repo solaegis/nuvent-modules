@@ -1,0 +1,53 @@
+variables:
+  limit:
+    type: string
+    description: "The limit on the metric, e.g. '/project/region'.  ~> Make sure that 'limit' is in a format that doesn't start with '1/' or contain curly braces. E.g. use '/project/user' instead of '1/{project}/{user}'."
+  metric:
+    type: string
+    description: "The metric that should be limited, e.g. 'compute.googleapis.com/cpus'."
+  override_value:
+    type: string
+    description: "The overriding quota limit value. Can be any nonnegative integer, or -1 (unlimited quota)."
+  service:
+    type: string
+    description: "The service that the metrics belong to, e.g. 'compute.googleapis.com'."
+  dimensions:
+    type: object
+    description: "If this map is nonempty, then this override applies only to specific values for dimensions defined in the limit unit."
+    default: null
+  force:
+    type: boolean
+    description: "If the new quota would decrease the existing quota by more than 10%, the request is rejected. If 'force' is 'true', that safety check is ignored."
+    default: null
+  id:
+    type: string
+    description: "Optional property for UsageConsumerQuotaOverride"
+    default: null
+  project:
+    type: string
+    description: "Optional property for UsageConsumerQuotaOverride"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:service:UsageConsumerQuotaOverride
+    properties:
+      limit: ${var.limit}
+      metric: ${var.metric}
+      override_value: ${var.override_value}
+      service: ${var.service}
+      dimensions: ${var.dimensions}
+      force: ${var.force}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

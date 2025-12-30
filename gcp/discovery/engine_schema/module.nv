@@ -1,0 +1,43 @@
+variables:
+  data_store_id:
+    type: string
+    description: "The unique id of the data store."
+  location:
+    type: string
+    description: "The geographic location where the data store should reside. The value can only be one of \"global\", \"us\" and \"eu\"."
+  schema_id:
+    type: string
+    description: "The unique id of the schema."
+  id:
+    type: string
+    description: "Optional property for EngineSchema"
+    default: null
+  json_schema:
+    type: string
+    description: "The JSON representation of the schema."
+    default: null
+  project:
+    type: string
+    description: "Optional property for EngineSchema"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:discovery:EngineSchema
+    properties:
+      data_store_id: ${var.data_store_id}
+      location: ${var.location}
+      schema_id: ${var.schema_id}
+      id: ${var.id}
+      json_schema: ${var.json_schema}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

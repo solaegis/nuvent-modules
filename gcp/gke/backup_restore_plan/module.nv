@@ -1,0 +1,72 @@
+variables:
+  backup_plan:
+    type: string
+    description: "A reference to the BackupPlan from which Backups may be used as the source for Restores created via this RestorePlan."
+  cluster:
+    type: string
+    description: "The source cluster from which Restores will be created via this RestorePlan."
+  location:
+    type: string
+    description: "The region of the Restore Plan."
+  name:
+    type: string
+    description: "The full name of the BackupPlan Resource."
+  description:
+    type: string
+    description: "User specified descriptive string for this RestorePlan."
+    default: null
+  id:
+    type: string
+    description: "Optional property for BackupRestorePlan"
+    default: null
+  labels:
+    type: object
+    description: "Description: A set of custom labels supplied by the user. A list of key->value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for BackupRestorePlan"
+    default: null
+  restore_config:
+    type: list
+    description: "Nested block: restore_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:gke:BackupRestorePlan
+    properties:
+      backup_plan: ${var.backup_plan}
+      cluster: ${var.cluster}
+      location: ${var.location}
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        restore_config:
+          for_each: ${var.restore_config}
+          content:
+            all_namespaces: ${each.value.all_namespaces}
+            cluster_resource_conflict_policy: ${each.value.cluster_resource_conflict_policy}
+            namespaced_resource_restore_mode: ${each.value.namespaced_resource_restore_mode}
+            no_namespaces: ${each.value.no_namespaces}
+            volume_data_restore_policy: ${each.value.volume_data_restore_policy}
+            cluster_resource_restore_scope: ${each.value.cluster_resource_restore_scope}
+            excluded_namespaces: ${each.value.excluded_namespaces}
+            restore_order: ${each.value.restore_order}
+            selected_applications: ${each.value.selected_applications}
+            selected_namespaces: ${each.value.selected_namespaces}
+            transformation_rules: ${each.value.transformation_rules}
+            volume_data_restore_policy_bindings: ${each.value.volume_data_restore_policy_bindings}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

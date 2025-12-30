@@ -1,0 +1,38 @@
+variables:
+  consent_store_id:
+    type: string
+    description: "Required property for ConsentStoreIamBinding"
+  dataset:
+    type: string
+    description: "Required property for ConsentStoreIamBinding"
+  members:
+    type: list
+    description: "Required property for ConsentStoreIamBinding"
+  role:
+    type: string
+    description: "Required property for ConsentStoreIamBinding"
+  id:
+    type: string
+    description: "Optional property for ConsentStoreIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:healthcare:ConsentStoreIamBinding
+    properties:
+      consent_store_id: ${var.consent_store_id}
+      dataset: ${var.dataset}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

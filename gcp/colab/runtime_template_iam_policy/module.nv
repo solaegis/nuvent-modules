@@ -1,0 +1,29 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for RuntimeTemplateIamPolicy"
+  runtime_template:
+    type: string
+    description: "Required property for RuntimeTemplateIamPolicy"
+  id:
+    type: string
+    description: "Optional property for RuntimeTemplateIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for RuntimeTemplateIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RuntimeTemplateIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:colab:RuntimeTemplateIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      runtime_template: ${var.runtime_template}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

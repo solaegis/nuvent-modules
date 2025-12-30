@@ -1,0 +1,42 @@
+variables:
+  name:
+    type: string
+    description: "Identifier of the GCP Organization. For GCP org, this field should be organization number."
+  edition_config:
+    type: string
+    description: "Edition configuration of the Storage Intelligence resource. Valid values are INHERIT, DISABLED, TRIAL and STANDARD."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ControlOrganizationIntelligenceConfig"
+    default: null
+  filter:
+    type: list
+    description: "Nested block: filter"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:ControlOrganizationIntelligenceConfig
+    properties:
+      name: ${var.name}
+      edition_config: ${var.edition_config}
+      id: ${var.id}
+      dynamic:
+        filter:
+          for_each: ${var.filter}
+          content:
+            excluded_cloud_storage_buckets: ${each.value.excluded_cloud_storage_buckets}
+            excluded_cloud_storage_locations: ${each.value.excluded_cloud_storage_locations}
+            included_cloud_storage_buckets: ${each.value.included_cloud_storage_buckets}
+            included_cloud_storage_locations: ${each.value.included_cloud_storage_locations}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

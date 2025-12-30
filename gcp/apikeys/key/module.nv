@@ -1,0 +1,53 @@
+variables:
+  name:
+    type: string
+    description: "The resource name of the key. The name must be unique within the project, must conform with RFC-1034, is restricted to lower-cased letters, and has a maximum length of 63 characters. In another word, the name must match the regular expression: `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`."
+  display_name:
+    type: string
+    description: "Human-readable display name of this API key. Modifiable by user."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Key"
+    default: null
+  project:
+    type: string
+    description: "The project for the resource"
+    default: null
+  service_account_email:
+    type: string
+    description: "The email of the service account the key is bound to. If this field is specified, the key is a service account bound key and auth enabled. See [Documentation](https://cloud.devsite.corp.google.com/docs/authentication/api-keys?#api-keys-bound-sa) for more details."
+    default: null
+  restrictions:
+    type: list
+    description: "Nested block: restrictions"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apikeys:Key
+    properties:
+      name: ${var.name}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      project: ${var.project}
+      service_account_email: ${var.service_account_email}
+      dynamic:
+        restrictions:
+          for_each: ${var.restrictions}
+          content:
+            android_key_restrictions: ${each.value.android_key_restrictions}
+            api_targets: ${each.value.api_targets}
+            browser_key_restrictions: ${each.value.browser_key_restrictions}
+            ios_key_restrictions: ${each.value.ios_key_restrictions}
+            server_key_restrictions: ${each.value.server_key_restrictions}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

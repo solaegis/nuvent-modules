@@ -1,0 +1,29 @@
+variables:
+  processor:
+    type: string
+    description: "The processor to set the version on."
+  version:
+    type: string
+    description: "The version to set. Using 'stable' or 'rc' will cause the API to return the latest version in that release channel. Apply 'lifecycle.ignore_changes' to the 'version' field to suppress this diff."
+  id:
+    type: string
+    description: "Optional property for AiProcessorDefaultVersion"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:document:AiProcessorDefaultVersion
+    properties:
+      processor: ${var.processor}
+      version: ${var.version}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

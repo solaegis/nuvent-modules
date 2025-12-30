@@ -1,0 +1,136 @@
+variables:
+  bucket:
+    type: string
+    description: "The name of the containing bucket."
+  name:
+    type: string
+    description: "The name of the object. If you're interpolating the name of this object, see output_name instead."
+  cache_control:
+    type: string
+    description: "Cache-Control directive to specify caching behavior of object data. If omitted and object is accessible to all anonymous users, the default will be public, max-age=3600"
+    default: null
+  content:
+    type: string
+    description: "Data as string to be uploaded. Must be defined if source is not. Note: The content field is marked as sensitive. To view the raw contents of the object, please define an output."
+    default: null
+  content_disposition:
+    type: string
+    description: "Content-Disposition of the object data."
+    default: null
+  content_encoding:
+    type: string
+    description: "Content-Encoding of the object data."
+    default: null
+  content_language:
+    type: string
+    description: "Content-Language of the object data."
+    default: null
+  content_type:
+    type: string
+    description: "Content-Type of the object data. Defaults to \"application/octet-stream\" or \"text/plain; charset=utf-8\"."
+    default: null
+  deletion_policy:
+    type: string
+    description: "The deletion policy for the object. Setting ABANDON allows the resource to be abandoned rather than deleted when removed from your Terraform configuration."
+    default: null
+  detect_md5hash:
+    type: string
+    description: "Optional property for BucketObject"
+    default: null
+  event_based_hold:
+    type: boolean
+    description: "Whether an object is under event-based hold. Event-based hold is a way to retain objects until an event occurs, which is signified by the hold's release (i.e. this value is set to false). After being released (set to false), such objects will be subject to bucket-level retention (if any)."
+    default: null
+  force_empty_content_type:
+    type: boolean
+    description: "Flag to set empty Content-Type."
+    default: null
+  id:
+    type: string
+    description: "Optional property for BucketObject"
+    default: null
+  kms_key_name:
+    type: string
+    description: "Resource name of the Cloud KMS key that will be used to encrypt the object. Overrides the object metadata's kmsKeyName value, if any."
+    default: null
+  metadata:
+    type: object
+    description: "User-provided metadata, in key/value pairs."
+    default: null
+  source:
+    type: string
+    description: "A path to the data you want to upload. Must be defined if content is not."
+    default: null
+  source_md5hash:
+    type: string
+    description: "User-provided md5hash, Base 64 MD5 hash of the object data."
+    default: null
+  storage_class:
+    type: string
+    description: "The StorageClass of the new bucket object. Supported values include: MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE. If not provided, this defaults to the bucket's default storage class or to a standard class."
+    default: null
+  temporary_hold:
+    type: boolean
+    description: "Whether an object is under temporary hold. While this flag is set to true, the object is protected against deletion and overwrites."
+    default: null
+  contexts:
+    type: list
+    description: "Nested block: contexts"
+    default: []
+  customer_encryption:
+    type: list
+    description: "Nested block: customer_encryption"
+    default: []
+  retention:
+    type: list
+    description: "Nested block: retention"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:BucketObject
+    properties:
+      bucket: ${var.bucket}
+      name: ${var.name}
+      cache_control: ${var.cache_control}
+      content: ${var.content}
+      content_disposition: ${var.content_disposition}
+      content_encoding: ${var.content_encoding}
+      content_language: ${var.content_language}
+      content_type: ${var.content_type}
+      deletion_policy: ${var.deletion_policy}
+      detect_md5hash: ${var.detect_md5hash}
+      event_based_hold: ${var.event_based_hold}
+      force_empty_content_type: ${var.force_empty_content_type}
+      id: ${var.id}
+      kms_key_name: ${var.kms_key_name}
+      metadata: ${var.metadata}
+      source: ${var.source}
+      source_md5hash: ${var.source_md5hash}
+      storage_class: ${var.storage_class}
+      temporary_hold: ${var.temporary_hold}
+      dynamic:
+        contexts:
+          for_each: ${var.contexts}
+          content:
+            custom: ${each.value.custom}
+        customer_encryption:
+          for_each: ${var.customer_encryption}
+          content:
+            encryption_algorithm: ${each.value.encryption_algorithm}
+            encryption_key: ${each.value.encryption_key}
+        retention:
+          for_each: ${var.retention}
+          content:
+            mode: ${each.value.mode}
+            retain_until_time: ${each.value.retain_until_time}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

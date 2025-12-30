@@ -1,0 +1,44 @@
+variables:
+  endpoint:
+    type: string
+    description: "Required property for AiEndpointIamMember"
+  member:
+    type: string
+    description: "Required property for AiEndpointIamMember"
+  role:
+    type: string
+    description: "Required property for AiEndpointIamMember"
+  id:
+    type: string
+    description: "Optional property for AiEndpointIamMember"
+    default: null
+  location:
+    type: string
+    description: "Optional property for AiEndpointIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiEndpointIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:vertex:AiEndpointIamMember
+    properties:
+      endpoint: ${var.endpoint}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

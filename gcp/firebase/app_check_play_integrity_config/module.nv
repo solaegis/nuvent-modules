@@ -1,0 +1,36 @@
+variables:
+  app_id:
+    type: string
+    description: "The ID of an [Android App](https://firebase.google.com/docs/reference/firebase-management/rest/v1beta1/projects.androidApps#AndroidApp.FIELDS.app_id)."
+  id:
+    type: string
+    description: "Optional property for AppCheckPlayIntegrityConfig"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AppCheckPlayIntegrityConfig"
+    default: null
+  token_ttl:
+    type: string
+    description: "Specifies the duration for which App Check tokens exchanged from Play Integrity artifacts will be valid. If unset, a default value of 1 hour is assumed. Must be between 30 minutes and 7 days, inclusive.  A duration in seconds with up to nine fractional digits, ending with 's'. Example: \"3.5s\"."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:firebase:AppCheckPlayIntegrityConfig
+    properties:
+      app_id: ${var.app_id}
+      id: ${var.id}
+      project: ${var.project}
+      token_ttl: ${var.token_ttl}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

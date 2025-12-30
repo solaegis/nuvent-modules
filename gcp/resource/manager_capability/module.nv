@@ -1,0 +1,34 @@
+variables:
+  capability_name:
+    type: string
+    description: "Capability name that should be updated on the folder."
+  parent:
+    type: string
+    description: "Folder on which Capability needs to be updated in the format folders/folder_id."
+  value:
+    type: boolean
+    description: "Capability Value."
+  id:
+    type: string
+    description: "Optional property for ManagerCapability"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:resource:ManagerCapability
+    properties:
+      capability_name: ${var.capability_name}
+      parent: ${var.parent}
+      value: ${var.value}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

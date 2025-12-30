@@ -1,0 +1,78 @@
+variables:
+  display_name:
+    type: string
+    description: "The user provider display name of the ScanConfig."
+  starting_urls:
+    type: list
+    description: "The starting URLs from which the scanner finds site pages."
+  blacklist_patterns:
+    type: list
+    description: "The blacklist URL patterns as described in https://cloud.google.com/security-scanner/docs/excluded-urls"
+    default: null
+  export_to_security_command_center:
+    type: string
+    description: "Controls export of scan configurations and results to Cloud Security Command Center. Default value: \"ENABLED\" Possible values: [\"ENABLED\", \"DISABLED\"]"
+    default: null
+  id:
+    type: string
+    description: "Optional property for ScannerScanConfig"
+    default: null
+  max_qps:
+    type: number
+    description: "The maximum QPS during scanning. A valid value ranges from 5 to 20 inclusively. Defaults to 15."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ScannerScanConfig"
+    default: null
+  target_platforms:
+    type: list
+    description: "Set of Cloud Platforms targeted by the scan. If empty, APP_ENGINE will be used as a default. Possible values: [\"APP_ENGINE\", \"COMPUTE\"]"
+    default: null
+  user_agent:
+    type: string
+    description: "Type of the user agents used for scanning Default value: \"CHROME_LINUX\" Possible values: [\"USER_AGENT_UNSPECIFIED\", \"CHROME_LINUX\", \"CHROME_ANDROID\", \"SAFARI_IPHONE\"]"
+    default: null
+  authentication:
+    type: list
+    description: "Nested block: authentication"
+    default: []
+  schedule:
+    type: list
+    description: "Nested block: schedule"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:security:ScannerScanConfig
+    properties:
+      display_name: ${var.display_name}
+      starting_urls: ${var.starting_urls}
+      blacklist_patterns: ${var.blacklist_patterns}
+      export_to_security_command_center: ${var.export_to_security_command_center}
+      id: ${var.id}
+      max_qps: ${var.max_qps}
+      project: ${var.project}
+      target_platforms: ${var.target_platforms}
+      user_agent: ${var.user_agent}
+      dynamic:
+        authentication:
+          for_each: ${var.authentication}
+          content:
+            custom_account: ${each.value.custom_account}
+            google_account: ${each.value.google_account}
+        schedule:
+          for_each: ${var.schedule}
+          content:
+            interval_duration_days: ${each.value.interval_duration_days}
+            schedule_time: ${each.value.schedule_time}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,60 @@
+variables:
+  name:
+    type: string
+    description: "Name of the TcpRoute resource."
+  description:
+    type: string
+    description: "A free-text description of the resource. Max length 1024 characters."
+    default: null
+  gateways:
+    type: list
+    description: "Gateways defines a list of gateways this TcpRoute is attached to, as one of the routing rules to route the requests served by the gateway. Each gateway reference should match the pattern: projects/*/locations/global/gateways/<gateway_name>"
+    default: null
+  id:
+    type: string
+    description: "Optional property for ServicesTcpRoute"
+    default: null
+  labels:
+    type: object
+    description: "Set of label tags associated with the TcpRoute resource.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  meshes:
+    type: list
+    description: "Meshes defines a list of meshes this TcpRoute is attached to, as one of the routing rules to route the requests served by the mesh. Each mesh reference should match the pattern: projects/*/locations/global/meshes/<mesh_name> The attached Mesh should be of a type SIDECAR"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ServicesTcpRoute"
+    default: null
+  rules:
+    type: list
+    description: "Nested block: rules"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ServicesTcpRoute
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      gateways: ${var.gateways}
+      id: ${var.id}
+      labels: ${var.labels}
+      meshes: ${var.meshes}
+      project: ${var.project}
+      dynamic:
+        rules:
+          for_each: ${var.rules}
+          content:
+            action: ${each.value.action}
+            matches: ${each.value.matches}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

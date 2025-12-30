@@ -1,0 +1,86 @@
+variables:
+  app_profile_id:
+    type: string
+    description: "The unique name of the app profile in the form '[_a-zA-Z0-9][-_.a-zA-Z0-9]*'."
+  description:
+    type: string
+    description: "Long form description of the use case for this app profile."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AppProfile"
+    default: null
+  ignore_warnings:
+    type: boolean
+    description: "If true, ignore safety checks when deleting/updating the app profile."
+    default: null
+  instance:
+    type: string
+    description: "The name of the instance to create the app profile within."
+    default: null
+  multi_cluster_routing_cluster_ids:
+    type: list
+    description: "The set of clusters to route to. The order is ignored; clusters will be tried in order of distance. If left empty, all clusters are eligible."
+    default: null
+  multi_cluster_routing_use_any:
+    type: boolean
+    description: "If true, read/write requests are routed to the nearest cluster in the instance, and will fail over to the nearest cluster that is available in the event of transient errors or delays. Clusters in a region are considered equidistant. Choosing this option sacrifices read-your-writes consistency to improve availability."
+    default: null
+  project:
+    type: string
+    description: "Optional property for AppProfile"
+    default: null
+  row_affinity:
+    type: boolean
+    description: "Must be used with multi-cluster routing. If true, then this app profile will use row affinity sticky routing. With row affinity, Bigtable will route single row key requests based on the row key, rather than randomly. Instead, each row key will be assigned to a cluster by Cloud Bigtable, and will stick to that cluster. Choosing this option improves read-your-writes consistency for most requests under most circumstances, without sacrificing availability. Consistency is not guaranteed, as requests may still fail over between clusters in the event of errors or latency."
+    default: null
+  data_boost_isolation_read_only:
+    type: list
+    description: "Nested block: data_boost_isolation_read_only"
+    default: []
+  single_cluster_routing:
+    type: list
+    description: "Nested block: single_cluster_routing"
+    default: []
+  standard_isolation:
+    type: list
+    description: "Nested block: standard_isolation"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigtable:AppProfile
+    properties:
+      app_profile_id: ${var.app_profile_id}
+      description: ${var.description}
+      id: ${var.id}
+      ignore_warnings: ${var.ignore_warnings}
+      instance: ${var.instance}
+      multi_cluster_routing_cluster_ids: ${var.multi_cluster_routing_cluster_ids}
+      multi_cluster_routing_use_any: ${var.multi_cluster_routing_use_any}
+      project: ${var.project}
+      row_affinity: ${var.row_affinity}
+      dynamic:
+        data_boost_isolation_read_only:
+          for_each: ${var.data_boost_isolation_read_only}
+          content:
+            compute_billing_owner: ${each.value.compute_billing_owner}
+        single_cluster_routing:
+          for_each: ${var.single_cluster_routing}
+          content:
+            allow_transactional_writes: ${each.value.allow_transactional_writes}
+            cluster_id: ${each.value.cluster_id}
+        standard_isolation:
+          for_each: ${var.standard_isolation}
+          content:
+            priority: ${each.value.priority}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,34 @@
+variables:
+  primary_disk:
+    type: string
+    description: "Primary disk for asynchronous replication."
+  id:
+    type: string
+    description: "Optional property for DiskAsyncReplication"
+    default: null
+  secondary_disk:
+    type: list
+    description: "Nested block: secondary_disk"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:DiskAsyncReplication
+    properties:
+      primary_disk: ${var.primary_disk}
+      id: ${var.id}
+      dynamic:
+        secondary_disk:
+          for_each: ${var.secondary_disk}
+          content:
+            disk: ${each.value.disk}
+            state: ${each.value.state}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

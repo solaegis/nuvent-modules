@@ -1,0 +1,94 @@
+variables:
+  project_id:
+    type: string
+    description: "The project ID associated with the Apigee organization."
+  analytics_region:
+    type: string
+    description: "Primary GCP region for analytics data storage. For valid values, see [Create an Apigee organization](https://cloud.google.com/apigee/docs/api-platform/get-started/create-org)."
+    default: null
+  api_consumer_data_encryption_key_name:
+    type: string
+    description: "Cloud KMS key name used for encrypting API consumer data."
+    default: null
+  api_consumer_data_location:
+    type: string
+    description: "This field is needed only for customers using non-default data residency regions. Apigee stores some control plane data only in single region. This field determines which single region Apigee should use."
+    default: null
+  authorized_network:
+    type: string
+    description: "Compute Engine network used for Service Networking to be peered with Apigee runtime instances. See [Getting started with the Service Networking API](https://cloud.google.com/service-infrastructure/docs/service-networking/getting-started). Valid only when 'RuntimeType' is set to CLOUD. The value can be updated only when there are no runtime instances. For example: \"default\"."
+    default: null
+  billing_type:
+    type: string
+    description: "Billing type of the Apigee organization. See [Apigee pricing](https://cloud.google.com/apigee/pricing)."
+    default: null
+  control_plane_encryption_key_name:
+    type: string
+    description: "Cloud KMS key name used for encrypting control plane data that is stored in a multi region. Only used for the data residency region \"US\" or \"EU\"."
+    default: null
+  description:
+    type: string
+    description: "Description of the Apigee organization."
+    default: null
+  disable_vpc_peering:
+    type: boolean
+    description: "Flag that specifies whether the VPC Peering through Private Google Access should be disabled between the consumer network and Apigee. Required if an 'authorizedNetwork' on the consumer project is not provided, in which case the flag should be set to 'true'. Valid only when 'RuntimeType' is set to CLOUD. The value must be set before the creation of any Apigee runtime instance and can be updated only when there are no runtime instances."
+    default: null
+  display_name:
+    type: string
+    description: "The display name of the Apigee organization."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Organization"
+    default: null
+  retention:
+    type: string
+    description: "Optional. This setting is applicable only for organizations that are soft-deleted (i.e., BillingType is not EVALUATION). It controls how long Organization data will be retained after the initial delete operation completes. During this period, the Organization may be restored to its last known state. After this period, the Organization will no longer be able to be restored. Default value: \"DELETION_RETENTION_UNSPECIFIED\" Possible values: [\"DELETION_RETENTION_UNSPECIFIED\", \"MINIMUM\"]"
+    default: null
+  runtime_database_encryption_key_name:
+    type: string
+    description: "Cloud KMS key name used for encrypting the data that is stored and replicated across runtime instances. Update is not allowed after the organization is created. If not specified, a Google-Managed encryption key will be used. Valid only when 'RuntimeType' is CLOUD. For example: 'projects/foo/locations/us/keyRings/bar/cryptoKeys/baz'."
+    default: null
+  runtime_type:
+    type: string
+    description: "Runtime type of the Apigee organization based on the Apigee subscription purchased. Default value: \"CLOUD\" Possible values: [\"CLOUD\", \"HYBRID\"]"
+    default: null
+  properties:
+    type: list
+    description: "Nested block: properties"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:Organization
+    properties:
+      project_id: ${var.project_id}
+      analytics_region: ${var.analytics_region}
+      api_consumer_data_encryption_key_name: ${var.api_consumer_data_encryption_key_name}
+      api_consumer_data_location: ${var.api_consumer_data_location}
+      authorized_network: ${var.authorized_network}
+      billing_type: ${var.billing_type}
+      control_plane_encryption_key_name: ${var.control_plane_encryption_key_name}
+      description: ${var.description}
+      disable_vpc_peering: ${var.disable_vpc_peering}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      retention: ${var.retention}
+      runtime_database_encryption_key_name: ${var.runtime_database_encryption_key_name}
+      runtime_type: ${var.runtime_type}
+      dynamic:
+        properties:
+          for_each: ${var.properties}
+          content:
+            property: ${each.value.property}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,71 @@
+variables:
+  collection:
+    type: string
+    description: "The collection being indexed."
+  api_scope:
+    type: string
+    description: "The API scope at which a query is run. Default value: \"ANY_API\" Possible values: [\"ANY_API\", \"DATASTORE_MODE_API\", \"MONGODB_COMPATIBLE_API\"]"
+    default: null
+  database:
+    type: string
+    description: "The Firestore database id. Defaults to '\"(default)\"'."
+    default: null
+  density:
+    type: string
+    description: "The density configuration for this index. Possible values: [\"SPARSE_ALL\", \"SPARSE_ANY\", \"DENSE\"]"
+    default: null
+  id:
+    type: string
+    description: "Optional property for Index"
+    default: null
+  multikey:
+    type: boolean
+    description: "Optional. Whether the index is multikey. By default, the index is not multikey. For non-multikey indexes, none of the paths in the index definition reach or traverse an array, except via an explicit array index. For multikey indexes, at most one of the paths in the index definition reach or traverse an array, except via an explicit array index. Violations will result in errors. Note this field only applies to indexes with MONGODB_COMPATIBLE_API ApiScope."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Index"
+    default: null
+  query_scope:
+    type: string
+    description: "The scope at which a query is run. Default value: \"COLLECTION\" Possible values: [\"COLLECTION\", \"COLLECTION_GROUP\", \"COLLECTION_RECURSIVE\"]"
+    default: null
+  unique:
+    type: boolean
+    description: "Whether it is an unique index. Unique index ensures all values for the indexed field(s) are unique across documents."
+    default: null
+  fields:
+    type: list
+    description: "Nested block: fields"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:firestore:Index
+    properties:
+      collection: ${var.collection}
+      api_scope: ${var.api_scope}
+      database: ${var.database}
+      density: ${var.density}
+      id: ${var.id}
+      multikey: ${var.multikey}
+      project: ${var.project}
+      query_scope: ${var.query_scope}
+      unique: ${var.unique}
+      dynamic:
+        fields:
+          for_each: ${var.fields}
+          content:
+            array_config: ${each.value.array_config}
+            field_path: ${each.value.field_path}
+            order: ${each.value.order}
+            vector_config: ${each.value.vector_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

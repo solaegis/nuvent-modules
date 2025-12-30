@@ -1,0 +1,34 @@
+variables:
+  host_project:
+    type: string
+    description: "The ID of a host project to associate."
+  service_project:
+    type: string
+    description: "The ID of the project that will serve as a Shared VPC service project."
+  deletion_policy:
+    type: string
+    description: "The deletion policy for the shared VPC service. Setting ABANDON allows the resource 				to be abandoned rather than deleted. Possible values are: \"ABANDON\"."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SharedVpcServiceProject"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:SharedVpcServiceProject
+    properties:
+      host_project: ${var.host_project}
+      service_project: ${var.service_project}
+      deletion_policy: ${var.deletion_policy}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

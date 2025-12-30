@@ -1,0 +1,86 @@
+variables:
+  name:
+    type: string
+    description: "The name of the security profile resource."
+  type:
+    type: string
+    description: "The type of security profile. Possible values: [\"THREAT_PREVENTION\", \"URL_FILTERING\", \"CUSTOM_MIRRORING\", \"CUSTOM_INTERCEPT\"]"
+  description:
+    type: string
+    description: "An optional description of the security profile. The Max length is 512 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SecuritySecurityProfile"
+    default: null
+  labels:
+    type: object
+    description: "A map of key/value label pairs to assign to the resource.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "The location of the security profile. The default value is 'global'."
+    default: null
+  parent:
+    type: string
+    description: "The name of the parent this security profile belongs to. Format: organizations/{organization_id}."
+    default: null
+  custom_intercept_profile:
+    type: list
+    description: "Nested block: custom_intercept_profile"
+    default: []
+  custom_mirroring_profile:
+    type: list
+    description: "Nested block: custom_mirroring_profile"
+    default: []
+  threat_prevention_profile:
+    type: list
+    description: "Nested block: threat_prevention_profile"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  url_filtering_profile:
+    type: list
+    description: "Nested block: url_filtering_profile"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:SecuritySecurityProfile
+    properties:
+      name: ${var.name}
+      type: ${var.type}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      location: ${var.location}
+      parent: ${var.parent}
+      dynamic:
+        custom_intercept_profile:
+          for_each: ${var.custom_intercept_profile}
+          content:
+            intercept_endpoint_group: ${each.value.intercept_endpoint_group}
+        custom_mirroring_profile:
+          for_each: ${var.custom_mirroring_profile}
+          content:
+            mirroring_deployment_groups: ${each.value.mirroring_deployment_groups}
+            mirroring_endpoint_group: ${each.value.mirroring_endpoint_group}
+            mirroring_endpoint_group_type: ${each.value.mirroring_endpoint_group_type}
+        threat_prevention_profile:
+          for_each: ${var.threat_prevention_profile}
+          content:
+            antivirus_overrides: ${each.value.antivirus_overrides}
+            severity_overrides: ${each.value.severity_overrides}
+            threat_overrides: ${each.value.threat_overrides}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        url_filtering_profile:
+          for_each: ${var.url_filtering_profile}
+          content:
+            url_filters: ${each.value.url_filters}

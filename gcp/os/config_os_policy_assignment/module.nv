@@ -1,0 +1,77 @@
+variables:
+  location:
+    type: string
+    description: "The location for the resource"
+  name:
+    type: string
+    description: "Resource name."
+  description:
+    type: string
+    description: "OS policy assignment description. Length of the description is limited to 1024 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ConfigOsPolicyAssignment"
+    default: null
+  project:
+    type: string
+    description: "The project for the resource"
+    default: null
+  skip_await_rollout:
+    type: boolean
+    description: "Set to true to skip awaiting rollout during resource creation and update."
+    default: null
+  instance_filter:
+    type: list
+    description: "Nested block: instance_filter"
+    default: []
+  os_policies:
+    type: list
+    description: "Nested block: os_policies"
+    default: []
+  rollout:
+    type: list
+    description: "Nested block: rollout"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:os:ConfigOsPolicyAssignment
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      skip_await_rollout: ${var.skip_await_rollout}
+      dynamic:
+        instance_filter:
+          for_each: ${var.instance_filter}
+          content:
+            all: ${each.value.all}
+            exclusion_labels: ${each.value.exclusion_labels}
+            inclusion_labels: ${each.value.inclusion_labels}
+            inventories: ${each.value.inventories}
+        os_policies:
+          for_each: ${var.os_policies}
+          content:
+            allow_no_resource_group_match: ${each.value.allow_no_resource_group_match}
+            description: ${each.value.description}
+            id: ${each.value.id}
+            mode: ${each.value.mode}
+            resource_groups: ${each.value.resource_groups}
+        rollout:
+          for_each: ${var.rollout}
+          content:
+            min_wait_duration: ${each.value.min_wait_duration}
+            disruption_budget: ${each.value.disruption_budget}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,28 @@
+variables:
+  bucket:
+    type: string
+    description: "Required property for BucketIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for BucketIamPolicy"
+  id:
+    type: string
+    description: "Optional property for BucketIamPolicy"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:BucketIamPolicy
+    properties:
+      bucket: ${var.bucket}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}

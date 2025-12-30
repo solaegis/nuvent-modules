@@ -1,0 +1,50 @@
+variables:
+  display_name:
+    type: string
+    description: "Name used for UI elements listing this Service."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CustomService"
+    default: null
+  project:
+    type: string
+    description: "Optional property for CustomService"
+    default: null
+  service_id:
+    type: string
+    description: "An optional service ID to use. If not given, the server will generate a service ID."
+    default: null
+  user_labels:
+    type: object
+    description: "Labels which have been used to annotate the service. Label keys must start with a letter. Label keys and values may contain lowercase letters, numbers, underscores, and dashes. Label keys and values have a maximum length of 63 characters, and must be less than 128 bytes in size. Up to 64 label entries may be stored. For labels which do not have a semantic value, the empty string may be supplied for the label value."
+    default: null
+  telemetry:
+    type: list
+    description: "Nested block: telemetry"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:monitoring:CustomService
+    properties:
+      display_name: ${var.display_name}
+      id: ${var.id}
+      project: ${var.project}
+      service_id: ${var.service_id}
+      user_labels: ${var.user_labels}
+      dynamic:
+        telemetry:
+          for_each: ${var.telemetry}
+          content:
+            resource_name: ${each.value.resource_name}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

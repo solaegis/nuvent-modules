@@ -1,0 +1,20 @@
+variables:
+  bucket:
+    type: string
+    description: "Required property for DefaultObjectAcl"
+  id:
+    type: string
+    description: "Optional property for DefaultObjectAcl"
+    default: null
+  role_entity:
+    type: list
+    description: "Optional property for DefaultObjectAcl"
+    default: null
+
+resources:
+  main:
+    type: gcp:storage:DefaultObjectAcl
+    properties:
+      bucket: ${var.bucket}
+      id: ${var.id}
+      role_entity: ${var.role_entity}

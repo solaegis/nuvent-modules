@@ -1,0 +1,108 @@
+variables:
+  name:
+    type: string
+    description: "The name of the job."
+  attempt_deadline:
+    type: string
+    description: "The deadline for job attempts. If the request handler does not respond by this deadline then the request is cancelled and the attempt is marked as a DEADLINE_EXCEEDED failure. The failed attempt can be viewed in execution logs. Cloud Scheduler will retry the job according to the RetryConfig. The allowed duration for this deadline is: * For HTTP targets, between 15 seconds and 30 minutes. * For App Engine HTTP targets, between 15 seconds and 24 hours. * **Note**: For PubSub targets, this field is ignored - setting it will introduce an unresolvable diff. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: \"3.5s\""
+    default: null
+  description:
+    type: string
+    description: "A human-readable description for the job. This string must not contain more than 500 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SchedulerJob"
+    default: null
+  paused:
+    type: boolean
+    description: "Sets the job to a paused state. Jobs default to being enabled when this property is not set."
+    default: null
+  project:
+    type: string
+    description: "Optional property for SchedulerJob"
+    default: null
+  region:
+    type: string
+    description: "Region where the scheduler job resides. If it is not provided, Terraform will use the provider default."
+    default: null
+  schedule:
+    type: string
+    description: "Describes the schedule on which the job will be executed."
+    default: null
+  time_zone:
+    type: string
+    description: "Specifies the time zone to be used in interpreting schedule. The value of this field must be a time zone name from the tz database."
+    default: null
+  app_engine_http_target:
+    type: list
+    description: "Nested block: app_engine_http_target"
+    default: []
+  http_target:
+    type: list
+    description: "Nested block: http_target"
+    default: []
+  pubsub_target:
+    type: list
+    description: "Nested block: pubsub_target"
+    default: []
+  retry_config:
+    type: list
+    description: "Nested block: retry_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloud:SchedulerJob
+    properties:
+      name: ${var.name}
+      attempt_deadline: ${var.attempt_deadline}
+      description: ${var.description}
+      id: ${var.id}
+      paused: ${var.paused}
+      project: ${var.project}
+      region: ${var.region}
+      schedule: ${var.schedule}
+      time_zone: ${var.time_zone}
+      dynamic:
+        app_engine_http_target:
+          for_each: ${var.app_engine_http_target}
+          content:
+            body: ${each.value.body}
+            headers: ${each.value.headers}
+            http_method: ${each.value.http_method}
+            relative_uri: ${each.value.relative_uri}
+            app_engine_routing: ${each.value.app_engine_routing}
+        http_target:
+          for_each: ${var.http_target}
+          content:
+            body: ${each.value.body}
+            headers: ${each.value.headers}
+            http_method: ${each.value.http_method}
+            uri: ${each.value.uri}
+            oauth_token: ${each.value.oauth_token}
+            oidc_token: ${each.value.oidc_token}
+        pubsub_target:
+          for_each: ${var.pubsub_target}
+          content:
+            attributes: ${each.value.attributes}
+            data: ${each.value.data}
+            topic_name: ${each.value.topic_name}
+        retry_config:
+          for_each: ${var.retry_config}
+          content:
+            max_backoff_duration: ${each.value.max_backoff_duration}
+            max_doublings: ${each.value.max_doublings}
+            max_retry_duration: ${each.value.max_retry_duration}
+            min_backoff_duration: ${each.value.min_backoff_duration}
+            retry_count: ${each.value.retry_count}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,40 @@
+variables:
+  bucket:
+    type: string
+    description: "A reference to Bucket resource"
+  zone:
+    type: string
+    description: "The zone in which the cache instance needs to be created. For example, 'us-central1-a.'"
+  admission_policy:
+    type: string
+    description: "The cache admission policy dictates whether a block should be inserted upon a cache miss. Default value: \"admit-on-first-miss\" Possible values: [\"admit-on-first-miss\", \"admit-on-second-miss\"]"
+    default: null
+  id:
+    type: string
+    description: "Optional property for AnywhereCache"
+    default: null
+  ttl:
+    type: string
+    description: "The TTL of all cache entries in whole seconds. e.g., \"7200s\". It defaults to '86400s'"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:AnywhereCache
+    properties:
+      bucket: ${var.bucket}
+      zone: ${var.zone}
+      admission_policy: ${var.admission_policy}
+      id: ${var.id}
+      ttl: ${var.ttl}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

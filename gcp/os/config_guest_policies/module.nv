@@ -1,0 +1,87 @@
+variables:
+  guest_policy_id:
+    type: string
+    description: "The logical name of the guest policy in the project with the following restrictions: * Must contain only lowercase letters, numbers, and hyphens. * Must start with a letter. * Must be between 1-63 characters. * Must end with a number or a letter. * Must be unique within the project."
+  description:
+    type: string
+    description: "Description of the guest policy. Length of the description is limited to 1024 characters."
+    default: null
+  etag:
+    type: string
+    description: "The etag for this guest policy. If this is provided on update, it must match the server's etag."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ConfigGuestPolicies"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ConfigGuestPolicies"
+    default: null
+  assignment:
+    type: list
+    description: "Nested block: assignment"
+    default: []
+  package_repositories:
+    type: list
+    description: "Nested block: package_repositories"
+    default: []
+  packages:
+    type: list
+    description: "Nested block: packages"
+    default: []
+  recipes:
+    type: list
+    description: "Nested block: recipes"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:os:ConfigGuestPolicies
+    properties:
+      guest_policy_id: ${var.guest_policy_id}
+      description: ${var.description}
+      etag: ${var.etag}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        assignment:
+          for_each: ${var.assignment}
+          content:
+            instance_name_prefixes: ${each.value.instance_name_prefixes}
+            instances: ${each.value.instances}
+            zones: ${each.value.zones}
+            group_labels: ${each.value.group_labels}
+            os_types: ${each.value.os_types}
+        package_repositories:
+          for_each: ${var.package_repositories}
+          content:
+            apt: ${each.value.apt}
+            goo: ${each.value.goo}
+            yum: ${each.value.yum}
+            zypper: ${each.value.zypper}
+        packages:
+          for_each: ${var.packages}
+          content:
+            desired_state: ${each.value.desired_state}
+            manager: ${each.value.manager}
+            name: ${each.value.name}
+        recipes:
+          for_each: ${var.recipes}
+          content:
+            desired_state: ${each.value.desired_state}
+            name: ${each.value.name}
+            version: ${each.value.version}
+            artifacts: ${each.value.artifacts}
+            install_steps: ${each.value.install_steps}
+            update_steps: ${each.value.update_steps}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

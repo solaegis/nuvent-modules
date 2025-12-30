@@ -1,0 +1,58 @@
+variables:
+  firewall_endpoint:
+    type: string
+    description: "The URL of the firewall endpoint that is being associated."
+  location:
+    type: string
+    description: "The location (zone) of the firewall endpoint association."
+  name:
+    type: string
+    description: "The name of the firewall endpoint association resource."
+  network:
+    type: string
+    description: "The URL of the network that is being associated."
+  disabled:
+    type: boolean
+    description: "Whether the association is disabled. True indicates that traffic will not be intercepted.  ~> **Note:** The API will reject the request if this value is set to true when creating the resource, otherwise on an update the association can be disabled."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SecurityFirewallEndpointAssociation"
+    default: null
+  labels:
+    type: object
+    description: "A map of key/value label pairs to assign to the resource.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  parent:
+    type: string
+    description: "The name of the parent this firewall endpoint association belongs to. Format: projects/{project_id}."
+    default: null
+  tls_inspection_policy:
+    type: string
+    description: "The URL of the TlsInspectionPolicy that is being associated."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:SecurityFirewallEndpointAssociation
+    properties:
+      firewall_endpoint: ${var.firewall_endpoint}
+      location: ${var.location}
+      name: ${var.name}
+      network: ${var.network}
+      disabled: ${var.disabled}
+      id: ${var.id}
+      labels: ${var.labels}
+      parent: ${var.parent}
+      tls_inspection_policy: ${var.tls_inspection_policy}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

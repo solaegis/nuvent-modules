@@ -1,0 +1,48 @@
+variables:
+  feature_online_store:
+    type: string
+    description: "Required property for AiFeatureOnlineStoreFeatureviewIamBinding"
+  feature_view:
+    type: string
+    description: "Required property for AiFeatureOnlineStoreFeatureviewIamBinding"
+  members:
+    type: list
+    description: "Required property for AiFeatureOnlineStoreFeatureviewIamBinding"
+  role:
+    type: string
+    description: "Required property for AiFeatureOnlineStoreFeatureviewIamBinding"
+  id:
+    type: string
+    description: "Optional property for AiFeatureOnlineStoreFeatureviewIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiFeatureOnlineStoreFeatureviewIamBinding"
+    default: null
+  region:
+    type: string
+    description: "Optional property for AiFeatureOnlineStoreFeatureviewIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:vertex:AiFeatureOnlineStoreFeatureviewIamBinding
+    properties:
+      feature_online_store: ${var.feature_online_store}
+      feature_view: ${var.feature_view}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

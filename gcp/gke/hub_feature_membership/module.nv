@@ -1,0 +1,74 @@
+variables:
+  feature:
+    type: string
+    description: "The name of the feature"
+  location:
+    type: string
+    description: "The location of the feature"
+  membership:
+    type: string
+    description: "The name of the membership"
+  id:
+    type: string
+    description: "Optional property for HubFeatureMembership"
+    default: null
+  membership_location:
+    type: string
+    description: "The location of the membership"
+    default: null
+  project:
+    type: string
+    description: "The project of the feature"
+    default: null
+  configmanagement:
+    type: list
+    description: "Nested block: configmanagement"
+    default: []
+  mesh:
+    type: list
+    description: "Nested block: mesh"
+    default: []
+  policycontroller:
+    type: list
+    description: "Nested block: policycontroller"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:gke:HubFeatureMembership
+    properties:
+      feature: ${var.feature}
+      location: ${var.location}
+      membership: ${var.membership}
+      id: ${var.id}
+      membership_location: ${var.membership_location}
+      project: ${var.project}
+      dynamic:
+        configmanagement:
+          for_each: ${var.configmanagement}
+          content:
+            management: ${each.value.management}
+            version: ${each.value.version}
+            config_sync: ${each.value.config_sync}
+            hierarchy_controller: ${each.value.hierarchy_controller}
+            policy_controller: ${each.value.policy_controller}
+        mesh:
+          for_each: ${var.mesh}
+          content:
+            control_plane: ${each.value.control_plane}
+            management: ${each.value.management}
+        policycontroller:
+          for_each: ${var.policycontroller}
+          content:
+            version: ${each.value.version}
+            policy_controller_hub_config: ${each.value.policy_controller_hub_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

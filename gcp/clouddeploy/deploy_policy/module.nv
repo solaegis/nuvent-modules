@@ -1,0 +1,72 @@
+variables:
+  location:
+    type: string
+    description: "The location for the resource"
+  name:
+    type: string
+    description: "Name of the 'DeployPolicy'."
+  annotations:
+    type: object
+    description: "User annotations. These attributes can only be set and used by the user, and not by Cloud Deploy. Annotations must meet the following constraints: * Annotations are key/value pairs. * Valid annotation keys have two segments: an optional prefix and name, separated by a slash ('/'). * The name segment is required and must be 63 characters or less, beginning and ending with an alphanumeric character ('[a-z0-9A-Z]') with dashes ('-'), underscores ('_'), dots ('.'), and alphanumerics between. * The prefix is optional. If specified, the prefix must be a DNS subdomain: a series of DNS labels separated by dots('.'), not longer than 253 characters in total, followed by a slash ('/'). See https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/#syntax-and-character-set for more details.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  description:
+    type: string
+    description: "Description of the 'DeployPolicy'. Max length is 255 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for DeployPolicy"
+    default: null
+  labels:
+    type: object
+    description: "Labels are attributes that can be set and used by both the user and by Cloud Deploy. Labels must meet the following constraints: * Keys and values can contain only lowercase letters, numeric characters, underscores, and dashes. * All characters must use UTF-8 encoding, and international characters are allowed. * Keys must start with a lowercase letter or international character. * Each resource is limited to a maximum of 64 labels. Both keys and values are additionally constrained to be <= 63 characters.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for DeployPolicy"
+    default: null
+  suspended:
+    type: boolean
+    description: "When suspended, the policy will not prevent actions from occurring, even if the action violates the policy."
+    default: null
+  rules:
+    type: list
+    description: "Nested block: rules"
+    default: []
+  selectors:
+    type: list
+    description: "Nested block: selectors"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:clouddeploy:DeployPolicy
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      annotations: ${var.annotations}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      suspended: ${var.suspended}
+      dynamic:
+        rules:
+          for_each: ${var.rules}
+          content:
+            rollout_restriction: ${each.value.rollout_restriction}
+        selectors:
+          for_each: ${var.selectors}
+          content:
+            delivery_pipeline: ${each.value.delivery_pipeline}
+            target: ${each.value.target}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

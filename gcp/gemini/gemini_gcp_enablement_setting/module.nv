@@ -1,0 +1,55 @@
+variables:
+  gemini_gcp_enablement_setting_id:
+    type: string
+    description: "Id of the Gemini Gcp Enablement setting."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  disable_web_grounding:
+    type: boolean
+    description: "Whether web grounding should be disabled."
+    default: null
+  enable_customer_data_sharing:
+    type: boolean
+    description: "Whether customer data sharing should be enabled."
+    default: null
+  id:
+    type: string
+    description: "Optional property for GeminiGcpEnablementSetting"
+    default: null
+  labels:
+    type: object
+    description: "Labels as key value pairs.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for GeminiGcpEnablementSetting"
+    default: null
+  web_grounding_type:
+    type: string
+    description: "Web grounding type. Possible values: GROUNDING_WITH_GOOGLE_SEARCH WEB_GROUNDING_FOR_ENTERPRISE"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:gemini:GeminiGcpEnablementSetting
+    properties:
+      gemini_gcp_enablement_setting_id: ${var.gemini_gcp_enablement_setting_id}
+      location: ${var.location}
+      disable_web_grounding: ${var.disable_web_grounding}
+      enable_customer_data_sharing: ${var.enable_customer_data_sharing}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      web_grounding_type: ${var.web_grounding_type}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

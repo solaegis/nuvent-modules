@@ -1,0 +1,61 @@
+variables:
+  display_name:
+    type: string
+    description: "Human friendly display name."
+  name:
+    type: string
+    description: "The name of the InboundSamlConfig resource. Must start with 'saml.' and can only have alphanumeric characters, hyphens, underscores or periods. The part after 'saml.' must also start with a lowercase letter, end with an alphanumeric character, and have at least 2 characters."
+  enabled:
+    type: boolean
+    description: "If this config allows users to sign in with the provider."
+    default: null
+  id:
+    type: string
+    description: "Optional property for PlatformInboundSamlConfig"
+    default: null
+  project:
+    type: string
+    description: "Optional property for PlatformInboundSamlConfig"
+    default: null
+  idp_config:
+    type: list
+    description: "Nested block: idp_config"
+    default: []
+  sp_config:
+    type: list
+    description: "Nested block: sp_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:identity:PlatformInboundSamlConfig
+    properties:
+      display_name: ${var.display_name}
+      name: ${var.name}
+      enabled: ${var.enabled}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        idp_config:
+          for_each: ${var.idp_config}
+          content:
+            idp_entity_id: ${each.value.idp_entity_id}
+            sign_request: ${each.value.sign_request}
+            sso_url: ${each.value.sso_url}
+            idp_certificates: ${each.value.idp_certificates}
+        sp_config:
+          for_each: ${var.sp_config}
+          content:
+            callback_uri: ${each.value.callback_uri}
+            sp_certificates: ${each.value.sp_certificates}
+            sp_entity_id: ${each.value.sp_entity_id}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

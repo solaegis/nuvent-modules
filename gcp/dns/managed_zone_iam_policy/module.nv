@@ -1,0 +1,24 @@
+variables:
+  managed_zone:
+    type: string
+    description: "Required property for ManagedZoneIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for ManagedZoneIamPolicy"
+  id:
+    type: string
+    description: "Optional property for ManagedZoneIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ManagedZoneIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:dns:ManagedZoneIamPolicy
+    properties:
+      managed_zone: ${var.managed_zone}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}

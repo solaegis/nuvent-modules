@@ -1,0 +1,42 @@
+variables:
+  application_id:
+    type: string
+    description: "The Azure Active Directory Application ID."
+  location:
+    type: string
+    description: "The location for the resource"
+  name:
+    type: string
+    description: "The name of this resource."
+  tenant_id:
+    type: string
+    description: "The Azure Active Directory Tenant ID."
+  id:
+    type: string
+    description: "Optional property for AzureClient"
+    default: null
+  project:
+    type: string
+    description: "The project for the resource"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:container:AzureClient
+    properties:
+      application_id: ${var.application_id}
+      location: ${var.location}
+      name: ${var.name}
+      tenant_id: ${var.tenant_id}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

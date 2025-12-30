@@ -1,0 +1,43 @@
+variables:
+  activation_status:
+    type: string
+    description: "The activation status of the preview feature. Possible values: [\"ENABLED\", \"ACTIVATION_STATE_UNSPECIFIED\"]"
+  name:
+    type: string
+    description: "The name of the preview feature."
+  id:
+    type: string
+    description: "Optional property for PreviewFeature"
+    default: null
+  project:
+    type: string
+    description: "Optional property for PreviewFeature"
+    default: null
+  rollout_operation:
+    type: list
+    description: "Nested block: rollout_operation"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:PreviewFeature
+    properties:
+      activation_status: ${var.activation_status}
+      name: ${var.name}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        rollout_operation:
+          for_each: ${var.rollout_operation}
+          content:
+            rollout_input: ${each.value.rollout_input}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

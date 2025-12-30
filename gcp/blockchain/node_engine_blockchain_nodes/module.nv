@@ -1,0 +1,61 @@
+variables:
+  blockchain_node_id:
+    type: string
+    description: "ID of the requesting object."
+  location:
+    type: string
+    description: "Location of Blockchain Node being created."
+  blockchain_type:
+    type: string
+    description: "User-provided key-value pairs Possible values: [\"ETHEREUM\"]"
+    default: null
+  id:
+    type: string
+    description: "Optional property for NodeEngineBlockchainNodes"
+    default: null
+  labels:
+    type: object
+    description: "User-provided key-value pairs   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for NodeEngineBlockchainNodes"
+    default: null
+  ethereum_details:
+    type: list
+    description: "Nested block: ethereum_details"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:blockchain:NodeEngineBlockchainNodes
+    properties:
+      blockchain_node_id: ${var.blockchain_node_id}
+      location: ${var.location}
+      blockchain_type: ${var.blockchain_type}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        ethereum_details:
+          for_each: ${var.ethereum_details}
+          content:
+            additional_endpoints: ${each.value.additional_endpoints}
+            api_enable_admin: ${each.value.api_enable_admin}
+            api_enable_debug: ${each.value.api_enable_debug}
+            consensus_client: ${each.value.consensus_client}
+            execution_client: ${each.value.execution_client}
+            network: ${each.value.network}
+            node_type: ${each.value.node_type}
+            geth_details: ${each.value.geth_details}
+            validator_config: ${each.value.validator_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

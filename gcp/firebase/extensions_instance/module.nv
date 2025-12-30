@@ -1,0 +1,47 @@
+variables:
+  instance_id:
+    type: string
+    description: "The ID to use for the Extension Instance, which will become the final component of the instance's name."
+  id:
+    type: string
+    description: "Optional property for ExtensionsInstance"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ExtensionsInstance"
+    default: null
+  config:
+    type: list
+    description: "Nested block: config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:firebase:ExtensionsInstance
+    properties:
+      instance_id: ${var.instance_id}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        config:
+          for_each: ${var.config}
+          content:
+            allowed_event_types: ${each.value.allowed_event_types}
+            create_time: ${each.value.create_time}
+            eventarc_channel: ${each.value.eventarc_channel}
+            extension_ref: ${each.value.extension_ref}
+            extension_version: ${each.value.extension_version}
+            name: ${each.value.name}
+            params: ${each.value.params}
+            populated_postinstall_content: ${each.value.populated_postinstall_content}
+            system_params: ${each.value.system_params}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

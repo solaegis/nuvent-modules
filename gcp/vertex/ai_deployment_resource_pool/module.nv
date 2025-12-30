@@ -1,0 +1,46 @@
+variables:
+  name:
+    type: string
+    description: "The resource name of deployment resource pool. The maximum length is 63 characters, and valid characters are '/^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$/'."
+  id:
+    type: string
+    description: "Optional property for AiDeploymentResourcePool"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiDeploymentResourcePool"
+    default: null
+  region:
+    type: string
+    description: "The region of deployment resource pool. eg us-central1"
+    default: null
+  dedicated_resources:
+    type: list
+    description: "Nested block: dedicated_resources"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vertex:AiDeploymentResourcePool
+    properties:
+      name: ${var.name}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        dedicated_resources:
+          for_each: ${var.dedicated_resources}
+          content:
+            max_replica_count: ${each.value.max_replica_count}
+            min_replica_count: ${each.value.min_replica_count}
+            autoscaling_metric_specs: ${each.value.autoscaling_metric_specs}
+            machine_spec: ${each.value.machine_spec}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

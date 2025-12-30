@@ -1,0 +1,44 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource; provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  network_endpoint_type:
+    type: string
+    description: "Type of network endpoints in this network endpoint group. Possible values: [\"INTERNET_IP_PORT\", \"INTERNET_FQDN_PORT\"]"
+  default_port:
+    type: number
+    description: "The default port used if the port number is not specified in the network endpoint."
+    default: null
+  description:
+    type: string
+    description: "An optional description of this resource. Provide this property when you create the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for GlobalNetworkEndpointGroup"
+    default: null
+  project:
+    type: string
+    description: "Optional property for GlobalNetworkEndpointGroup"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:GlobalNetworkEndpointGroup
+    properties:
+      name: ${var.name}
+      network_endpoint_type: ${var.network_endpoint_type}
+      default_port: ${var.default_port}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

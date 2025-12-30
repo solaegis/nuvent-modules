@@ -1,0 +1,39 @@
+variables:
+  internal_ip:
+    type: string
+    description: "The internal IP address of a workload VM."
+  name:
+    type: string
+    description: "The ID of the external IP Address."
+  parent:
+    type: string
+    description: "The resource name of the private cloud to create a new external address in. Resource names are schemeless URIs that follow the conventions in https://cloud.google.com/apis/design/resource_names. For example: projects/my-project/locations/us-west1-a/privateClouds/my-cloud"
+  description:
+    type: string
+    description: "User-provided description for this resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ExternalAddress"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vmwareengine:ExternalAddress
+    properties:
+      internal_ip: ${var.internal_ip}
+      name: ${var.name}
+      parent: ${var.parent}
+      description: ${var.description}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

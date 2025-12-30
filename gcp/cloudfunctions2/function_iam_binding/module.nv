@@ -1,0 +1,44 @@
+variables:
+  cloud_function:
+    type: string
+    description: "Required property for FunctionIamBinding"
+  members:
+    type: list
+    description: "Required property for FunctionIamBinding"
+  role:
+    type: string
+    description: "Required property for FunctionIamBinding"
+  id:
+    type: string
+    description: "Optional property for FunctionIamBinding"
+    default: null
+  location:
+    type: string
+    description: "Optional property for FunctionIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for FunctionIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloudfunctions2:FunctionIamBinding
+    properties:
+      cloud_function: ${var.cloud_function}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

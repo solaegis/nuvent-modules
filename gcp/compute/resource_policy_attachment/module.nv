@@ -1,0 +1,39 @@
+variables:
+  instance:
+    type: string
+    description: "The name of the instance in which the resource policies are attached to."
+  name:
+    type: string
+    description: "The resource policy to be attached to the instance for scheduling start/stop operations. Do not specify the self link."
+  id:
+    type: string
+    description: "Optional property for ResourcePolicyAttachment"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ResourcePolicyAttachment"
+    default: null
+  zone:
+    type: string
+    description: "A reference to the zone where the instance resides."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:ResourcePolicyAttachment
+    properties:
+      instance: ${var.instance}
+      name: ${var.name}
+      id: ${var.id}
+      project: ${var.project}
+      zone: ${var.zone}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

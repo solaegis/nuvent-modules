@@ -1,0 +1,28 @@
+variables:
+  api:
+    type: string
+    description: "Required property for GatewayApiConfigIamPolicy"
+  api_config:
+    type: string
+    description: "Required property for GatewayApiConfigIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for GatewayApiConfigIamPolicy"
+  id:
+    type: string
+    description: "Optional property for GatewayApiConfigIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for GatewayApiConfigIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:api:GatewayApiConfigIamPolicy
+    properties:
+      api: ${var.api}
+      api_config: ${var.api_config}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}

@@ -1,0 +1,73 @@
+variables:
+  display_name:
+    type: string
+    description: "The display name of the Index. The name can be up to 128 characters long and can consist of any UTF-8 characters."
+  description:
+    type: string
+    description: "The description of the Index."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AiIndexEndpoint"
+    default: null
+  labels:
+    type: object
+    description: "The labels with user-defined metadata to organize your Indexes.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  network:
+    type: string
+    description: "The full name of the Google Compute Engine [network](https://cloud.google.com//compute/docs/networks-and-firewalls#networks) to which the index endpoint should be peered. Private services access must already be configured for the network. If left unspecified, the index endpoint is not peered with any network. [Format](https://cloud.google.com/compute/docs/reference/rest/v1/networks/insert): 'projects/{project}/global/networks/{network}'. Where '{project}' is a project number, as in '12345', and '{network}' is network name."
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiIndexEndpoint"
+    default: null
+  public_endpoint_enabled:
+    type: boolean
+    description: "If true, the deployed index will be accessible through public endpoint."
+    default: null
+  region:
+    type: string
+    description: "The region of the index endpoint. eg us-central1"
+    default: null
+  encryption_spec:
+    type: list
+    description: "Nested block: encryption_spec"
+    default: []
+  private_service_connect_config:
+    type: list
+    description: "Nested block: private_service_connect_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vertex:AiIndexEndpoint
+    properties:
+      display_name: ${var.display_name}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      network: ${var.network}
+      project: ${var.project}
+      public_endpoint_enabled: ${var.public_endpoint_enabled}
+      region: ${var.region}
+      dynamic:
+        encryption_spec:
+          for_each: ${var.encryption_spec}
+          content:
+            kms_key_name: ${each.value.kms_key_name}
+        private_service_connect_config:
+          for_each: ${var.private_service_connect_config}
+          content:
+            enable_private_service_connect: ${each.value.enable_private_service_connect}
+            project_allowlist: ${each.value.project_allowlist}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

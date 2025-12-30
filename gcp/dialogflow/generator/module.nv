@@ -1,0 +1,73 @@
+variables:
+  location:
+    type: string
+    description: "desc"
+  description:
+    type: string
+    description: "Optional. Human readable description of the generator."
+    default: null
+  generator_id:
+    type: string
+    description: "Optional. The ID to use for the generator, which will become the final component of the generator's resource name."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Generator"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Generator"
+    default: null
+  published_model:
+    type: string
+    description: "Optional. The published Large Language Model name. * To use the latest model version, specify the model name without version number. Example: text-bison * To use a stable model version, specify the version number as well. Example: text-bison@002."
+    default: null
+  trigger_event:
+    type: string
+    description: "Optional. The trigger event of the generator. It defines when the generator is triggered in a conversation. Possible values: [\"END_OF_UTTERANCE\", \"MANUAL_CALL\", \"CUSTOMER_MESSAGE\", \"AGENT_MESSAGE\"]"
+    default: null
+  inference_parameter:
+    type: list
+    description: "Nested block: inference_parameter"
+    default: []
+  summarization_context:
+    type: list
+    description: "Nested block: summarization_context"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:Generator
+    properties:
+      location: ${var.location}
+      description: ${var.description}
+      generator_id: ${var.generator_id}
+      id: ${var.id}
+      project: ${var.project}
+      published_model: ${var.published_model}
+      trigger_event: ${var.trigger_event}
+      dynamic:
+        inference_parameter:
+          for_each: ${var.inference_parameter}
+          content:
+            max_output_tokens: ${each.value.max_output_tokens}
+            temperature: ${each.value.temperature}
+            top_k: ${each.value.top_k}
+            top_p: ${each.value.top_p}
+        summarization_context:
+          for_each: ${var.summarization_context}
+          content:
+            output_language_code: ${each.value.output_language_code}
+            version: ${each.value.version}
+            few_shot_examples: ${each.value.few_shot_examples}
+            summarization_sections: ${each.value.summarization_sections}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

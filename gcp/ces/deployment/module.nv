@@ -1,0 +1,56 @@
+variables:
+  app:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  app_version:
+    type: string
+    description: "The resource name of the app version to deploy. Format: projects/{project}/locations/{location}/apps/{app}/versions/{version}"
+  display_name:
+    type: string
+    description: "Display name of the deployment."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  id:
+    type: string
+    description: "Optional property for Deployment"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Deployment"
+    default: null
+  channel_profile:
+    type: list
+    description: "Nested block: channel_profile"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:ces:Deployment
+    properties:
+      app: ${var.app}
+      app_version: ${var.app_version}
+      display_name: ${var.display_name}
+      location: ${var.location}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        channel_profile:
+          for_each: ${var.channel_profile}
+          content:
+            channel_type: ${each.value.channel_type}
+            disable_barge_in_control: ${each.value.disable_barge_in_control}
+            disable_dtmf: ${each.value.disable_dtmf}
+            profile_id: ${each.value.profile_id}
+            persona_property: ${each.value.persona_property}
+            web_widget_config: ${each.value.web_widget_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

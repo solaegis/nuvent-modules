@@ -1,0 +1,44 @@
+variables:
+  entry_group:
+    type: string
+    description: "Required property for CatalogEntryGroupIamMember"
+  member:
+    type: string
+    description: "Required property for CatalogEntryGroupIamMember"
+  role:
+    type: string
+    description: "Required property for CatalogEntryGroupIamMember"
+  id:
+    type: string
+    description: "Optional property for CatalogEntryGroupIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for CatalogEntryGroupIamMember"
+    default: null
+  region:
+    type: string
+    description: "Optional property for CatalogEntryGroupIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:data:CatalogEntryGroupIamMember
+    properties:
+      entry_group: ${var.entry_group}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

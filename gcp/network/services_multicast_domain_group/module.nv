@@ -1,0 +1,45 @@
+variables:
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  multicast_domain_group_id:
+    type: string
+    description: "A unique name for the multicast domain group. The name is restricted to letters, numbers, and hyphen, with the first character a letter, and the last a letter or a number. The name must not exceed 48 characters."
+  description:
+    type: string
+    description: "An optional text description of the multicast domain group."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ServicesMulticastDomainGroup"
+    default: null
+  labels:
+    type: object
+    description: "Labels as key-value pairs.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ServicesMulticastDomainGroup"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ServicesMulticastDomainGroup
+    properties:
+      location: ${var.location}
+      multicast_domain_group_id: ${var.multicast_domain_group_id}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

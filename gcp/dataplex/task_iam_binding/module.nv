@@ -1,0 +1,48 @@
+variables:
+  lake:
+    type: string
+    description: "Required property for TaskIamBinding"
+  members:
+    type: list
+    description: "Required property for TaskIamBinding"
+  role:
+    type: string
+    description: "Required property for TaskIamBinding"
+  task_id:
+    type: string
+    description: "Required property for TaskIamBinding"
+  id:
+    type: string
+    description: "Optional property for TaskIamBinding"
+    default: null
+  location:
+    type: string
+    description: "Optional property for TaskIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TaskIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataplex:TaskIamBinding
+    properties:
+      lake: ${var.lake}
+      members: ${var.members}
+      role: ${var.role}
+      task_id: ${var.task_id}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

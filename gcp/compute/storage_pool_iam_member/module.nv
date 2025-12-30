@@ -1,0 +1,44 @@
+variables:
+  member:
+    type: string
+    description: "Required property for StoragePoolIamMember"
+  name:
+    type: string
+    description: "Required property for StoragePoolIamMember"
+  role:
+    type: string
+    description: "Required property for StoragePoolIamMember"
+  id:
+    type: string
+    description: "Optional property for StoragePoolIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for StoragePoolIamMember"
+    default: null
+  zone:
+    type: string
+    description: "Optional property for StoragePoolIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:StoragePoolIamMember
+    properties:
+      member: ${var.member}
+      name: ${var.name}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      zone: ${var.zone}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

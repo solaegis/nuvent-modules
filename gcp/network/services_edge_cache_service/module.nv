@@ -1,0 +1,89 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource; provided by the client when the resource is created. The name must be 1-64 characters long, and match the regular expression [a-zA-Z][a-zA-Z0-9_-]* which means the first character must be a letter, and all following characters must be a dash, underscore, letter or digit."
+  description:
+    type: string
+    description: "A human-readable description of the resource."
+    default: null
+  disable_http2:
+    type: boolean
+    description: "Disables HTTP/2.  HTTP/2 (h2) is enabled by default and recommended for performance. HTTP/2 improves connection re-use and reduces connection setup overhead by sending multiple streams over the same connection.  Some legacy HTTP clients may have issues with HTTP/2 connections due to broken HTTP/2 implementations. Setting this to true will prevent HTTP/2 from being advertised and negotiated."
+    default: null
+  disable_quic:
+    type: boolean
+    description: "HTTP/3 (IETF QUIC) and Google QUIC are enabled by default."
+    default: null
+  edge_security_policy:
+    type: string
+    description: "Resource URL that points at the Cloud Armor edge security policy that is applied on each request against the EdgeCacheService."
+    default: null
+  edge_ssl_certificates:
+    type: list
+    description: "URLs to sslCertificate resources that are used to authenticate connections between users and the EdgeCacheService.  Note that only \"global\" certificates with a \"scope\" of \"EDGE_CACHE\" can be attached to an EdgeCacheService."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ServicesEdgeCacheService"
+    default: null
+  labels:
+    type: object
+    description: "Set of label tags associated with the EdgeCache resource.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ServicesEdgeCacheService"
+    default: null
+  require_tls:
+    type: boolean
+    description: "Require TLS (HTTPS) for all clients connecting to this service.  Clients who connect over HTTP (port 80) will receive a HTTP 301 to the same URL over HTTPS (port 443). You must have at least one (1) edgeSslCertificate specified to enable this."
+    default: null
+  ssl_policy:
+    type: string
+    description: "URL of the SslPolicy resource that will be associated with the EdgeCacheService.  If not set, the EdgeCacheService has no SSL policy configured, and will default to the \"COMPATIBLE\" policy."
+    default: null
+  log_config:
+    type: list
+    description: "Nested block: log_config"
+    default: []
+  routing:
+    type: list
+    description: "Nested block: routing"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ServicesEdgeCacheService
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      disable_http2: ${var.disable_http2}
+      disable_quic: ${var.disable_quic}
+      edge_security_policy: ${var.edge_security_policy}
+      edge_ssl_certificates: ${var.edge_ssl_certificates}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      require_tls: ${var.require_tls}
+      ssl_policy: ${var.ssl_policy}
+      dynamic:
+        log_config:
+          for_each: ${var.log_config}
+          content:
+            enable: ${each.value.enable}
+            sample_rate: ${each.value.sample_rate}
+        routing:
+          for_each: ${var.routing}
+          content:
+            host_rule: ${each.value.host_rule}
+            path_matcher: ${each.value.path_matcher}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

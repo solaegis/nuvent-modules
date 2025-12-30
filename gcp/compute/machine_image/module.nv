@@ -1,0 +1,55 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource."
+  source_instance:
+    type: string
+    description: "The source instance used to create the machine image. You can provide this as a partial or full URL to the resource."
+  description:
+    type: string
+    description: "A text description of the resource."
+    default: null
+  guest_flush:
+    type: boolean
+    description: "Specify this to create an application consistent machine image by informing the OS to prepare for the snapshot process. Currently only supported on Windows instances using the Volume Shadow Copy Service (VSS)."
+    default: null
+  id:
+    type: string
+    description: "Optional property for MachineImage"
+    default: null
+  project:
+    type: string
+    description: "Optional property for MachineImage"
+    default: null
+  machine_image_encryption_key:
+    type: list
+    description: "Nested block: machine_image_encryption_key"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:MachineImage
+    properties:
+      name: ${var.name}
+      source_instance: ${var.source_instance}
+      description: ${var.description}
+      guest_flush: ${var.guest_flush}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        machine_image_encryption_key:
+          for_each: ${var.machine_image_encryption_key}
+          content:
+            kms_key_name: ${each.value.kms_key_name}
+            kms_key_service_account: ${each.value.kms_key_service_account}
+            raw_key: ${each.value.raw_key}
+            sha256: ${each.value.sha256}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

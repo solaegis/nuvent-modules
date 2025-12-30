@@ -1,0 +1,63 @@
+variables:
+  client_id:
+    type: string
+    description: "The client id of an OAuth client."
+  issuer:
+    type: string
+    description: "For OIDC Idps, the issuer identifier."
+  name:
+    type: string
+    description: "The name of the OauthIdpConfig. Must start with 'oidc.'."
+  client_secret:
+    type: string
+    description: "The client secret of the OAuth client, to enable OIDC code flow."
+    default: null
+  display_name:
+    type: string
+    description: "Human friendly display name."
+    default: null
+  enabled:
+    type: boolean
+    description: "If this config allows users to sign in with the provider."
+    default: null
+  id:
+    type: string
+    description: "Optional property for PlatformOauthIdpConfig"
+    default: null
+  project:
+    type: string
+    description: "Optional property for PlatformOauthIdpConfig"
+    default: null
+  response_type:
+    type: list
+    description: "Nested block: response_type"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:identity:PlatformOauthIdpConfig
+    properties:
+      client_id: ${var.client_id}
+      issuer: ${var.issuer}
+      name: ${var.name}
+      client_secret: ${var.client_secret}
+      display_name: ${var.display_name}
+      enabled: ${var.enabled}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        response_type:
+          for_each: ${var.response_type}
+          content:
+            code: ${each.value.code}
+            id_token: ${each.value.id_token}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

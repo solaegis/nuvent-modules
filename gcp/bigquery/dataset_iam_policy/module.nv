@@ -1,0 +1,24 @@
+variables:
+  dataset_id:
+    type: string
+    description: "Required property for DatasetIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for DatasetIamPolicy"
+  id:
+    type: string
+    description: "Optional property for DatasetIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for DatasetIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:bigquery:DatasetIamPolicy
+    properties:
+      dataset_id: ${var.dataset_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}

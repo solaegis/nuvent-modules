@@ -1,0 +1,44 @@
+variables:
+  members:
+    type: list
+    description: "Required property for FusionInstanceIamBinding"
+  name:
+    type: string
+    description: "Required property for FusionInstanceIamBinding"
+  role:
+    type: string
+    description: "Required property for FusionInstanceIamBinding"
+  id:
+    type: string
+    description: "Optional property for FusionInstanceIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for FusionInstanceIamBinding"
+    default: null
+  region:
+    type: string
+    description: "Optional property for FusionInstanceIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:data:FusionInstanceIamBinding
+    properties:
+      members: ${var.members}
+      name: ${var.name}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

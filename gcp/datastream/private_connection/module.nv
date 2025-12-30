@@ -1,0 +1,66 @@
+variables:
+  display_name:
+    type: string
+    description: "Display name."
+  location:
+    type: string
+    description: "The name of the location this private connection is located in."
+  private_connection_id:
+    type: string
+    description: "The private connectivity identifier."
+  create_without_validation:
+    type: boolean
+    description: "If set to true, will skip validations."
+    default: null
+  id:
+    type: string
+    description: "Optional property for PrivateConnection"
+    default: null
+  labels:
+    type: object
+    description: "Labels.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for PrivateConnection"
+    default: null
+  psc_interface_config:
+    type: list
+    description: "Nested block: psc_interface_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  vpc_peering_config:
+    type: list
+    description: "Nested block: vpc_peering_config"
+    default: []
+
+resources:
+  main:
+    type: gcp:datastream:PrivateConnection
+    properties:
+      display_name: ${var.display_name}
+      location: ${var.location}
+      private_connection_id: ${var.private_connection_id}
+      create_without_validation: ${var.create_without_validation}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        psc_interface_config:
+          for_each: ${var.psc_interface_config}
+          content:
+            network_attachment: ${each.value.network_attachment}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        vpc_peering_config:
+          for_each: ${var.vpc_peering_config}
+          content:
+            subnet: ${each.value.subnet}
+            vpc: ${each.value.vpc}

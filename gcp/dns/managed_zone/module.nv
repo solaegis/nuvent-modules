@@ -1,0 +1,112 @@
+variables:
+  dns_name:
+    type: string
+    description: "The DNS name of this managed zone, for instance \"example.com.\"."
+  name:
+    type: string
+    description: "User assigned name for this resource. Must be unique within the project."
+  description:
+    type: string
+    description: "A textual description field. Defaults to 'Managed by Terraform'."
+    default: null
+  force_destroy:
+    type: boolean
+    description: "Set this true to delete all records in the zone."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ManagedZone"
+    default: null
+  labels:
+    type: object
+    description: "A set of key/value label pairs to assign to this ManagedZone.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ManagedZone"
+    default: null
+  reverse_lookup:
+    type: boolean
+    description: "Specifies if this is a managed reverse lookup zone. If true, Cloud DNS will resolve reverse lookup queries using automatically configured records for VPC resources. This only applies to networks listed under 'private_visibility_config'."
+    default: null
+  visibility:
+    type: string
+    description: "The zone's visibility: public zones are exposed to the Internet, while private zones are visible only to Virtual Private Cloud resources. Default value: \"public\" Possible values: [\"private\", \"public\"]"
+    default: null
+  cloud_logging_config:
+    type: list
+    description: "Nested block: cloud_logging_config"
+    default: []
+  dnssec_config:
+    type: list
+    description: "Nested block: dnssec_config"
+    default: []
+  forwarding_config:
+    type: list
+    description: "Nested block: forwarding_config"
+    default: []
+  peering_config:
+    type: list
+    description: "Nested block: peering_config"
+    default: []
+  private_visibility_config:
+    type: list
+    description: "Nested block: private_visibility_config"
+    default: []
+  service_directory_config:
+    type: list
+    description: "Nested block: service_directory_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dns:ManagedZone
+    properties:
+      dns_name: ${var.dns_name}
+      name: ${var.name}
+      description: ${var.description}
+      force_destroy: ${var.force_destroy}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      reverse_lookup: ${var.reverse_lookup}
+      visibility: ${var.visibility}
+      dynamic:
+        cloud_logging_config:
+          for_each: ${var.cloud_logging_config}
+          content:
+            enable_logging: ${each.value.enable_logging}
+        dnssec_config:
+          for_each: ${var.dnssec_config}
+          content:
+            kind: ${each.value.kind}
+            non_existence: ${each.value.non_existence}
+            state: ${each.value.state}
+            default_key_specs: ${each.value.default_key_specs}
+        forwarding_config:
+          for_each: ${var.forwarding_config}
+          content:
+            target_name_servers: ${each.value.target_name_servers}
+        peering_config:
+          for_each: ${var.peering_config}
+          content:
+            target_network: ${each.value.target_network}
+        private_visibility_config:
+          for_each: ${var.private_visibility_config}
+          content:
+            gke_clusters: ${each.value.gke_clusters}
+            networks: ${each.value.networks}
+        service_directory_config:
+          for_each: ${var.service_directory_config}
+          content:
+            namespace: ${each.value.namespace}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,40 @@
+variables:
+  location:
+    type: string
+    description: "The location for the resource"
+  name:
+    type: string
+    description: "Required. The resource name of the config. Must be in the format of, 'projects/{project}/locations/{location}/googleChannelConfig'."
+  crypto_key_name:
+    type: string
+    description: "Optional. Resource name of a KMS crypto key (managed by the user) used to encrypt/decrypt their event data. It must match the pattern 'projects/*/locations/*/keyRings/*/cryptoKeys/*'."
+    default: null
+  id:
+    type: string
+    description: "Optional property for GoogleChannelConfig"
+    default: null
+  project:
+    type: string
+    description: "Optional property for GoogleChannelConfig"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:eventarc:GoogleChannelConfig
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      crypto_key_name: ${var.crypto_key_name}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

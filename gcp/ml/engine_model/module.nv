@@ -1,0 +1,64 @@
+variables:
+  name:
+    type: string
+    description: "The name specified for the model."
+  description:
+    type: string
+    description: "The description specified for the model when it was created."
+    default: null
+  id:
+    type: string
+    description: "Optional property for EngineModel"
+    default: null
+  labels:
+    type: object
+    description: "One or more labels that you can add, to organize your models.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  online_prediction_console_logging:
+    type: boolean
+    description: "If true, online prediction nodes send stderr and stdout streams to Stackdriver Logging"
+    default: null
+  online_prediction_logging:
+    type: boolean
+    description: "If true, online prediction access logs are sent to StackDriver Logging."
+    default: null
+  project:
+    type: string
+    description: "Optional property for EngineModel"
+    default: null
+  regions:
+    type: list
+    description: "The list of regions where the model is going to be deployed. Currently only one region per model is supported"
+    default: null
+  default_version:
+    type: list
+    description: "Nested block: default_version"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:ml:EngineModel
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      online_prediction_console_logging: ${var.online_prediction_console_logging}
+      online_prediction_logging: ${var.online_prediction_logging}
+      project: ${var.project}
+      regions: ${var.regions}
+      dynamic:
+        default_version:
+          for_each: ${var.default_version}
+          content:
+            name: ${each.value.name}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

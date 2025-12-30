@@ -1,0 +1,44 @@
+variables:
+  members:
+    type: list
+    description: "Required property for RegionBackendServiceIamBinding"
+  name:
+    type: string
+    description: "Required property for RegionBackendServiceIamBinding"
+  role:
+    type: string
+    description: "Required property for RegionBackendServiceIamBinding"
+  id:
+    type: string
+    description: "Optional property for RegionBackendServiceIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RegionBackendServiceIamBinding"
+    default: null
+  region:
+    type: string
+    description: "Optional property for RegionBackendServiceIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:RegionBackendServiceIamBinding
+    properties:
+      members: ${var.members}
+      name: ${var.name}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

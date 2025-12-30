@@ -1,0 +1,56 @@
+variables:
+  name:
+    type: string
+    description: "Resource name for the Access Level. The short_name component must begin with a letter and only include alphanumeric and '_'. Format: accessPolicies/{policy_id}/accessLevels/{short_name}"
+  parent:
+    type: string
+    description: "The AccessPolicy this AccessLevel lives in. Format: accessPolicies/{policy_id}"
+  title:
+    type: string
+    description: "Human readable title. Must be unique within the Policy."
+  description:
+    type: string
+    description: "Description of the AccessLevel and its use. Does not affect behavior."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ContextManagerAccessLevel"
+    default: null
+  basic:
+    type: list
+    description: "Nested block: basic"
+    default: []
+  custom:
+    type: list
+    description: "Nested block: custom"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:access:ContextManagerAccessLevel
+    properties:
+      name: ${var.name}
+      parent: ${var.parent}
+      title: ${var.title}
+      description: ${var.description}
+      id: ${var.id}
+      dynamic:
+        basic:
+          for_each: ${var.basic}
+          content:
+            combining_function: ${each.value.combining_function}
+            conditions: ${each.value.conditions}
+        custom:
+          for_each: ${var.custom}
+          content:
+            expr: ${each.value.expr}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

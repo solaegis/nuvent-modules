@@ -1,0 +1,113 @@
+variables:
+  connection_profile_id:
+    type: string
+    description: "The ID of the connection profile."
+  display_name:
+    type: string
+    description: "The connection profile display name."
+    default: null
+  id:
+    type: string
+    description: "Optional property for MigrationServiceConnectionProfile"
+    default: null
+  labels:
+    type: object
+    description: "The resource labels for connection profile to use to annotate any related underlying resources such as Compute Engine VMs.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "The location where the connection profile should reside."
+    default: null
+  project:
+    type: string
+    description: "Optional property for MigrationServiceConnectionProfile"
+    default: null
+  alloydb:
+    type: list
+    description: "Nested block: alloydb"
+    default: []
+  cloudsql:
+    type: list
+    description: "Nested block: cloudsql"
+    default: []
+  mysql:
+    type: list
+    description: "Nested block: mysql"
+    default: []
+  oracle:
+    type: list
+    description: "Nested block: oracle"
+    default: []
+  postgresql:
+    type: list
+    description: "Nested block: postgresql"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:database:MigrationServiceConnectionProfile
+    properties:
+      connection_profile_id: ${var.connection_profile_id}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        alloydb:
+          for_each: ${var.alloydb}
+          content:
+            cluster_id: ${each.value.cluster_id}
+            settings: ${each.value.settings}
+        cloudsql:
+          for_each: ${var.cloudsql}
+          content:
+            cloud_sql_id: ${each.value.cloud_sql_id}
+            private_ip: ${each.value.private_ip}
+            public_ip: ${each.value.public_ip}
+            settings: ${each.value.settings}
+        mysql:
+          for_each: ${var.mysql}
+          content:
+            cloud_sql_id: ${each.value.cloud_sql_id}
+            host: ${each.value.host}
+            password: ${each.value.password}
+            password_set: ${each.value.password_set}
+            port: ${each.value.port}
+            username: ${each.value.username}
+            ssl: ${each.value.ssl}
+        oracle:
+          for_each: ${var.oracle}
+          content:
+            database_service: ${each.value.database_service}
+            host: ${each.value.host}
+            password: ${each.value.password}
+            password_set: ${each.value.password_set}
+            port: ${each.value.port}
+            username: ${each.value.username}
+            forward_ssh_connectivity: ${each.value.forward_ssh_connectivity}
+            private_connectivity: ${each.value.private_connectivity}
+            ssl: ${each.value.ssl}
+            static_service_ip_connectivity: ${each.value.static_service_ip_connectivity}
+        postgresql:
+          for_each: ${var.postgresql}
+          content:
+            alloydb_cluster_id: ${each.value.alloydb_cluster_id}
+            cloud_sql_id: ${each.value.cloud_sql_id}
+            host: ${each.value.host}
+            network_architecture: ${each.value.network_architecture}
+            password: ${each.value.password}
+            password_set: ${each.value.password_set}
+            port: ${each.value.port}
+            username: ${each.value.username}
+            ssl: ${each.value.ssl}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

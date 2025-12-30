@@ -1,0 +1,29 @@
+variables:
+  lake:
+    type: string
+    description: "Required property for LakeIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for LakeIamPolicy"
+  id:
+    type: string
+    description: "Optional property for LakeIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for LakeIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for LakeIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:dataplex:LakeIamPolicy
+    properties:
+      lake: ${var.lake}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

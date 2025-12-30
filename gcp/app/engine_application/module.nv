@@ -1,0 +1,69 @@
+variables:
+  location_id:
+    type: string
+    description: "The location to serve the app from."
+  auth_domain:
+    type: string
+    description: "The domain to authenticate users with when using App Engine's User API."
+    default: null
+  database_type:
+    type: string
+    description: "Optional property for EngineApplication"
+    default: null
+  id:
+    type: string
+    description: "Optional property for EngineApplication"
+    default: null
+  project:
+    type: string
+    description: "The project ID to create the application under."
+    default: null
+  serving_status:
+    type: string
+    description: "The serving status of the app."
+    default: null
+  ssl_policy:
+    type: string
+    description: "The SSL policy that will be applied to the application. If set to Modern it will restrict traffic with TLS \u003c 1.2 and allow only Modern Ciphers suite"
+    default: null
+  feature_settings:
+    type: list
+    description: "Nested block: feature_settings"
+    default: []
+  iap:
+    type: list
+    description: "Nested block: iap"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:app:EngineApplication
+    properties:
+      location_id: ${var.location_id}
+      auth_domain: ${var.auth_domain}
+      database_type: ${var.database_type}
+      id: ${var.id}
+      project: ${var.project}
+      serving_status: ${var.serving_status}
+      ssl_policy: ${var.ssl_policy}
+      dynamic:
+        feature_settings:
+          for_each: ${var.feature_settings}
+          content:
+            split_health_checks: ${each.value.split_health_checks}
+        iap:
+          for_each: ${var.iap}
+          content:
+            enabled: ${each.value.enabled}
+            oauth2_client_id: ${each.value.oauth2_client_id}
+            oauth2_client_secret: ${each.value.oauth2_client_secret}
+            oauth2_client_secret_sha256: ${each.value.oauth2_client_secret_sha256}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            update: ${each.value.update}

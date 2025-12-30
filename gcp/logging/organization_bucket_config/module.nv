@@ -1,0 +1,54 @@
+variables:
+  bucket_id:
+    type: string
+    description: "The name of the logging bucket. Logging automatically creates two log buckets: _Required and _Default."
+  location:
+    type: string
+    description: "The location of the bucket."
+  organization:
+    type: string
+    description: "The parent resource that contains the logging bucket."
+  description:
+    type: string
+    description: "An optional description for this bucket."
+    default: null
+  id:
+    type: string
+    description: "Optional property for OrganizationBucketConfig"
+    default: null
+  retention_days:
+    type: number
+    description: "Logs will be retained by default for this amount of time, after which they will automatically be deleted. The minimum retention period is 1 day. If this value is set to zero at bucket creation time, the default time of 30 days will be used."
+    default: null
+  cmek_settings:
+    type: list
+    description: "Nested block: cmek_settings"
+    default: []
+  index_configs:
+    type: list
+    description: "Nested block: index_configs"
+    default: []
+
+resources:
+  main:
+    type: gcp:logging:OrganizationBucketConfig
+    properties:
+      bucket_id: ${var.bucket_id}
+      location: ${var.location}
+      organization: ${var.organization}
+      description: ${var.description}
+      id: ${var.id}
+      retention_days: ${var.retention_days}
+      dynamic:
+        cmek_settings:
+          for_each: ${var.cmek_settings}
+          content:
+            kms_key_name: ${each.value.kms_key_name}
+            kms_key_version_name: ${each.value.kms_key_version_name}
+            name: ${each.value.name}
+            service_account_id: ${each.value.service_account_id}
+        index_configs:
+          for_each: ${var.index_configs}
+          content:
+            field_path: ${each.value.field_path}
+            type: ${each.value.type}

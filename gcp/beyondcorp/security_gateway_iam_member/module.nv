@@ -1,0 +1,44 @@
+variables:
+  member:
+    type: string
+    description: "Required property for SecurityGatewayIamMember"
+  role:
+    type: string
+    description: "Required property for SecurityGatewayIamMember"
+  security_gateway_id:
+    type: string
+    description: "Required property for SecurityGatewayIamMember"
+  id:
+    type: string
+    description: "Optional property for SecurityGatewayIamMember"
+    default: null
+  location:
+    type: string
+    description: "Optional property for SecurityGatewayIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for SecurityGatewayIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:beyondcorp:SecurityGatewayIamMember
+    properties:
+      member: ${var.member}
+      role: ${var.role}
+      security_gateway_id: ${var.security_gateway_id}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

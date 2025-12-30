@@ -1,0 +1,73 @@
+variables:
+  dataset:
+    type: string
+    description: "Healthcare Dataset under which the Pipeline Job is to run"
+  location:
+    type: string
+    description: "Location where the Pipeline Job is to run"
+  name:
+    type: string
+    description: "Specifies the name of the pipeline job. This field is user-assigned."
+  disable_lineage:
+    type: boolean
+    description: "If true, disables writing lineage for the pipeline."
+    default: null
+  id:
+    type: string
+    description: "Optional property for PipelineJob"
+    default: null
+  labels:
+    type: object
+    description: "User-supplied key-value pairs used to organize Pipeline Jobs. Label keys must be between 1 and 63 characters long, have a UTF-8 encoding of maximum 128 bytes, and must conform to the following PCRE regular expression: [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62} Label values are optional, must be between 1 and 63 characters long, have a UTF-8 encoding of maximum 128 bytes, and must conform to the following PCRE regular expression: [\p{Ll}\p{Lo}\p{N}_-]{0,63} No more than 64 labels can be associated with a given pipeline. An object containing a list of \"key\": value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  backfill_pipeline_job:
+    type: list
+    description: "Nested block: backfill_pipeline_job"
+    default: []
+  mapping_pipeline_job:
+    type: list
+    description: "Nested block: mapping_pipeline_job"
+    default: []
+  reconciliation_pipeline_job:
+    type: list
+    description: "Nested block: reconciliation_pipeline_job"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:healthcare:PipelineJob
+    properties:
+      dataset: ${var.dataset}
+      location: ${var.location}
+      name: ${var.name}
+      disable_lineage: ${var.disable_lineage}
+      id: ${var.id}
+      labels: ${var.labels}
+      dynamic:
+        backfill_pipeline_job:
+          for_each: ${var.backfill_pipeline_job}
+          content:
+            mapping_pipeline_job: ${each.value.mapping_pipeline_job}
+        mapping_pipeline_job:
+          for_each: ${var.mapping_pipeline_job}
+          content:
+            fhir_store_destination: ${each.value.fhir_store_destination}
+            reconciliation_destination: ${each.value.reconciliation_destination}
+            fhir_streaming_source: ${each.value.fhir_streaming_source}
+            mapping_config: ${each.value.mapping_config}
+        reconciliation_pipeline_job:
+          for_each: ${var.reconciliation_pipeline_job}
+          content:
+            fhir_store_destination: ${each.value.fhir_store_destination}
+            matching_uri_prefix: ${each.value.matching_uri_prefix}
+            merge_config: ${each.value.merge_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

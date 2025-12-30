@@ -1,0 +1,170 @@
+variables:
+  name:
+    type: string
+    description: "The ID of the instance or a fully qualified identifier for the instance."
+  consumer_network:
+    type: string
+    description: "Network name in the consumer project in the format of: projects/{project}/global/networks/{network} Note that the consumer network may be in a different GCP project than the consumer project that is hosting the Looker Instance."
+    default: null
+  controlled_egress_enabled:
+    type: boolean
+    description: "Whether controlled egress is enabled on the Looker instance."
+    default: null
+  deletion_policy:
+    type: string
+    description: "Policy to determine if the cluster should be deleted forcefully. If setting deletion_policy = \"FORCE\", the Looker instance will be deleted regardless of its nested resources. If set to \"DEFAULT\", Looker instances that still have nested resources will return an error. Possible values: DEFAULT, FORCE"
+    default: null
+  fips_enabled:
+    type: boolean
+    description: "FIPS 140-2 Encryption enablement for Looker (Google Cloud Core)."
+    default: null
+  gemini_enabled:
+    type: boolean
+    description: "Gemini enablement for Looker (Google Cloud Core)."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Instance"
+    default: null
+  platform_edition:
+    type: string
+    description: "Platform editions for a Looker instance. Each edition maps to a set of instance features, like its size. Must be one of these values: - LOOKER_CORE_TRIAL: trial instance (Currently Unavailable) - LOOKER_CORE_STANDARD: pay as you go standard instance (Currently Unavailable) - LOOKER_CORE_STANDARD_ANNUAL: subscription standard instance - LOOKER_CORE_ENTERPRISE_ANNUAL: subscription enterprise instance - LOOKER_CORE_EMBED_ANNUAL: subscription embed instance - LOOKER_CORE_NONPROD_STANDARD_ANNUAL: nonprod subscription standard instance - LOOKER_CORE_NONPROD_ENTERPRISE_ANNUAL: nonprod subscription enterprise instance - LOOKER_CORE_NONPROD_EMBED_ANNUAL: nonprod subscription embed instance - LOOKER_CORE_TRIAL_STANDARD: A standard trial edition of Looker (Google Cloud core) product. - LOOKER_CORE_TRIAL_ENTERPRISE: An enterprise trial edition of Looker (Google Cloud core) product. - LOOKER_CORE_TRIAL_EMBED: An embed trial edition of Looker (Google Cloud core) product. Default value: \"LOOKER_CORE_TRIAL\" Possible values: [\"LOOKER_CORE_TRIAL\", \"LOOKER_CORE_STANDARD\", \"LOOKER_CORE_STANDARD_ANNUAL\", \"LOOKER_CORE_ENTERPRISE_ANNUAL\", \"LOOKER_CORE_EMBED_ANNUAL\", \"LOOKER_CORE_NONPROD_STANDARD_ANNUAL\", \"LOOKER_CORE_NONPROD_ENTERPRISE_ANNUAL\", \"LOOKER_CORE_NONPROD_EMBED_ANNUAL\", \"LOOKER_CORE_TRIAL_STANDARD\", \"LOOKER_CORE_TRIAL_ENTERPRISE\", \"LOOKER_CORE_TRIAL_EMBED\"]"
+    default: null
+  private_ip_enabled:
+    type: boolean
+    description: "Whether private IP is enabled on the Looker instance."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Instance"
+    default: null
+  psc_enabled:
+    type: boolean
+    description: "Whether Public Service Connect (PSC) is enabled on the Looker instance"
+    default: null
+  public_ip_enabled:
+    type: boolean
+    description: "Whether public IP is enabled on the Looker instance."
+    default: null
+  region:
+    type: string
+    description: "The name of the Looker region of the instance."
+    default: null
+  reserved_range:
+    type: string
+    description: "Name of a reserved IP address range within the consumer network, to be used for private service access connection. User may or may not specify this in a request."
+    default: null
+  admin_settings:
+    type: list
+    description: "Nested block: admin_settings"
+    default: []
+  controlled_egress_config:
+    type: list
+    description: "Nested block: controlled_egress_config"
+    default: []
+  custom_domain:
+    type: list
+    description: "Nested block: custom_domain"
+    default: []
+  deny_maintenance_period:
+    type: list
+    description: "Nested block: deny_maintenance_period"
+    default: []
+  encryption_config:
+    type: list
+    description: "Nested block: encryption_config"
+    default: []
+  maintenance_window:
+    type: list
+    description: "Nested block: maintenance_window"
+    default: []
+  oauth_config:
+    type: list
+    description: "Nested block: oauth_config"
+    default: []
+  psc_config:
+    type: list
+    description: "Nested block: psc_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  user_metadata:
+    type: list
+    description: "Nested block: user_metadata"
+    default: []
+
+resources:
+  main:
+    type: gcp:looker:Instance
+    properties:
+      name: ${var.name}
+      consumer_network: ${var.consumer_network}
+      controlled_egress_enabled: ${var.controlled_egress_enabled}
+      deletion_policy: ${var.deletion_policy}
+      fips_enabled: ${var.fips_enabled}
+      gemini_enabled: ${var.gemini_enabled}
+      id: ${var.id}
+      platform_edition: ${var.platform_edition}
+      private_ip_enabled: ${var.private_ip_enabled}
+      project: ${var.project}
+      psc_enabled: ${var.psc_enabled}
+      public_ip_enabled: ${var.public_ip_enabled}
+      region: ${var.region}
+      reserved_range: ${var.reserved_range}
+      dynamic:
+        admin_settings:
+          for_each: ${var.admin_settings}
+          content:
+            allowed_email_domains: ${each.value.allowed_email_domains}
+        controlled_egress_config:
+          for_each: ${var.controlled_egress_config}
+          content:
+            egress_fqdns: ${each.value.egress_fqdns}
+            marketplace_enabled: ${each.value.marketplace_enabled}
+        custom_domain:
+          for_each: ${var.custom_domain}
+          content:
+            domain: ${each.value.domain}
+            state: ${each.value.state}
+        deny_maintenance_period:
+          for_each: ${var.deny_maintenance_period}
+          content:
+            end_date: ${each.value.end_date}
+            start_date: ${each.value.start_date}
+            time: ${each.value.time}
+        encryption_config:
+          for_each: ${var.encryption_config}
+          content:
+            kms_key_name: ${each.value.kms_key_name}
+            kms_key_name_version: ${each.value.kms_key_name_version}
+            kms_key_state: ${each.value.kms_key_state}
+        maintenance_window:
+          for_each: ${var.maintenance_window}
+          content:
+            day_of_week: ${each.value.day_of_week}
+            start_time: ${each.value.start_time}
+        oauth_config:
+          for_each: ${var.oauth_config}
+          content:
+            client_id: ${each.value.client_id}
+            client_secret: ${each.value.client_secret}
+        psc_config:
+          for_each: ${var.psc_config}
+          content:
+            allowed_vpcs: ${each.value.allowed_vpcs}
+            looker_service_attachment_uri: ${each.value.looker_service_attachment_uri}
+            service_attachments: ${each.value.service_attachments}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        user_metadata:
+          for_each: ${var.user_metadata}
+          content:
+            additional_developer_user_count: ${each.value.additional_developer_user_count}
+            additional_standard_user_count: ${each.value.additional_standard_user_count}
+            additional_viewer_user_count: ${each.value.additional_viewer_user_count}

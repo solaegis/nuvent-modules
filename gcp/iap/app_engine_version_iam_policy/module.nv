@@ -1,0 +1,32 @@
+variables:
+  app_id:
+    type: string
+    description: "Required property for AppEngineVersionIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for AppEngineVersionIamPolicy"
+  service:
+    type: string
+    description: "Required property for AppEngineVersionIamPolicy"
+  version_id:
+    type: string
+    description: "Required property for AppEngineVersionIamPolicy"
+  id:
+    type: string
+    description: "Optional property for AppEngineVersionIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AppEngineVersionIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:iap:AppEngineVersionIamPolicy
+    properties:
+      app_id: ${var.app_id}
+      policy_data: ${var.policy_data}
+      service: ${var.service}
+      version_id: ${var.version_id}
+      id: ${var.id}
+      project: ${var.project}

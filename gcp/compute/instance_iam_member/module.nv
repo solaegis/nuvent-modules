@@ -1,0 +1,44 @@
+variables:
+  instance_name:
+    type: string
+    description: "Required property for InstanceIamMember"
+  member:
+    type: string
+    description: "Required property for InstanceIamMember"
+  role:
+    type: string
+    description: "Required property for InstanceIamMember"
+  id:
+    type: string
+    description: "Optional property for InstanceIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for InstanceIamMember"
+    default: null
+  zone:
+    type: string
+    description: "Optional property for InstanceIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:InstanceIamMember
+    properties:
+      instance_name: ${var.instance_name}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      zone: ${var.zone}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

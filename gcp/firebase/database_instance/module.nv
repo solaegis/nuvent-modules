@@ -1,0 +1,45 @@
+variables:
+  instance_id:
+    type: string
+    description: "The globally unique identifier of the Firebase Realtime Database instance. Instance IDs cannot be reused after deletion."
+  region:
+    type: string
+    description: "A reference to the region where the Firebase Realtime database resides. Check all [available regions](https://firebase.google.com/docs/projects/locations#rtdb-locations)"
+  desired_state:
+    type: string
+    description: "The intended database state. Possible values: ACTIVE, DISABLED."
+    default: null
+  id:
+    type: string
+    description: "Optional property for DatabaseInstance"
+    default: null
+  project:
+    type: string
+    description: "Optional property for DatabaseInstance"
+    default: null
+  type:
+    type: string
+    description: "The database type. Each project can create one default Firebase Realtime Database, which cannot be deleted once created. Creating user Databases is only available for projects on the Blaze plan. Projects can be upgraded using the Cloud Billing API https://cloud.google.com/billing/reference/rest/v1/projects/updateBillingInfo. Default value: \"USER_DATABASE\" Possible values: [\"DEFAULT_DATABASE\", \"USER_DATABASE\"]"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:firebase:DatabaseInstance
+    properties:
+      instance_id: ${var.instance_id}
+      region: ${var.region}
+      desired_state: ${var.desired_state}
+      id: ${var.id}
+      project: ${var.project}
+      type: ${var.type}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

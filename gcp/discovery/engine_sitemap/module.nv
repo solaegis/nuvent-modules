@@ -1,0 +1,39 @@
+variables:
+  data_store_id:
+    type: string
+    description: "The unique id of the data store."
+  location:
+    type: string
+    description: "The geographic location where the data store should reside. The value can only be one of \"global\", \"us\" and \"eu\"."
+  id:
+    type: string
+    description: "Optional property for EngineSitemap"
+    default: null
+  project:
+    type: string
+    description: "Optional property for EngineSitemap"
+    default: null
+  uri:
+    type: string
+    description: "Public URI for the sitemap, e.g. \"www.example.com/sitemap.xml\"."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:discovery:EngineSitemap
+    properties:
+      data_store_id: ${var.data_store_id}
+      location: ${var.location}
+      id: ${var.id}
+      project: ${var.project}
+      uri: ${var.uri}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

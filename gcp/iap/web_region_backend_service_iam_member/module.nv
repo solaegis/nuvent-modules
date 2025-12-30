@@ -1,0 +1,44 @@
+variables:
+  member:
+    type: string
+    description: "Required property for WebRegionBackendServiceIamMember"
+  role:
+    type: string
+    description: "Required property for WebRegionBackendServiceIamMember"
+  web_region_backend_service:
+    type: string
+    description: "Required property for WebRegionBackendServiceIamMember"
+  id:
+    type: string
+    description: "Optional property for WebRegionBackendServiceIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WebRegionBackendServiceIamMember"
+    default: null
+  region:
+    type: string
+    description: "Optional property for WebRegionBackendServiceIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:iap:WebRegionBackendServiceIamMember
+    properties:
+      member: ${var.member}
+      role: ${var.role}
+      web_region_backend_service: ${var.web_region_backend_service}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

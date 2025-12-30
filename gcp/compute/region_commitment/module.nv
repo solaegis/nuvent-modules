@@ -1,0 +1,84 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource. The name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  plan:
+    type: string
+    description: "The plan for this commitment, which determines duration and discount rate. The currently supported plans are TWELVE_MONTH (1 year), and THIRTY_SIX_MONTH (3 years). Possible values: [\"TWELVE_MONTH\", \"THIRTY_SIX_MONTH\"]"
+  auto_renew:
+    type: boolean
+    description: "Specifies whether to enable automatic renewal for the commitment. The default value is false if not specified. If the field is set to true, the commitment will be automatically renewed for either one or three years according to the terms of the existing commitment."
+    default: null
+  category:
+    type: string
+    description: "The category of the commitment. Category MACHINE specifies commitments composed of machine resources such as VCPU or MEMORY, listed in resources. Category LICENSE specifies commitments composed of software licenses, listed in licenseResources. Note that only MACHINE commitments should have a Type specified. Possible values: [\"LICENSE\", \"MACHINE\"]"
+    default: null
+  description:
+    type: string
+    description: "An optional description of this resource."
+    default: null
+  existing_reservations:
+    type: string
+    description: "Specifies the already existing reservations to attach to the Commitment."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RegionCommitment"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RegionCommitment"
+    default: null
+  region:
+    type: string
+    description: "URL of the region where this commitment may be used."
+    default: null
+  type:
+    type: string
+    description: "The type of commitment, which affects the discount rate and the eligible resources. The type could be one of the following value: 'MEMORY_OPTIMIZED', 'ACCELERATOR_OPTIMIZED', 'GENERAL_PURPOSE', 'GENERAL_PURPOSE_N2', 'GENERAL_PURPOSE_N2D', 'GENERAL_PURPOSE_E2', 'GENERAL_PURPOSE_T2D', 'GENERAL_PURPOSE_C3', 'COMPUTE_OPTIMIZED_C2', 'COMPUTE_OPTIMIZED_C2D' and 'GRAPHICS_OPTIMIZED_G2'"
+    default: null
+  license_resource:
+    type: list
+    description: "Nested block: license_resource"
+    default: []
+  resources:
+    type: list
+    description: "Nested block: resources"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:RegionCommitment
+    properties:
+      name: ${var.name}
+      plan: ${var.plan}
+      auto_renew: ${var.auto_renew}
+      category: ${var.category}
+      description: ${var.description}
+      existing_reservations: ${var.existing_reservations}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      type: ${var.type}
+      dynamic:
+        license_resource:
+          for_each: ${var.license_resource}
+          content:
+            amount: ${each.value.amount}
+            cores_per_license: ${each.value.cores_per_license}
+            license: ${each.value.license}
+        resources:
+          for_each: ${var.resources}
+          content:
+            accelerator_type: ${each.value.accelerator_type}
+            amount: ${each.value.amount}
+            type: ${each.value.type}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

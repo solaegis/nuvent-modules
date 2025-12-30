@@ -1,0 +1,36 @@
+variables:
+  id:
+    type: string
+    description: "Optional property for SnapshotSettings"
+    default: null
+  project:
+    type: string
+    description: "Optional property for SnapshotSettings"
+    default: null
+  storage_location:
+    type: list
+    description: "Nested block: storage_location"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:SnapshotSettings
+    properties:
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        storage_location:
+          for_each: ${var.storage_location}
+          content:
+            policy: ${each.value.policy}
+            locations: ${each.value.locations}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

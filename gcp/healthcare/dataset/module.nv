@@ -1,0 +1,48 @@
+variables:
+  location:
+    type: string
+    description: "The location for the Dataset."
+  name:
+    type: string
+    description: "The resource name for the Dataset."
+  id:
+    type: string
+    description: "Optional property for Dataset"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Dataset"
+    default: null
+  time_zone:
+    type: string
+    description: "The default timezone used by this dataset. Must be a either a valid IANA time zone name such as \"America/New_York\" or empty, which defaults to UTC. This is used for parsing times in resources (e.g., HL7 messages) where no explicit timezone is specified."
+    default: null
+  encryption_spec:
+    type: list
+    description: "Nested block: encryption_spec"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:healthcare:Dataset
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      id: ${var.id}
+      project: ${var.project}
+      time_zone: ${var.time_zone}
+      dynamic:
+        encryption_spec:
+          for_each: ${var.encryption_spec}
+          content:
+            kms_key_name: ${each.value.kms_key_name}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

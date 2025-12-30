@@ -1,0 +1,81 @@
+variables:
+  dataplex_zone:
+    type: string
+    description: "The zone for the resource"
+  lake:
+    type: string
+    description: "The lake for the resource"
+  location:
+    type: string
+    description: "The location for the resource"
+  name:
+    type: string
+    description: "The name of the asset."
+  description:
+    type: string
+    description: "Optional. Description of the asset."
+    default: null
+  display_name:
+    type: string
+    description: "Optional. User friendly display name."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Asset"
+    default: null
+  labels:
+    type: object
+    description: "Optional. User defined labels for the asset.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field `effective_labels` for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "The project for the resource"
+    default: null
+  discovery_spec:
+    type: list
+    description: "Nested block: discovery_spec"
+    default: []
+  resource_spec:
+    type: list
+    description: "Nested block: resource_spec"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataplex:Asset
+    properties:
+      dataplex_zone: ${var.dataplex_zone}
+      lake: ${var.lake}
+      location: ${var.location}
+      name: ${var.name}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        discovery_spec:
+          for_each: ${var.discovery_spec}
+          content:
+            enabled: ${each.value.enabled}
+            exclude_patterns: ${each.value.exclude_patterns}
+            include_patterns: ${each.value.include_patterns}
+            schedule: ${each.value.schedule}
+            csv_options: ${each.value.csv_options}
+            json_options: ${each.value.json_options}
+        resource_spec:
+          for_each: ${var.resource_spec}
+          content:
+            name: ${each.value.name}
+            read_access_mode: ${each.value.read_access_mode}
+            type: ${each.value.type}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,140 @@
+variables:
+  connection_id:
+    type: string
+    description: "Required. Id of the requesting object If auto-generating Id server-side, remove this field and connection_id from the method_signature of Create RPC"
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  annotations:
+    type: object
+    description: "Optional. Allows clients to store small amounts of arbitrary data.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  disabled:
+    type: boolean
+    description: "Optional. If disabled is set to true, functionality is disabled for this connection. Repository based API methods and webhooks processing for repositories in this connection will be disabled."
+    default: null
+  etag:
+    type: string
+    description: "Optional. This checksum is computed by the server based on the value of other fields, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ConnectConnection"
+    default: null
+  labels:
+    type: object
+    description: "Optional. Labels as key value pairs  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ConnectConnection"
+    default: null
+  bitbucket_cloud_config:
+    type: list
+    description: "Nested block: bitbucket_cloud_config"
+    default: []
+  bitbucket_data_center_config:
+    type: list
+    description: "Nested block: bitbucket_data_center_config"
+    default: []
+  crypto_key_config:
+    type: list
+    description: "Nested block: crypto_key_config"
+    default: []
+  github_config:
+    type: list
+    description: "Nested block: github_config"
+    default: []
+  github_enterprise_config:
+    type: list
+    description: "Nested block: github_enterprise_config"
+    default: []
+  gitlab_config:
+    type: list
+    description: "Nested block: gitlab_config"
+    default: []
+  gitlab_enterprise_config:
+    type: list
+    description: "Nested block: gitlab_enterprise_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:developer:ConnectConnection
+    properties:
+      connection_id: ${var.connection_id}
+      location: ${var.location}
+      annotations: ${var.annotations}
+      disabled: ${var.disabled}
+      etag: ${var.etag}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        bitbucket_cloud_config:
+          for_each: ${var.bitbucket_cloud_config}
+          content:
+            webhook_secret_secret_version: ${each.value.webhook_secret_secret_version}
+            workspace: ${each.value.workspace}
+            authorizer_credential: ${each.value.authorizer_credential}
+            read_authorizer_credential: ${each.value.read_authorizer_credential}
+        bitbucket_data_center_config:
+          for_each: ${var.bitbucket_data_center_config}
+          content:
+            host_uri: ${each.value.host_uri}
+            server_version: ${each.value.server_version}
+            ssl_ca_certificate: ${each.value.ssl_ca_certificate}
+            webhook_secret_secret_version: ${each.value.webhook_secret_secret_version}
+            authorizer_credential: ${each.value.authorizer_credential}
+            read_authorizer_credential: ${each.value.read_authorizer_credential}
+            service_directory_config: ${each.value.service_directory_config}
+        crypto_key_config:
+          for_each: ${var.crypto_key_config}
+          content:
+            key_reference: ${each.value.key_reference}
+        github_config:
+          for_each: ${var.github_config}
+          content:
+            app_installation_id: ${each.value.app_installation_id}
+            github_app: ${each.value.github_app}
+            installation_uri: ${each.value.installation_uri}
+            authorizer_credential: ${each.value.authorizer_credential}
+        github_enterprise_config:
+          for_each: ${var.github_enterprise_config}
+          content:
+            app_id: ${each.value.app_id}
+            app_installation_id: ${each.value.app_installation_id}
+            app_slug: ${each.value.app_slug}
+            host_uri: ${each.value.host_uri}
+            installation_uri: ${each.value.installation_uri}
+            private_key_secret_version: ${each.value.private_key_secret_version}
+            server_version: ${each.value.server_version}
+            ssl_ca_certificate: ${each.value.ssl_ca_certificate}
+            webhook_secret_secret_version: ${each.value.webhook_secret_secret_version}
+            service_directory_config: ${each.value.service_directory_config}
+        gitlab_config:
+          for_each: ${var.gitlab_config}
+          content:
+            webhook_secret_secret_version: ${each.value.webhook_secret_secret_version}
+            authorizer_credential: ${each.value.authorizer_credential}
+            read_authorizer_credential: ${each.value.read_authorizer_credential}
+        gitlab_enterprise_config:
+          for_each: ${var.gitlab_enterprise_config}
+          content:
+            host_uri: ${each.value.host_uri}
+            server_version: ${each.value.server_version}
+            ssl_ca_certificate: ${each.value.ssl_ca_certificate}
+            webhook_secret_secret_version: ${each.value.webhook_secret_secret_version}
+            authorizer_credential: ${each.value.authorizer_credential}
+            read_authorizer_credential: ${each.value.read_authorizer_credential}
+            service_directory_config: ${each.value.service_directory_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

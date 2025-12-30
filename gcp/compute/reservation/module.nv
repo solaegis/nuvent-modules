@@ -1,0 +1,89 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  zone:
+    type: string
+    description: "The zone where the reservation is made."
+  delete_at_time:
+    type: string
+    description: "Absolute time in future when the reservation will be auto-deleted by Compute Engine. Timestamp is represented in RFC3339 text format. Cannot be used with delete_after_duration."
+    default: null
+  description:
+    type: string
+    description: "An optional description of this resource."
+    default: null
+  enable_emergent_maintenance:
+    type: boolean
+    description: "Indicates if this group of VMs have emergent maintenance enabled."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Reservation"
+    default: null
+  specific_reservation_required:
+    type: boolean
+    description: "When set to true, only VMs that target this reservation by name can consume this reservation. Otherwise, it can be consumed by VMs with affinity for any reservation. Defaults to false."
+    default: null
+  delete_after_duration:
+    type: list
+    description: "Nested block: delete_after_duration"
+    default: []
+  reservation_sharing_policy:
+    type: list
+    description: "Nested block: reservation_sharing_policy"
+    default: []
+  share_settings:
+    type: list
+    description: "Nested block: share_settings"
+    default: []
+  specific_reservation:
+    type: list
+    description: "Nested block: specific_reservation"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:Reservation
+    properties:
+      name: ${var.name}
+      zone: ${var.zone}
+      delete_at_time: ${var.delete_at_time}
+      description: ${var.description}
+      enable_emergent_maintenance: ${var.enable_emergent_maintenance}
+      project: ${var.project}
+      specific_reservation_required: ${var.specific_reservation_required}
+      dynamic:
+        delete_after_duration:
+          for_each: ${var.delete_after_duration}
+          content:
+            nanos: ${each.value.nanos}
+            seconds: ${each.value.seconds}
+        reservation_sharing_policy:
+          for_each: ${var.reservation_sharing_policy}
+          content:
+            service_share_type: ${each.value.service_share_type}
+        share_settings:
+          for_each: ${var.share_settings}
+          content:
+            projects: ${each.value.projects}
+            share_type: ${each.value.share_type}
+            project_map: ${each.value.project_map}
+        specific_reservation:
+          for_each: ${var.specific_reservation}
+          content:
+            assured_count: ${each.value.assured_count}
+            count: ${each.value.count}
+            in_use_count: ${each.value.in_use_count}
+            source_instance_template: ${each.value.source_instance_template}
+            instance_properties: ${each.value.instance_properties}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

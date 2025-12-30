@@ -1,0 +1,29 @@
+variables:
+  data_scan_id:
+    type: string
+    description: "Required property for DatascanIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for DatascanIamPolicy"
+  id:
+    type: string
+    description: "Optional property for DatascanIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for DatascanIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for DatascanIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:dataplex:DatascanIamPolicy
+    properties:
+      data_scan_id: ${var.data_scan_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

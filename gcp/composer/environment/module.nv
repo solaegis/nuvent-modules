@@ -1,0 +1,76 @@
+variables:
+  name:
+    type: string
+    description: "Name of the environment."
+  id:
+    type: string
+    description: "Optional property for Environment"
+    default: null
+  labels:
+    type: object
+    description: "User-defined labels for this environment. The labels map can contain no more than 64 entries. Entries of the labels map are UTF8 strings that comply with the following restrictions: Label keys must be between 1 and 63 characters long and must conform to the following regular expression: [a-z]([-a-z0-9]*[a-z0-9])?. Label values must be between 0 and 63 characters long and must conform to the regular expression ([a-z]([-a-z0-9]*[a-z0-9])?)?. No more than 64 labels can be associated with a given environment. Both keys and values must be <= 128 bytes in size.  				**Note**: This field is non-authoritative, and will only manage the labels present in your configuration. 				Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    default: null
+  region:
+    type: string
+    description: "The location or Compute Engine region for the environment."
+    default: null
+  config:
+    type: list
+    description: "Nested block: config"
+    default: []
+  storage_config:
+    type: list
+    description: "Nested block: storage_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:composer:Environment
+    properties:
+      name: ${var.name}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        config:
+          for_each: ${var.config}
+          content:
+            airflow_uri: ${each.value.airflow_uri}
+            dag_gcs_prefix: ${each.value.dag_gcs_prefix}
+            enable_private_builds_only: ${each.value.enable_private_builds_only}
+            enable_private_environment: ${each.value.enable_private_environment}
+            environment_size: ${each.value.environment_size}
+            gke_cluster: ${each.value.gke_cluster}
+            node_count: ${each.value.node_count}
+            resilience_mode: ${each.value.resilience_mode}
+            data_retention_config: ${each.value.data_retention_config}
+            database_config: ${each.value.database_config}
+            encryption_config: ${each.value.encryption_config}
+            maintenance_window: ${each.value.maintenance_window}
+            master_authorized_networks_config: ${each.value.master_authorized_networks_config}
+            node_config: ${each.value.node_config}
+            private_environment_config: ${each.value.private_environment_config}
+            recovery_config: ${each.value.recovery_config}
+            software_config: ${each.value.software_config}
+            web_server_config: ${each.value.web_server_config}
+            web_server_network_access_control: ${each.value.web_server_network_access_control}
+            workloads_config: ${each.value.workloads_config}
+        storage_config:
+          for_each: ${var.storage_config}
+          content:
+            bucket: ${each.value.bucket}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

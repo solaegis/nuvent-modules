@@ -1,0 +1,39 @@
+variables:
+  members:
+    type: list
+    description: "Required property for WorkloadIdentityPoolIamBinding"
+  role:
+    type: string
+    description: "Required property for WorkloadIdentityPoolIamBinding"
+  workload_identity_pool_id:
+    type: string
+    description: "Required property for WorkloadIdentityPoolIamBinding"
+  id:
+    type: string
+    description: "Optional property for WorkloadIdentityPoolIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WorkloadIdentityPoolIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:iam:WorkloadIdentityPoolIamBinding
+    properties:
+      members: ${var.members}
+      role: ${var.role}
+      workload_identity_pool_id: ${var.workload_identity_pool_id}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

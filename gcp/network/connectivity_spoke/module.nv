@@ -1,0 +1,116 @@
+variables:
+  hub:
+    type: string
+    description: "Immutable. The URI of the hub that this spoke is attached to."
+  location:
+    type: string
+    description: "The location for the resource"
+  name:
+    type: string
+    description: "Immutable. The name of the spoke. Spoke names must be unique."
+  description:
+    type: string
+    description: "An optional description of the spoke."
+    default: null
+  group:
+    type: string
+    description: "The name of the group that this spoke is associated with."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ConnectivitySpoke"
+    default: null
+  labels:
+    type: object
+    description: "Optional labels in key:value format. For more information about labels, see [Requirements for labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements).  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ConnectivitySpoke"
+    default: null
+  gateway:
+    type: list
+    description: "Nested block: gateway"
+    default: []
+  linked_interconnect_attachments:
+    type: list
+    description: "Nested block: linked_interconnect_attachments"
+    default: []
+  linked_producer_vpc_network:
+    type: list
+    description: "Nested block: linked_producer_vpc_network"
+    default: []
+  linked_router_appliance_instances:
+    type: list
+    description: "Nested block: linked_router_appliance_instances"
+    default: []
+  linked_vpc_network:
+    type: list
+    description: "Nested block: linked_vpc_network"
+    default: []
+  linked_vpn_tunnels:
+    type: list
+    description: "Nested block: linked_vpn_tunnels"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ConnectivitySpoke
+    properties:
+      hub: ${var.hub}
+      location: ${var.location}
+      name: ${var.name}
+      description: ${var.description}
+      group: ${var.group}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        gateway:
+          for_each: ${var.gateway}
+          content:
+            capacity: ${each.value.capacity}
+            routers: ${each.value.routers}
+            ip_range_reservations: ${each.value.ip_range_reservations}
+        linked_interconnect_attachments:
+          for_each: ${var.linked_interconnect_attachments}
+          content:
+            include_import_ranges: ${each.value.include_import_ranges}
+            site_to_site_data_transfer: ${each.value.site_to_site_data_transfer}
+            uris: ${each.value.uris}
+        linked_producer_vpc_network:
+          for_each: ${var.linked_producer_vpc_network}
+          content:
+            exclude_export_ranges: ${each.value.exclude_export_ranges}
+            include_export_ranges: ${each.value.include_export_ranges}
+            network: ${each.value.network}
+            peering: ${each.value.peering}
+            producer_network: ${each.value.producer_network}
+        linked_router_appliance_instances:
+          for_each: ${var.linked_router_appliance_instances}
+          content:
+            include_import_ranges: ${each.value.include_import_ranges}
+            site_to_site_data_transfer: ${each.value.site_to_site_data_transfer}
+            instances: ${each.value.instances}
+        linked_vpc_network:
+          for_each: ${var.linked_vpc_network}
+          content:
+            exclude_export_ranges: ${each.value.exclude_export_ranges}
+            include_export_ranges: ${each.value.include_export_ranges}
+            uri: ${each.value.uri}
+        linked_vpn_tunnels:
+          for_each: ${var.linked_vpn_tunnels}
+          content:
+            include_import_ranges: ${each.value.include_import_ranges}
+            site_to_site_data_transfer: ${each.value.site_to_site_data_transfer}
+            uris: ${each.value.uris}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

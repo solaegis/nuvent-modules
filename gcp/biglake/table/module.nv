@@ -1,0 +1,46 @@
+variables:
+  name:
+    type: string
+    description: "Output only. The name of the Table. Format: projects/{project_id_or_number}/locations/{locationId}/catalogs/{catalogId}/databases/{databaseId}/tables/{tableId}"
+  database:
+    type: string
+    description: "The id of the parent database."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Table"
+    default: null
+  type:
+    type: string
+    description: "The database type. Possible values: [\"HIVE\"]"
+    default: null
+  hive_options:
+    type: list
+    description: "Nested block: hive_options"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:biglake:Table
+    properties:
+      name: ${var.name}
+      database: ${var.database}
+      id: ${var.id}
+      type: ${var.type}
+      dynamic:
+        hive_options:
+          for_each: ${var.hive_options}
+          content:
+            parameters: ${each.value.parameters}
+            table_type: ${each.value.table_type}
+            storage_descriptor: ${each.value.storage_descriptor}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

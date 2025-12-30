@@ -1,0 +1,65 @@
+variables:
+  framework_deployment_id:
+    type: string
+    description: "User provided identifier. It should be unique in scope of a parent. This is optional and if not provided, a random UUID will be generated."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  organization:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  description:
+    type: string
+    description: "User provided description of the Framework deployment"
+    default: null
+  id:
+    type: string
+    description: "Optional property for SecurityComplianceFrameworkDeployment"
+    default: null
+  cloud_control_metadata:
+    type: list
+    description: "Nested block: cloud_control_metadata"
+    default: []
+  framework:
+    type: list
+    description: "Nested block: framework"
+    default: []
+  target_resource_config:
+    type: list
+    description: "Nested block: target_resource_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloud:SecurityComplianceFrameworkDeployment
+    properties:
+      framework_deployment_id: ${var.framework_deployment_id}
+      location: ${var.location}
+      organization: ${var.organization}
+      description: ${var.description}
+      id: ${var.id}
+      dynamic:
+        cloud_control_metadata:
+          for_each: ${var.cloud_control_metadata}
+          content:
+            enforcement_mode: ${each.value.enforcement_mode}
+            cloud_control_details: ${each.value.cloud_control_details}
+        framework:
+          for_each: ${var.framework}
+          content:
+            framework: ${each.value.framework}
+            major_revision_id: ${each.value.major_revision_id}
+        target_resource_config:
+          for_each: ${var.target_resource_config}
+          content:
+            existing_target_resource: ${each.value.existing_target_resource}
+            target_resource_creation_config: ${each.value.target_resource_creation_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

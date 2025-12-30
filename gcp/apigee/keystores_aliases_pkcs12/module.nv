@@ -1,0 +1,50 @@
+variables:
+  alias:
+    type: string
+    description: "Alias Name"
+  environment:
+    type: string
+    description: "Environment associated with the alias"
+  file:
+    type: string
+    description: "Cert content"
+  filehash:
+    type: string
+    description: "Hash of the pkcs file"
+  keystore:
+    type: string
+    description: "Keystore Name"
+  org_id:
+    type: string
+    description: "Organization ID associated with the alias"
+  id:
+    type: string
+    description: "Optional property for KeystoresAliasesPkcs12"
+    default: null
+  password:
+    type: string
+    description: "Password for the Private Key if it's encrypted"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:KeystoresAliasesPkcs12
+    properties:
+      alias: ${var.alias}
+      environment: ${var.environment}
+      file: ${var.file}
+      filehash: ${var.filehash}
+      keystore: ${var.keystore}
+      org_id: ${var.org_id}
+      id: ${var.id}
+      password: ${var.password}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

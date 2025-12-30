@@ -1,0 +1,48 @@
+variables:
+  app:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  app_version_id:
+    type: string
+    description: "The ID to use for the app version, which will become the final component of the app version's resource name. If not provided, a unique ID will be automatically assigned for the app version."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  description:
+    type: string
+    description: "The description of the app version."
+    default: null
+  display_name:
+    type: string
+    description: "The display name of the app version."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AppVersion"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AppVersion"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:ces:AppVersion
+    properties:
+      app: ${var.app}
+      app_version_id: ${var.app_version_id}
+      location: ${var.location}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

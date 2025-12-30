@@ -1,0 +1,44 @@
+variables:
+  member:
+    type: string
+    description: "Required property for AutoscalingPolicyIamMember"
+  policy_id:
+    type: string
+    description: "Required property for AutoscalingPolicyIamMember"
+  role:
+    type: string
+    description: "Required property for AutoscalingPolicyIamMember"
+  id:
+    type: string
+    description: "Optional property for AutoscalingPolicyIamMember"
+    default: null
+  location:
+    type: string
+    description: "Optional property for AutoscalingPolicyIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AutoscalingPolicyIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataproc:AutoscalingPolicyIamMember
+    properties:
+      member: ${var.member}
+      policy_id: ${var.policy_id}
+      role: ${var.role}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

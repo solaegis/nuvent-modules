@@ -1,0 +1,50 @@
+variables:
+  location:
+    type: string
+    description: "Location of the Membership"
+  membership_id:
+    type: string
+    description: "Id of the membership"
+  membership_rbac_role_binding_id:
+    type: string
+    description: "The client-provided identifier of the RBAC Role Binding."
+  user:
+    type: string
+    description: "Principal that is be authorized in the cluster (at least of one the oneof is required). Updating one will unset the other automatically. user is the name of the user as seen by the kubernetes cluster, example \"alice\" or \"alice@domain.tld\""
+  id:
+    type: string
+    description: "Optional property for HubMembershipRbacRoleBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for HubMembershipRbacRoleBinding"
+    default: null
+  role:
+    type: list
+    description: "Nested block: role"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:gke:HubMembershipRbacRoleBinding
+    properties:
+      location: ${var.location}
+      membership_id: ${var.membership_id}
+      membership_rbac_role_binding_id: ${var.membership_rbac_role_binding_id}
+      user: ${var.user}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        role:
+          for_each: ${var.role}
+          content:
+            predefined_role: ${each.value.predefined_role}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

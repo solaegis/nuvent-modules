@@ -1,0 +1,64 @@
+variables:
+  name:
+    type: string
+    description: "Name of the peering."
+  network:
+    type: string
+    description: "The primary network of the peering."
+  peer_network:
+    type: string
+    description: "The peer network in the peering. The peer network may belong to a different project."
+  export_custom_routes:
+    type: boolean
+    description: "Whether to export the custom routes to the peer network. Defaults to false."
+    default: null
+  export_subnet_routes_with_public_ip:
+    type: boolean
+    description: "Optional property for NetworkPeering"
+    default: null
+  id:
+    type: string
+    description: "Optional property for NetworkPeering"
+    default: null
+  import_custom_routes:
+    type: boolean
+    description: "Whether to export the custom routes from the peer network. Defaults to false."
+    default: null
+  import_subnet_routes_with_public_ip:
+    type: boolean
+    description: "Optional property for NetworkPeering"
+    default: null
+  stack_type:
+    type: string
+    description: "Which IP version(s) of traffic and routes are allowed to be imported or exported between peer networks. The default value is IPV4_ONLY. Possible values: [\"IPV4_ONLY\", \"IPV4_IPV6\"]"
+    default: null
+  update_strategy:
+    type: string
+    description: "The update strategy determines the semantics for updates and deletes to the peering connection configuration. The default value is INDEPENDENT. Possible values: [\"INDEPENDENT\", \"CONSENSUS\"]"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:NetworkPeering
+    properties:
+      name: ${var.name}
+      network: ${var.network}
+      peer_network: ${var.peer_network}
+      export_custom_routes: ${var.export_custom_routes}
+      export_subnet_routes_with_public_ip: ${var.export_subnet_routes_with_public_ip}
+      id: ${var.id}
+      import_custom_routes: ${var.import_custom_routes}
+      import_subnet_routes_with_public_ip: ${var.import_subnet_routes_with_public_ip}
+      stack_type: ${var.stack_type}
+      update_strategy: ${var.update_strategy}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

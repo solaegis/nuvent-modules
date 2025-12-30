@@ -1,0 +1,80 @@
+variables:
+  location:
+    type: string
+    description: "The location of the resource."
+  name:
+    type: string
+    description: "The vmware node pool name."
+  vmware_cluster:
+    type: string
+    description: "The cluster this node pool belongs to."
+  annotations:
+    type: object
+    description: "Annotations on the node Pool. This field has the same restrictions as Kubernetes annotations. The total size of all keys and values combined is limited to 256k. Key can have 2 segments: prefix (optional) and name (required), separated by a slash (/). Prefix must be a DNS subdomain. Name must be 63 characters or less, begin and end with alphanumerics, with dashes (-), underscores (_), dots (.), and alphanumerics between.   **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  display_name:
+    type: string
+    description: "The display name for the node pool."
+    default: null
+  id:
+    type: string
+    description: "Optional property for VmwareNodePool"
+    default: null
+  on_prem_version:
+    type: string
+    description: "Anthos version for the node pool. Defaults to the user cluster version."
+    default: null
+  project:
+    type: string
+    description: "Optional property for VmwareNodePool"
+    default: null
+  config:
+    type: list
+    description: "Nested block: config"
+    default: []
+  node_pool_autoscaling:
+    type: list
+    description: "Nested block: node_pool_autoscaling"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:gkeonprem:VmwareNodePool
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      vmware_cluster: ${var.vmware_cluster}
+      annotations: ${var.annotations}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      on_prem_version: ${var.on_prem_version}
+      project: ${var.project}
+      dynamic:
+        config:
+          for_each: ${var.config}
+          content:
+            boot_disk_size_gb: ${each.value.boot_disk_size_gb}
+            cpus: ${each.value.cpus}
+            enable_load_balancer: ${each.value.enable_load_balancer}
+            image: ${each.value.image}
+            image_type: ${each.value.image_type}
+            labels: ${each.value.labels}
+            memory_mb: ${each.value.memory_mb}
+            replicas: ${each.value.replicas}
+            taints: ${each.value.taints}
+            vsphere_config: ${each.value.vsphere_config}
+        node_pool_autoscaling:
+          for_each: ${var.node_pool_autoscaling}
+          content:
+            max_replicas: ${each.value.max_replicas}
+            min_replicas: ${each.value.min_replicas}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

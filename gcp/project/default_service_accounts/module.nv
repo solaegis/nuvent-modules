@@ -1,0 +1,35 @@
+variables:
+  action:
+    type: string
+    description: "The action to be performed in the default service accounts. Valid values are: DEPRIVILEGE, DELETE, DISABLE. 				Note that DEPRIVILEGE action will ignore the REVERT configuration in the restore_policy."
+  project:
+    type: string
+    description: "The project ID where service accounts are created."
+  id:
+    type: string
+    description: "Optional property for DefaultServiceAccounts"
+    default: null
+  restore_policy:
+    type: string
+    description: "The action to be performed in the default service accounts on the resource destroy. 				Valid values are NONE, REVERT and REVERT_AND_IGNORE_FAILURE. It is applied for any action but in the DEPRIVILEGE."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:project:DefaultServiceAccounts
+    properties:
+      action: ${var.action}
+      project: ${var.project}
+      id: ${var.id}
+      restore_policy: ${var.restore_policy}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            read: ${each.value.read}

@@ -1,0 +1,34 @@
+variables:
+  fhir_store_id:
+    type: string
+    description: "Required property for FhirStoreIamMember"
+  member:
+    type: string
+    description: "Required property for FhirStoreIamMember"
+  role:
+    type: string
+    description: "Required property for FhirStoreIamMember"
+  id:
+    type: string
+    description: "Optional property for FhirStoreIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:healthcare:FhirStoreIamMember
+    properties:
+      fhir_store_id: ${var.fhir_store_id}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

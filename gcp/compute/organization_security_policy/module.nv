@@ -1,0 +1,46 @@
+variables:
+  parent:
+    type: string
+    description: "The parent of this OrganizationSecurityPolicy in the Cloud Resource Hierarchy. Format: organizations/{organization_id} or folders/{folder_id}"
+  description:
+    type: string
+    description: "A textual description for the organization security policy."
+    default: null
+  display_name:
+    type: string
+    description: "User-provided name of the organization security policy. The name should be unique in the organization in which the security policy is created. This should only be used when SecurityPolicyType is FIREWALL."
+    default: null
+  id:
+    type: string
+    description: "Optional property for OrganizationSecurityPolicy"
+    default: null
+  short_name:
+    type: string
+    description: "User-provided name of the organization security policy. The name should be unique in the organization in which the security policy is created. This should only be used when SecurityPolicyType is CLOUD_ARMOR."
+    default: null
+  type:
+    type: string
+    description: "The type indicates the intended use of the security policy. This field can be set only at resource creation time.  **NOTE** : 'FIREWALL' type is deprecated and will be removed in a future major release. Please use 'google_compute_firewall_policy' instead.\" Possible values: [\"FIREWALL\", \"CLOUD_ARMOR\", \"CLOUD_ARMOR_EDGE\", \"CLOUD_ARMOR_INTERNAL_SERVICE\", \"CLOUD_ARMOR_NETWORK\"]"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:OrganizationSecurityPolicy
+    properties:
+      parent: ${var.parent}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      short_name: ${var.short_name}
+      type: ${var.type}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

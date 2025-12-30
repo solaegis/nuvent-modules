@@ -1,0 +1,34 @@
+variables:
+  dataset_id:
+    type: string
+    description: "Required property for DatasetIamMember"
+  member:
+    type: string
+    description: "Required property for DatasetIamMember"
+  role:
+    type: string
+    description: "Required property for DatasetIamMember"
+  id:
+    type: string
+    description: "Optional property for DatasetIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:healthcare:DatasetIamMember
+    properties:
+      dataset_id: ${var.dataset_id}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

@@ -1,0 +1,28 @@
+variables:
+  database:
+    type: string
+    description: "Required property for DatabaseIamPolicy"
+  instance:
+    type: string
+    description: "Required property for DatabaseIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for DatabaseIamPolicy"
+  id:
+    type: string
+    description: "Optional property for DatabaseIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for DatabaseIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:spanner:DatabaseIamPolicy
+    properties:
+      database: ${var.database}
+      instance: ${var.instance}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}

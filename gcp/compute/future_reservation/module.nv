@@ -1,0 +1,140 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the las character, which cannot be a dash."
+  auto_created_reservations_delete_time:
+    type: string
+    description: "Future timestamp when the FR auto-created reservations will be deleted by Compute Engine."
+    default: null
+  auto_delete_auto_created_reservations:
+    type: boolean
+    description: "Setting for enabling or disabling automatic deletion for auto-created reservation. If set to true, auto-created reservations will be deleted at Future Reservation's end time (default) or at user's defined timestamp if any of the [autoCreatedReservationsDeleteTime, autoCreatedReservationsDuration] values is specified. For keeping auto-created reservation indefinitely, this value should be set to false."
+    default: null
+  deployment_type:
+    type: string
+    description: "Type of the deployment requested as part of future reservation. Possible values: [\"DENSE\", \"FLEXIBLE\"]"
+    default: null
+  description:
+    type: string
+    description: "An optional description of this resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for FutureReservation"
+    default: null
+  name_prefix:
+    type: string
+    description: "Name prefix for the reservations to be created at the time of delivery. The name prefix must comply with RFC1035. Maximum allowed length for name prefix is 20. Automatically created reservations name format will be -date-####."
+    default: null
+  planning_status:
+    type: string
+    description: "Planning state before being submitted for evaluation Possible values: [\"DRAFT\", \"SUBMITTED\"]"
+    default: null
+  project:
+    type: string
+    description: "Optional property for FutureReservation"
+    default: null
+  reservation_mode:
+    type: string
+    description: "The reservation mode which determines reservation-termination behavior and expected pricing. Possible values: [\"CALENDAR\", \"DEFAULT\"]"
+    default: null
+  reservation_name:
+    type: string
+    description: "Name of reservations where the capacity is provisioned at the time of delivery of future reservations. If the reservation with the given name does not exist already, it is created automatically at the time of Approval with INACTIVE state till specified start-time. Either provide the reservationName or a namePrefix."
+    default: null
+  scheduling_type:
+    type: string
+    description: "Maintenance information for this reservation Possible values: [\"GROUPED\", \"INDEPENDENT\"]"
+    default: null
+  specific_reservation_required:
+    type: boolean
+    description: "Indicates whether the auto-created reservation can be consumed by VMs with affinity for \"any\" reservation. If the field is set, then only VMs that target the reservation by name can consume from the delivered reservation."
+    default: null
+  aggregate_reservation:
+    type: list
+    description: "Nested block: aggregate_reservation"
+    default: []
+  auto_created_reservations_duration:
+    type: list
+    description: "Nested block: auto_created_reservations_duration"
+    default: []
+  commitment_info:
+    type: list
+    description: "Nested block: commitment_info"
+    default: []
+  share_settings:
+    type: list
+    description: "Nested block: share_settings"
+    default: []
+  specific_sku_properties:
+    type: list
+    description: "Nested block: specific_sku_properties"
+    default: []
+  time_window:
+    type: list
+    description: "Nested block: time_window"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:FutureReservation
+    properties:
+      name: ${var.name}
+      auto_created_reservations_delete_time: ${var.auto_created_reservations_delete_time}
+      auto_delete_auto_created_reservations: ${var.auto_delete_auto_created_reservations}
+      deployment_type: ${var.deployment_type}
+      description: ${var.description}
+      id: ${var.id}
+      name_prefix: ${var.name_prefix}
+      planning_status: ${var.planning_status}
+      project: ${var.project}
+      reservation_mode: ${var.reservation_mode}
+      reservation_name: ${var.reservation_name}
+      scheduling_type: ${var.scheduling_type}
+      specific_reservation_required: ${var.specific_reservation_required}
+      dynamic:
+        aggregate_reservation:
+          for_each: ${var.aggregate_reservation}
+          content:
+            vm_family: ${each.value.vm_family}
+            workload_type: ${each.value.workload_type}
+            reserved_resources: ${each.value.reserved_resources}
+        auto_created_reservations_duration:
+          for_each: ${var.auto_created_reservations_duration}
+          content:
+            nanos: ${each.value.nanos}
+            seconds: ${each.value.seconds}
+        commitment_info:
+          for_each: ${var.commitment_info}
+          content:
+            commitment_name: ${each.value.commitment_name}
+            commitment_plan: ${each.value.commitment_plan}
+            previous_commitment_terms: ${each.value.previous_commitment_terms}
+        share_settings:
+          for_each: ${var.share_settings}
+          content:
+            projects: ${each.value.projects}
+            share_type: ${each.value.share_type}
+            project_map: ${each.value.project_map}
+        specific_sku_properties:
+          for_each: ${var.specific_sku_properties}
+          content:
+            source_instance_template: ${each.value.source_instance_template}
+            total_count: ${each.value.total_count}
+            instance_properties: ${each.value.instance_properties}
+        time_window:
+          for_each: ${var.time_window}
+          content:
+            end_time: ${each.value.end_time}
+            start_time: ${each.value.start_time}
+            duration: ${each.value.duration}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

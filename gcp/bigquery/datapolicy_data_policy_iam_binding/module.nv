@@ -1,0 +1,44 @@
+variables:
+  data_policy_id:
+    type: string
+    description: "Required property for DatapolicyDataPolicyIamBinding"
+  members:
+    type: list
+    description: "Required property for DatapolicyDataPolicyIamBinding"
+  role:
+    type: string
+    description: "Required property for DatapolicyDataPolicyIamBinding"
+  id:
+    type: string
+    description: "Optional property for DatapolicyDataPolicyIamBinding"
+    default: null
+  location:
+    type: string
+    description: "Optional property for DatapolicyDataPolicyIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for DatapolicyDataPolicyIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigquery:DatapolicyDataPolicyIamBinding
+    properties:
+      data_policy_id: ${var.data_policy_id}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

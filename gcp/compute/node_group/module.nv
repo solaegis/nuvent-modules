@@ -1,0 +1,87 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource."
+  node_template:
+    type: string
+    description: "The URL of the node template to which this node group belongs."
+  description:
+    type: string
+    description: "An optional textual description of the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for NodeGroup"
+    default: null
+  initial_size:
+    type: number
+    description: "The initial number of nodes in the node group. One of 'initial_size' or 'autoscaling_policy' must be configured on resource creation."
+    default: null
+  maintenance_interval:
+    type: string
+    description: "Specifies the frequency of planned maintenance events. Set to one of the following:   - AS_NEEDED: Hosts are eligible to receive infrastructure and hypervisor updates as they become available.   - RECURRENT: Hosts receive planned infrastructure and hypervisor updates on a periodic basis, but not more frequently than every 28 days. This minimizes the number of planned maintenance operations on individual hosts and reduces the frequency of disruptions, both live migrations and terminations, on individual VMs. Possible values: [\"AS_NEEDED\", \"RECURRENT\"]"
+    default: null
+  maintenance_policy:
+    type: string
+    description: "Specifies how to handle instances when a node in the group undergoes maintenance. Set to one of: DEFAULT, RESTART_IN_PLACE, or MIGRATE_WITHIN_NODE_GROUP. The default value is DEFAULT."
+    default: null
+  project:
+    type: string
+    description: "Optional property for NodeGroup"
+    default: null
+  zone:
+    type: string
+    description: "Zone where this node group is located"
+    default: null
+  autoscaling_policy:
+    type: list
+    description: "Nested block: autoscaling_policy"
+    default: []
+  maintenance_window:
+    type: list
+    description: "Nested block: maintenance_window"
+    default: []
+  share_settings:
+    type: list
+    description: "Nested block: share_settings"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:NodeGroup
+    properties:
+      name: ${var.name}
+      node_template: ${var.node_template}
+      description: ${var.description}
+      id: ${var.id}
+      initial_size: ${var.initial_size}
+      maintenance_interval: ${var.maintenance_interval}
+      maintenance_policy: ${var.maintenance_policy}
+      project: ${var.project}
+      zone: ${var.zone}
+      dynamic:
+        autoscaling_policy:
+          for_each: ${var.autoscaling_policy}
+          content:
+            max_nodes: ${each.value.max_nodes}
+            min_nodes: ${each.value.min_nodes}
+            mode: ${each.value.mode}
+        maintenance_window:
+          for_each: ${var.maintenance_window}
+          content:
+            start_time: ${each.value.start_time}
+        share_settings:
+          for_each: ${var.share_settings}
+          content:
+            share_type: ${each.value.share_type}
+            project_map: ${each.value.project_map}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

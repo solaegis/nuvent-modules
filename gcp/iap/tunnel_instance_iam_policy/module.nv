@@ -1,0 +1,29 @@
+variables:
+  instance:
+    type: string
+    description: "Required property for TunnelInstanceIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for TunnelInstanceIamPolicy"
+  id:
+    type: string
+    description: "Optional property for TunnelInstanceIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TunnelInstanceIamPolicy"
+    default: null
+  zone:
+    type: string
+    description: "Optional property for TunnelInstanceIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:iap:TunnelInstanceIamPolicy
+    properties:
+      instance: ${var.instance}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}
+      zone: ${var.zone}

@@ -1,0 +1,50 @@
+variables:
+  api_config:
+    type: string
+    description: "Resource name of the API Config for this Gateway. Format: projects/{project}/locations/global/apis/{api}/configs/{apiConfig}. When changing api configs please ensure the new config is a new resource and the [lifecycle](https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle) rule 'create_before_destroy' is set."
+  gateway_id:
+    type: string
+    description: "Identifier to assign to the Gateway. Must be unique within scope of the parent resource(project)."
+  display_name:
+    type: string
+    description: "A user-visible name for the API."
+    default: null
+  id:
+    type: string
+    description: "Optional property for GatewayGateway"
+    default: null
+  labels:
+    type: object
+    description: "Resource labels to represent user-provided metadata.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for GatewayGateway"
+    default: null
+  region:
+    type: string
+    description: "The region of the gateway for the API."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:api:GatewayGateway
+    properties:
+      api_config: ${var.api_config}
+      gateway_id: ${var.gateway_id}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,78 @@
+variables:
+  name:
+    type: string
+    description: "The resource name of the session template in the following format: projects/{project}/locations/{location}/sessionTemplates/{template_id}"
+  id:
+    type: string
+    description: "Optional property for SessionTemplate"
+    default: null
+  labels:
+    type: object
+    description: "The labels to associate with this session template.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "The location in which the session template will be created in."
+    default: null
+  project:
+    type: string
+    description: "Optional property for SessionTemplate"
+    default: null
+  environment_config:
+    type: list
+    description: "Nested block: environment_config"
+    default: []
+  jupyter_session:
+    type: list
+    description: "Nested block: jupyter_session"
+    default: []
+  runtime_config:
+    type: list
+    description: "Nested block: runtime_config"
+    default: []
+  spark_connect_session:
+    type: list
+    description: "Nested block: spark_connect_session"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataproc:SessionTemplate
+    properties:
+      name: ${var.name}
+      id: ${var.id}
+      labels: ${var.labels}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        environment_config:
+          for_each: ${var.environment_config}
+          content:
+            execution_config: ${each.value.execution_config}
+            peripherals_config: ${each.value.peripherals_config}
+        jupyter_session:
+          for_each: ${var.jupyter_session}
+          content:
+            display_name: ${each.value.display_name}
+            kernel: ${each.value.kernel}
+        runtime_config:
+          for_each: ${var.runtime_config}
+          content:
+            container_image: ${each.value.container_image}
+            effective_properties: ${each.value.effective_properties}
+            properties: ${each.value.properties}
+            version: ${each.value.version}
+        spark_connect_session:
+          for_each: ${var.spark_connect_session}
+          content:
+            # No specific fields found in schema for spark_connect_session
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

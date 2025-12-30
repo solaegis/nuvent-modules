@@ -1,0 +1,40 @@
+variables:
+  location:
+    type: string
+    description: "The location for the Namespace."
+  namespace_id:
+    type: string
+    description: "The Resource ID must be 1-63 characters long, including digits, lowercase letters or the hyphen character."
+  id:
+    type: string
+    description: "Optional property for DirectoryNamespace"
+    default: null
+  labels:
+    type: object
+    description: "Resource labels associated with this Namespace. No more than 64 user labels can be associated with a given resource. Label keys and values can be no longer than 63 characters.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for DirectoryNamespace"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:service:DirectoryNamespace
+    properties:
+      location: ${var.location}
+      namespace_id: ${var.namespace_id}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

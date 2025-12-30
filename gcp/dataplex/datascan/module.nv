@@ -1,0 +1,110 @@
+variables:
+  data_scan_id:
+    type: string
+    description: "DataScan identifier. Must contain only lowercase letters, numbers and hyphens. Must start with a letter. Must end with a number or a letter."
+  location:
+    type: string
+    description: "The location where the data scan should reside."
+  description:
+    type: string
+    description: "Description of the scan."
+    default: null
+  display_name:
+    type: string
+    description: "User friendly display name."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Datascan"
+    default: null
+  labels:
+    type: object
+    description: "User-defined labels for the scan. A list of key->value pairs.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Datascan"
+    default: null
+  data:
+    type: list
+    description: "Nested block: data"
+    default: []
+  data_discovery_spec:
+    type: list
+    description: "Nested block: data_discovery_spec"
+    default: []
+  data_documentation_spec:
+    type: list
+    description: "Nested block: data_documentation_spec"
+    default: []
+  data_profile_spec:
+    type: list
+    description: "Nested block: data_profile_spec"
+    default: []
+  data_quality_spec:
+    type: list
+    description: "Nested block: data_quality_spec"
+    default: []
+  execution_spec:
+    type: list
+    description: "Nested block: execution_spec"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataplex:Datascan
+    properties:
+      data_scan_id: ${var.data_scan_id}
+      location: ${var.location}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        data:
+          for_each: ${var.data}
+          content:
+            entity: ${each.value.entity}
+            resource: ${each.value.resource}
+        data_discovery_spec:
+          for_each: ${var.data_discovery_spec}
+          content:
+            bigquery_publishing_config: ${each.value.bigquery_publishing_config}
+            storage_config: ${each.value.storage_config}
+        data_documentation_spec:
+          for_each: ${var.data_documentation_spec}
+          content:
+            # No specific fields found in schema for data_documentation_spec
+        data_profile_spec:
+          for_each: ${var.data_profile_spec}
+          content:
+            catalog_publishing_enabled: ${each.value.catalog_publishing_enabled}
+            row_filter: ${each.value.row_filter}
+            sampling_percent: ${each.value.sampling_percent}
+            exclude_fields: ${each.value.exclude_fields}
+            include_fields: ${each.value.include_fields}
+            post_scan_actions: ${each.value.post_scan_actions}
+        data_quality_spec:
+          for_each: ${var.data_quality_spec}
+          content:
+            catalog_publishing_enabled: ${each.value.catalog_publishing_enabled}
+            row_filter: ${each.value.row_filter}
+            sampling_percent: ${each.value.sampling_percent}
+            post_scan_actions: ${each.value.post_scan_actions}
+            rules: ${each.value.rules}
+        execution_spec:
+          for_each: ${var.execution_spec}
+          content:
+            field: ${each.value.field}
+            trigger: ${each.value.trigger}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

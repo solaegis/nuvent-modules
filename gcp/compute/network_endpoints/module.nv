@@ -1,0 +1,46 @@
+variables:
+  network_endpoint_group:
+    type: string
+    description: "The network endpoint group these endpoints are part of."
+  id:
+    type: string
+    description: "Optional property for NetworkEndpoints"
+    default: null
+  project:
+    type: string
+    description: "Optional property for NetworkEndpoints"
+    default: null
+  zone:
+    type: string
+    description: "Zone where the containing network endpoint group is located."
+    default: null
+  network_endpoints:
+    type: list
+    description: "Nested block: network_endpoints"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:NetworkEndpoints
+    properties:
+      network_endpoint_group: ${var.network_endpoint_group}
+      id: ${var.id}
+      project: ${var.project}
+      zone: ${var.zone}
+      dynamic:
+        network_endpoints:
+          for_each: ${var.network_endpoints}
+          content:
+            instance: ${each.value.instance}
+            ip_address: ${each.value.ip_address}
+            port: ${each.value.port}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

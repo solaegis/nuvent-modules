@@ -1,0 +1,24 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for WorkloadIdentityPoolIamPolicy"
+  workload_identity_pool_id:
+    type: string
+    description: "Required property for WorkloadIdentityPoolIamPolicy"
+  id:
+    type: string
+    description: "Optional property for WorkloadIdentityPoolIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WorkloadIdentityPoolIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:iam:WorkloadIdentityPoolIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      workload_identity_pool_id: ${var.workload_identity_pool_id}
+      id: ${var.id}
+      project: ${var.project}

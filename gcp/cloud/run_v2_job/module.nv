@@ -1,0 +1,97 @@
+variables:
+  location:
+    type: string
+    description: "The location of the cloud run job"
+  name:
+    type: string
+    description: "Name of the Job."
+  annotations:
+    type: object
+    description: "Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects.  Cloud Run API v2 does not support annotations with 'run.googleapis.com', 'cloud.googleapis.com', 'serving.knative.dev', or 'autoscaling.knative.dev' namespaces, and they will be rejected on new resources. All system annotations in v1 now have a corresponding field in v2 Job.  This field follows Kubernetes annotations' namespacing, limits, and rules.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  client:
+    type: string
+    description: "Arbitrary identifier for the API client."
+    default: null
+  client_version:
+    type: string
+    description: "Arbitrary version identifier for the API client."
+    default: null
+  deletion_protection:
+    type: boolean
+    description: "Whether Terraform will be prevented from destroying the job. Defaults to true. When a'terraform destroy' or 'terraform apply' would delete the job, the command will fail if this field is not set to false in Terraform state. When the field is set to true or unset in Terraform state, a 'terraform apply' or 'terraform destroy' that would delete the job will fail. When the field is set to false, deleting the job is allowed."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RunV2Job"
+    default: null
+  labels:
+    type: object
+    description: "Unstructured key value map that can be used to organize and categorize objects. User-provided labels are shared with Google's billing system, so they can be used to filter, or break down billing charges by team, component, environment, state, etc. For more information, visit https://cloud.google.com/resource-manager/docs/creating-managing-labels or https://cloud.google.com/run/docs/configuring/labels.  Cloud Run API v2 does not support labels with 'run.googleapis.com', 'cloud.googleapis.com', 'serving.knative.dev', or 'autoscaling.knative.dev' namespaces, and they will be rejected. All system labels in v1 now have a corresponding field in v2 Job.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  launch_stage:
+    type: string
+    description: "The launch stage as defined by [Google Cloud Platform Launch Stages](https://cloud.google.com/products#product-launch-stages). Cloud Run supports ALPHA, BETA, and GA. If no value is specified, GA is assumed. Set the launch stage to a preview stage on input to allow use of preview features in that stage. On read (or output), describes whether the resource uses preview features.  For example, if ALPHA is provided as input, but only BETA and GA-level features are used, this field will be BETA on output. Possible values: [\"UNIMPLEMENTED\", \"PRELAUNCH\", \"EARLY_ACCESS\", \"ALPHA\", \"BETA\", \"GA\", \"DEPRECATED\"]"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RunV2Job"
+    default: null
+  run_execution_token:
+    type: string
+    description: "A unique string used as a suffix creating a new execution upon job create or update. The Job will become ready when the execution is successfully completed. The sum of job name and token length must be fewer than 63 characters."
+    default: null
+  start_execution_token:
+    type: string
+    description: "A unique string used as a suffix creating a new execution upon job create or update. The Job will become ready when the execution is successfully started. The sum of job name and token length must be fewer than 63 characters."
+    default: null
+  binary_authorization:
+    type: list
+    description: "Nested block: binary_authorization"
+    default: []
+  template:
+    type: list
+    description: "Nested block: template"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloud:RunV2Job
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      annotations: ${var.annotations}
+      client: ${var.client}
+      client_version: ${var.client_version}
+      deletion_protection: ${var.deletion_protection}
+      id: ${var.id}
+      labels: ${var.labels}
+      launch_stage: ${var.launch_stage}
+      project: ${var.project}
+      run_execution_token: ${var.run_execution_token}
+      start_execution_token: ${var.start_execution_token}
+      dynamic:
+        binary_authorization:
+          for_each: ${var.binary_authorization}
+          content:
+            breakglass_justification: ${each.value.breakglass_justification}
+            policy: ${each.value.policy}
+            use_default: ${each.value.use_default}
+        template:
+          for_each: ${var.template}
+          content:
+            annotations: ${each.value.annotations}
+            labels: ${each.value.labels}
+            parallelism: ${each.value.parallelism}
+            task_count: ${each.value.task_count}
+            template: ${each.value.template}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

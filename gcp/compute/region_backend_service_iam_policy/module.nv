@@ -1,0 +1,29 @@
+variables:
+  name:
+    type: string
+    description: "Required property for RegionBackendServiceIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for RegionBackendServiceIamPolicy"
+  id:
+    type: string
+    description: "Optional property for RegionBackendServiceIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RegionBackendServiceIamPolicy"
+    default: null
+  region:
+    type: string
+    description: "Optional property for RegionBackendServiceIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:compute:RegionBackendServiceIamPolicy
+    properties:
+      name: ${var.name}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}

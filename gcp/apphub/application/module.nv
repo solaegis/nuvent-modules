@@ -1,0 +1,65 @@
+variables:
+  application_id:
+    type: string
+    description: "Required. The Application identifier."
+  location:
+    type: string
+    description: "Part of 'parent'. See documentation of 'projectsId'."
+  description:
+    type: string
+    description: "Optional. User-defined description of an Application."
+    default: null
+  display_name:
+    type: string
+    description: "Optional. User-defined name for the Application."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Application"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Application"
+    default: null
+  attributes:
+    type: list
+    description: "Nested block: attributes"
+    default: []
+  scope:
+    type: list
+    description: "Nested block: scope"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apphub:Application
+    properties:
+      application_id: ${var.application_id}
+      location: ${var.location}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        attributes:
+          for_each: ${var.attributes}
+          content:
+            business_owners: ${each.value.business_owners}
+            criticality: ${each.value.criticality}
+            developer_owners: ${each.value.developer_owners}
+            environment: ${each.value.environment}
+            operator_owners: ${each.value.operator_owners}
+        scope:
+          for_each: ${var.scope}
+          content:
+            type: ${each.value.type}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

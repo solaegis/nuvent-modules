@@ -1,0 +1,47 @@
+variables:
+  bucket:
+    type: string
+    description: "Required property for LogViewIamMember"
+  member:
+    type: string
+    description: "Required property for LogViewIamMember"
+  name:
+    type: string
+    description: "Required property for LogViewIamMember"
+  parent:
+    type: string
+    description: "Required property for LogViewIamMember"
+  role:
+    type: string
+    description: "Required property for LogViewIamMember"
+  id:
+    type: string
+    description: "Optional property for LogViewIamMember"
+    default: null
+  location:
+    type: string
+    description: "Optional property for LogViewIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:logging:LogViewIamMember
+    properties:
+      bucket: ${var.bucket}
+      member: ${var.member}
+      name: ${var.name}
+      parent: ${var.parent}
+      role: ${var.role}
+      id: ${var.id}
+      location: ${var.location}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

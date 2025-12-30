@@ -1,0 +1,132 @@
+variables:
+  job_id:
+    type: string
+    description: "The ID of the job. The ID must contain only letters (a-z, A-Z), numbers (0-9), underscores (_), or dashes (-). The maximum length is 1,024 characters."
+  id:
+    type: string
+    description: "Optional property for Job"
+    default: null
+  job_timeout_ms:
+    type: string
+    description: "Job timeout in milliseconds. If this time limit is exceeded, BigQuery may attempt to terminate the job."
+    default: null
+  labels:
+    type: object
+    description: "The labels associated with this job. You can use these to organize and group your jobs.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "The geographic location of the job. The default value is US."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Job"
+    default: null
+  reservation:
+    type: string
+    description: "The reservation that job would use. User can specify a reservation to execute the job. If this field is not set, reservation is determined based on the rules defined by the reservation assignments. The expected format is 'projects/{project}/locations/{location}/reservations/{reservation}'."
+    default: null
+  copy:
+    type: list
+    description: "Nested block: copy"
+    default: []
+  extract:
+    type: list
+    description: "Nested block: extract"
+    default: []
+  load:
+    type: list
+    description: "Nested block: load"
+    default: []
+  query:
+    type: list
+    description: "Nested block: query"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigquery:Job
+    properties:
+      job_id: ${var.job_id}
+      id: ${var.id}
+      job_timeout_ms: ${var.job_timeout_ms}
+      labels: ${var.labels}
+      location: ${var.location}
+      project: ${var.project}
+      reservation: ${var.reservation}
+      dynamic:
+        copy:
+          for_each: ${var.copy}
+          content:
+            create_disposition: ${each.value.create_disposition}
+            write_disposition: ${each.value.write_disposition}
+            destination_encryption_configuration: ${each.value.destination_encryption_configuration}
+            destination_table: ${each.value.destination_table}
+            source_tables: ${each.value.source_tables}
+        extract:
+          for_each: ${var.extract}
+          content:
+            compression: ${each.value.compression}
+            destination_format: ${each.value.destination_format}
+            destination_uris: ${each.value.destination_uris}
+            field_delimiter: ${each.value.field_delimiter}
+            print_header: ${each.value.print_header}
+            use_avro_logical_types: ${each.value.use_avro_logical_types}
+            source_model: ${each.value.source_model}
+            source_table: ${each.value.source_table}
+        load:
+          for_each: ${var.load}
+          content:
+            allow_jagged_rows: ${each.value.allow_jagged_rows}
+            allow_quoted_newlines: ${each.value.allow_quoted_newlines}
+            autodetect: ${each.value.autodetect}
+            create_disposition: ${each.value.create_disposition}
+            encoding: ${each.value.encoding}
+            field_delimiter: ${each.value.field_delimiter}
+            ignore_unknown_values: ${each.value.ignore_unknown_values}
+            json_extension: ${each.value.json_extension}
+            max_bad_records: ${each.value.max_bad_records}
+            null_marker: ${each.value.null_marker}
+            projection_fields: ${each.value.projection_fields}
+            quote: ${each.value.quote}
+            schema_update_options: ${each.value.schema_update_options}
+            skip_leading_rows: ${each.value.skip_leading_rows}
+            source_format: ${each.value.source_format}
+            source_uris: ${each.value.source_uris}
+            write_disposition: ${each.value.write_disposition}
+            destination_encryption_configuration: ${each.value.destination_encryption_configuration}
+            destination_table: ${each.value.destination_table}
+            parquet_options: ${each.value.parquet_options}
+            time_partitioning: ${each.value.time_partitioning}
+        query:
+          for_each: ${var.query}
+          content:
+            allow_large_results: ${each.value.allow_large_results}
+            continuous: ${each.value.continuous}
+            create_disposition: ${each.value.create_disposition}
+            flatten_results: ${each.value.flatten_results}
+            maximum_billing_tier: ${each.value.maximum_billing_tier}
+            maximum_bytes_billed: ${each.value.maximum_bytes_billed}
+            parameter_mode: ${each.value.parameter_mode}
+            priority: ${each.value.priority}
+            query: ${each.value.query}
+            schema_update_options: ${each.value.schema_update_options}
+            use_legacy_sql: ${each.value.use_legacy_sql}
+            use_query_cache: ${each.value.use_query_cache}
+            write_disposition: ${each.value.write_disposition}
+            connection_properties: ${each.value.connection_properties}
+            default_dataset: ${each.value.default_dataset}
+            destination_encryption_configuration: ${each.value.destination_encryption_configuration}
+            destination_table: ${each.value.destination_table}
+            script_options: ${each.value.script_options}
+            user_defined_function_resources: ${each.value.user_defined_function_resources}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

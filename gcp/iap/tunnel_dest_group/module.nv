@@ -1,0 +1,46 @@
+variables:
+  group_name:
+    type: string
+    description: "Unique tunnel destination group name."
+  cidrs:
+    type: list
+    description: "List of CIDRs that this group applies to."
+    default: null
+  fqdns:
+    type: list
+    description: "List of FQDNs that this group applies to."
+    default: null
+  id:
+    type: string
+    description: "Optional property for TunnelDestGroup"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TunnelDestGroup"
+    default: null
+  region:
+    type: string
+    description: "The region of the tunnel group. Must be the same as the network resources in the group."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:iap:TunnelDestGroup
+    properties:
+      group_name: ${var.group_name}
+      cidrs: ${var.cidrs}
+      fqdns: ${var.fqdns}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

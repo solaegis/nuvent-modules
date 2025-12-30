@@ -1,0 +1,51 @@
+variables:
+  parent:
+    type: string
+    description: "The parent of the template in any of the following formats:  * 'projects/{{project}}' * 'projects/{{project}}/locations/{{location}}' * 'organizations/{{organization_id}}' * 'organizations/{{organization_id}}/locations/{{location}}'"
+  description:
+    type: string
+    description: "A description of the template."
+    default: null
+  display_name:
+    type: string
+    description: "User set display name of the template."
+    default: null
+  id:
+    type: string
+    description: "Optional property for LossPreventionDeidentifyTemplate"
+    default: null
+  template_id:
+    type: string
+    description: "The template id can contain uppercase and lowercase letters, numbers, and hyphens; that is, it must match the regular expression: [a-zA-Z\d-_]+. The maximum length is 100 characters. Can be empty to allow the system to generate one."
+    default: null
+  deidentify_config:
+    type: list
+    description: "Nested block: deidentify_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:data:LossPreventionDeidentifyTemplate
+    properties:
+      parent: ${var.parent}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      template_id: ${var.template_id}
+      dynamic:
+        deidentify_config:
+          for_each: ${var.deidentify_config}
+          content:
+            image_transformations: ${each.value.image_transformations}
+            info_type_transformations: ${each.value.info_type_transformations}
+            record_transformations: ${each.value.record_transformations}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,48 @@
+variables:
+  location:
+    type: string
+    description: "The location for the management server (management console)"
+  name:
+    type: string
+    description: "The name of management server (management console)"
+  id:
+    type: string
+    description: "Optional property for DrManagementServer"
+    default: null
+  project:
+    type: string
+    description: "Optional property for DrManagementServer"
+    default: null
+  type:
+    type: string
+    description: "The type of management server (management console). Default value: \"BACKUP_RESTORE\" Possible values: [\"BACKUP_RESTORE\"]"
+    default: null
+  networks:
+    type: list
+    description: "Nested block: networks"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:backup:DrManagementServer
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      id: ${var.id}
+      project: ${var.project}
+      type: ${var.type}
+      dynamic:
+        networks:
+          for_each: ${var.networks}
+          content:
+            network: ${each.value.network}
+            peering_mode: ${each.value.peering_mode}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

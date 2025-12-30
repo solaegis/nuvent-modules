@@ -1,0 +1,60 @@
+variables:
+  plan:
+    type: string
+    description: "Capacity commitment plan. Valid values are at https://cloud.google.com/bigquery/docs/reference/reservations/rpc/google.cloud.bigquery.reservation.v1#commitmentplan"
+  slot_count:
+    type: number
+    description: "Number of slots in this commitment."
+  capacity_commitment_id:
+    type: string
+    description: "The optional capacity commitment ID. Capacity commitment name will be generated automatically if this field is empty. This field must only contain lower case alphanumeric characters or dashes. The first and last character cannot be a dash. Max length is 64 characters. NOTE: this ID won't be kept if the capacity commitment is split or merged."
+    default: null
+  edition:
+    type: string
+    description: "The edition type. Valid values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS"
+    default: null
+  enforce_single_admin_project_per_org:
+    type: string
+    description: "If true, fail the request if another project in the organization has a capacity commitment."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CapacityCommitment"
+    default: null
+  location:
+    type: string
+    description: "The geographic location where the transfer config should reside. Examples: US, EU, asia-northeast1. The default value is US."
+    default: null
+  project:
+    type: string
+    description: "Optional property for CapacityCommitment"
+    default: null
+  renewal_plan:
+    type: string
+    description: "The plan this capacity commitment is converted to after commitmentEndTime passes. Once the plan is changed, committed period is extended according to commitment plan. Only applicable for some commitment plans."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigquery:CapacityCommitment
+    properties:
+      plan: ${var.plan}
+      slot_count: ${var.slot_count}
+      capacity_commitment_id: ${var.capacity_commitment_id}
+      edition: ${var.edition}
+      enforce_single_admin_project_per_org: ${var.enforce_single_admin_project_per_org}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      renewal_plan: ${var.renewal_plan}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,52 @@
+variables:
+  bucket:
+    type: string
+    description: "The bucket to which the linked dataset is attached."
+  link_id:
+    type: string
+    description: "The id of the linked dataset."
+  description:
+    type: string
+    description: "Describes this link. The maximum length of the description is 8000 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for LinkedDataset"
+    default: null
+  location:
+    type: string
+    description: "The location of the linked dataset."
+    default: null
+  parent:
+    type: string
+    description: "The parent of the linked dataset."
+    default: null
+  bigquery_dataset:
+    type: list
+    description: "Nested block: bigquery_dataset"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:logging:LinkedDataset
+    properties:
+      bucket: ${var.bucket}
+      link_id: ${var.link_id}
+      description: ${var.description}
+      id: ${var.id}
+      location: ${var.location}
+      parent: ${var.parent}
+      dynamic:
+        bigquery_dataset:
+          for_each: ${var.bigquery_dataset}
+          content:
+            dataset_id: ${each.value.dataset_id}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

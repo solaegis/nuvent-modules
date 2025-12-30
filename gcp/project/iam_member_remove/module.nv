@@ -1,0 +1,23 @@
+variables:
+  member:
+    type: string
+    description: "The IAM principal that should not have the target role."
+  project:
+    type: string
+    description: "The project id of the target project."
+  role:
+    type: string
+    description: "The target role that should be removed."
+  id:
+    type: string
+    description: "Optional property for IamMemberRemove"
+    default: null
+
+resources:
+  main:
+    type: gcp:project:IamMemberRemove
+    properties:
+      member: ${var.member}
+      project: ${var.project}
+      role: ${var.role}
+      id: ${var.id}

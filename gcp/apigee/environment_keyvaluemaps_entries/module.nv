@@ -1,0 +1,33 @@
+variables:
+  env_keyvaluemap_id:
+    type: string
+    description: "The Apigee environment keyvalumaps Id associated with the Apigee environment, in the format 'organizations/{{org_name}}/environments/{{env_name}}/keyvaluemaps/{{keyvaluemap_name}}'."
+  name:
+    type: string
+    description: "Required. Resource URI that can be used to identify the scope of the key value map entries."
+  value:
+    type: string
+    description: "Required. Data or payload that is being retrieved and associated with the unique key."
+  id:
+    type: string
+    description: "Optional property for EnvironmentKeyvaluemapsEntries"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:EnvironmentKeyvaluemapsEntries
+    properties:
+      env_keyvaluemap_id: ${var.env_keyvaluemap_id}
+      name: ${var.name}
+      value: ${var.value}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

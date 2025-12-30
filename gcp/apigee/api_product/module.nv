@@ -1,0 +1,124 @@
+variables:
+  display_name:
+    type: string
+    description: "Name displayed in the UI or developer portal to developers registering for API access."
+  name:
+    type: string
+    description: "Internal name of the API product."
+  org_id:
+    type: string
+    description: "The Apigee Organization associated with the Apigee API product, in the format 'organizations/{{org_name}}'."
+  api_resources:
+    type: list
+    description: "Comma-separated list of API resources to be bundled in the API product. By default, the resource paths are mapped from the proxy.pathsuffix variable. The proxy path suffix is defined as the URI fragment following the ProxyEndpoint base path. For example, if the apiResources element is defined to be /forecastrss and the base path defined for the API proxy is /weather, then only requests to /weather/forecastrss are permitted by the API product."
+    default: null
+  approval_type:
+    type: string
+    description: "Flag that specifies how API keys are approved to access the APIs defined by the API product. Valid values are 'auto' or 'manual'. Possible values: [\"auto\", \"manual\"]"
+    default: null
+  description:
+    type: string
+    description: "Description of the API product. Include key information about the API product that is not captured by other fields."
+    default: null
+  environments:
+    type: list
+    description: "Comma-separated list of environment names to which the API product is bound. Requests to environments that are not listed are rejected. By specifying one or more environments, you can bind the resources listed in the API product to a specific environment, preventing developers from accessing those resources through API proxies deployed in another environment."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ApiProduct"
+    default: null
+  proxies:
+    type: list
+    description: "Comma-separated list of API proxy names to which this API product is bound. By specifying API proxies, you can associate resources in the API product with specific API proxies, preventing developers from accessing those resources through other API proxies. Apigee rejects requests to API proxies that are not listed."
+    default: null
+  quota:
+    type: string
+    description: "Number of request messages permitted per app by this API product for the specified quotaInterval and quotaTimeUnit. For example, a quota of 50, for a quotaInterval of 12 and a quotaTimeUnit of hours means 50 requests are allowed every 12 hours."
+    default: null
+  quota_counter_scope:
+    type: string
+    description: "Scope of the quota decides how the quota counter gets applied and evaluate for quota violation. If the Scope is set as PROXY, then all the operations defined for the APIproduct that are associated with the same proxy will share the same quota counter set at the APIproduct level, making it a global counter at a proxy level. If the Scope is set as OPERATION, then each operations get the counter set at the API product dedicated, making it a local counter. Note that, the QuotaCounterScope applies only when an operation does not have dedicated quota set for itself. Possible values: [\"QUOTA_COUNTER_SCOPE_UNSPECIFIED\", \"PROXY\", \"OPERATION\"]"
+    default: null
+  quota_interval:
+    type: string
+    description: "Time interval over which the number of request messages is calculated."
+    default: null
+  quota_time_unit:
+    type: string
+    description: "Time unit defined for the quotaInterval. Valid values include second, minute, hour, day, month or year."
+    default: null
+  scopes:
+    type: list
+    description: "Comma-separated list of OAuth scopes that are validated at runtime. Apigee validates that the scopes in any access token presented match the scopes defined in the OAuth policy associated with the API product."
+    default: null
+  space:
+    type: string
+    description: "Optional. The resource ID of the parent Space. If not set, the parent resource will be the Organization."
+    default: null
+  attributes:
+    type: list
+    description: "Nested block: attributes"
+    default: []
+  graphql_operation_group:
+    type: list
+    description: "Nested block: graphql_operation_group"
+    default: []
+  grpc_operation_group:
+    type: list
+    description: "Nested block: grpc_operation_group"
+    default: []
+  operation_group:
+    type: list
+    description: "Nested block: operation_group"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:ApiProduct
+    properties:
+      display_name: ${var.display_name}
+      name: ${var.name}
+      org_id: ${var.org_id}
+      api_resources: ${var.api_resources}
+      approval_type: ${var.approval_type}
+      description: ${var.description}
+      environments: ${var.environments}
+      id: ${var.id}
+      proxies: ${var.proxies}
+      quota: ${var.quota}
+      quota_counter_scope: ${var.quota_counter_scope}
+      quota_interval: ${var.quota_interval}
+      quota_time_unit: ${var.quota_time_unit}
+      scopes: ${var.scopes}
+      space: ${var.space}
+      dynamic:
+        attributes:
+          for_each: ${var.attributes}
+          content:
+            name: ${each.value.name}
+            value: ${each.value.value}
+        graphql_operation_group:
+          for_each: ${var.graphql_operation_group}
+          content:
+            operation_config_type: ${each.value.operation_config_type}
+            operation_configs: ${each.value.operation_configs}
+        grpc_operation_group:
+          for_each: ${var.grpc_operation_group}
+          content:
+            operation_configs: ${each.value.operation_configs}
+        operation_group:
+          for_each: ${var.operation_group}
+          content:
+            operation_config_type: ${each.value.operation_config_type}
+            operation_configs: ${each.value.operation_configs}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

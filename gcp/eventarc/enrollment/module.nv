@@ -1,0 +1,62 @@
+variables:
+  cel_match:
+    type: string
+    description: "A CEL expression identifying which messages this enrollment applies to."
+  destination:
+    type: string
+    description: "Destination is the Pipeline that the Enrollment is delivering to. It must point to the full resource name of a Pipeline. Format: \"projects/{PROJECT_ID}/locations/{region}/pipelines/{PIPELINE_ID)\""
+  enrollment_id:
+    type: string
+    description: "The user-provided ID to be assigned to the Enrollment. It should match the format '^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$'."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  message_bus:
+    type: string
+    description: "Resource name of the message bus identifying the source of the messages. It matches the form projects/{project}/locations/{location}/messageBuses/{messageBus}."
+  annotations:
+    type: object
+    description: "Resource annotations.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  display_name:
+    type: string
+    description: "Resource display name."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Enrollment"
+    default: null
+  labels:
+    type: object
+    description: "Resource labels.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Enrollment"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:eventarc:Enrollment
+    properties:
+      cel_match: ${var.cel_match}
+      destination: ${var.destination}
+      enrollment_id: ${var.enrollment_id}
+      location: ${var.location}
+      message_bus: ${var.message_bus}
+      annotations: ${var.annotations}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

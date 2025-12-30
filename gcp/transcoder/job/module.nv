@@ -1,0 +1,58 @@
+variables:
+  location:
+    type: string
+    description: "The location of the transcoding job resource."
+  id:
+    type: string
+    description: "Optional property for Job"
+    default: null
+  labels:
+    type: object
+    description: "The labels associated with this job. You can use these to organize and group your jobs.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Job"
+    default: null
+  template_id:
+    type: string
+    description: "Specify the templateId to use for populating Job.config. The default is preset/web-hd, which is the only supported preset."
+    default: null
+  config:
+    type: list
+    description: "Nested block: config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:transcoder:Job
+    properties:
+      location: ${var.location}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      template_id: ${var.template_id}
+      dynamic:
+        config:
+          for_each: ${var.config}
+          content:
+            ad_breaks: ${each.value.ad_breaks}
+            edit_list: ${each.value.edit_list}
+            elementary_streams: ${each.value.elementary_streams}
+            encryptions: ${each.value.encryptions}
+            inputs: ${each.value.inputs}
+            manifests: ${each.value.manifests}
+            mux_streams: ${each.value.mux_streams}
+            output: ${each.value.output}
+            overlays: ${each.value.overlays}
+            pubsub_destination: ${each.value.pubsub_destination}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

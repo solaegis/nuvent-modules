@@ -1,0 +1,44 @@
+variables:
+  app_id:
+    type: string
+    description: "The ID of an [Apple App](https://firebase.google.com/docs/reference/firebase-management/rest/v1beta1/projects.iosApps#IosApp.FIELDS.app_id)."
+  key_id:
+    type: string
+    description: "The key identifier of a private key enabled with DeviceCheck, created in your Apple Developer account."
+  private_key:
+    type: string
+    description: "The contents of the private key (.p8) file associated with the key specified by keyId."
+  id:
+    type: string
+    description: "Optional property for AppCheckDeviceCheckConfig"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AppCheckDeviceCheckConfig"
+    default: null
+  token_ttl:
+    type: string
+    description: "Specifies the duration for which App Check tokens exchanged from DeviceCheck artifacts will be valid. If unset, a default value of 1 hour is assumed. Must be between 30 minutes and 7 days, inclusive.  A duration in seconds with up to nine fractional digits, ending with 's'. Example: \"3.5s\"."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:firebase:AppCheckDeviceCheckConfig
+    properties:
+      app_id: ${var.app_id}
+      key_id: ${var.key_id}
+      private_key: ${var.private_key}
+      id: ${var.id}
+      project: ${var.project}
+      token_ttl: ${var.token_ttl}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,35 @@
+variables:
+  instance_id:
+    type: string
+    description: "The Apigee instance associated with the Apigee environment, in the format 'organizations/{{org_name}}/instances/{{instance_name}}'."
+  name:
+    type: string
+    description: "Resource ID of the NAT address."
+  activate:
+    type: boolean
+    description: "Flag that specifies whether the reserved NAT address should be activate."
+    default: null
+  id:
+    type: string
+    description: "Optional property for NatAddress"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:NatAddress
+    properties:
+      instance_id: ${var.instance_id}
+      name: ${var.name}
+      activate: ${var.activate}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

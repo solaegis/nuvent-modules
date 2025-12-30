@@ -1,0 +1,24 @@
+variables:
+  instance:
+    type: string
+    description: "Required property for InstanceIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for InstanceIamPolicy"
+  id:
+    type: string
+    description: "Optional property for InstanceIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for InstanceIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:spanner:InstanceIamPolicy
+    properties:
+      instance: ${var.instance}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}

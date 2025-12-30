@@ -1,0 +1,63 @@
+variables:
+  description:
+    type: string
+    description: "Required. A user-provided description of the reference list."
+  instance:
+    type: string
+    description: "The unique identifier for the Chronicle instance, which is the same as the customer ID."
+  location:
+    type: string
+    description: "The location of the resource. This is the geographical region where the Chronicle instance resides, such as \"us\" or \"europe-west2\"."
+  reference_list_id:
+    type: string
+    description: "Required. The ID to use for the reference list. This is also the display name for the reference list. It must satisfy the following requirements: - Starts with letter. - Contains only letters, numbers and underscore. - Has length < 256. - Must be unique."
+  syntax_type:
+    type: string
+    description: "Possible values: REFERENCE_LIST_SYNTAX_TYPE_PLAIN_TEXT_STRING REFERENCE_LIST_SYNTAX_TYPE_REGEX REFERENCE_LIST_SYNTAX_TYPE_CIDR"
+  id:
+    type: string
+    description: "Optional property for ReferenceList"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ReferenceList"
+    default: null
+  entries:
+    type: list
+    description: "Nested block: entries"
+    default: []
+  scope_info:
+    type: list
+    description: "Nested block: scope_info"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:chronicle:ReferenceList
+    properties:
+      description: ${var.description}
+      instance: ${var.instance}
+      location: ${var.location}
+      reference_list_id: ${var.reference_list_id}
+      syntax_type: ${var.syntax_type}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        entries:
+          for_each: ${var.entries}
+          content:
+            value: ${each.value.value}
+        scope_info:
+          for_each: ${var.scope_info}
+          content:
+            reference_list_scope: ${each.value.reference_list_scope}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

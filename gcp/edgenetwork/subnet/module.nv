@@ -1,0 +1,68 @@
+variables:
+  location:
+    type: string
+    description: "The Google Cloud region to which the target Distributed Cloud Edge zone belongs."
+  network:
+    type: string
+    description: "The ID of the network to which this router belongs. Must be of the form: 'projects/{{project}}/locations/{{location}}/zones/{{zone}}/networks/{{network_id}}'"
+  subnet_id:
+    type: string
+    description: "A unique ID that identifies this subnet."
+  zone:
+    type: string
+    description: "The name of the target Distributed Cloud Edge zone."
+  description:
+    type: string
+    description: "A free-text description of the resource. Max length 1024 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Subnet"
+    default: null
+  ipv4_cidr:
+    type: list
+    description: "The ranges of ipv4 addresses that are owned by this subnetwork, in CIDR format."
+    default: null
+  ipv6_cidr:
+    type: list
+    description: "The ranges of ipv6 addresses that are owned by this subnetwork, in CIDR format."
+    default: null
+  labels:
+    type: object
+    description: "Labels associated with this resource.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Subnet"
+    default: null
+  vlan_id:
+    type: number
+    description: "VLAN ID for this subnetwork. If not specified, one is assigned automatically."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:edgenetwork:Subnet
+    properties:
+      location: ${var.location}
+      network: ${var.network}
+      subnet_id: ${var.subnet_id}
+      zone: ${var.zone}
+      description: ${var.description}
+      id: ${var.id}
+      ipv4_cidr: ${var.ipv4_cidr}
+      ipv6_cidr: ${var.ipv6_cidr}
+      labels: ${var.labels}
+      project: ${var.project}
+      vlan_id: ${var.vlan_id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

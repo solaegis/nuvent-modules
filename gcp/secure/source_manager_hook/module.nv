@@ -1,0 +1,66 @@
+variables:
+  hook_id:
+    type: string
+    description: "The ID for the Hook."
+  location:
+    type: string
+    description: "The location for the Repository."
+  repository_id:
+    type: string
+    description: "The ID for the Repository."
+  target_uri:
+    type: string
+    description: "The target URI to which the payloads will be delivered."
+  disabled:
+    type: boolean
+    description: "Determines if the hook disabled or not. Set to true to stop sending traffic."
+    default: null
+  events:
+    type: list
+    description: "The events that trigger hook on. Possible values: [\"PUSH\", \"PULL_REQUEST\"]"
+    default: null
+  id:
+    type: string
+    description: "Optional property for SourceManagerHook"
+    default: null
+  project:
+    type: string
+    description: "Optional property for SourceManagerHook"
+    default: null
+  sensitive_query_string:
+    type: string
+    description: "The sensitive query string to be appended to the target URI."
+    default: null
+  push_option:
+    type: list
+    description: "Nested block: push_option"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:secure:SourceManagerHook
+    properties:
+      hook_id: ${var.hook_id}
+      location: ${var.location}
+      repository_id: ${var.repository_id}
+      target_uri: ${var.target_uri}
+      disabled: ${var.disabled}
+      events: ${var.events}
+      id: ${var.id}
+      project: ${var.project}
+      sensitive_query_string: ${var.sensitive_query_string}
+      dynamic:
+        push_option:
+          for_each: ${var.push_option}
+          content:
+            branch_filter: ${each.value.branch_filter}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

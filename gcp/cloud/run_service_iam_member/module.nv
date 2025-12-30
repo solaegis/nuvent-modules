@@ -1,0 +1,44 @@
+variables:
+  member:
+    type: string
+    description: "Required property for RunServiceIamMember"
+  role:
+    type: string
+    description: "Required property for RunServiceIamMember"
+  service:
+    type: string
+    description: "Required property for RunServiceIamMember"
+  id:
+    type: string
+    description: "Optional property for RunServiceIamMember"
+    default: null
+  location:
+    type: string
+    description: "Optional property for RunServiceIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RunServiceIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloud:RunServiceIamMember
+    properties:
+      member: ${var.member}
+      role: ${var.role}
+      service: ${var.service}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

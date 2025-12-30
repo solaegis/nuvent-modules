@@ -1,0 +1,44 @@
+variables:
+  ca_pool:
+    type: string
+    description: "Required property for CaPoolIamMember"
+  member:
+    type: string
+    description: "Required property for CaPoolIamMember"
+  role:
+    type: string
+    description: "Required property for CaPoolIamMember"
+  id:
+    type: string
+    description: "Optional property for CaPoolIamMember"
+    default: null
+  location:
+    type: string
+    description: "Optional property for CaPoolIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for CaPoolIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:privateca:CaPoolIamMember
+    properties:
+      ca_pool: ${var.ca_pool}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

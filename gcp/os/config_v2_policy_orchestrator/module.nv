@@ -1,0 +1,67 @@
+variables:
+  action:
+    type: string
+    description: "Required. Action to be done by the orchestrator in 'projects/{project_id}/zones/{zone_id}' locations defined by the 'orchestration_scope'. Allowed values: - 'UPSERT' - Orchestrator will create or update target resources. - 'DELETE' - Orchestrator will delete target resources, if they exist"
+  policy_orchestrator_id:
+    type: string
+    description: "Required. The logical identifier of the policy orchestrator, with the following restrictions:  * Must contain only lowercase letters, numbers, and hyphens. * Must start with a letter. * Must be between 1-63 characters. * Must end with a number or a letter. * Must be unique within the parent."
+  description:
+    type: string
+    description: "Optional. Freeform text describing the purpose of the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ConfigV2PolicyOrchestrator"
+    default: null
+  labels:
+    type: object
+    description: "Optional. Labels as key value pairs  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ConfigV2PolicyOrchestrator"
+    default: null
+  state:
+    type: string
+    description: "Optional. State of the orchestrator. Can be updated to change orchestrator behaviour. Allowed values: - 'ACTIVE' - orchestrator is actively looking for actions to be taken. - 'STOPPED' - orchestrator won't make any changes.  Note: There might be more states added in the future. We use string here instead of an enum, to avoid the need of propagating new states to all the client code."
+    default: null
+  orchestrated_resource:
+    type: list
+    description: "Nested block: orchestrated_resource"
+    default: []
+  orchestration_scope:
+    type: list
+    description: "Nested block: orchestration_scope"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:os:ConfigV2PolicyOrchestrator
+    properties:
+      action: ${var.action}
+      policy_orchestrator_id: ${var.policy_orchestrator_id}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      state: ${var.state}
+      dynamic:
+        orchestrated_resource:
+          for_each: ${var.orchestrated_resource}
+          content:
+            id: ${each.value.id}
+            os_policy_assignment_v1_payload: ${each.value.os_policy_assignment_v1_payload}
+        orchestration_scope:
+          for_each: ${var.orchestration_scope}
+          content:
+            selectors: ${each.value.selectors}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

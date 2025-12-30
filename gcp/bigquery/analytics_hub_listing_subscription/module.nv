@@ -1,0 +1,50 @@
+variables:
+  data_exchange_id:
+    type: string
+    description: "The ID of the data exchange. Must contain only Unicode letters, numbers (0-9), underscores (_). Should not use characters that require URL-escaping, or characters outside of ASCII, spaces."
+  listing_id:
+    type: string
+    description: "The ID of the listing. Must contain only Unicode letters, numbers (0-9), underscores (_). Should not use characters that require URL-escaping, or characters outside of ASCII, spaces."
+  location:
+    type: string
+    description: "The name of the location of the data exchange. Distinct from the location of the destination data set."
+  id:
+    type: string
+    description: "Optional property for AnalyticsHubListingSubscription"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AnalyticsHubListingSubscription"
+    default: null
+  destination_dataset:
+    type: list
+    description: "Nested block: destination_dataset"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigquery:AnalyticsHubListingSubscription
+    properties:
+      data_exchange_id: ${var.data_exchange_id}
+      listing_id: ${var.listing_id}
+      location: ${var.location}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        destination_dataset:
+          for_each: ${var.destination_dataset}
+          content:
+            description: ${each.value.description}
+            friendly_name: ${each.value.friendly_name}
+            labels: ${each.value.labels}
+            location: ${each.value.location}
+            dataset_reference: ${each.value.dataset_reference}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

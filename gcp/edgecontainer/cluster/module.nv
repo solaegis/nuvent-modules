@@ -1,0 +1,126 @@
+variables:
+  location:
+    type: string
+    description: "The location of the resource."
+  name:
+    type: string
+    description: "The GDCE cluster name."
+  default_max_pods_per_node:
+    type: number
+    description: "The default maximum number of pods per node used if a maximum value is not specified explicitly for a node pool in this cluster. If unspecified, the Kubernetes default value will be used."
+    default: null
+  external_load_balancer_ipv4_address_pools:
+    type: list
+    description: "Address pools for cluster data plane external load balancing."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Cluster"
+    default: null
+  labels:
+    type: object
+    description: "User-defined labels for the edgecloud cluster.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Cluster"
+    default: null
+  release_channel:
+    type: string
+    description: "The release channel a cluster is subscribed to. Possible values: [\"RELEASE_CHANNEL_UNSPECIFIED\", \"NONE\", \"REGULAR\"]"
+    default: null
+  target_version:
+    type: string
+    description: "The target cluster version. For example: \"1.5.0\"."
+    default: null
+  authorization:
+    type: list
+    description: "Nested block: authorization"
+    default: []
+  control_plane:
+    type: list
+    description: "Nested block: control_plane"
+    default: []
+  control_plane_encryption:
+    type: list
+    description: "Nested block: control_plane_encryption"
+    default: []
+  fleet:
+    type: list
+    description: "Nested block: fleet"
+    default: []
+  maintenance_policy:
+    type: list
+    description: "Nested block: maintenance_policy"
+    default: []
+  networking:
+    type: list
+    description: "Nested block: networking"
+    default: []
+  system_addons_config:
+    type: list
+    description: "Nested block: system_addons_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:edgecontainer:Cluster
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      default_max_pods_per_node: ${var.default_max_pods_per_node}
+      external_load_balancer_ipv4_address_pools: ${var.external_load_balancer_ipv4_address_pools}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      release_channel: ${var.release_channel}
+      target_version: ${var.target_version}
+      dynamic:
+        authorization:
+          for_each: ${var.authorization}
+          content:
+            admin_users: ${each.value.admin_users}
+        control_plane:
+          for_each: ${var.control_plane}
+          content:
+            local: ${each.value.local}
+            remote: ${each.value.remote}
+        control_plane_encryption:
+          for_each: ${var.control_plane_encryption}
+          content:
+            kms_key: ${each.value.kms_key}
+            kms_key_active_version: ${each.value.kms_key_active_version}
+            kms_key_state: ${each.value.kms_key_state}
+            kms_status: ${each.value.kms_status}
+        fleet:
+          for_each: ${var.fleet}
+          content:
+            membership: ${each.value.membership}
+            project: ${each.value.project}
+        maintenance_policy:
+          for_each: ${var.maintenance_policy}
+          content:
+            maintenance_exclusions: ${each.value.maintenance_exclusions}
+            window: ${each.value.window}
+        networking:
+          for_each: ${var.networking}
+          content:
+            cluster_ipv4_cidr_blocks: ${each.value.cluster_ipv4_cidr_blocks}
+            cluster_ipv6_cidr_blocks: ${each.value.cluster_ipv6_cidr_blocks}
+            network_type: ${each.value.network_type}
+            services_ipv4_cidr_blocks: ${each.value.services_ipv4_cidr_blocks}
+            services_ipv6_cidr_blocks: ${each.value.services_ipv6_cidr_blocks}
+        system_addons_config:
+          for_each: ${var.system_addons_config}
+          content:
+            ingress: ${each.value.ingress}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

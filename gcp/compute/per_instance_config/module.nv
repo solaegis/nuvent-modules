@@ -1,0 +1,71 @@
+variables:
+  instance_group_manager:
+    type: string
+    description: "The instance group manager this instance config is part of."
+  name:
+    type: string
+    description: "The name for this per-instance config and its corresponding instance."
+  id:
+    type: string
+    description: "Optional property for PerInstanceConfig"
+    default: null
+  minimal_action:
+    type: string
+    description: "The minimal action to perform on the instance during an update. Default is 'NONE'. Possible values are: * REPLACE * RESTART * REFRESH * NONE"
+    default: null
+  most_disruptive_allowed_action:
+    type: string
+    description: "The most disruptive action to perform on the instance during an update. Default is 'REPLACE'. Possible values are: * REPLACE * RESTART * REFRESH * NONE"
+    default: null
+  project:
+    type: string
+    description: "Optional property for PerInstanceConfig"
+    default: null
+  remove_instance_on_destroy:
+    type: boolean
+    description: "When true, deleting this config will immediately remove the underlying instance. When false, deleting this config will use the behavior as determined by remove_instance_on_destroy."
+    default: null
+  remove_instance_state_on_destroy:
+    type: boolean
+    description: "When true, deleting this config will immediately remove any specified state from the underlying instance. When false, deleting this config will *not* immediately remove any state from the underlying instance. State will be removed on the next instance recreation or update."
+    default: null
+  zone:
+    type: string
+    description: "Zone where the containing instance group manager is located"
+    default: null
+  preserved_state:
+    type: list
+    description: "Nested block: preserved_state"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:PerInstanceConfig
+    properties:
+      instance_group_manager: ${var.instance_group_manager}
+      name: ${var.name}
+      id: ${var.id}
+      minimal_action: ${var.minimal_action}
+      most_disruptive_allowed_action: ${var.most_disruptive_allowed_action}
+      project: ${var.project}
+      remove_instance_on_destroy: ${var.remove_instance_on_destroy}
+      remove_instance_state_on_destroy: ${var.remove_instance_state_on_destroy}
+      zone: ${var.zone}
+      dynamic:
+        preserved_state:
+          for_each: ${var.preserved_state}
+          content:
+            metadata: ${each.value.metadata}
+            disk: ${each.value.disk}
+            external_ip: ${each.value.external_ip}
+            internal_ip: ${each.value.internal_ip}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

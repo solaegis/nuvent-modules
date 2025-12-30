@@ -1,0 +1,44 @@
+variables:
+  name:
+    type: string
+    description: "The ID of the agent pool to create.  The agentPoolId must meet the following requirements: * Length of 128 characters or less. * Not start with the string goog. * Start with a lowercase ASCII character, followed by:   * Zero or more: lowercase Latin alphabet characters, numerals, hyphens (-), periods (.), underscores (_), or tildes (~).   * One or more numerals or lowercase ASCII characters.  As expressed by the regular expression: ^(?!goog)[a-z]([a-z0-9-._~]*[a-z0-9])?$."
+  display_name:
+    type: string
+    description: "Specifies the client-specified AgentPool description."
+    default: null
+  id:
+    type: string
+    description: "Optional property for TransferAgentPool"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TransferAgentPool"
+    default: null
+  bandwidth_limit:
+    type: list
+    description: "Nested block: bandwidth_limit"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:TransferAgentPool
+    properties:
+      name: ${var.name}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        bandwidth_limit:
+          for_each: ${var.bandwidth_limit}
+          content:
+            limit_mbps: ${each.value.limit_mbps}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

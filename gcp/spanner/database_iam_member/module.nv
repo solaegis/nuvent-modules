@@ -1,0 +1,43 @@
+variables:
+  database:
+    type: string
+    description: "Required property for DatabaseIamMember"
+  instance:
+    type: string
+    description: "Required property for DatabaseIamMember"
+  member:
+    type: string
+    description: "Required property for DatabaseIamMember"
+  role:
+    type: string
+    description: "Required property for DatabaseIamMember"
+  id:
+    type: string
+    description: "Optional property for DatabaseIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for DatabaseIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:spanner:DatabaseIamMember
+    properties:
+      database: ${var.database}
+      instance: ${var.instance}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

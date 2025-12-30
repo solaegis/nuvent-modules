@@ -1,0 +1,39 @@
+variables:
+  dataset_id:
+    type: string
+    description: "Required property for DatasetIamBinding"
+  members:
+    type: list
+    description: "Required property for DatasetIamBinding"
+  role:
+    type: string
+    description: "Required property for DatasetIamBinding"
+  id:
+    type: string
+    description: "Optional property for DatasetIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for DatasetIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigquery:DatasetIamBinding
+    properties:
+      dataset_id: ${var.dataset_id}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

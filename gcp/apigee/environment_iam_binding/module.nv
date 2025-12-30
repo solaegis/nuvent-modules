@@ -1,0 +1,38 @@
+variables:
+  env_id:
+    type: string
+    description: "Required property for EnvironmentIamBinding"
+  members:
+    type: list
+    description: "Required property for EnvironmentIamBinding"
+  org_id:
+    type: string
+    description: "Required property for EnvironmentIamBinding"
+  role:
+    type: string
+    description: "Required property for EnvironmentIamBinding"
+  id:
+    type: string
+    description: "Optional property for EnvironmentIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:EnvironmentIamBinding
+    properties:
+      env_id: ${var.env_id}
+      members: ${var.members}
+      org_id: ${var.org_id}
+      role: ${var.role}
+      id: ${var.id}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

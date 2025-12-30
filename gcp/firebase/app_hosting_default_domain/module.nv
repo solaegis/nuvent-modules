@@ -1,0 +1,44 @@
+variables:
+  backend:
+    type: string
+    description: "The ID of the Backend that this Domain is associated with"
+  domain_id:
+    type: string
+    description: "Id of the domain. For default domain, it should be {{backend}}--{{project_id}}.{{location}}.hosted.app"
+  location:
+    type: string
+    description: "The location of the Backend that this Domain is associated with"
+  disabled:
+    type: boolean
+    description: "Whether the domain is disabled. Defaults to false."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AppHostingDefaultDomain"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AppHostingDefaultDomain"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:firebase:AppHostingDefaultDomain
+    properties:
+      backend: ${var.backend}
+      domain_id: ${var.domain_id}
+      location: ${var.location}
+      disabled: ${var.disabled}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

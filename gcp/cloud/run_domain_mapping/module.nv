@@ -1,0 +1,61 @@
+variables:
+  location:
+    type: string
+    description: "The location of the cloud run instance. eg us-central1"
+  name:
+    type: string
+    description: "Name should be a [verified](https://support.google.com/webmasters/answer/9008080) domain"
+  id:
+    type: string
+    description: "Optional property for RunDomainMapping"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RunDomainMapping"
+    default: null
+  metadata:
+    type: list
+    description: "Nested block: metadata"
+    default: []
+  spec:
+    type: list
+    description: "Nested block: spec"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloud:RunDomainMapping
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        metadata:
+          for_each: ${var.metadata}
+          content:
+            annotations: ${each.value.annotations}
+            effective_annotations: ${each.value.effective_annotations}
+            effective_labels: ${each.value.effective_labels}
+            generation: ${each.value.generation}
+            labels: ${each.value.labels}
+            namespace: ${each.value.namespace}
+            resource_version: ${each.value.resource_version}
+            self_link: ${each.value.self_link}
+            terraform_labels: ${each.value.terraform_labels}
+            uid: ${each.value.uid}
+        spec:
+          for_each: ${var.spec}
+          content:
+            certificate_mode: ${each.value.certificate_mode}
+            force_override: ${each.value.force_override}
+            route_name: ${each.value.route_name}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

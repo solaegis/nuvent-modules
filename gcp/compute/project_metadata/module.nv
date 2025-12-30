@@ -1,0 +1,30 @@
+variables:
+  metadata:
+    type: object
+    description: "A series of key value pairs."
+  id:
+    type: string
+    description: "Optional property for ProjectMetadata"
+    default: null
+  project:
+    type: string
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:ProjectMetadata
+    properties:
+      metadata: ${var.metadata}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

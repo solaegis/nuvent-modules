@@ -1,0 +1,54 @@
+variables:
+  display_name:
+    type: string
+    description: "Human friendly display name of the tenant."
+  allow_password_signup:
+    type: boolean
+    description: "Whether to allow email/password user authentication."
+    default: null
+  disable_auth:
+    type: boolean
+    description: "Whether authentication is disabled for the tenant. If true, the users under the disabled tenant are not allowed to sign-in. Admins of the disabled tenant are not able to manage its users."
+    default: null
+  enable_email_link_signin:
+    type: boolean
+    description: "Whether to enable email link user authentication."
+    default: null
+  id:
+    type: string
+    description: "Optional property for PlatformTenant"
+    default: null
+  project:
+    type: string
+    description: "Optional property for PlatformTenant"
+    default: null
+  client:
+    type: list
+    description: "Nested block: client"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:identity:PlatformTenant
+    properties:
+      display_name: ${var.display_name}
+      allow_password_signup: ${var.allow_password_signup}
+      disable_auth: ${var.disable_auth}
+      enable_email_link_signin: ${var.enable_email_link_signin}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        client:
+          for_each: ${var.client}
+          content:
+            permissions: ${each.value.permissions}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

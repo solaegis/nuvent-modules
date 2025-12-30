@@ -1,0 +1,70 @@
+variables:
+  git_commitish:
+    type: string
+    description: "Git commit/tag/branch name at which the repository should be compiled. Must exist in the remote repository."
+  name:
+    type: string
+    description: "The release's name."
+  cron_schedule:
+    type: string
+    description: "Optional. Optional schedule (in cron format) for automatic creation of compilation results."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RepositoryReleaseConfig"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RepositoryReleaseConfig"
+    default: null
+  region:
+    type: string
+    description: "A reference to the region"
+    default: null
+  repository:
+    type: string
+    description: "A reference to the Dataform repository"
+    default: null
+  time_zone:
+    type: string
+    description: "Optional. Specifies the time zone to be used when interpreting cronSchedule. Must be a time zone name from the time zone database (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). If left unspecified, the default is UTC."
+    default: null
+  code_compilation_config:
+    type: list
+    description: "Nested block: code_compilation_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataform:RepositoryReleaseConfig
+    properties:
+      git_commitish: ${var.git_commitish}
+      name: ${var.name}
+      cron_schedule: ${var.cron_schedule}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      repository: ${var.repository}
+      time_zone: ${var.time_zone}
+      dynamic:
+        code_compilation_config:
+          for_each: ${var.code_compilation_config}
+          content:
+            assertion_schema: ${each.value.assertion_schema}
+            database_suffix: ${each.value.database_suffix}
+            default_database: ${each.value.default_database}
+            default_location: ${each.value.default_location}
+            default_schema: ${each.value.default_schema}
+            schema_suffix: ${each.value.schema_suffix}
+            table_prefix: ${each.value.table_prefix}
+            vars: ${each.value.vars}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

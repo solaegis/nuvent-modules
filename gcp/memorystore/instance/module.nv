@@ -1,0 +1,178 @@
+variables:
+  instance_id:
+    type: string
+    description: "Required. The ID to use for the instance, which will become the final component of the instance's resource name.  This value is subject to the following restrictions:  * Must be 4-63 characters in length * Must begin with a letter or digit * Must contain only lowercase letters, digits, and hyphens * Must not end with a hyphen * Must be unique within a location"
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122. See documentation for resource type 'memorystore.googleapis.com/CertificateAuthority'."
+  shard_count:
+    type: number
+    description: "Required. Number of shards for the instance."
+  authorization_mode:
+    type: string
+    description: "Optional. Immutable. Authorization mode of the instance. Possible values:  AUTH_DISABLED IAM_AUTH"
+    default: null
+  deletion_protection_enabled:
+    type: boolean
+    description: "Optional. If set to true deletion of the instance will fail."
+    default: null
+  engine_configs:
+    type: object
+    description: "Optional. User-provided engine configurations for the instance."
+    default: null
+  engine_version:
+    type: string
+    description: "Optional. Engine version of the instance."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Instance"
+    default: null
+  kms_key:
+    type: string
+    description: "The KMS key used to encrypt the at-rest data of the cluster"
+    default: null
+  labels:
+    type: object
+    description: "Optional. Labels to represent user-provided metadata.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  maintenance_version:
+    type: string
+    description: "This field can be used to trigger self service update to indicate the desired maintenance version. The input to this field can be determined by the available_maintenance_versions field. *Note*: This field can only be specified when updating an existing cluster to a newer version. Downgrades are currently not supported!"
+    default: null
+  mode:
+    type: string
+    description: "Optional. cluster or cluster-disabled.   Possible values:  CLUSTER  CLUSTER_DISABLED Possible values: [\"CLUSTER\", \"CLUSTER_DISABLED\"]"
+    default: null
+  node_type:
+    type: string
+    description: "Optional. Machine type for individual nodes of the instance.   Possible values:  SHARED_CORE_NANO HIGHMEM_MEDIUM HIGHMEM_XLARGE STANDARD_SMALL"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Instance"
+    default: null
+  replica_count:
+    type: number
+    description: "Optional. Number of replica nodes per shard. If omitted the default is 0 replicas."
+    default: null
+  transit_encryption_mode:
+    type: string
+    description: "Optional. Immutable. In-transit encryption mode of the instance.   Possible values:  TRANSIT_ENCRYPTION_DISABLED SERVER_AUTHENTICATION"
+    default: null
+  automated_backup_config:
+    type: list
+    description: "Nested block: automated_backup_config"
+    default: []
+  cross_instance_replication_config:
+    type: list
+    description: "Nested block: cross_instance_replication_config"
+    default: []
+  desired_auto_created_endpoints:
+    type: list
+    description: "Nested block: desired_auto_created_endpoints"
+    default: []
+  desired_psc_auto_connections:
+    type: list
+    description: "Nested block: desired_psc_auto_connections"
+    default: []
+  gcs_source:
+    type: list
+    description: "Nested block: gcs_source"
+    default: []
+  maintenance_policy:
+    type: list
+    description: "Nested block: maintenance_policy"
+    default: []
+  managed_backup_source:
+    type: list
+    description: "Nested block: managed_backup_source"
+    default: []
+  persistence_config:
+    type: list
+    description: "Nested block: persistence_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  zone_distribution_config:
+    type: list
+    description: "Nested block: zone_distribution_config"
+    default: []
+
+resources:
+  main:
+    type: gcp:memorystore:Instance
+    properties:
+      instance_id: ${var.instance_id}
+      location: ${var.location}
+      shard_count: ${var.shard_count}
+      authorization_mode: ${var.authorization_mode}
+      deletion_protection_enabled: ${var.deletion_protection_enabled}
+      engine_configs: ${var.engine_configs}
+      engine_version: ${var.engine_version}
+      id: ${var.id}
+      kms_key: ${var.kms_key}
+      labels: ${var.labels}
+      maintenance_version: ${var.maintenance_version}
+      mode: ${var.mode}
+      node_type: ${var.node_type}
+      project: ${var.project}
+      replica_count: ${var.replica_count}
+      transit_encryption_mode: ${var.transit_encryption_mode}
+      dynamic:
+        automated_backup_config:
+          for_each: ${var.automated_backup_config}
+          content:
+            retention: ${each.value.retention}
+            fixed_frequency_schedule: ${each.value.fixed_frequency_schedule}
+        cross_instance_replication_config:
+          for_each: ${var.cross_instance_replication_config}
+          content:
+            instance_role: ${each.value.instance_role}
+            membership: ${each.value.membership}
+            update_time: ${each.value.update_time}
+            primary_instance: ${each.value.primary_instance}
+            secondary_instances: ${each.value.secondary_instances}
+        desired_auto_created_endpoints:
+          for_each: ${var.desired_auto_created_endpoints}
+          content:
+            network: ${each.value.network}
+            project_id: ${each.value.project_id}
+        desired_psc_auto_connections:
+          for_each: ${var.desired_psc_auto_connections}
+          content:
+            network: ${each.value.network}
+            project_id: ${each.value.project_id}
+        gcs_source:
+          for_each: ${var.gcs_source}
+          content:
+            uris: ${each.value.uris}
+        maintenance_policy:
+          for_each: ${var.maintenance_policy}
+          content:
+            create_time: ${each.value.create_time}
+            update_time: ${each.value.update_time}
+            weekly_maintenance_window: ${each.value.weekly_maintenance_window}
+        managed_backup_source:
+          for_each: ${var.managed_backup_source}
+          content:
+            backup: ${each.value.backup}
+        persistence_config:
+          for_each: ${var.persistence_config}
+          content:
+            mode: ${each.value.mode}
+            aof_config: ${each.value.aof_config}
+            rdb_config: ${each.value.rdb_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        zone_distribution_config:
+          for_each: ${var.zone_distribution_config}
+          content:
+            mode: ${each.value.mode}
+            zone: ${each.value.zone}

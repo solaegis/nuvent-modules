@@ -1,0 +1,44 @@
+variables:
+  aspect_type_id:
+    type: string
+    description: "Required property for AspectTypeIamMember"
+  member:
+    type: string
+    description: "Required property for AspectTypeIamMember"
+  role:
+    type: string
+    description: "Required property for AspectTypeIamMember"
+  id:
+    type: string
+    description: "Optional property for AspectTypeIamMember"
+    default: null
+  location:
+    type: string
+    description: "Optional property for AspectTypeIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AspectTypeIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataplex:AspectTypeIamMember
+    properties:
+      aspect_type_id: ${var.aspect_type_id}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

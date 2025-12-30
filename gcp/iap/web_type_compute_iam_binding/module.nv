@@ -1,0 +1,35 @@
+variables:
+  members:
+    type: list
+    description: "Required property for WebTypeComputeIamBinding"
+  role:
+    type: string
+    description: "Required property for WebTypeComputeIamBinding"
+  id:
+    type: string
+    description: "Optional property for WebTypeComputeIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WebTypeComputeIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:iap:WebTypeComputeIamBinding
+    properties:
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

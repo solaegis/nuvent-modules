@@ -1,0 +1,81 @@
+variables:
+  name:
+    type: string
+    description: "The name of the cluster, unique within the project and zone."
+  graceful_decommission_timeout:
+    type: string
+    description: "The timeout duration which allows graceful decomissioning when you change the number of worker nodes directly through a terraform apply"
+    default: null
+  id:
+    type: string
+    description: "Optional property for Cluster"
+    default: null
+  labels:
+    type: object
+    description: "The list of the labels (key/value pairs) configured on the resource and to be applied to instances in the cluster.  				**Note**: This field is non-authoritative, and will only manage the labels present in your configuration. 				Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "The ID of the project in which the cluster will exist. If it is not provided, the provider project is used."
+    default: null
+  region:
+    type: string
+    description: "The region in which the cluster and associated nodes will be created in. Defaults to global."
+    default: null
+  cluster_config:
+    type: list
+    description: "Nested block: cluster_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  virtual_cluster_config:
+    type: list
+    description: "Nested block: virtual_cluster_config"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataproc:Cluster
+    properties:
+      name: ${var.name}
+      graceful_decommission_timeout: ${var.graceful_decommission_timeout}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        cluster_config:
+          for_each: ${var.cluster_config}
+          content:
+            bucket: ${each.value.bucket}
+            cluster_tier: ${each.value.cluster_tier}
+            staging_bucket: ${each.value.staging_bucket}
+            temp_bucket: ${each.value.temp_bucket}
+            autoscaling_config: ${each.value.autoscaling_config}
+            auxiliary_node_groups: ${each.value.auxiliary_node_groups}
+            dataproc_metric_config: ${each.value.dataproc_metric_config}
+            encryption_config: ${each.value.encryption_config}
+            endpoint_config: ${each.value.endpoint_config}
+            gce_cluster_config: ${each.value.gce_cluster_config}
+            initialization_action: ${each.value.initialization_action}
+            lifecycle_config: ${each.value.lifecycle_config}
+            master_config: ${each.value.master_config}
+            metastore_config: ${each.value.metastore_config}
+            preemptible_worker_config: ${each.value.preemptible_worker_config}
+            security_config: ${each.value.security_config}
+            software_config: ${each.value.software_config}
+            worker_config: ${each.value.worker_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        virtual_cluster_config:
+          for_each: ${var.virtual_cluster_config}
+          content:
+            staging_bucket: ${each.value.staging_bucket}
+            auxiliary_services_config: ${each.value.auxiliary_services_config}
+            kubernetes_cluster_config: ${each.value.kubernetes_cluster_config}

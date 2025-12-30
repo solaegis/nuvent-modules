@@ -1,0 +1,36 @@
+variables:
+  service_account_email:
+    type: string
+    description: "The email address of the key's associated service account."
+  id:
+    type: string
+    description: "Optional property for HmacKey"
+    default: null
+  project:
+    type: string
+    description: "Optional property for HmacKey"
+    default: null
+  state:
+    type: string
+    description: "The state of the key. Can be set to one of ACTIVE, INACTIVE. Default value: \"ACTIVE\" Possible values: [\"ACTIVE\", \"INACTIVE\"]"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:HmacKey
+    properties:
+      service_account_email: ${var.service_account_email}
+      id: ${var.id}
+      project: ${var.project}
+      state: ${var.state}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

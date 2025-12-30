@@ -1,0 +1,23 @@
+variables:
+  entitytype:
+    type: string
+    description: "Required property for AiFeaturestoreEntitytypeIamPolicy"
+  featurestore:
+    type: string
+    description: "Required property for AiFeaturestoreEntitytypeIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for AiFeaturestoreEntitytypeIamPolicy"
+  id:
+    type: string
+    description: "Optional property for AiFeaturestoreEntitytypeIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:vertex:AiFeaturestoreEntitytypeIamPolicy
+    properties:
+      entitytype: ${var.entitytype}
+      featurestore: ${var.featurestore}
+      policy_data: ${var.policy_data}
+      id: ${var.id}

@@ -1,0 +1,44 @@
+variables:
+  federation_id:
+    type: string
+    description: "Required property for MetastoreFederationIamBinding"
+  members:
+    type: list
+    description: "Required property for MetastoreFederationIamBinding"
+  role:
+    type: string
+    description: "Required property for MetastoreFederationIamBinding"
+  id:
+    type: string
+    description: "Optional property for MetastoreFederationIamBinding"
+    default: null
+  location:
+    type: string
+    description: "Optional property for MetastoreFederationIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for MetastoreFederationIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataproc:MetastoreFederationIamBinding
+    properties:
+      federation_id: ${var.federation_id}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

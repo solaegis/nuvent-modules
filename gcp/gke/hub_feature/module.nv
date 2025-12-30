@@ -1,0 +1,62 @@
+variables:
+  location:
+    type: string
+    description: "The location for the resource"
+  id:
+    type: string
+    description: "Optional property for HubFeature"
+    default: null
+  labels:
+    type: object
+    description: "GCP labels for this Feature.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  name:
+    type: string
+    description: "The full, unique name of this Feature resource"
+    default: null
+  project:
+    type: string
+    description: "Optional property for HubFeature"
+    default: null
+  fleet_default_member_config:
+    type: list
+    description: "Nested block: fleet_default_member_config"
+    default: []
+  spec:
+    type: list
+    description: "Nested block: spec"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:gke:HubFeature
+    properties:
+      location: ${var.location}
+      id: ${var.id}
+      labels: ${var.labels}
+      name: ${var.name}
+      project: ${var.project}
+      dynamic:
+        fleet_default_member_config:
+          for_each: ${var.fleet_default_member_config}
+          content:
+            configmanagement: ${each.value.configmanagement}
+            mesh: ${each.value.mesh}
+            policycontroller: ${each.value.policycontroller}
+        spec:
+          for_each: ${var.spec}
+          content:
+            clusterupgrade: ${each.value.clusterupgrade}
+            fleetobservability: ${each.value.fleetobservability}
+            multiclusteringress: ${each.value.multiclusteringress}
+            rbacrolebindingactuation: ${each.value.rbacrolebindingactuation}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,128 @@
+variables:
+  format:
+    type: string
+    description: "The format of packages that are stored in the repository. Supported formats can be found [here](https://cloud.google.com/artifact-registry/docs/supported-formats). You can only create alpha formats if you are a member of the [alpha user group](https://cloud.google.com/artifact-registry/docs/supported-formats#alpha-access)."
+  repository_id:
+    type: string
+    description: "The last part of the repository name, for example: \"repo1\""
+  cleanup_policy_dry_run:
+    type: boolean
+    description: "If true, the cleanup pipeline is prevented from deleting versions in this repository."
+    default: null
+  description:
+    type: string
+    description: "The user-provided description of the repository."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RegistryRepository"
+    default: null
+  kms_key_name:
+    type: string
+    description: "The Cloud KMS resource name of the customer managed encryption key that’s used to encrypt the contents of the Repository. Has the form: 'projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key'. This value may not be changed after the Repository has been created."
+    default: null
+  labels:
+    type: object
+    description: "Labels with user-defined metadata. This field may contain up to 64 entries. Label keys and values may be no longer than 63 characters. Label keys must begin with a lowercase letter and may only contain lowercase letters, numeric characters, underscores, and dashes.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "The name of the repository's location. In addition to specific regions, special values for multi-region locations are 'asia', 'europe', and 'us'. See [here](https://cloud.google.com/artifact-registry/docs/repositories/repo-locations), or use the [google_artifact_registry_locations](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/artifact_registry_locations) data source for possible values."
+    default: null
+  mode:
+    type: string
+    description: "The mode configures the repository to serve artifacts from different sources. Default value: \"STANDARD_REPOSITORY\" Possible values: [\"STANDARD_REPOSITORY\", \"VIRTUAL_REPOSITORY\", \"REMOTE_REPOSITORY\"]"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RegistryRepository"
+    default: null
+  cleanup_policies:
+    type: list
+    description: "Nested block: cleanup_policies"
+    default: []
+  docker_config:
+    type: list
+    description: "Nested block: docker_config"
+    default: []
+  maven_config:
+    type: list
+    description: "Nested block: maven_config"
+    default: []
+  remote_repository_config:
+    type: list
+    description: "Nested block: remote_repository_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  virtual_repository_config:
+    type: list
+    description: "Nested block: virtual_repository_config"
+    default: []
+  vulnerability_scanning_config:
+    type: list
+    description: "Nested block: vulnerability_scanning_config"
+    default: []
+
+resources:
+  main:
+    type: gcp:artifact:RegistryRepository
+    properties:
+      format: ${var.format}
+      repository_id: ${var.repository_id}
+      cleanup_policy_dry_run: ${var.cleanup_policy_dry_run}
+      description: ${var.description}
+      id: ${var.id}
+      kms_key_name: ${var.kms_key_name}
+      labels: ${var.labels}
+      location: ${var.location}
+      mode: ${var.mode}
+      project: ${var.project}
+      dynamic:
+        cleanup_policies:
+          for_each: ${var.cleanup_policies}
+          content:
+            action: ${each.value.action}
+            id: ${each.value.id}
+            condition: ${each.value.condition}
+            most_recent_versions: ${each.value.most_recent_versions}
+        docker_config:
+          for_each: ${var.docker_config}
+          content:
+            immutable_tags: ${each.value.immutable_tags}
+        maven_config:
+          for_each: ${var.maven_config}
+          content:
+            allow_snapshot_overwrites: ${each.value.allow_snapshot_overwrites}
+            version_policy: ${each.value.version_policy}
+        remote_repository_config:
+          for_each: ${var.remote_repository_config}
+          content:
+            description: ${each.value.description}
+            disable_upstream_validation: ${each.value.disable_upstream_validation}
+            apt_repository: ${each.value.apt_repository}
+            common_repository: ${each.value.common_repository}
+            docker_repository: ${each.value.docker_repository}
+            maven_repository: ${each.value.maven_repository}
+            npm_repository: ${each.value.npm_repository}
+            python_repository: ${each.value.python_repository}
+            upstream_credentials: ${each.value.upstream_credentials}
+            yum_repository: ${each.value.yum_repository}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        virtual_repository_config:
+          for_each: ${var.virtual_repository_config}
+          content:
+            upstream_policies: ${each.value.upstream_policies}
+        vulnerability_scanning_config:
+          for_each: ${var.vulnerability_scanning_config}
+          content:
+            enablement_config: ${each.value.enablement_config}
+            enablement_state: ${each.value.enablement_state}
+            enablement_state_reason: ${each.value.enablement_state_reason}

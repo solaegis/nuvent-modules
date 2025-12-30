@@ -1,0 +1,47 @@
+variables:
+  environment:
+    type: string
+    description: "The resource ID of the environment."
+  flow_hook_point:
+    type: string
+    description: "Where in the API call flow the flow hook is invoked. Must be one of PreProxyFlowHook, PostProxyFlowHook, PreTargetFlowHook, or PostTargetFlowHook."
+  org_id:
+    type: string
+    description: "The Apigee Organization associated with the environment"
+  sharedflow:
+    type: string
+    description: "Id of the Sharedflow attaching to a flowhook point."
+  continue_on_error:
+    type: boolean
+    description: "Flag that specifies whether execution should continue if the flow hook throws an exception. Set to true to continue execution. Set to false to stop execution if the flow hook throws an exception. Defaults to true."
+    default: null
+  description:
+    type: string
+    description: "Description of the flow hook."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Flowhook"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:Flowhook
+    properties:
+      environment: ${var.environment}
+      flow_hook_point: ${var.flow_hook_point}
+      org_id: ${var.org_id}
+      sharedflow: ${var.sharedflow}
+      continue_on_error: ${var.continue_on_error}
+      description: ${var.description}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

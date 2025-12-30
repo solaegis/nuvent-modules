@@ -1,0 +1,64 @@
+variables:
+  location:
+    type: string
+    description: "The location of the ServiceConnectionPolicy."
+  name:
+    type: string
+    description: "The name of a ServiceConnectionPolicy. Format: projects/{project}/locations/{location}/serviceConnectionPolicies/{service_connection_policy} See: https://google.aip.dev/122#fields-representing-resource-names"
+  network:
+    type: string
+    description: "The resource path of the consumer network. Example: - projects/{projectNumOrId}/global/networks/{resourceId}."
+  service_class:
+    type: string
+    description: "The service class identifier for which this ServiceConnectionPolicy is for. The service class identifier is a unique, symbolic representation of a ServiceClass. It is provided by the Service Producer. Google services have a prefix of gcp. For example, gcp-cloud-sql. 3rd party services do not. For example, test-service-a3dfcx."
+  description:
+    type: string
+    description: "Free-text description of the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ConnectivityServiceConnectionPolicy"
+    default: null
+  labels:
+    type: object
+    description: "User-defined labels.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ConnectivityServiceConnectionPolicy"
+    default: null
+  psc_config:
+    type: list
+    description: "Nested block: psc_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ConnectivityServiceConnectionPolicy
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      network: ${var.network}
+      service_class: ${var.service_class}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        psc_config:
+          for_each: ${var.psc_config}
+          content:
+            allowed_google_producers_resource_hierarchy_level: ${each.value.allowed_google_producers_resource_hierarchy_level}
+            limit: ${each.value.limit}
+            producer_instance_location: ${each.value.producer_instance_location}
+            subnetworks: ${each.value.subnetworks}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

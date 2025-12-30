@@ -1,0 +1,34 @@
+variables:
+  key_ring_id:
+    type: string
+    description: "Required property for KeyRingIamBinding"
+  members:
+    type: list
+    description: "Required property for KeyRingIamBinding"
+  role:
+    type: string
+    description: "Required property for KeyRingIamBinding"
+  id:
+    type: string
+    description: "Optional property for KeyRingIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:kms:KeyRingIamBinding
+    properties:
+      key_ring_id: ${var.key_ring_id}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

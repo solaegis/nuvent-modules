@@ -1,0 +1,44 @@
+variables:
+  instance_name:
+    type: string
+    description: "Required property for InstanceIamBinding"
+  members:
+    type: list
+    description: "Required property for InstanceIamBinding"
+  role:
+    type: string
+    description: "Required property for InstanceIamBinding"
+  id:
+    type: string
+    description: "Optional property for InstanceIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for InstanceIamBinding"
+    default: null
+  zone:
+    type: string
+    description: "Optional property for InstanceIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:InstanceIamBinding
+    properties:
+      instance_name: ${var.instance_name}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      zone: ${var.zone}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

@@ -1,0 +1,29 @@
+variables:
+  bucket:
+    type: string
+    description: "Required property for ObjectAcl"
+  object:
+    type: string
+    description: "Required property for ObjectAcl"
+  id:
+    type: string
+    description: "Optional property for ObjectAcl"
+    default: null
+  predefined_acl:
+    type: string
+    description: "Optional property for ObjectAcl"
+    default: null
+  role_entity:
+    type: list
+    description: "Optional property for ObjectAcl"
+    default: null
+
+resources:
+  main:
+    type: gcp:storage:ObjectAcl
+    properties:
+      bucket: ${var.bucket}
+      object: ${var.object}
+      id: ${var.id}
+      predefined_acl: ${var.predefined_acl}
+      role_entity: ${var.role_entity}

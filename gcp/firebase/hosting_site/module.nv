@@ -1,0 +1,37 @@
+variables:
+  app_id:
+    type: string
+    description: "Optional. The [ID of a Web App](https://firebase.google.com/docs/reference/firebase-management/rest/v1beta1/projects.webApps#WebApp.FIELDS.app_id) associated with the Hosting site."
+    default: null
+  id:
+    type: string
+    description: "Optional property for HostingSite"
+    default: null
+  project:
+    type: string
+    description: "Optional property for HostingSite"
+    default: null
+  site_id:
+    type: string
+    description: "Required. Immutable. A globally unique identifier for the Hosting site. This identifier is used to construct the Firebase-provisioned subdomains for the site, so it must also be a valid domain name label."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:firebase:HostingSite
+    properties:
+      app_id: ${var.app_id}
+      id: ${var.id}
+      project: ${var.project}
+      site_id: ${var.site_id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

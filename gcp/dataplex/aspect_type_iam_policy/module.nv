@@ -1,0 +1,29 @@
+variables:
+  aspect_type_id:
+    type: string
+    description: "Required property for AspectTypeIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for AspectTypeIamPolicy"
+  id:
+    type: string
+    description: "Optional property for AspectTypeIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for AspectTypeIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AspectTypeIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:dataplex:AspectTypeIamPolicy
+    properties:
+      aspect_type_id: ${var.aspect_type_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

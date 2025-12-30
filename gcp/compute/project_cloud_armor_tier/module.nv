@@ -1,0 +1,31 @@
+variables:
+  cloud_armor_tier:
+    type: string
+    description: "Managed protection tier to be set. Possible values: [\"CA_STANDARD\", \"CA_ENTERPRISE_PAYGO\", \"CA_ENTERPRISE_ANNUAL\"]"
+  id:
+    type: string
+    description: "Optional property for ProjectCloudArmorTier"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ProjectCloudArmorTier"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:ProjectCloudArmorTier
+    properties:
+      cloud_armor_tier: ${var.cloud_armor_tier}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

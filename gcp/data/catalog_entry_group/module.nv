@@ -1,0 +1,46 @@
+variables:
+  entry_group_id:
+    type: string
+    description: "The id of the entry group to create. The id must begin with a letter or underscore, contain only English letters, numbers and underscores, and be at most 64 characters."
+  description:
+    type: string
+    description: "Entry group description, which can consist of several sentences or paragraphs that describe entry group contents."
+    default: null
+  display_name:
+    type: string
+    description: "A short name to identify the entry group, for example, \"analytics data - jan 2011\"."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CatalogEntryGroup"
+    default: null
+  project:
+    type: string
+    description: "Optional property for CatalogEntryGroup"
+    default: null
+  region:
+    type: string
+    description: "EntryGroup location region."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:data:CatalogEntryGroup
+    properties:
+      entry_group_id: ${var.entry_group_id}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

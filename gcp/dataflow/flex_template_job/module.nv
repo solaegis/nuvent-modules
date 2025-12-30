@@ -1,0 +1,134 @@
+variables:
+  container_spec_gcs_path:
+    type: string
+    description: "Required property for FlexTemplateJob"
+  name:
+    type: string
+    description: "Required property for FlexTemplateJob"
+  additional_experiments:
+    type: list
+    description: "List of experiments that should be used by the job. An example value is [\"enable_stackdriver_agent_metrics\"]."
+    default: null
+  additional_pipeline_options:
+    type: list
+    description: "List of pipeline options that should be used by the job. An example value is [\"numberOfWorkerHarnessThreads=20\"]."
+    default: null
+  autoscaling_algorithm:
+    type: string
+    description: "The algorithm to use for autoscaling"
+    default: null
+  enable_streaming_engine:
+    type: boolean
+    description: "Indicates if the job should use the streaming engine feature."
+    default: null
+  id:
+    type: string
+    description: "Optional property for FlexTemplateJob"
+    default: null
+  ip_configuration:
+    type: string
+    description: "The configuration for VM IPs. Options are \"WORKER_IP_PUBLIC\" or \"WORKER_IP_PRIVATE\"."
+    default: null
+  kms_key_name:
+    type: string
+    description: "The name for the Cloud KMS key for the job. Key format is: projects/PROJECT_ID/locations/LOCATION/keyRings/KEY_RING/cryptoKeys/KEY"
+    default: null
+  labels:
+    type: object
+    description: "User labels to be specified for the job. Keys and values should follow the restrictions specified in the labeling restrictions page. NOTE: This field is non-authoritative, and will only manage the labels present in your configuration. 				Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  launcher_machine_type:
+    type: string
+    description: "The machine type to use for launching the job. The default is n1-standard-1."
+    default: null
+  machine_type:
+    type: string
+    description: "The machine type to use for the job."
+    default: null
+  max_workers:
+    type: number
+    description: "The maximum number of Google Compute Engine instances to be made available to your pipeline during execution, from 1 to 1000."
+    default: null
+  network:
+    type: string
+    description: "The network to which VMs will be assigned. If it is not provided, \"default\" will be used."
+    default: null
+  num_workers:
+    type: number
+    description: "The initial number of Google Compute Engine instances for the job."
+    default: null
+  on_delete:
+    type: string
+    description: "Optional property for FlexTemplateJob"
+    default: null
+  parameters:
+    type: object
+    description: "Optional property for FlexTemplateJob"
+    default: null
+  project:
+    type: string
+    description: "Optional property for FlexTemplateJob"
+    default: null
+  region:
+    type: string
+    description: "The region in which the created job should run."
+    default: null
+  sdk_container_image:
+    type: string
+    description: "Docker registry location of container image to use for the 'worker harness. Default is the container for the version of the SDK. Note this field is only valid for portable pipelines."
+    default: null
+  service_account_email:
+    type: string
+    description: "The Service Account email used to create the job."
+    default: null
+  skip_wait_on_job_termination:
+    type: boolean
+    description: "If true, treat DRAINING and CANCELLING as terminal job states and do not wait for further changes before removing from terraform state and moving on. WARNING: this will lead to job name conflicts if you do not ensure that the job names are different, e.g. by embedding a release ID or by using a random_id."
+    default: null
+  staging_location:
+    type: string
+    description: "The Cloud Storage path to use for staging files. Must be a valid Cloud Storage URL, beginning with gs://."
+    default: null
+  subnetwork:
+    type: string
+    description: "The subnetwork to which VMs will be assigned. Should be of the form \"regions/REGION/subnetworks/SUBNETWORK\"."
+    default: null
+  temp_location:
+    type: string
+    description: "The Cloud Storage path to use for temporary files. Must be a valid Cloud Storage URL, beginning with gs://."
+    default: null
+  transform_name_mapping:
+    type: object
+    description: "Only applicable when updating a pipeline. Map of transform name prefixes of the job to be replaced with the corresponding name prefixes of the new job."
+    default: null
+
+resources:
+  main:
+    type: gcp:dataflow:FlexTemplateJob
+    properties:
+      container_spec_gcs_path: ${var.container_spec_gcs_path}
+      name: ${var.name}
+      additional_experiments: ${var.additional_experiments}
+      additional_pipeline_options: ${var.additional_pipeline_options}
+      autoscaling_algorithm: ${var.autoscaling_algorithm}
+      enable_streaming_engine: ${var.enable_streaming_engine}
+      id: ${var.id}
+      ip_configuration: ${var.ip_configuration}
+      kms_key_name: ${var.kms_key_name}
+      labels: ${var.labels}
+      launcher_machine_type: ${var.launcher_machine_type}
+      machine_type: ${var.machine_type}
+      max_workers: ${var.max_workers}
+      network: ${var.network}
+      num_workers: ${var.num_workers}
+      on_delete: ${var.on_delete}
+      parameters: ${var.parameters}
+      project: ${var.project}
+      region: ${var.region}
+      sdk_container_image: ${var.sdk_container_image}
+      service_account_email: ${var.service_account_email}
+      skip_wait_on_job_termination: ${var.skip_wait_on_job_termination}
+      staging_location: ${var.staging_location}
+      subnetwork: ${var.subnetwork}
+      temp_location: ${var.temp_location}
+      transform_name_mapping: ${var.transform_name_mapping}

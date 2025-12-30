@@ -1,0 +1,45 @@
+variables:
+  action:
+    type: string
+    description: "The action to take if this rule matches. Possible values: [\"UNSPECIFIED_ACTION\", \"ALLOW\", \"DENY\"]"
+  source_range:
+    type: string
+    description: "IP address or range, defined using CIDR notation, of requests that this rule applies to."
+  description:
+    type: string
+    description: "An optional string description of this rule."
+    default: null
+  id:
+    type: string
+    description: "Optional property for EngineFirewallRule"
+    default: null
+  priority:
+    type: number
+    description: "A positive integer that defines the order of rule evaluation. Rules with the lowest priority are evaluated first.  A default rule at priority Int32.MaxValue matches all IPv4 and IPv6 traffic when no previous rule matches. Only the action of this rule can be modified by the user."
+    default: null
+  project:
+    type: string
+    description: "Optional property for EngineFirewallRule"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:app:EngineFirewallRule
+    properties:
+      action: ${var.action}
+      source_range: ${var.source_range}
+      description: ${var.description}
+      id: ${var.id}
+      priority: ${var.priority}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,98 @@
+variables:
+  display_name:
+    type: string
+    description: "Required. The display name of the Endpoint. The name can be up to 128 characters long and can consist of any UTF-8 characters."
+  location:
+    type: string
+    description: "The location for the resource"
+  name:
+    type: string
+    description: "The resource name of the Endpoint. The name must be numeric with no leading zeros and can be at most 10 digits."
+  dedicated_endpoint_enabled:
+    type: boolean
+    description: "If true, the endpoint will be exposed through a dedicated DNS [Endpoint.dedicated_endpoint_dns]. Your request to the dedicated DNS will be isolated from other users' traffic and will have better performance and reliability. Note: Once you enabled dedicated endpoint, you won't be able to send request to the shared DNS {region}-aiplatform.googleapis.com. The limitation will be removed soon."
+    default: null
+  description:
+    type: string
+    description: "The description of the Endpoint."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AiEndpoint"
+    default: null
+  labels:
+    type: object
+    description: "The labels with user-defined metadata to organize your Endpoints. Label keys and values can be no longer than 64 characters (Unicode codepoints), can only contain lowercase letters, numeric characters, underscores and dashes. International characters are allowed. See https://goo.gl/xmQnxf for more information and examples of labels.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  network:
+    type: string
+    description: "The full name of the Google Compute Engine [network](https://cloud.google.com//compute/docs/networks-and-firewalls#networks) to which the Endpoint should be peered. Private services access must already be configured for the network. If left unspecified, the Endpoint is not peered with any network. Only one of the fields, network or enable_private_service_connect, can be set. [Format](https://cloud.google.com/compute/docs/reference/rest/v1/networks/insert): 'projects/{project}/global/networks/{network}'. Where '{project}' is a project number, as in '12345', and '{network}' is network name. Only one of the fields, 'network' or 'privateServiceConnectConfig', can be set."
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiEndpoint"
+    default: null
+  region:
+    type: string
+    description: "The region for the resource"
+    default: null
+  traffic_split:
+    type: string
+    description: "A map from a DeployedModel's id to the percentage of this Endpoint's traffic that should be forwarded to that DeployedModel. If a DeployedModel's id is not listed in this map, then it receives no traffic. The traffic percentage values must add up to 100, or map must be empty if the Endpoint is to not accept any traffic at a moment. See the 'deployModel' [example](https://cloud.google.com/vertex-ai/docs/general/deployment#deploy_a_model_to_an_endpoint) and [documentation](https://cloud.google.com/vertex-ai/docs/reference/rest/v1beta1/projects.locations.endpoints/deployModel) for more information.  ~> **Note:** To set the map to empty, set '\"{}\"', apply, and then remove the field from your config."
+    default: null
+  encryption_spec:
+    type: list
+    description: "Nested block: encryption_spec"
+    default: []
+  predict_request_response_logging_config:
+    type: list
+    description: "Nested block: predict_request_response_logging_config"
+    default: []
+  private_service_connect_config:
+    type: list
+    description: "Nested block: private_service_connect_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vertex:AiEndpoint
+    properties:
+      display_name: ${var.display_name}
+      location: ${var.location}
+      name: ${var.name}
+      dedicated_endpoint_enabled: ${var.dedicated_endpoint_enabled}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      network: ${var.network}
+      project: ${var.project}
+      region: ${var.region}
+      traffic_split: ${var.traffic_split}
+      dynamic:
+        encryption_spec:
+          for_each: ${var.encryption_spec}
+          content:
+            kms_key_name: ${each.value.kms_key_name}
+        predict_request_response_logging_config:
+          for_each: ${var.predict_request_response_logging_config}
+          content:
+            enabled: ${each.value.enabled}
+            sampling_rate: ${each.value.sampling_rate}
+            bigquery_destination: ${each.value.bigquery_destination}
+        private_service_connect_config:
+          for_each: ${var.private_service_connect_config}
+          content:
+            enable_private_service_connect: ${each.value.enable_private_service_connect}
+            enable_secure_private_service_connect: ${each.value.enable_secure_private_service_connect}
+            project_allowlist: ${each.value.project_allowlist}
+            psc_automation_configs: ${each.value.psc_automation_configs}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,31 @@
+variables:
+  disable_cache:
+    type: boolean
+    description: "If set to true, disables GenAI caching. Otherwise caching is enabled."
+  id:
+    type: string
+    description: "Optional property for AiCacheConfig"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiCacheConfig"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vertex:AiCacheConfig
+    properties:
+      disable_cache: ${var.disable_cache}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

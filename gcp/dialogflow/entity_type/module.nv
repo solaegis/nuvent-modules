@@ -1,0 +1,49 @@
+variables:
+  display_name:
+    type: string
+    description: "The name of this entity type to be displayed on the console."
+  kind:
+    type: string
+    description: "Indicates the kind of entity type. * KIND_MAP: Map entity types allow mapping of a group of synonyms to a reference value. * KIND_LIST: List entity types contain a set of entries that do not map to reference values. However, list entity types can contain references to other entity types (with or without aliases). * KIND_REGEXP: Regexp entity types allow to specify regular expressions in entries values. Possible values: [\"KIND_MAP\", \"KIND_LIST\", \"KIND_REGEXP\"]"
+  enable_fuzzy_extraction:
+    type: boolean
+    description: "Enables fuzzy entity extraction during classification."
+    default: null
+  id:
+    type: string
+    description: "Optional property for EntityType"
+    default: null
+  project:
+    type: string
+    description: "Optional property for EntityType"
+    default: null
+  entities:
+    type: list
+    description: "Nested block: entities"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:EntityType
+    properties:
+      display_name: ${var.display_name}
+      kind: ${var.kind}
+      enable_fuzzy_extraction: ${var.enable_fuzzy_extraction}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        entities:
+          for_each: ${var.entities}
+          content:
+            synonyms: ${each.value.synonyms}
+            value: ${each.value.value}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

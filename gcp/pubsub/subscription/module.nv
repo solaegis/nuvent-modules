@@ -1,0 +1,151 @@
+variables:
+  name:
+    type: string
+    description: "Name of the subscription."
+  topic:
+    type: string
+    description: "A reference to a Topic resource, of the form projects/{project}/topics/{{name}} (as in the id property of a google_pubsub_topic), or just a topic name if the topic is in the same project as the subscription."
+  ack_deadline_seconds:
+    type: number
+    description: "This value is the maximum time after a subscriber receives a message before the subscriber should acknowledge the message. After message delivery but before the ack deadline expires and before the message is acknowledged, it is an outstanding message and will not be delivered again during that time (on a best-effort basis).  For pull subscriptions, this value is used as the initial value for the ack deadline. To override this value for a given message, call subscriptions.modifyAckDeadline with the corresponding ackId if using pull. The minimum custom deadline you can specify is 10 seconds. The maximum custom deadline you can specify is 600 seconds (10 minutes). If this parameter is 0, a default value of 10 seconds is used.  For push delivery, this value is also used to set the request timeout for the call to the push endpoint.  If the subscriber never acknowledges the message, the Pub/Sub system will eventually redeliver the message."
+    default: null
+  enable_exactly_once_delivery:
+    type: boolean
+    description: "If 'true', Pub/Sub provides the following guarantees for the delivery of a message with a given value of messageId on this Subscriptions':  - The message sent to a subscriber is guaranteed not to be resent before the message's acknowledgement deadline expires.  - An acknowledged message will not be resent to a subscriber.  Note that subscribers may still receive multiple copies of a message when 'enable_exactly_once_delivery' is true if the message was published multiple times by a publisher client. These copies are considered distinct by Pub/Sub and have distinct messageId values"
+    default: null
+  enable_message_ordering:
+    type: boolean
+    description: "If 'true', messages published with the same orderingKey in PubsubMessage will be delivered to the subscribers in the order in which they are received by the Pub/Sub system. Otherwise, they may be delivered in any order."
+    default: null
+  filter:
+    type: string
+    description: "The subscription only delivers the messages that match the filter. Pub/Sub automatically acknowledges the messages that don't match the filter. You can filter messages by their attributes. The maximum length of a filter is 256 bytes. After creating the subscription, you can't modify the filter."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Subscription"
+    default: null
+  labels:
+    type: object
+    description: "A set of key/value label pairs to assign to this Subscription.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  message_retention_duration:
+    type: string
+    description: "How long to retain unacknowledged messages in the subscription's backlog, from the moment a message is published. If retain_acked_messages is true, then this also configures the retention of acknowledged messages, and thus configures how far back in time a subscriptions.seek can be done. Defaults to 7 days. Cannot be more than 31 days ('\"2678400s\"') or less than 10 minutes ('\"600s\"').  A duration in seconds with up to nine fractional digits, terminated by 's'. Example: '\"600.5s\"'."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Subscription"
+    default: null
+  retain_acked_messages:
+    type: boolean
+    description: "Indicates whether to retain acknowledged messages. If 'true', then messages are not expunged from the subscription's backlog, even if they are acknowledged, until they fall out of the messageRetentionDuration window."
+    default: null
+  tags:
+    type: object
+    description: "Input only. Resource manager tags to be bound to the subscription. Tag keys and values have the same definition as resource manager tags. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/456. The field is ignored when empty. The field is immutable and causes resource replacement when mutated. This field is only set at create time and modifying this field after creation will trigger recreation. To apply tags to an existing resource, see the 'google_tags_tag_value' resource."
+    default: null
+  bigquery_config:
+    type: list
+    description: "Nested block: bigquery_config"
+    default: []
+  cloud_storage_config:
+    type: list
+    description: "Nested block: cloud_storage_config"
+    default: []
+  dead_letter_policy:
+    type: list
+    description: "Nested block: dead_letter_policy"
+    default: []
+  expiration_policy:
+    type: list
+    description: "Nested block: expiration_policy"
+    default: []
+  message_transforms:
+    type: list
+    description: "Nested block: message_transforms"
+    default: []
+  push_config:
+    type: list
+    description: "Nested block: push_config"
+    default: []
+  retry_policy:
+    type: list
+    description: "Nested block: retry_policy"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:pubsub:Subscription
+    properties:
+      name: ${var.name}
+      topic: ${var.topic}
+      ack_deadline_seconds: ${var.ack_deadline_seconds}
+      enable_exactly_once_delivery: ${var.enable_exactly_once_delivery}
+      enable_message_ordering: ${var.enable_message_ordering}
+      filter: ${var.filter}
+      id: ${var.id}
+      labels: ${var.labels}
+      message_retention_duration: ${var.message_retention_duration}
+      project: ${var.project}
+      retain_acked_messages: ${var.retain_acked_messages}
+      tags: ${var.tags}
+      dynamic:
+        bigquery_config:
+          for_each: ${var.bigquery_config}
+          content:
+            drop_unknown_fields: ${each.value.drop_unknown_fields}
+            service_account_email: ${each.value.service_account_email}
+            table: ${each.value.table}
+            use_table_schema: ${each.value.use_table_schema}
+            use_topic_schema: ${each.value.use_topic_schema}
+            write_metadata: ${each.value.write_metadata}
+        cloud_storage_config:
+          for_each: ${var.cloud_storage_config}
+          content:
+            bucket: ${each.value.bucket}
+            filename_datetime_format: ${each.value.filename_datetime_format}
+            filename_prefix: ${each.value.filename_prefix}
+            filename_suffix: ${each.value.filename_suffix}
+            max_bytes: ${each.value.max_bytes}
+            max_duration: ${each.value.max_duration}
+            max_messages: ${each.value.max_messages}
+            service_account_email: ${each.value.service_account_email}
+            state: ${each.value.state}
+            avro_config: ${each.value.avro_config}
+        dead_letter_policy:
+          for_each: ${var.dead_letter_policy}
+          content:
+            dead_letter_topic: ${each.value.dead_letter_topic}
+            max_delivery_attempts: ${each.value.max_delivery_attempts}
+        expiration_policy:
+          for_each: ${var.expiration_policy}
+          content:
+            ttl: ${each.value.ttl}
+        message_transforms:
+          for_each: ${var.message_transforms}
+          content:
+            disabled: ${each.value.disabled}
+            javascript_udf: ${each.value.javascript_udf}
+        push_config:
+          for_each: ${var.push_config}
+          content:
+            attributes: ${each.value.attributes}
+            push_endpoint: ${each.value.push_endpoint}
+            no_wrapper: ${each.value.no_wrapper}
+            oidc_token: ${each.value.oidc_token}
+        retry_policy:
+          for_each: ${var.retry_policy}
+          content:
+            maximum_backoff: ${each.value.maximum_backoff}
+            minimum_backoff: ${each.value.minimum_backoff}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

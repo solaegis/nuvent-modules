@@ -1,0 +1,44 @@
+variables:
+  member:
+    type: string
+    description: "Required property for RuntimeTemplateIamMember"
+  role:
+    type: string
+    description: "Required property for RuntimeTemplateIamMember"
+  runtime_template:
+    type: string
+    description: "Required property for RuntimeTemplateIamMember"
+  id:
+    type: string
+    description: "Optional property for RuntimeTemplateIamMember"
+    default: null
+  location:
+    type: string
+    description: "Optional property for RuntimeTemplateIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RuntimeTemplateIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:colab:RuntimeTemplateIamMember
+    properties:
+      member: ${var.member}
+      role: ${var.role}
+      runtime_template: ${var.runtime_template}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

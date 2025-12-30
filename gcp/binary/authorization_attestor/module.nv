@@ -1,0 +1,46 @@
+variables:
+  name:
+    type: string
+    description: "The resource name."
+  description:
+    type: string
+    description: "A descriptive comment. This field may be updated. The field may be displayed in chooser dialogs."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AuthorizationAttestor"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AuthorizationAttestor"
+    default: null
+  attestation_authority_note:
+    type: list
+    description: "Nested block: attestation_authority_note"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:binary:AuthorizationAttestor
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        attestation_authority_note:
+          for_each: ${var.attestation_authority_note}
+          content:
+            delegation_service_account_email: ${each.value.delegation_service_account_email}
+            note_reference: ${each.value.note_reference}
+            public_keys: ${each.value.public_keys}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

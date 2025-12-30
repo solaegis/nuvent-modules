@@ -1,0 +1,60 @@
+variables:
+  location:
+    type: string
+    description: "The location of the source."
+  name:
+    type: string
+    description: "Name of the 'CustomTargetType'."
+  annotations:
+    type: object
+    description: "User annotations. These attributes can only be set and used by the user, and not by Cloud Deploy. See https://google.aip.dev/128#annotations for more details such as format and size limitations.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  description:
+    type: string
+    description: "Description of the 'CustomTargetType'. Max length is 255 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CustomTargetType"
+    default: null
+  labels:
+    type: object
+    description: "Labels are attributes that can be set and used by both the user and by Cloud Deploy. Labels must meet the following constraints: * Keys and values can contain only lowercase letters, numeric characters, underscores, and dashes. * All characters must use UTF-8 encoding, and international characters are allowed. * Keys must start with a lowercase letter or international character. * Each resource is limited to a maximum of 64 labels. Both keys and values are additionally constrained to be <= 128 bytes.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for CustomTargetType"
+    default: null
+  custom_actions:
+    type: list
+    description: "Nested block: custom_actions"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:clouddeploy:CustomTargetType
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      annotations: ${var.annotations}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        custom_actions:
+          for_each: ${var.custom_actions}
+          content:
+            deploy_action: ${each.value.deploy_action}
+            render_action: ${each.value.render_action}
+            include_skaffold_modules: ${each.value.include_skaffold_modules}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

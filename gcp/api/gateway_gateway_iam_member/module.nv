@@ -1,0 +1,44 @@
+variables:
+  gateway:
+    type: string
+    description: "Required property for GatewayGatewayIamMember"
+  member:
+    type: string
+    description: "Required property for GatewayGatewayIamMember"
+  role:
+    type: string
+    description: "Required property for GatewayGatewayIamMember"
+  id:
+    type: string
+    description: "Optional property for GatewayGatewayIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for GatewayGatewayIamMember"
+    default: null
+  region:
+    type: string
+    description: "Optional property for GatewayGatewayIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:api:GatewayGatewayIamMember
+    properties:
+      gateway: ${var.gateway}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

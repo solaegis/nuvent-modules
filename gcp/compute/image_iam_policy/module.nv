@@ -1,0 +1,24 @@
+variables:
+  image:
+    type: string
+    description: "Required property for ImageIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for ImageIamPolicy"
+  id:
+    type: string
+    description: "Optional property for ImageIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ImageIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:compute:ImageIamPolicy
+    properties:
+      image: ${var.image}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}

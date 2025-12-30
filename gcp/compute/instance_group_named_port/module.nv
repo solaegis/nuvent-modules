@@ -1,0 +1,43 @@
+variables:
+  group:
+    type: string
+    description: "The name of the instance group."
+  name:
+    type: string
+    description: "The name for this named port. The name must be 1-63 characters long, and comply with RFC1035."
+  port:
+    type: number
+    description: "The port number, which can be a value between 1 and 65535."
+  id:
+    type: string
+    description: "Optional property for InstanceGroupNamedPort"
+    default: null
+  project:
+    type: string
+    description: "Optional property for InstanceGroupNamedPort"
+    default: null
+  zone:
+    type: string
+    description: "The zone of the instance group."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:InstanceGroupNamedPort
+    properties:
+      group: ${var.group}
+      name: ${var.name}
+      port: ${var.port}
+      id: ${var.id}
+      project: ${var.project}
+      zone: ${var.zone}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

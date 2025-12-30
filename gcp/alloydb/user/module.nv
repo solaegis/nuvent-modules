@@ -1,0 +1,54 @@
+variables:
+  cluster:
+    type: string
+    description: "Identifies the alloydb cluster. Must be in the format 'projects/{project}/locations/{location}/clusters/{cluster_id}'"
+  user_id:
+    type: string
+    description: "The database role name of the user."
+  user_type:
+    type: string
+    description: "The type of this user. Possible values: [\"ALLOYDB_BUILT_IN\", \"ALLOYDB_IAM_USER\"]"
+  database_roles:
+    type: list
+    description: "List of database roles this database user has."
+    default: null
+  id:
+    type: string
+    description: "Optional property for User"
+    default: null
+  password:
+    type: string
+    description: "Password for this database user."
+    default: null
+  password_wo:
+    type: string
+    description: "Password for this database user."
+    default: null
+  password_wo_version:
+    type: string
+    description: "Triggers update of 'password_wo' write-only. Increment this value when an update to 'password_wo' is needed. For more info see [updating write-only arguments](/docs/providers/google/guides/using_write_only_arguments.html#updating-write-only-arguments)"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:alloydb:User
+    properties:
+      cluster: ${var.cluster}
+      user_id: ${var.user_id}
+      user_type: ${var.user_type}
+      database_roles: ${var.database_roles}
+      id: ${var.id}
+      password: ${var.password}
+      password_wo: ${var.password_wo}
+      password_wo_version: ${var.password_wo_version}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

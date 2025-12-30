@@ -1,0 +1,29 @@
+variables:
+  endpoint:
+    type: string
+    description: "Required property for AiEndpointIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for AiEndpointIamPolicy"
+  id:
+    type: string
+    description: "Optional property for AiEndpointIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for AiEndpointIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiEndpointIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:vertex:AiEndpointIamPolicy
+    properties:
+      endpoint: ${var.endpoint}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

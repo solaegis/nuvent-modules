@@ -1,0 +1,52 @@
+variables:
+  retention:
+    type: string
+    description: "At what relative time in the future, compared to its creation time, the backup should be deleted, e.g. keep backups for 7 days. A duration in seconds with up to nine fractional digits, ending with 's'. Example: \"3.5s\".  You can set this to a value up to 14 weeks."
+  database:
+    type: string
+    description: "The Firestore database id. Defaults to '\"(default)\"'."
+    default: null
+  id:
+    type: string
+    description: "Optional property for BackupSchedule"
+    default: null
+  project:
+    type: string
+    description: "Optional property for BackupSchedule"
+    default: null
+  daily_recurrence:
+    type: list
+    description: "Nested block: daily_recurrence"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  weekly_recurrence:
+    type: list
+    description: "Nested block: weekly_recurrence"
+    default: []
+
+resources:
+  main:
+    type: gcp:firestore:BackupSchedule
+    properties:
+      retention: ${var.retention}
+      database: ${var.database}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        daily_recurrence:
+          for_each: ${var.daily_recurrence}
+          content:
+            # No specific fields found in schema for daily_recurrence
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        weekly_recurrence:
+          for_each: ${var.weekly_recurrence}
+          content:
+            day: ${each.value.day}

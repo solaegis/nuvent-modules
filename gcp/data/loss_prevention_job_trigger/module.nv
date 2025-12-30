@@ -1,0 +1,66 @@
+variables:
+  parent:
+    type: string
+    description: "The parent of the trigger, either in the format 'projects/{{project}}' or 'projects/{{project}}/locations/{{location}}'"
+  description:
+    type: string
+    description: "A description of the job trigger."
+    default: null
+  display_name:
+    type: string
+    description: "User set display name of the job trigger."
+    default: null
+  id:
+    type: string
+    description: "Optional property for LossPreventionJobTrigger"
+    default: null
+  status:
+    type: string
+    description: "Whether the trigger is currently active. Default value: \"HEALTHY\" Possible values: [\"PAUSED\", \"HEALTHY\", \"CANCELLED\"]"
+    default: null
+  trigger_id:
+    type: string
+    description: "The trigger id can contain uppercase and lowercase letters, numbers, and hyphens; that is, it must match the regular expression: [a-zA-Z\d-_]+. The maximum length is 100 characters. Can be empty to allow the system to generate one."
+    default: null
+  inspect_job:
+    type: list
+    description: "Nested block: inspect_job"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  triggers:
+    type: list
+    description: "Nested block: triggers"
+    default: []
+
+resources:
+  main:
+    type: gcp:data:LossPreventionJobTrigger
+    properties:
+      parent: ${var.parent}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      status: ${var.status}
+      trigger_id: ${var.trigger_id}
+      dynamic:
+        inspect_job:
+          for_each: ${var.inspect_job}
+          content:
+            inspect_template_name: ${each.value.inspect_template_name}
+            actions: ${each.value.actions}
+            inspect_config: ${each.value.inspect_config}
+            storage_config: ${each.value.storage_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        triggers:
+          for_each: ${var.triggers}
+          content:
+            manual: ${each.value.manual}
+            schedule: ${each.value.schedule}

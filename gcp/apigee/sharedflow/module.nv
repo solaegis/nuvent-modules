@@ -1,0 +1,39 @@
+variables:
+  config_bundle:
+    type: string
+    description: "Path to the config zip bundle"
+  name:
+    type: string
+    description: "The ID of the shared flow."
+  org_id:
+    type: string
+    description: "The Apigee Organization name associated with the Apigee instance."
+  detect_md5hash:
+    type: string
+    description: "A hash of local config bundle in string, user needs to use a Terraform Hash function of their choice. A change in hash will trigger an update."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Sharedflow"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:Sharedflow
+    properties:
+      config_bundle: ${var.config_bundle}
+      name: ${var.name}
+      org_id: ${var.org_id}
+      detect_md5hash: ${var.detect_md5hash}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

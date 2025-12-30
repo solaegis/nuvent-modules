@@ -1,0 +1,41 @@
+variables:
+  location:
+    type: string
+    description: "Location of the resource."
+  display_name:
+    type: string
+    description: "The human-readable display name of the view."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CenterInsightsView"
+    default: null
+  project:
+    type: string
+    description: "Optional property for CenterInsightsView"
+    default: null
+  value:
+    type: string
+    description: "A filter to reduce conversation results to a specific subset. Refer to https://cloud.google.com/contact-center/insights/docs/filtering for details."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:contact:CenterInsightsView
+    properties:
+      location: ${var.location}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      project: ${var.project}
+      value: ${var.value}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,29 @@
+variables:
+  job_id:
+    type: string
+    description: "Required property for JobIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for JobIamPolicy"
+  id:
+    type: string
+    description: "Optional property for JobIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for JobIamPolicy"
+    default: null
+  region:
+    type: string
+    description: "Optional property for JobIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:dataproc:JobIamPolicy
+    properties:
+      job_id: ${var.job_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}

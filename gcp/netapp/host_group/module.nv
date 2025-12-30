@@ -1,0 +1,57 @@
+variables:
+  hosts:
+    type: list
+    description: "The list of hosts associated with the host group"
+  location:
+    type: string
+    description: "Location (region) of the Host Group."
+  name:
+    type: string
+    description: "The resource name of the Host Group. Needs to be unique per location."
+  os_type:
+    type: string
+    description: "The OS type of the host group. It indicates the type of operating system used by all of the hosts in the HostGroup. All hosts in a HostGroup must be of the same OS type. This can be set only when creating a HostGroup. Possible values: [\"LINUX\", \"WINDOWS\", \"ESXI\"]"
+  type:
+    type: string
+    description: "Type of the host group. Possible values: [\"ISCSI_INITIATOR\"]"
+  description:
+    type: string
+    description: "An optional description of this resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for HostGroup"
+    default: null
+  labels:
+    type: object
+    description: "Labels as key value pairs. Example: '{ \"owner\": \"Bob\", \"department\": \"finance\", \"purpose\": \"testing\" }'.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for HostGroup"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:netapp:HostGroup
+    properties:
+      hosts: ${var.hosts}
+      location: ${var.location}
+      name: ${var.name}
+      os_type: ${var.os_type}
+      type: ${var.type}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

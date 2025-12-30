@@ -1,0 +1,85 @@
+variables:
+  location:
+    type: string
+    description: "Name of region for this resource. The resource needs to be created in the region of the destination volume."
+  name:
+    type: string
+    description: "The name of the replication. Needs to be unique per location."
+  replication_schedule:
+    type: string
+    description: "Specifies the replication interval. Possible values: [\"EVERY_10_MINUTES\", \"HOURLY\", \"DAILY\"]"
+  volume_name:
+    type: string
+    description: "The name of the existing source volume."
+  delete_destination_volume:
+    type: boolean
+    description: "A destination volume is created as part of replication creation. The destination volume will not became under Terraform management unless you import it manually. If you delete the replication, this volume will remain. Setting this parameter to true will delete the *current* destination volume when destroying the replication. If you reversed the replication direction, this will be your former source volume! For production use, it is recommended to keep this parameter false to avoid accidental volume deletion. Handle with care. Default is false."
+    default: null
+  description:
+    type: string
+    description: "An description of this resource."
+    default: null
+  force_stopping:
+    type: boolean
+    description: "Only replications with mirror_state=MIRRORED can be stopped. A replication in mirror_state=TRANSFERRING currently receives an update and stopping the update might be undesirable. Set this parameter to true to stop anyway. All data transferred to the destination will be discarded and content of destination volume will remain at the state of the last successful update. Default is false."
+    default: null
+  id:
+    type: string
+    description: "Optional property for VolumeReplication"
+    default: null
+  labels:
+    type: object
+    description: "Labels as key value pairs. Example: '{ \"owner\": \"Bob\", \"department\": \"finance\", \"purpose\": \"testing\" }'   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for VolumeReplication"
+    default: null
+  replication_enabled:
+    type: boolean
+    description: "Set to false to stop/break the mirror. Stopping the mirror makes the destination volume read-write and act independently from the source volume. Set to true to enable/resume the mirror. WARNING: Resuming a mirror overwrites any changes done to the destination volume with the content of the source volume."
+    default: null
+  wait_for_mirror:
+    type: boolean
+    description: "Replication resource state is independent of mirror_state. With enough data, it can take many hours for mirror_state to reach MIRRORED. If you want Terraform to wait for the mirror to finish on create/stop/resume operations, set this parameter to true. Default is false."
+    default: null
+  destination_volume_parameters:
+    type: list
+    description: "Nested block: destination_volume_parameters"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:netapp:VolumeReplication
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      replication_schedule: ${var.replication_schedule}
+      volume_name: ${var.volume_name}
+      delete_destination_volume: ${var.delete_destination_volume}
+      description: ${var.description}
+      force_stopping: ${var.force_stopping}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      replication_enabled: ${var.replication_enabled}
+      wait_for_mirror: ${var.wait_for_mirror}
+      dynamic:
+        destination_volume_parameters:
+          for_each: ${var.destination_volume_parameters}
+          content:
+            description: ${each.value.description}
+            share_name: ${each.value.share_name}
+            storage_pool: ${each.value.storage_pool}
+            volume_id: ${each.value.volume_id}
+            tiering_policy: ${each.value.tiering_policy}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

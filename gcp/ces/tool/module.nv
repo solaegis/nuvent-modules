@@ -1,0 +1,90 @@
+variables:
+  app:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  tool_id:
+    type: string
+    description: "The ID to use for the tool, which will become the final component of the tool's resource name. If not provided, a unique ID will be automatically assigned for the tool."
+  execution_type:
+    type: string
+    description: "Possible values: SYNCHRONOUS ASYNCHRONOUS"
+    default: null
+  id:
+    type: string
+    description: "Optional property for Tool"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Tool"
+    default: null
+  client_function:
+    type: list
+    description: "Nested block: client_function"
+    default: []
+  data_store_tool:
+    type: list
+    description: "Nested block: data_store_tool"
+    default: []
+  google_search_tool:
+    type: list
+    description: "Nested block: google_search_tool"
+    default: []
+  python_function:
+    type: list
+    description: "Nested block: python_function"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:ces:Tool
+    properties:
+      app: ${var.app}
+      location: ${var.location}
+      tool_id: ${var.tool_id}
+      execution_type: ${var.execution_type}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        client_function:
+          for_each: ${var.client_function}
+          content:
+            description: ${each.value.description}
+            name: ${each.value.name}
+            parameters: ${each.value.parameters}
+            response: ${each.value.response}
+        data_store_tool:
+          for_each: ${var.data_store_tool}
+          content:
+            description: ${each.value.description}
+            max_results: ${each.value.max_results}
+            name: ${each.value.name}
+            boost_specs: ${each.value.boost_specs}
+            engine_source: ${each.value.engine_source}
+            modality_configs: ${each.value.modality_configs}
+        google_search_tool:
+          for_each: ${var.google_search_tool}
+          content:
+            context_urls: ${each.value.context_urls}
+            description: ${each.value.description}
+            exclude_domains: ${each.value.exclude_domains}
+            name: ${each.value.name}
+            preferred_domains: ${each.value.preferred_domains}
+        python_function:
+          for_each: ${var.python_function}
+          content:
+            description: ${each.value.description}
+            name: ${each.value.name}
+            python_code: ${each.value.python_code}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

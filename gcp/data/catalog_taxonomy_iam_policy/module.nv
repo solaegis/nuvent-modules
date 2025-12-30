@@ -1,0 +1,29 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for CatalogTaxonomyIamPolicy"
+  taxonomy:
+    type: string
+    description: "Required property for CatalogTaxonomyIamPolicy"
+  id:
+    type: string
+    description: "Optional property for CatalogTaxonomyIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for CatalogTaxonomyIamPolicy"
+    default: null
+  region:
+    type: string
+    description: "Optional property for CatalogTaxonomyIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:data:CatalogTaxonomyIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      taxonomy: ${var.taxonomy}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}

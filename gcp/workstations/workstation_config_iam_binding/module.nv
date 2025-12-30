@@ -1,0 +1,48 @@
+variables:
+  members:
+    type: list
+    description: "Required property for WorkstationConfigIamBinding"
+  role:
+    type: string
+    description: "Required property for WorkstationConfigIamBinding"
+  workstation_cluster_id:
+    type: string
+    description: "Required property for WorkstationConfigIamBinding"
+  workstation_config_id:
+    type: string
+    description: "Required property for WorkstationConfigIamBinding"
+  id:
+    type: string
+    description: "Optional property for WorkstationConfigIamBinding"
+    default: null
+  location:
+    type: string
+    description: "Optional property for WorkstationConfigIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WorkstationConfigIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:workstations:WorkstationConfigIamBinding
+    properties:
+      members: ${var.members}
+      role: ${var.role}
+      workstation_cluster_id: ${var.workstation_cluster_id}
+      workstation_config_id: ${var.workstation_config_id}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

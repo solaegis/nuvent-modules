@@ -1,0 +1,107 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource; provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  region:
+    type: string
+    description: "A reference to the region where the regional NEGs reside."
+  description:
+    type: string
+    description: "An optional description of this resource. Provide this property when you create the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RegionNetworkEndpointGroup"
+    default: null
+  network:
+    type: string
+    description: "This field is only used for PSC and INTERNET NEGs.  The URL of the network to which all network endpoints in the NEG belong. Uses \"default\" project network if unspecified."
+    default: null
+  network_endpoint_type:
+    type: string
+    description: "Type of network endpoints in this network endpoint group. Defaults to SERVERLESS. Default value: \"SERVERLESS\" Possible values: [\"SERVERLESS\", \"PRIVATE_SERVICE_CONNECT\", \"INTERNET_IP_PORT\", \"INTERNET_FQDN_PORT\", \"GCE_VM_IP_PORTMAP\"]"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RegionNetworkEndpointGroup"
+    default: null
+  psc_target_service:
+    type: string
+    description: "This field is only used for PSC and INTERNET NEGs.  The target service url used to set up private service connection to a Google API or a PSC Producer Service Attachment."
+    default: null
+  subnetwork:
+    type: string
+    description: "This field is only used for PSC NEGs.  Optional URL of the subnetwork to which all network endpoints in the NEG belong."
+    default: null
+  app_engine:
+    type: list
+    description: "Nested block: app_engine"
+    default: []
+  cloud_function:
+    type: list
+    description: "Nested block: cloud_function"
+    default: []
+  cloud_run:
+    type: list
+    description: "Nested block: cloud_run"
+    default: []
+  psc_data:
+    type: list
+    description: "Nested block: psc_data"
+    default: []
+  serverless_deployment:
+    type: list
+    description: "Nested block: serverless_deployment"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:RegionNetworkEndpointGroup
+    properties:
+      name: ${var.name}
+      region: ${var.region}
+      description: ${var.description}
+      id: ${var.id}
+      network: ${var.network}
+      network_endpoint_type: ${var.network_endpoint_type}
+      project: ${var.project}
+      psc_target_service: ${var.psc_target_service}
+      subnetwork: ${var.subnetwork}
+      dynamic:
+        app_engine:
+          for_each: ${var.app_engine}
+          content:
+            service: ${each.value.service}
+            url_mask: ${each.value.url_mask}
+            version: ${each.value.version}
+        cloud_function:
+          for_each: ${var.cloud_function}
+          content:
+            function: ${each.value.function}
+            url_mask: ${each.value.url_mask}
+        cloud_run:
+          for_each: ${var.cloud_run}
+          content:
+            service: ${each.value.service}
+            tag: ${each.value.tag}
+            url_mask: ${each.value.url_mask}
+        psc_data:
+          for_each: ${var.psc_data}
+          content:
+            producer_port: ${each.value.producer_port}
+        serverless_deployment:
+          for_each: ${var.serverless_deployment}
+          content:
+            platform: ${each.value.platform}
+            resource: ${each.value.resource}
+            url_mask: ${each.value.url_mask}
+            version: ${each.value.version}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

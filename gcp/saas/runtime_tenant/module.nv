@@ -1,0 +1,54 @@
+variables:
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  saas:
+    type: string
+    description: "A reference to the Saas that defines the product (managed service) that the producer wants to manage with SaaS Runtime. Part of the SaaS Runtime common data model."
+  tenant_id:
+    type: string
+    description: "The ID value for the new tenant."
+  annotations:
+    type: object
+    description: "Annotations is an unstructured key-value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects.  More info: https://kubernetes.io/docs/user-guide/annotations  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  consumer_resource:
+    type: string
+    description: "A reference to the consumer resource this SaaS Tenant is representing.  The relationship with a consumer resource can be used by SaaS Runtime for retrieving consumer-defined settings and policies such as maintenance policies (using Unified Maintenance Policy API)."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RuntimeTenant"
+    default: null
+  labels:
+    type: object
+    description: "The labels on the resource, which can be used for categorization. similar to Kubernetes resource labels.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for RuntimeTenant"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:saas:RuntimeTenant
+    properties:
+      location: ${var.location}
+      saas: ${var.saas}
+      tenant_id: ${var.tenant_id}
+      annotations: ${var.annotations}
+      consumer_resource: ${var.consumer_resource}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,59 @@
+variables:
+  domain_name:
+    type: string
+    description: "The fully qualified domain name. e.g. mydomain.myorganization.com, with the restrictions of https://cloud.google.com/managed-microsoft-ad/reference/rest/v1/projects.locations.global.domains."
+  locations:
+    type: list
+    description: "Locations where domain needs to be provisioned. [regions][compute/docs/regions-zones/] e.g. us-west1 or us-east4 Service supports up to 4 locations at once. Each location will use a /26 block."
+  reserved_ip_range:
+    type: string
+    description: "The CIDR range of internal addresses that are reserved for this domain. Reserved networks must be /24 or larger. Ranges must be unique and non-overlapping with existing subnets in authorizedNetworks"
+  admin:
+    type: string
+    description: "The name of delegated administrator account used to perform Active Directory operations. If not specified, setupadmin will be used."
+    default: null
+  authorized_networks:
+    type: list
+    description: "The full names of the Google Compute Engine networks the domain instance is connected to. The domain is only available on networks listed in authorizedNetworks. If CIDR subnets overlap between networks, domain creation will fail."
+    default: null
+  deletion_protection:
+    type: boolean
+    description: "Whether Terraform will be prevented from destroying the domain. Defaults to true. When a'terraform destroy' or 'terraform apply' would delete the domain, the command will fail if this field is not set to false in Terraform state. When the field is set to true or unset in Terraform state, a 'terraform apply' or 'terraform destroy' that would delete the domain will fail. When the field is set to false, deleting the domain is allowed."
+    default: null
+  id:
+    type: string
+    description: "Optional property for DirectoryDomain"
+    default: null
+  labels:
+    type: object
+    description: "Resource labels that can contain user-provided metadata  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for DirectoryDomain"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:active:DirectoryDomain
+    properties:
+      domain_name: ${var.domain_name}
+      locations: ${var.locations}
+      reserved_ip_range: ${var.reserved_ip_range}
+      admin: ${var.admin}
+      authorized_networks: ${var.authorized_networks}
+      deletion_protection: ${var.deletion_protection}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

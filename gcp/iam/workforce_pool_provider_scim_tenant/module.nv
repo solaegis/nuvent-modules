@@ -1,0 +1,53 @@
+variables:
+  location:
+    type: string
+    description: "The location for the resource."
+  provider_id:
+    type: string
+    description: "The ID of the provider."
+  scim_tenant_id:
+    type: string
+    description: "The ID to use for the SCIM tenant, which becomes the final component of the resource name. This value must be 4-32 characters, and may contain the characters [a-z0-9-]."
+  workforce_pool_id:
+    type: string
+    description: "The ID of the workforce pool."
+  claim_mapping:
+    type: object
+    description: "Maps BYOID claims to SCIM claims. This is a required field for new SCIM Tenants being created."
+    default: null
+  description:
+    type: string
+    description: "A user-specified description of the provider. Cannot exceed 256 characters."
+    default: null
+  display_name:
+    type: string
+    description: "A user-specified display name for the scim tenant. Cannot exceed 32 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for WorkforcePoolProviderScimTenant"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:iam:WorkforcePoolProviderScimTenant
+    properties:
+      location: ${var.location}
+      provider_id: ${var.provider_id}
+      scim_tenant_id: ${var.scim_tenant_id}
+      workforce_pool_id: ${var.workforce_pool_id}
+      claim_mapping: ${var.claim_mapping}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

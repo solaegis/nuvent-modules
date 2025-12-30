@@ -1,0 +1,50 @@
+variables:
+  location:
+    type: string
+    description: "The location for the resource"
+  name:
+    type: string
+    description: "The resource name of the channel. Must be unique within the location on the project."
+  crypto_key_name:
+    type: string
+    description: "Resource name of a KMS crypto key (managed by the user) used to encrypt/decrypt their event data. It must match the pattern 'projects/*/locations/*/keyRings/*/cryptoKeys/*'."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Channel"
+    default: null
+  labels:
+    type: object
+    description: "User-defined labels for the channel.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Channel"
+    default: null
+  third_party_provider:
+    type: string
+    description: "The name of the event provider (e.g. Eventarc SaaS partner) associated with the channel. This provider will be granted permissions to publish events to the channel. Format: 'projects/{project}/locations/{location}/providers/{provider_id}'."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:eventarc:Channel
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      crypto_key_name: ${var.crypto_key_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      third_party_provider: ${var.third_party_provider}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

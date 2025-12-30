@@ -1,0 +1,75 @@
+variables:
+  contact_email:
+    type: string
+    description: "An email address that can be used for quota related communication between the Google Cloud and the user in case the Google Cloud needs further information to make a decision on whether the user preferred quota can be granted.  The Google account for the email address must have quota update permission for the project, folder or organization this quota preference is for."
+    default: null
+  dimensions:
+    type: object
+    description: "The dimensions that this quota preference applies to. The key of the map entry is the name of a dimension, such as \"region\", \"zone\", \"network_id\", and the value of the map entry is the dimension value. If a dimension is missing from the map of dimensions, the quota preference applies to all the dimension values except for those that have other quota preferences configured for the specific value.  NOTE: QuotaPreferences can only be applied across all values of \"user\" and \"resource\" dimension. Do not set values for \"user\" or \"resource\" in the dimension map.  Example: '{\"provider\": \"Foo Inc\"}' where \"provider\" is a service specific dimension."
+    default: null
+  id:
+    type: string
+    description: "Optional property for QuotasQuotaPreference"
+    default: null
+  ignore_safety_checks:
+    type: string
+    description: "The list of quota safety checks to be ignored. Default value: \"QUOTA_SAFETY_CHECK_UNSPECIFIED\" Possible values: [\"QUOTA_SAFETY_CHECK_UNSPECIFIED\", \"QUOTA_DECREASE_BELOW_USAGE\", \"QUOTA_DECREASE_PERCENTAGE_TOO_HIGH\"]"
+    default: null
+  justification:
+    type: string
+    description: "The reason / justification for this quota preference."
+    default: null
+  name:
+    type: string
+    description: "The resource name of the quota preference. Required except in the CREATE requests."
+    default: null
+  parent:
+    type: string
+    description: "The parent of the quota preference. Allowed parents are \"projects/[project-id / number]\" or \"folders/[folder-id / number]\" or \"organizations/[org-id / number]\"."
+    default: null
+  quota_id:
+    type: string
+    description: "The id of the quota to which the quota preference is applied. A quota id is unique in the service. Example: 'CPUS-per-project-region'."
+    default: null
+  service:
+    type: string
+    description: "The name of the service to which the quota preference is applied."
+    default: null
+  quota_config:
+    type: list
+    description: "Nested block: quota_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloud:QuotasQuotaPreference
+    properties:
+      contact_email: ${var.contact_email}
+      dimensions: ${var.dimensions}
+      id: ${var.id}
+      ignore_safety_checks: ${var.ignore_safety_checks}
+      justification: ${var.justification}
+      name: ${var.name}
+      parent: ${var.parent}
+      quota_id: ${var.quota_id}
+      service: ${var.service}
+      dynamic:
+        quota_config:
+          for_each: ${var.quota_config}
+          content:
+            annotations: ${each.value.annotations}
+            granted_value: ${each.value.granted_value}
+            preferred_value: ${each.value.preferred_value}
+            request_origin: ${each.value.request_origin}
+            state_detail: ${each.value.state_detail}
+            trace_id: ${each.value.trace_id}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,60 @@
+variables:
+  tag_template_id:
+    type: string
+    description: "The id of the tag template to create."
+  display_name:
+    type: string
+    description: "The display name for this template."
+    default: null
+  force_delete:
+    type: boolean
+    description: "This confirms the deletion of any possible tags using this template. Must be set to true in order to delete the tag template."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CatalogTagTemplate"
+    default: null
+  project:
+    type: string
+    description: "Optional property for CatalogTagTemplate"
+    default: null
+  region:
+    type: string
+    description: "Template location region."
+    default: null
+  fields:
+    type: list
+    description: "Nested block: fields"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:data:CatalogTagTemplate
+    properties:
+      tag_template_id: ${var.tag_template_id}
+      display_name: ${var.display_name}
+      force_delete: ${var.force_delete}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        fields:
+          for_each: ${var.fields}
+          content:
+            description: ${each.value.description}
+            display_name: ${each.value.display_name}
+            field_id: ${each.value.field_id}
+            is_required: ${each.value.is_required}
+            name: ${each.value.name}
+            order: ${each.value.order}
+            type: ${each.value.type}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

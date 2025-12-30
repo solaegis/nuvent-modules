@@ -1,0 +1,35 @@
+variables:
+  namespace:
+    type: string
+    description: "The resource name of the namespace this service will belong to."
+  service_id:
+    type: string
+    description: "The Resource ID must be 1-63 characters long, including digits, lowercase letters or the hyphen character."
+  id:
+    type: string
+    description: "Optional property for DirectoryService"
+    default: null
+  metadata:
+    type: object
+    description: "Metadata for the service. This data can be consumed by service clients. The entire metadata dictionary may contain up to 2000 characters, spread across all key-value pairs. Metadata that goes beyond any these limits will be rejected."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:service:DirectoryService
+    properties:
+      namespace: ${var.namespace}
+      service_id: ${var.service_id}
+      id: ${var.id}
+      metadata: ${var.metadata}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,72 @@
+variables:
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'location'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  hugging_face_model_id:
+    type: string
+    description: "The Hugging Face model to deploy. Format: Hugging Face model ID like 'google/gemma-2-2b-it'."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AiEndpointWithModelGardenDeployment"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiEndpointWithModelGardenDeployment"
+    default: null
+  publisher_model_name:
+    type: string
+    description: "The Model Garden model to deploy. Format: 'publishers/{publisher}/models/{publisher_model}@{version_id}', or 'publishers/hf-{hugging-face-author}/models/{hugging-face-model-name}@001'."
+    default: null
+  deploy_config:
+    type: list
+    description: "Nested block: deploy_config"
+    default: []
+  endpoint_config:
+    type: list
+    description: "Nested block: endpoint_config"
+    default: []
+  model_config:
+    type: list
+    description: "Nested block: model_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vertex:AiEndpointWithModelGardenDeployment
+    properties:
+      location: ${var.location}
+      hugging_face_model_id: ${var.hugging_face_model_id}
+      id: ${var.id}
+      project: ${var.project}
+      publisher_model_name: ${var.publisher_model_name}
+      dynamic:
+        deploy_config:
+          for_each: ${var.deploy_config}
+          content:
+            fast_tryout_enabled: ${each.value.fast_tryout_enabled}
+            system_labels: ${each.value.system_labels}
+            dedicated_resources: ${each.value.dedicated_resources}
+        endpoint_config:
+          for_each: ${var.endpoint_config}
+          content:
+            dedicated_endpoint_enabled: ${each.value.dedicated_endpoint_enabled}
+            endpoint_display_name: ${each.value.endpoint_display_name}
+            private_service_connect_config: ${each.value.private_service_connect_config}
+        model_config:
+          for_each: ${var.model_config}
+          content:
+            accept_eula: ${each.value.accept_eula}
+            hugging_face_access_token: ${each.value.hugging_face_access_token}
+            hugging_face_cache_enabled: ${each.value.hugging_face_cache_enabled}
+            model_display_name: ${each.value.model_display_name}
+            container_spec: ${each.value.container_spec}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

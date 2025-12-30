@@ -1,0 +1,55 @@
+variables:
+  name:
+    type: string
+    description: "Name of the route policy. This policy's name, which must be a resource ID segment and unique within all policies owned by the Router"
+  router:
+    type: string
+    description: "The name of the Cloud Router in which this route policy will be configured."
+  id:
+    type: string
+    description: "Optional property for RouterRoutePolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RouterRoutePolicy"
+    default: null
+  region:
+    type: string
+    description: "Region where the router and NAT reside."
+    default: null
+  type:
+    type: string
+    description: "This is policy's type, which is one of IMPORT or EXPORT Possible values: [\"ROUTE_POLICY_TYPE_IMPORT\", \"ROUTE_POLICY_TYPE_EXPORT\"]"
+    default: null
+  terms:
+    type: list
+    description: "Nested block: terms"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:RouterRoutePolicy
+    properties:
+      name: ${var.name}
+      router: ${var.router}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      type: ${var.type}
+      dynamic:
+        terms:
+          for_each: ${var.terms}
+          content:
+            priority: ${each.value.priority}
+            actions: ${each.value.actions}
+            match: ${each.value.match}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

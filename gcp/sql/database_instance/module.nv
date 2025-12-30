@@ -1,0 +1,208 @@
+variables:
+  database_version:
+    type: string
+    description: "The MySQL, PostgreSQL or SQL Server (beta) version to use. Supported values include MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, MYSQL_8_4, POSTGRES_9_6, POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, POSTGRES_14, POSTGRES_15, POSTGRES_16, POSTGRES_17, SQLSERVER_2017_STANDARD, SQLSERVER_2017_ENTERPRISE, SQLSERVER_2017_EXPRESS, SQLSERVER_2017_WEB. Database Version Policies includes an up-to-date reference of supported versions."
+  backupdr_backup:
+    type: string
+    description: "The name of the BackupDR backup to restore from."
+    default: null
+  deletion_protection:
+    type: boolean
+    description: "Used to block Terraform from deleting a SQL Instance. Defaults to true."
+    default: null
+  encryption_key_name:
+    type: string
+    description: "Optional property for DatabaseInstance"
+    default: null
+  final_backup_description:
+    type: string
+    description: "The description of final backup if instance enable create final backup during instance deletion. "
+    default: null
+  id:
+    type: string
+    description: "Optional property for DatabaseInstance"
+    default: null
+  instance_type:
+    type: string
+    description: "The type of the instance. See https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1/instances#SqlInstanceType for supported values."
+    default: null
+  maintenance_version:
+    type: string
+    description: "Maintenance version."
+    default: null
+  master_instance_name:
+    type: string
+    description: "The name of the instance that will act as the master in the replication setup. Note, this requires the master to have binary_log_enabled set, as well as existing backups."
+    default: null
+  name:
+    type: string
+    description: "The name of the instance. If the name is left blank, Terraform will randomly generate one when the instance is first created. This is done because after a name is used, it cannot be reused for up to one week."
+    default: null
+  node_count:
+    type: number
+    description: "For a read pool instance, the number of nodes in the read pool. For read pools with auto scaling enabled, this field is read only."
+    default: null
+  project:
+    type: string
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    default: null
+  region:
+    type: string
+    description: "The region the instance will sit in. Note, Cloud SQL is not available in all regions. A valid region must be provided to use this resource. If a region is not provided in the resource definition, the provider region will be used instead, but this will be an apply-time error for instances if the provider region is not supported with Cloud SQL. If you choose not to provide the region argument for this resource, make sure you understand this."
+    default: null
+  replica_names:
+    type: list
+    description: "The replicas of the instance."
+    default: null
+  root_password:
+    type: string
+    description: "Initial root password. Required for MS SQL Server."
+    default: null
+  root_password_wo:
+    type: string
+    description: "Initial root password. Required for MS SQL Server. 				Note: This property is write-only and will not be read from the API. For more info see [updating write-only arguments](/docs/providers/google/guides/using_write_only_arguments.html#updating-write-only-arguments)"
+    default: null
+  root_password_wo_version:
+    type: string
+    description: "Triggers update of root_password_wo write-only. For more info see [updating write-only arguments](/docs/providers/google/guides/using_write_only_arguments.html#updating-write-only-arguments)"
+    default: null
+  clone:
+    type: list
+    description: "Nested block: clone"
+    default: []
+  point_in_time_restore_context:
+    type: list
+    description: "Nested block: point_in_time_restore_context"
+    default: []
+  replica_configuration:
+    type: list
+    description: "Nested block: replica_configuration"
+    default: []
+  replication_cluster:
+    type: list
+    description: "Nested block: replication_cluster"
+    default: []
+  restore_backup_context:
+    type: list
+    description: "Nested block: restore_backup_context"
+    default: []
+  settings:
+    type: list
+    description: "Nested block: settings"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:sql:DatabaseInstance
+    properties:
+      database_version: ${var.database_version}
+      backupdr_backup: ${var.backupdr_backup}
+      deletion_protection: ${var.deletion_protection}
+      encryption_key_name: ${var.encryption_key_name}
+      final_backup_description: ${var.final_backup_description}
+      id: ${var.id}
+      instance_type: ${var.instance_type}
+      maintenance_version: ${var.maintenance_version}
+      master_instance_name: ${var.master_instance_name}
+      name: ${var.name}
+      node_count: ${var.node_count}
+      project: ${var.project}
+      region: ${var.region}
+      replica_names: ${var.replica_names}
+      root_password: ${var.root_password}
+      root_password_wo: ${var.root_password_wo}
+      root_password_wo_version: ${var.root_password_wo_version}
+      dynamic:
+        clone:
+          for_each: ${var.clone}
+          content:
+            allocated_ip_range: ${each.value.allocated_ip_range}
+            database_names: ${each.value.database_names}
+            point_in_time: ${each.value.point_in_time}
+            preferred_zone: ${each.value.preferred_zone}
+            source_instance_deletion_time: ${each.value.source_instance_deletion_time}
+            source_instance_name: ${each.value.source_instance_name}
+        point_in_time_restore_context:
+          for_each: ${var.point_in_time_restore_context}
+          content:
+            allocated_ip_range: ${each.value.allocated_ip_range}
+            datasource: ${each.value.datasource}
+            point_in_time: ${each.value.point_in_time}
+            preferred_zone: ${each.value.preferred_zone}
+            target_instance: ${each.value.target_instance}
+        replica_configuration:
+          for_each: ${var.replica_configuration}
+          content:
+            ca_certificate: ${each.value.ca_certificate}
+            cascadable_replica: ${each.value.cascadable_replica}
+            client_certificate: ${each.value.client_certificate}
+            client_key: ${each.value.client_key}
+            connect_retry_interval: ${each.value.connect_retry_interval}
+            dump_file_path: ${each.value.dump_file_path}
+            failover_target: ${each.value.failover_target}
+            master_heartbeat_period: ${each.value.master_heartbeat_period}
+            password: ${each.value.password}
+            ssl_cipher: ${each.value.ssl_cipher}
+            username: ${each.value.username}
+            verify_server_certificate: ${each.value.verify_server_certificate}
+        replication_cluster:
+          for_each: ${var.replication_cluster}
+          content:
+            dr_replica: ${each.value.dr_replica}
+            failover_dr_replica_name: ${each.value.failover_dr_replica_name}
+            psa_write_endpoint: ${each.value.psa_write_endpoint}
+        restore_backup_context:
+          for_each: ${var.restore_backup_context}
+          content:
+            backup_run_id: ${each.value.backup_run_id}
+            instance_id: ${each.value.instance_id}
+            project: ${each.value.project}
+        settings:
+          for_each: ${var.settings}
+          content:
+            activation_policy: ${each.value.activation_policy}
+            availability_type: ${each.value.availability_type}
+            collation: ${each.value.collation}
+            connector_enforcement: ${each.value.connector_enforcement}
+            data_disk_provisioned_iops: ${each.value.data_disk_provisioned_iops}
+            data_disk_provisioned_throughput: ${each.value.data_disk_provisioned_throughput}
+            deletion_protection_enabled: ${each.value.deletion_protection_enabled}
+            disk_autoresize: ${each.value.disk_autoresize}
+            disk_autoresize_limit: ${each.value.disk_autoresize_limit}
+            disk_size: ${each.value.disk_size}
+            disk_type: ${each.value.disk_type}
+            edition: ${each.value.edition}
+            effective_availability_type: ${each.value.effective_availability_type}
+            enable_dataplex_integration: ${each.value.enable_dataplex_integration}
+            enable_google_ml_integration: ${each.value.enable_google_ml_integration}
+            pricing_plan: ${each.value.pricing_plan}
+            retain_backups_on_delete: ${each.value.retain_backups_on_delete}
+            tier: ${each.value.tier}
+            time_zone: ${each.value.time_zone}
+            user_labels: ${each.value.user_labels}
+            version: ${each.value.version}
+            active_directory_config: ${each.value.active_directory_config}
+            advanced_machine_features: ${each.value.advanced_machine_features}
+            backup_configuration: ${each.value.backup_configuration}
+            connection_pool_config: ${each.value.connection_pool_config}
+            data_cache_config: ${each.value.data_cache_config}
+            database_flags: ${each.value.database_flags}
+            deny_maintenance_period: ${each.value.deny_maintenance_period}
+            final_backup_config: ${each.value.final_backup_config}
+            insights_config: ${each.value.insights_config}
+            ip_configuration: ${each.value.ip_configuration}
+            location_preference: ${each.value.location_preference}
+            maintenance_window: ${each.value.maintenance_window}
+            password_validation_policy: ${each.value.password_validation_policy}
+            read_pool_auto_scale_config: ${each.value.read_pool_auto_scale_config}
+            sql_server_audit_config: ${each.value.sql_server_audit_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,29 @@
+variables:
+  ca_pool:
+    type: string
+    description: "Required property for CaPoolIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for CaPoolIamPolicy"
+  id:
+    type: string
+    description: "Optional property for CaPoolIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for CaPoolIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for CaPoolIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:privateca:CaPoolIamPolicy
+    properties:
+      ca_pool: ${var.ca_pool}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

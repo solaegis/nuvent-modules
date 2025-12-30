@@ -1,0 +1,38 @@
+variables:
+  location:
+    type: string
+    description: "The location for the KeyHandle. A full list of valid locations can be found by running 'gcloud kms locations list'."
+  name:
+    type: string
+    description: "The resource name for the KeyHandle."
+  resource_type_selector:
+    type: string
+    description: "Selector of the resource type where we want to protect resources. For example, 'storage.googleapis.com/Bucket'."
+  id:
+    type: string
+    description: "Optional property for KeyHandle"
+    default: null
+  project:
+    type: string
+    description: "Optional property for KeyHandle"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:kms:KeyHandle
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      resource_type_selector: ${var.resource_type_selector}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

@@ -1,0 +1,31 @@
+variables:
+  id:
+    type: string
+    description: "Optional property for CaExternalAccountKey"
+    default: null
+  location:
+    type: string
+    description: "Location for the externalAccountKey. Currently only 'global' is supported."
+    default: null
+  project:
+    type: string
+    description: "Optional property for CaExternalAccountKey"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:public:CaExternalAccountKey
+    properties:
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

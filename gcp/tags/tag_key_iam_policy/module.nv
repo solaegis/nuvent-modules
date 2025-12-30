@@ -1,0 +1,19 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for TagKeyIamPolicy"
+  tag_key:
+    type: string
+    description: "Required property for TagKeyIamPolicy"
+  id:
+    type: string
+    description: "Optional property for TagKeyIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:tags:TagKeyIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      tag_key: ${var.tag_key}
+      id: ${var.id}

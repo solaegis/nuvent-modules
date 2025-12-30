@@ -1,0 +1,34 @@
+variables:
+  members:
+    type: list
+    description: "Required property for TagValueIamBinding"
+  role:
+    type: string
+    description: "Required property for TagValueIamBinding"
+  tag_value:
+    type: string
+    description: "Required property for TagValueIamBinding"
+  id:
+    type: string
+    description: "Optional property for TagValueIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:tags:TagValueIamBinding
+    properties:
+      members: ${var.members}
+      role: ${var.role}
+      tag_value: ${var.tag_value}
+      id: ${var.id}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

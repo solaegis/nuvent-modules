@@ -1,0 +1,59 @@
+variables:
+  action:
+    type: string
+    description: "The action to take when a rule match is found. Possible values are \"ALLOW\" or \"DENY\". Possible values: [\"ALLOW\", \"DENY\"]"
+  name:
+    type: string
+    description: "Name of the AuthorizationPolicy resource."
+  description:
+    type: string
+    description: "A free-text description of the resource. Max length 1024 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SecurityAuthorizationPolicy"
+    default: null
+  labels:
+    type: object
+    description: "Set of label tags associated with the AuthorizationPolicy resource.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "The location of the authorization policy. The default value is 'global'."
+    default: null
+  project:
+    type: string
+    description: "Optional property for SecurityAuthorizationPolicy"
+    default: null
+  rules:
+    type: list
+    description: "Nested block: rules"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:SecurityAuthorizationPolicy
+    properties:
+      action: ${var.action}
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        rules:
+          for_each: ${var.rules}
+          content:
+            destinations: ${each.value.destinations}
+            sources: ${each.value.sources}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

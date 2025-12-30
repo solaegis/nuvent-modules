@@ -1,0 +1,60 @@
+variables:
+  name:
+    type: string
+    description: "The name of the instance group. Must be 1-63 characters long and comply with RFC1035. Supported characters include lowercase letters, numbers, and hyphens."
+  description:
+    type: string
+    description: "An optional textual description of the instance group."
+    default: null
+  id:
+    type: string
+    description: "Optional property for InstanceGroup"
+    default: null
+  instances:
+    type: list
+    description: "The list of instances in the group, in self_link format. When adding instances they must all be in the same network and zone as the instance group."
+    default: null
+  network:
+    type: string
+    description: "The URL of the network the instance group is in. If this is different from the network where the instances are in, the creation fails. Defaults to the network where the instances are in (if neither network nor instances is specified, this field will be blank)."
+    default: null
+  project:
+    type: string
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    default: null
+  zone:
+    type: string
+    description: "The zone that this instance group should be created in."
+    default: null
+  named_port:
+    type: list
+    description: "Nested block: named_port"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:InstanceGroup
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      instances: ${var.instances}
+      network: ${var.network}
+      project: ${var.project}
+      zone: ${var.zone}
+      dynamic:
+        named_port:
+          for_each: ${var.named_port}
+          content:
+            name: ${each.value.name}
+            port: ${each.value.port}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

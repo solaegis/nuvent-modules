@@ -1,0 +1,92 @@
+variables:
+  location:
+    type: string
+    description: "Part of 'parent'. See documentation of 'projectsId'."
+  name:
+    type: string
+    description: "The name of this workbench instance. Format: 'projects/{project_id}/locations/{location}/instances/{instance_id}'"
+  desired_state:
+    type: string
+    description: "Desired state of the Workbench Instance. Set this field to 'ACTIVE' to start the Instance, and 'STOPPED' to stop the Instance."
+    default: null
+  disable_proxy_access:
+    type: boolean
+    description: "Optional. If true, the workbench instance will not register with the proxy."
+    default: null
+  enable_managed_euc:
+    type: boolean
+    description: "Flag to enable managed end user credentials for the instance."
+    default: null
+  enable_third_party_identity:
+    type: boolean
+    description: "Flag that specifies that a notebook can be accessed with third party identity provider."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Instance"
+    default: null
+  instance_id:
+    type: string
+    description: "Required. User-defined unique ID of this instance."
+    default: null
+  instance_owners:
+    type: list
+    description: "'Optional. Input only. The owner of this instance after creation. Format: 'alias@example.com' Currently supports one owner only. If not specified, all of the service account users of your VM instance''s service account can use the instance. If specified, sets the access mode to 'Single user'. For more details, see https://cloud.google.com/vertex-ai/docs/workbench/instances/manage-access-jupyterlab'"
+    default: null
+  labels:
+    type: object
+    description: "Optional. Labels to apply to this instance. These can be later modified by the UpdateInstance method.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Instance"
+    default: null
+  gce_setup:
+    type: list
+    description: "Nested block: gce_setup"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:workbench:Instance
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      desired_state: ${var.desired_state}
+      disable_proxy_access: ${var.disable_proxy_access}
+      enable_managed_euc: ${var.enable_managed_euc}
+      enable_third_party_identity: ${var.enable_third_party_identity}
+      id: ${var.id}
+      instance_id: ${var.instance_id}
+      instance_owners: ${var.instance_owners}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        gce_setup:
+          for_each: ${var.gce_setup}
+          content:
+            disable_public_ip: ${each.value.disable_public_ip}
+            enable_ip_forwarding: ${each.value.enable_ip_forwarding}
+            machine_type: ${each.value.machine_type}
+            metadata: ${each.value.metadata}
+            tags: ${each.value.tags}
+            accelerator_configs: ${each.value.accelerator_configs}
+            boot_disk: ${each.value.boot_disk}
+            confidential_instance_config: ${each.value.confidential_instance_config}
+            container_image: ${each.value.container_image}
+            data_disks: ${each.value.data_disks}
+            network_interfaces: ${each.value.network_interfaces}
+            reservation_affinity: ${each.value.reservation_affinity}
+            service_accounts: ${each.value.service_accounts}
+            shielded_instance_config: ${each.value.shielded_instance_config}
+            vm_image: ${each.value.vm_image}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

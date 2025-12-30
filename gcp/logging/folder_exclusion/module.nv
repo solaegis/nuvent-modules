@@ -1,0 +1,33 @@
+variables:
+  filter:
+    type: string
+    description: "The filter to apply when excluding logs. Only log entries that match the filter are excluded."
+  folder:
+    type: string
+    description: "Required property for FolderExclusion"
+  name:
+    type: string
+    description: "The name of the logging exclusion."
+  description:
+    type: string
+    description: "A human-readable description."
+    default: null
+  disabled:
+    type: boolean
+    description: "Whether this exclusion rule should be disabled or not. This defaults to false."
+    default: null
+  id:
+    type: string
+    description: "Optional property for FolderExclusion"
+    default: null
+
+resources:
+  main:
+    type: gcp:logging:FolderExclusion
+    properties:
+      filter: ${var.filter}
+      folder: ${var.folder}
+      name: ${var.name}
+      description: ${var.description}
+      disabled: ${var.disabled}
+      id: ${var.id}

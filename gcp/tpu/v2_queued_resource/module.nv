@@ -1,0 +1,43 @@
+variables:
+  name:
+    type: string
+    description: "The immutable name of the Queued Resource."
+  id:
+    type: string
+    description: "Optional property for V2QueuedResource"
+    default: null
+  project:
+    type: string
+    description: "Optional property for V2QueuedResource"
+    default: null
+  zone:
+    type: string
+    description: "The GCP location for the Queued Resource. If it is not provided, the provider zone is used."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  tpu:
+    type: list
+    description: "Nested block: tpu"
+    default: []
+
+resources:
+  main:
+    type: gcp:tpu:V2QueuedResource
+    properties:
+      name: ${var.name}
+      id: ${var.id}
+      project: ${var.project}
+      zone: ${var.zone}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+        tpu:
+          for_each: ${var.tpu}
+          content:
+            node_spec: ${each.value.node_spec}

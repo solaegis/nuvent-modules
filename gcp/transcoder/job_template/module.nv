@@ -1,0 +1,57 @@
+variables:
+  job_template_id:
+    type: string
+    description: "ID to use for the Transcoding job template."
+  location:
+    type: string
+    description: "The location of the transcoding job template resource."
+  id:
+    type: string
+    description: "Optional property for JobTemplate"
+    default: null
+  labels:
+    type: object
+    description: "The labels associated with this job template. You can use these to organize and group your job templates.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for JobTemplate"
+    default: null
+  config:
+    type: list
+    description: "Nested block: config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:transcoder:JobTemplate
+    properties:
+      job_template_id: ${var.job_template_id}
+      location: ${var.location}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        config:
+          for_each: ${var.config}
+          content:
+            ad_breaks: ${each.value.ad_breaks}
+            edit_list: ${each.value.edit_list}
+            elementary_streams: ${each.value.elementary_streams}
+            encryptions: ${each.value.encryptions}
+            inputs: ${each.value.inputs}
+            manifests: ${each.value.manifests}
+            mux_streams: ${each.value.mux_streams}
+            output: ${each.value.output}
+            overlays: ${each.value.overlays}
+            pubsub_destination: ${each.value.pubsub_destination}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

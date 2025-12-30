@@ -1,0 +1,93 @@
+variables:
+  location:
+    type: string
+    description: "The location of the queue"
+  name:
+    type: string
+    description: "The queue name."
+  desired_state:
+    type: string
+    description: "The desired state of the queue. Use this to pause and resume the queue.  * RUNNING: The queue is running. Tasks can be dispatched. * PAUSED: The queue is paused. Tasks are not dispatched but can be added to the queue. Default value: \"RUNNING\" Possible values: [\"RUNNING\", \"PAUSED\"]"
+    default: null
+  id:
+    type: string
+    description: "Optional property for TasksQueue"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TasksQueue"
+    default: null
+  app_engine_routing_override:
+    type: list
+    description: "Nested block: app_engine_routing_override"
+    default: []
+  http_target:
+    type: list
+    description: "Nested block: http_target"
+    default: []
+  rate_limits:
+    type: list
+    description: "Nested block: rate_limits"
+    default: []
+  retry_config:
+    type: list
+    description: "Nested block: retry_config"
+    default: []
+  stackdriver_logging_config:
+    type: list
+    description: "Nested block: stackdriver_logging_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloud:TasksQueue
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      desired_state: ${var.desired_state}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        app_engine_routing_override:
+          for_each: ${var.app_engine_routing_override}
+          content:
+            host: ${each.value.host}
+            instance: ${each.value.instance}
+            service: ${each.value.service}
+            version: ${each.value.version}
+        http_target:
+          for_each: ${var.http_target}
+          content:
+            http_method: ${each.value.http_method}
+            header_overrides: ${each.value.header_overrides}
+            oauth_token: ${each.value.oauth_token}
+            oidc_token: ${each.value.oidc_token}
+            uri_override: ${each.value.uri_override}
+        rate_limits:
+          for_each: ${var.rate_limits}
+          content:
+            max_burst_size: ${each.value.max_burst_size}
+            max_concurrent_dispatches: ${each.value.max_concurrent_dispatches}
+            max_dispatches_per_second: ${each.value.max_dispatches_per_second}
+        retry_config:
+          for_each: ${var.retry_config}
+          content:
+            max_attempts: ${each.value.max_attempts}
+            max_backoff: ${each.value.max_backoff}
+            max_doublings: ${each.value.max_doublings}
+            max_retry_duration: ${each.value.max_retry_duration}
+            min_backoff: ${each.value.min_backoff}
+        stackdriver_logging_config:
+          for_each: ${var.stackdriver_logging_config}
+          content:
+            sampling_ratio: ${each.value.sampling_ratio}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

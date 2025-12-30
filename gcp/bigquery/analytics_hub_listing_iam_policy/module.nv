@@ -1,0 +1,33 @@
+variables:
+  data_exchange_id:
+    type: string
+    description: "Required property for AnalyticsHubListingIamPolicy"
+  listing_id:
+    type: string
+    description: "Required property for AnalyticsHubListingIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for AnalyticsHubListingIamPolicy"
+  id:
+    type: string
+    description: "Optional property for AnalyticsHubListingIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for AnalyticsHubListingIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AnalyticsHubListingIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:bigquery:AnalyticsHubListingIamPolicy
+    properties:
+      data_exchange_id: ${var.data_exchange_id}
+      listing_id: ${var.listing_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

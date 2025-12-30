@@ -1,0 +1,39 @@
+variables:
+  parameter:
+    type: string
+    description: "Parameter Manager Parameter resource."
+  parameter_data:
+    type: string
+    description: "The Parameter data."
+  parameter_version_id:
+    type: string
+    description: "Version ID of the Parameter Version Resource. This must be unique within the Parameter."
+  disabled:
+    type: boolean
+    description: "The current state of Parameter Version. This field is only applicable for updating Parameter Version."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ManagerParameterVersion"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:parameter:ManagerParameterVersion
+    properties:
+      parameter: ${var.parameter}
+      parameter_data: ${var.parameter_data}
+      parameter_version_id: ${var.parameter_version_id}
+      disabled: ${var.disabled}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

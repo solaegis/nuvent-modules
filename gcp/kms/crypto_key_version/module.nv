@@ -1,0 +1,40 @@
+variables:
+  crypto_key:
+    type: string
+    description: "The name of the cryptoKey associated with the CryptoKeyVersions. Format: ''projects/{{project}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptoKey}}''"
+  id:
+    type: string
+    description: "Optional property for CryptoKeyVersion"
+    default: null
+  state:
+    type: string
+    description: "The current state of the CryptoKeyVersion. Note: you can only specify this field to manually 'ENABLE' or 'DISABLE' the CryptoKeyVersion, otherwise the value of this field is always retrieved automatically. Possible values: [\"PENDING_GENERATION\", \"ENABLED\", \"DISABLED\", \"DESTROYED\", \"DESTROY_SCHEDULED\", \"PENDING_IMPORT\", \"IMPORT_FAILED\"]"
+    default: null
+  external_protection_level_options:
+    type: list
+    description: "Nested block: external_protection_level_options"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:kms:CryptoKeyVersion
+    properties:
+      crypto_key: ${var.crypto_key}
+      id: ${var.id}
+      state: ${var.state}
+      dynamic:
+        external_protection_level_options:
+          for_each: ${var.external_protection_level_options}
+          content:
+            ekm_connection_key_path: ${each.value.ekm_connection_key_path}
+            external_key_uri: ${each.value.external_key_uri}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

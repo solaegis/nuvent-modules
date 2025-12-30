@@ -1,0 +1,61 @@
+variables:
+  location:
+    type: string
+    description: "The location for the EkmConnection. A full list of valid locations can be found by running 'gcloud kms locations list'."
+  name:
+    type: string
+    description: "The resource name for the EkmConnection."
+  crypto_space_path:
+    type: string
+    description: "Optional. Identifies the EKM Crypto Space that this EkmConnection maps to. Note: This field is required if KeyManagementMode is CLOUD_KMS."
+    default: null
+  etag:
+    type: string
+    description: "Optional. Etag of the currently stored EkmConnection."
+    default: null
+  id:
+    type: string
+    description: "Optional property for EkmConnection"
+    default: null
+  key_management_mode:
+    type: string
+    description: "Optional. Describes who can perform control plane operations on the EKM. If unset, this defaults to MANUAL Default value: \"MANUAL\" Possible values: [\"MANUAL\", \"CLOUD_KMS\"]"
+    default: null
+  project:
+    type: string
+    description: "Optional property for EkmConnection"
+    default: null
+  service_resolvers:
+    type: list
+    description: "Nested block: service_resolvers"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:kms:EkmConnection
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      crypto_space_path: ${var.crypto_space_path}
+      etag: ${var.etag}
+      id: ${var.id}
+      key_management_mode: ${var.key_management_mode}
+      project: ${var.project}
+      dynamic:
+        service_resolvers:
+          for_each: ${var.service_resolvers}
+          content:
+            endpoint_filter: ${each.value.endpoint_filter}
+            hostname: ${each.value.hostname}
+            service_directory_service: ${each.value.service_directory_service}
+            server_certificates: ${each.value.server_certificates}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,189 @@
+variables:
+  location:
+    type: string
+    description: "The Google Cloud Storage location or region."
+  name:
+    type: string
+    description: "The name of the bucket."
+  default_event_based_hold:
+    type: boolean
+    description: "Whether or not to automatically apply an eventBasedHold to new objects added to the bucket."
+    default: null
+  enable_object_retention:
+    type: boolean
+    description: "Enables each object in the bucket to have its own retention policy, which prevents deletion until stored for a specific length of time."
+    default: null
+  force_destroy:
+    type: boolean
+    description: "When deleting a bucket, this boolean option will delete all contained objects, or anywhereCaches (if any). If you try to delete a bucket that contains objects or anywhereCaches, Terraform will fail that run, deleting anywhereCaches may take 80 minutes to complete."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Bucket"
+    default: null
+  labels:
+    type: object
+    description: "A set of key/value label pairs to assign to the bucket."
+    default: null
+  project:
+    type: string
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    default: null
+  public_access_prevention:
+    type: string
+    description: "Prevents public access to a bucket."
+    default: null
+  requester_pays:
+    type: boolean
+    description: "Enables Requester Pays on a storage bucket."
+    default: null
+  rpo:
+    type: string
+    description: "Specifies the RPO setting of bucket. If set 'ASYNC_TURBO', The Turbo Replication will be enabled for the dual-region bucket. Value 'DEFAULT' will set RPO setting to default. Turbo Replication is only for buckets in dual-regions.See the docs for more details."
+    default: null
+  storage_class:
+    type: string
+    description: "The Storage Class of the new bucket. Supported values include: STANDARD, MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE."
+    default: null
+  uniform_bucket_level_access:
+    type: boolean
+    description: "Enables uniform bucket-level access on a bucket."
+    default: null
+  autoclass:
+    type: list
+    description: "Nested block: autoclass"
+    default: []
+  cors:
+    type: list
+    description: "Nested block: cors"
+    default: []
+  custom_placement_config:
+    type: list
+    description: "Nested block: custom_placement_config"
+    default: []
+  encryption:
+    type: list
+    description: "Nested block: encryption"
+    default: []
+  hierarchical_namespace:
+    type: list
+    description: "Nested block: hierarchical_namespace"
+    default: []
+  ip_filter:
+    type: list
+    description: "Nested block: ip_filter"
+    default: []
+  lifecycle_rule:
+    type: list
+    description: "Nested block: lifecycle_rule"
+    default: []
+  logging:
+    type: list
+    description: "Nested block: logging"
+    default: []
+  retention_policy:
+    type: list
+    description: "Nested block: retention_policy"
+    default: []
+  soft_delete_policy:
+    type: list
+    description: "Nested block: soft_delete_policy"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  versioning:
+    type: list
+    description: "Nested block: versioning"
+    default: []
+  website:
+    type: list
+    description: "Nested block: website"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:Bucket
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      default_event_based_hold: ${var.default_event_based_hold}
+      enable_object_retention: ${var.enable_object_retention}
+      force_destroy: ${var.force_destroy}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      public_access_prevention: ${var.public_access_prevention}
+      requester_pays: ${var.requester_pays}
+      rpo: ${var.rpo}
+      storage_class: ${var.storage_class}
+      uniform_bucket_level_access: ${var.uniform_bucket_level_access}
+      dynamic:
+        autoclass:
+          for_each: ${var.autoclass}
+          content:
+            enabled: ${each.value.enabled}
+            terminal_storage_class: ${each.value.terminal_storage_class}
+        cors:
+          for_each: ${var.cors}
+          content:
+            max_age_seconds: ${each.value.max_age_seconds}
+            method: ${each.value.method}
+            origin: ${each.value.origin}
+            response_header: ${each.value.response_header}
+        custom_placement_config:
+          for_each: ${var.custom_placement_config}
+          content:
+            data_locations: ${each.value.data_locations}
+        encryption:
+          for_each: ${var.encryption}
+          content:
+            default_kms_key_name: ${each.value.default_kms_key_name}
+        hierarchical_namespace:
+          for_each: ${var.hierarchical_namespace}
+          content:
+            enabled: ${each.value.enabled}
+        ip_filter:
+          for_each: ${var.ip_filter}
+          content:
+            allow_all_service_agent_access: ${each.value.allow_all_service_agent_access}
+            allow_cross_org_vpcs: ${each.value.allow_cross_org_vpcs}
+            mode: ${each.value.mode}
+            public_network_source: ${each.value.public_network_source}
+            vpc_network_sources: ${each.value.vpc_network_sources}
+        lifecycle_rule:
+          for_each: ${var.lifecycle_rule}
+          content:
+            action: ${each.value.action}
+            condition: ${each.value.condition}
+        logging:
+          for_each: ${var.logging}
+          content:
+            log_bucket: ${each.value.log_bucket}
+            log_object_prefix: ${each.value.log_object_prefix}
+        retention_policy:
+          for_each: ${var.retention_policy}
+          content:
+            is_locked: ${each.value.is_locked}
+            retention_period: ${each.value.retention_period}
+        soft_delete_policy:
+          for_each: ${var.soft_delete_policy}
+          content:
+            effective_time: ${each.value.effective_time}
+            retention_duration_seconds: ${each.value.retention_duration_seconds}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            read: ${each.value.read}
+            update: ${each.value.update}
+        versioning:
+          for_each: ${var.versioning}
+          content:
+            enabled: ${each.value.enabled}
+        website:
+          for_each: ${var.website}
+          content:
+            main_page_suffix: ${each.value.main_page_suffix}
+            not_found_page: ${each.value.not_found_page}

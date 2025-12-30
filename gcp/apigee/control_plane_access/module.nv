@@ -1,0 +1,36 @@
+variables:
+  name:
+    type: string
+    description: "Name of the Apigee organization."
+  analytics_publisher_identities:
+    type: list
+    description: "Array of service accounts authorized to publish analytics data to the control plane, each specified using the following format: 'serviceAccount:service-account-name'.  The 'service-account-name' is formatted like an email address. For example: serviceAccount@my_project_id.iam.gserviceaccount.com  You might specify multiple service accounts, for example, if you have multiple environments and wish to assign a unique service account to each one."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ControlPlaneAccess"
+    default: null
+  synchronizer_identities:
+    type: list
+    description: "Array of service accounts to grant access to control plane resources (for the Synchronizer component), each specified using the following format: 'serviceAccount:service-account-name'.  The 'service-account-name' is formatted like an email address. For example: serviceAccount@my_project_id.iam.gserviceaccount.com  You might specify multiple service accounts, for example, if you have multiple environments and wish to assign a unique service account to each one.  The service accounts must have **Apigee Synchronizer Manager** role. See also [Create service accounts](https://cloud.google.com/apigee/docs/hybrid/v1.8/sa-about#create-the-service-accounts)."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:ControlPlaneAccess
+    properties:
+      name: ${var.name}
+      analytics_publisher_identities: ${var.analytics_publisher_identities}
+      id: ${var.id}
+      synchronizer_identities: ${var.synchronizer_identities}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

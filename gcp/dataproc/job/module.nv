@@ -1,0 +1,166 @@
+variables:
+  force_delete:
+    type: boolean
+    description: "By default, you can only delete inactive jobs within Dataproc. Setting this to true, and calling destroy, will ensure that the job is first cancelled before issuing the delete."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Job"
+    default: null
+  labels:
+    type: object
+    description: "Optional. The labels to associate with this job.  				**Note**: This field is non-authoritative, and will only manage the labels present in your configuration. 				Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "The project in which the cluster can be found and jobs subsequently run against. If it is not provided, the provider project is used."
+    default: null
+  region:
+    type: string
+    description: "The Cloud Dataproc region. This essentially determines which clusters are available for this job to be submitted to. If not specified, defaults to global."
+    default: null
+  hadoop_config:
+    type: list
+    description: "Nested block: hadoop_config"
+    default: []
+  hive_config:
+    type: list
+    description: "Nested block: hive_config"
+    default: []
+  pig_config:
+    type: list
+    description: "Nested block: pig_config"
+    default: []
+  placement:
+    type: list
+    description: "Nested block: placement"
+    default: []
+  presto_config:
+    type: list
+    description: "Nested block: presto_config"
+    default: []
+  pyspark_config:
+    type: list
+    description: "Nested block: pyspark_config"
+    default: []
+  reference:
+    type: list
+    description: "Nested block: reference"
+    default: []
+  scheduling:
+    type: list
+    description: "Nested block: scheduling"
+    default: []
+  spark_config:
+    type: list
+    description: "Nested block: spark_config"
+    default: []
+  sparksql_config:
+    type: list
+    description: "Nested block: sparksql_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataproc:Job
+    properties:
+      force_delete: ${var.force_delete}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        hadoop_config:
+          for_each: ${var.hadoop_config}
+          content:
+            archive_uris: ${each.value.archive_uris}
+            args: ${each.value.args}
+            file_uris: ${each.value.file_uris}
+            jar_file_uris: ${each.value.jar_file_uris}
+            main_class: ${each.value.main_class}
+            main_jar_file_uri: ${each.value.main_jar_file_uri}
+            properties: ${each.value.properties}
+            logging_config: ${each.value.logging_config}
+        hive_config:
+          for_each: ${var.hive_config}
+          content:
+            continue_on_failure: ${each.value.continue_on_failure}
+            jar_file_uris: ${each.value.jar_file_uris}
+            properties: ${each.value.properties}
+            query_file_uri: ${each.value.query_file_uri}
+            query_list: ${each.value.query_list}
+            script_variables: ${each.value.script_variables}
+        pig_config:
+          for_each: ${var.pig_config}
+          content:
+            continue_on_failure: ${each.value.continue_on_failure}
+            jar_file_uris: ${each.value.jar_file_uris}
+            properties: ${each.value.properties}
+            query_file_uri: ${each.value.query_file_uri}
+            query_list: ${each.value.query_list}
+            script_variables: ${each.value.script_variables}
+            logging_config: ${each.value.logging_config}
+        placement:
+          for_each: ${var.placement}
+          content:
+            cluster_name: ${each.value.cluster_name}
+            cluster_uuid: ${each.value.cluster_uuid}
+        presto_config:
+          for_each: ${var.presto_config}
+          content:
+            client_tags: ${each.value.client_tags}
+            continue_on_failure: ${each.value.continue_on_failure}
+            output_format: ${each.value.output_format}
+            properties: ${each.value.properties}
+            query_file_uri: ${each.value.query_file_uri}
+            query_list: ${each.value.query_list}
+            logging_config: ${each.value.logging_config}
+        pyspark_config:
+          for_each: ${var.pyspark_config}
+          content:
+            archive_uris: ${each.value.archive_uris}
+            args: ${each.value.args}
+            file_uris: ${each.value.file_uris}
+            jar_file_uris: ${each.value.jar_file_uris}
+            main_python_file_uri: ${each.value.main_python_file_uri}
+            properties: ${each.value.properties}
+            python_file_uris: ${each.value.python_file_uris}
+            logging_config: ${each.value.logging_config}
+        reference:
+          for_each: ${var.reference}
+          content:
+            job_id: ${each.value.job_id}
+        scheduling:
+          for_each: ${var.scheduling}
+          content:
+            max_failures_per_hour: ${each.value.max_failures_per_hour}
+            max_failures_total: ${each.value.max_failures_total}
+        spark_config:
+          for_each: ${var.spark_config}
+          content:
+            archive_uris: ${each.value.archive_uris}
+            args: ${each.value.args}
+            file_uris: ${each.value.file_uris}
+            jar_file_uris: ${each.value.jar_file_uris}
+            main_class: ${each.value.main_class}
+            main_jar_file_uri: ${each.value.main_jar_file_uri}
+            properties: ${each.value.properties}
+            logging_config: ${each.value.logging_config}
+        sparksql_config:
+          for_each: ${var.sparksql_config}
+          content:
+            jar_file_uris: ${each.value.jar_file_uris}
+            properties: ${each.value.properties}
+            query_file_uri: ${each.value.query_file_uri}
+            query_list: ${each.value.query_list}
+            script_variables: ${each.value.script_variables}
+            logging_config: ${each.value.logging_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

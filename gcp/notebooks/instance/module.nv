@@ -1,0 +1,207 @@
+variables:
+  location:
+    type: string
+    description: "A reference to the zone where the machine resides."
+  machine_type:
+    type: string
+    description: "A reference to a machine type which defines VM kind."
+  name:
+    type: string
+    description: "The name specified for the Notebook instance."
+  boot_disk_size_gb:
+    type: number
+    description: "The size of the boot disk in GB attached to this instance, up to a maximum of 64000 GB (64 TB). The minimum recommended value is 100 GB. If not specified, this defaults to 100."
+    default: null
+  boot_disk_type:
+    type: string
+    description: "Possible disk types for notebook instances. Possible values: [\"DISK_TYPE_UNSPECIFIED\", \"PD_STANDARD\", \"PD_SSD\", \"PD_BALANCED\", \"PD_EXTREME\"]"
+    default: null
+  create_time:
+    type: string
+    description: "Instance creation time"
+    default: null
+  custom_gpu_driver_path:
+    type: string
+    description: "Specify a custom Cloud Storage path where the GPU driver is stored. If not specified, we'll automatically choose from official GPU drivers."
+    default: null
+  data_disk_size_gb:
+    type: number
+    description: "The size of the data disk in GB attached to this instance, up to a maximum of 64000 GB (64 TB). You can choose the size of the data disk based on how big your notebooks and data are. If not specified, this defaults to 100."
+    default: null
+  data_disk_type:
+    type: string
+    description: "Possible disk types for notebook instances. Possible values: [\"DISK_TYPE_UNSPECIFIED\", \"PD_STANDARD\", \"PD_SSD\", \"PD_BALANCED\", \"PD_EXTREME\"]"
+    default: null
+  desired_state:
+    type: string
+    description: "Desired state of the Notebook Instance. Set this field to 'ACTIVE' to start the Instance, and 'STOPPED' to stop the Instance."
+    default: null
+  disk_encryption:
+    type: string
+    description: "Disk encryption method used on the boot and data disks, defaults to GMEK. Possible values: [\"DISK_ENCRYPTION_UNSPECIFIED\", \"GMEK\", \"CMEK\"]"
+    default: null
+  id:
+    type: string
+    description: "Optional property for Instance"
+    default: null
+  install_gpu_driver:
+    type: boolean
+    description: "Whether the end user authorizes Google Cloud to install GPU driver on this instance. If this field is empty or set to false, the GPU driver won't be installed. Only applicable to instances with GPUs."
+    default: null
+  instance_owners:
+    type: list
+    description: "The list of owners of this instance after creation. Format: alias@example.com. Currently supports one owner only. If not specified, all of the service account users of your VM instance's service account can use the instance."
+    default: null
+  kms_key:
+    type: string
+    description: "The KMS key used to encrypt the disks, only applicable if diskEncryption is CMEK. Format: projects/{project_id}/locations/{location}/keyRings/{key_ring_id}/cryptoKeys/{key_id}"
+    default: null
+  labels:
+    type: object
+    description: "Labels to apply to this instance. These can be later modified by the setLabels method. An object containing a list of \"key\": value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  metadata:
+    type: object
+    description: "Custom metadata to apply to this instance. An object containing a list of \"key\": value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }."
+    default: null
+  network:
+    type: string
+    description: "The name of the VPC that this instance is in. Format: projects/{project_id}/global/networks/{network_id}"
+    default: null
+  nic_type:
+    type: string
+    description: "The type of vNIC driver. Possible values: [\"UNSPECIFIED_NIC_TYPE\", \"VIRTIO_NET\", \"GVNIC\"]"
+    default: null
+  no_proxy_access:
+    type: boolean
+    description: "The notebook instance will not register with the proxy.."
+    default: null
+  no_public_ip:
+    type: boolean
+    description: "No public IP will be assigned to this instance."
+    default: null
+  no_remove_data_disk:
+    type: boolean
+    description: "If true, the data disk will not be auto deleted when deleting the instance."
+    default: null
+  post_startup_script:
+    type: string
+    description: "Path to a Bash script that automatically runs after a notebook instance fully boots up. The path must be a URL or Cloud Storage path (gs://path-to-file/file-name)."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Instance"
+    default: null
+  service_account:
+    type: string
+    description: "The service account on this instance, giving access to other Google Cloud services. You can use any service account within the same project, but you must have the service account user permission to use the instance. If not specified, the Compute Engine default service account is used."
+    default: null
+  service_account_scopes:
+    type: list
+    description: "Optional. The URIs of service account scopes to be included in Compute Engine instances. If not specified, the following scopes are defined: - https://www.googleapis.com/auth/cloud-platform - https://www.googleapis.com/auth/userinfo.email"
+    default: null
+  subnet:
+    type: string
+    description: "The name of the subnet that this instance is in. Format: projects/{project_id}/regions/{region}/subnetworks/{subnetwork_id}"
+    default: null
+  tags:
+    type: list
+    description: "The Compute Engine tags to add to instance."
+    default: null
+  update_time:
+    type: string
+    description: "Instance update time."
+    default: null
+  accelerator_config:
+    type: list
+    description: "Nested block: accelerator_config"
+    default: []
+  container_image:
+    type: list
+    description: "Nested block: container_image"
+    default: []
+  reservation_affinity:
+    type: list
+    description: "Nested block: reservation_affinity"
+    default: []
+  shielded_instance_config:
+    type: list
+    description: "Nested block: shielded_instance_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  vm_image:
+    type: list
+    description: "Nested block: vm_image"
+    default: []
+
+resources:
+  main:
+    type: gcp:notebooks:Instance
+    properties:
+      location: ${var.location}
+      machine_type: ${var.machine_type}
+      name: ${var.name}
+      boot_disk_size_gb: ${var.boot_disk_size_gb}
+      boot_disk_type: ${var.boot_disk_type}
+      create_time: ${var.create_time}
+      custom_gpu_driver_path: ${var.custom_gpu_driver_path}
+      data_disk_size_gb: ${var.data_disk_size_gb}
+      data_disk_type: ${var.data_disk_type}
+      desired_state: ${var.desired_state}
+      disk_encryption: ${var.disk_encryption}
+      id: ${var.id}
+      install_gpu_driver: ${var.install_gpu_driver}
+      instance_owners: ${var.instance_owners}
+      kms_key: ${var.kms_key}
+      labels: ${var.labels}
+      metadata: ${var.metadata}
+      network: ${var.network}
+      nic_type: ${var.nic_type}
+      no_proxy_access: ${var.no_proxy_access}
+      no_public_ip: ${var.no_public_ip}
+      no_remove_data_disk: ${var.no_remove_data_disk}
+      post_startup_script: ${var.post_startup_script}
+      project: ${var.project}
+      service_account: ${var.service_account}
+      service_account_scopes: ${var.service_account_scopes}
+      subnet: ${var.subnet}
+      tags: ${var.tags}
+      update_time: ${var.update_time}
+      dynamic:
+        accelerator_config:
+          for_each: ${var.accelerator_config}
+          content:
+            core_count: ${each.value.core_count}
+            type: ${each.value.type}
+        container_image:
+          for_each: ${var.container_image}
+          content:
+            repository: ${each.value.repository}
+            tag: ${each.value.tag}
+        reservation_affinity:
+          for_each: ${var.reservation_affinity}
+          content:
+            consume_reservation_type: ${each.value.consume_reservation_type}
+            key: ${each.value.key}
+            values: ${each.value.values}
+        shielded_instance_config:
+          for_each: ${var.shielded_instance_config}
+          content:
+            enable_integrity_monitoring: ${each.value.enable_integrity_monitoring}
+            enable_secure_boot: ${each.value.enable_secure_boot}
+            enable_vtpm: ${each.value.enable_vtpm}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        vm_image:
+          for_each: ${var.vm_image}
+          content:
+            image_family: ${each.value.image_family}
+            image_name: ${each.value.image_name}
+            project: ${each.value.project}

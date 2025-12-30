@@ -1,0 +1,73 @@
+variables:
+  location:
+    type: string
+    description: "Required. Compute Engine location where the instance resides."
+  name:
+    type: string
+    description: "Resource ID of the instance."
+  org_id:
+    type: string
+    description: "The Apigee Organization associated with the Apigee instance, in the format 'organizations/{{org_name}}'."
+  consumer_accept_list:
+    type: list
+    description: "Optional. Customer accept list represents the list of projects (id/number) on customer side that can privately connect to the service attachment. It is an optional field which the customers can provide during the instance creation. By default, the customer project associated with the Apigee organization will be included to the list."
+    default: null
+  description:
+    type: string
+    description: "Description of the instance."
+    default: null
+  disk_encryption_key_name:
+    type: string
+    description: "Customer Managed Encryption Key (CMEK) used for disk and volume encryption. Required for Apigee paid subscriptions only. Use the following format: 'projects/([^/]+)/locations/([^/]+)/keyRings/([^/]+)/cryptoKeys/([^/]+)'"
+    default: null
+  display_name:
+    type: string
+    description: "Display name of the instance."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Instance"
+    default: null
+  ip_range:
+    type: string
+    description: "IP range represents the customer-provided CIDR block of length 22 that will be used for the Apigee instance creation. This optional range, if provided, should be freely available as part of larger named range the customer has allocated to the Service Networking peering. If this is not provided, Apigee will automatically request for any available /22 CIDR block from Service Networking. The customer should use this CIDR block for configuring their firewall needs to allow traffic from Apigee. Input format: \"a.b.c.d/22\""
+    default: null
+  peering_cidr_range:
+    type: string
+    description: "The size of the CIDR block range that will be reserved by the instance. For valid values, see [CidrRange](https://cloud.google.com/apigee/docs/reference/apis/apigee/rest/v1/organizations.instances#CidrRange) on the documentation."
+    default: null
+  access_logging_config:
+    type: list
+    description: "Nested block: access_logging_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:Instance
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      org_id: ${var.org_id}
+      consumer_accept_list: ${var.consumer_accept_list}
+      description: ${var.description}
+      disk_encryption_key_name: ${var.disk_encryption_key_name}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      ip_range: ${var.ip_range}
+      peering_cidr_range: ${var.peering_cidr_range}
+      dynamic:
+        access_logging_config:
+          for_each: ${var.access_logging_config}
+          content:
+            enabled: ${each.value.enabled}
+            filter: ${each.value.filter}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

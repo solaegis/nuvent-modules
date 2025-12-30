@@ -1,0 +1,30 @@
+variables:
+  bucket:
+    type: string
+    description: "The name of the bucket it applies to."
+  default_acl:
+    type: string
+    description: "Configure this ACL to be the default ACL."
+    default: null
+  id:
+    type: string
+    description: "Optional property for BucketAcl"
+    default: null
+  predefined_acl:
+    type: string
+    description: "The canned GCS ACL to apply. Must be set if role_entity is not."
+    default: null
+  role_entity:
+    type: list
+    description: "List of role/entity pairs in the form ROLE:entity. See GCS Bucket ACL documentation  for more details. Must be set if predefined_acl is not."
+    default: null
+
+resources:
+  main:
+    type: gcp:storage:BucketAcl
+    properties:
+      bucket: ${var.bucket}
+      default_acl: ${var.default_acl}
+      id: ${var.id}
+      predefined_acl: ${var.predefined_acl}
+      role_entity: ${var.role_entity}

@@ -1,0 +1,69 @@
+variables:
+  parent:
+    type: string
+    description: "The parent of the info type in any of the following formats:  * 'projects/{{project}}' * 'projects/{{project}}/locations/{{location}}' * 'organizations/{{organization_id}}' * 'organizations/{{organization_id}}/locations/{{location}}'"
+  description:
+    type: string
+    description: "A description of the info type."
+    default: null
+  display_name:
+    type: string
+    description: "User set display name of the info type."
+    default: null
+  id:
+    type: string
+    description: "Optional property for LossPreventionStoredInfoType"
+    default: null
+  stored_info_type_id:
+    type: string
+    description: "The storedInfoType ID can contain uppercase and lowercase letters, numbers, and hyphens; that is, it must match the regular expression: [a-zA-Z\d-_]+. The maximum length is 100 characters. Can be empty to allow the system to generate one."
+    default: null
+  dictionary:
+    type: list
+    description: "Nested block: dictionary"
+    default: []
+  large_custom_dictionary:
+    type: list
+    description: "Nested block: large_custom_dictionary"
+    default: []
+  regex:
+    type: list
+    description: "Nested block: regex"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:data:LossPreventionStoredInfoType
+    properties:
+      parent: ${var.parent}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      stored_info_type_id: ${var.stored_info_type_id}
+      dynamic:
+        dictionary:
+          for_each: ${var.dictionary}
+          content:
+            cloud_storage_path: ${each.value.cloud_storage_path}
+            word_list: ${each.value.word_list}
+        large_custom_dictionary:
+          for_each: ${var.large_custom_dictionary}
+          content:
+            big_query_field: ${each.value.big_query_field}
+            cloud_storage_file_set: ${each.value.cloud_storage_file_set}
+            output_path: ${each.value.output_path}
+        regex:
+          for_each: ${var.regex}
+          content:
+            group_indexes: ${each.value.group_indexes}
+            pattern: ${each.value.pattern}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

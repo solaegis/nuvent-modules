@@ -1,0 +1,29 @@
+variables:
+  membership_id:
+    type: string
+    description: "Required property for HubMembershipIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for HubMembershipIamPolicy"
+  id:
+    type: string
+    description: "Optional property for HubMembershipIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for HubMembershipIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for HubMembershipIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:gke:HubMembershipIamPolicy
+    properties:
+      membership_id: ${var.membership_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

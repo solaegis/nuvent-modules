@@ -1,0 +1,43 @@
+variables:
+  assignee:
+    type: string
+    description: "The resource which will use the reservation. E.g. projects/myproject, folders/123, organizations/456."
+  job_type:
+    type: string
+    description: "Types of job, which could be specified when using the reservation. Possible values: JOB_TYPE_UNSPECIFIED, PIPELINE, QUERY, CONTINUOUS"
+  reservation:
+    type: string
+    description: "The reservation for the resource"
+  id:
+    type: string
+    description: "Optional property for ReservationAssignment"
+    default: null
+  location:
+    type: string
+    description: "The location for the resource"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ReservationAssignment"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigquery:ReservationAssignment
+    properties:
+      assignee: ${var.assignee}
+      job_type: ${var.job_type}
+      reservation: ${var.reservation}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

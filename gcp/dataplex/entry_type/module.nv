@@ -1,0 +1,75 @@
+variables:
+  description:
+    type: string
+    description: "Description of the EntryType."
+    default: null
+  display_name:
+    type: string
+    description: "User friendly display name."
+    default: null
+  entry_type_id:
+    type: string
+    description: "The entry type id of the entry type."
+    default: null
+  id:
+    type: string
+    description: "Optional property for EntryType"
+    default: null
+  labels:
+    type: object
+    description: "User-defined labels for the EntryType.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "The location where entry type will be created in."
+    default: null
+  platform:
+    type: string
+    description: "The platform that Entries of this type belongs to."
+    default: null
+  project:
+    type: string
+    description: "Optional property for EntryType"
+    default: null
+  system:
+    type: string
+    description: "The system that Entries of this type belongs to."
+    default: null
+  type_aliases:
+    type: list
+    description: "Indicates the class this Entry Type belongs to, for example, TABLE, DATABASE, MODEL."
+    default: null
+  required_aspects:
+    type: list
+    description: "Nested block: required_aspects"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataplex:EntryType
+    properties:
+      description: ${var.description}
+      display_name: ${var.display_name}
+      entry_type_id: ${var.entry_type_id}
+      id: ${var.id}
+      labels: ${var.labels}
+      location: ${var.location}
+      platform: ${var.platform}
+      project: ${var.project}
+      system: ${var.system}
+      type_aliases: ${var.type_aliases}
+      dynamic:
+        required_aspects:
+          for_each: ${var.required_aspects}
+          content:
+            type: ${each.value.type}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,46 @@
+variables:
+  description:
+    type: string
+    description: "Description for the zone."
+  dns_zone_id:
+    type: string
+    description: "ID of the dns zone."
+  domain:
+    type: string
+    description: "Doamin for the zone."
+  org_id:
+    type: string
+    description: "The Apigee Organization associated with the Apigee instance, in the format 'organizations/{{org_name}}'."
+  id:
+    type: string
+    description: "Optional property for DnsZone"
+    default: null
+  peering_config:
+    type: list
+    description: "Nested block: peering_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:DnsZone
+    properties:
+      description: ${var.description}
+      dns_zone_id: ${var.dns_zone_id}
+      domain: ${var.domain}
+      org_id: ${var.org_id}
+      id: ${var.id}
+      dynamic:
+        peering_config:
+          for_each: ${var.peering_config}
+          content:
+            target_network_id: ${each.value.target_network_id}
+            target_project_id: ${each.value.target_project_id}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

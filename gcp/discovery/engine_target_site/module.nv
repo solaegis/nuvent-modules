@@ -1,0 +1,48 @@
+variables:
+  data_store_id:
+    type: string
+    description: "The unique id of the data store."
+  location:
+    type: string
+    description: "The geographic location where the data store should reside. The value can only be one of \"global\", \"us\" and \"eu\"."
+  provided_uri_pattern:
+    type: string
+    description: "The user provided URI pattern from which the 'generated_uri_pattern' is generated."
+  exact_match:
+    type: boolean
+    description: "If set to false, a uri_pattern is generated to include all pages whose address contains the provided_uri_pattern. If set to true, an uri_pattern is generated to try to be an exact match of the provided_uri_pattern or just the specific page if the provided_uri_pattern is a specific one. provided_uri_pattern is always normalized to generate the URI pattern to be used by the search engine."
+    default: null
+  id:
+    type: string
+    description: "Optional property for EngineTargetSite"
+    default: null
+  project:
+    type: string
+    description: "Optional property for EngineTargetSite"
+    default: null
+  type:
+    type: string
+    description: "The possible target site types. Possible values: [\"INCLUDE\", \"EXCLUDE\"]"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:discovery:EngineTargetSite
+    properties:
+      data_store_id: ${var.data_store_id}
+      location: ${var.location}
+      provided_uri_pattern: ${var.provided_uri_pattern}
+      exact_match: ${var.exact_match}
+      id: ${var.id}
+      project: ${var.project}
+      type: ${var.type}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

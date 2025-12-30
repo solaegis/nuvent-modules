@@ -1,0 +1,78 @@
+variables:
+  name:
+    type: string
+    description: "\"The pipeline name. For example': 'projects/PROJECT_ID/locations/LOCATION_ID/pipelines/PIPELINE_ID.\" \"- PROJECT_ID can contain letters ([A-Za-z]), numbers ([0-9]), hyphens (-), colons (:), and periods (.). For more information, see Identifying projects.\" \"LOCATION_ID is the canonical ID for the pipeline's location. The list of available locations can be obtained by calling google.cloud.location.Locations.ListLocations. Note that the Data Pipelines service is not available in all regions. It depends on Cloud Scheduler, an App Engine application, so it's only available in App Engine regions.\" \"PIPELINE_ID is the ID of the pipeline. Must be unique for the selected project and location.\""
+  state:
+    type: string
+    description: "The state of the pipeline. When the pipeline is created, the state is set to 'PIPELINE_STATE_ACTIVE' by default. State changes can be requested by setting the state to stopping, paused, or resuming. State cannot be changed through pipelines.patch requests. https://cloud.google.com/dataflow/docs/reference/data-pipelines/rest/v1/projects.locations.pipelines#state Possible values: [\"STATE_UNSPECIFIED\", \"STATE_RESUMING\", \"STATE_ACTIVE\", \"STATE_STOPPING\", \"STATE_ARCHIVED\", \"STATE_PAUSED\"]"
+  type:
+    type: string
+    description: "The type of the pipeline. This field affects the scheduling of the pipeline and the type of metrics to show for the pipeline. https://cloud.google.com/dataflow/docs/reference/data-pipelines/rest/v1/projects.locations.pipelines#pipelinetype Possible values: [\"PIPELINE_TYPE_UNSPECIFIED\", \"PIPELINE_TYPE_BATCH\", \"PIPELINE_TYPE_STREAMING\"]"
+  display_name:
+    type: string
+    description: "The display name of the pipeline. It can contain only letters ([A-Za-z]), numbers ([0-9]), hyphens (-), and underscores (_)."
+    default: null
+  id:
+    type: string
+    description: "Optional property for PipelinePipeline"
+    default: null
+  pipeline_sources:
+    type: object
+    description: "The sources of the pipeline (for example, Dataplex). The keys and values are set by the corresponding sources during pipeline creation. An object containing a list of \"key\": value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }."
+    default: null
+  project:
+    type: string
+    description: "Optional property for PipelinePipeline"
+    default: null
+  region:
+    type: string
+    description: "A reference to the region"
+    default: null
+  scheduler_service_account_email:
+    type: string
+    description: "Optional. A service account email to be used with the Cloud Scheduler job. If not specified, the default compute engine service account will be used."
+    default: null
+  schedule_info:
+    type: list
+    description: "Nested block: schedule_info"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  workload:
+    type: list
+    description: "Nested block: workload"
+    default: []
+
+resources:
+  main:
+    type: gcp:data:PipelinePipeline
+    properties:
+      name: ${var.name}
+      state: ${var.state}
+      type: ${var.type}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      pipeline_sources: ${var.pipeline_sources}
+      project: ${var.project}
+      region: ${var.region}
+      scheduler_service_account_email: ${var.scheduler_service_account_email}
+      dynamic:
+        schedule_info:
+          for_each: ${var.schedule_info}
+          content:
+            next_job_time: ${each.value.next_job_time}
+            schedule: ${each.value.schedule}
+            time_zone: ${each.value.time_zone}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        workload:
+          for_each: ${var.workload}
+          content:
+            dataflow_flex_template_request: ${each.value.dataflow_flex_template_request}
+            dataflow_launch_template_request: ${each.value.dataflow_launch_template_request}

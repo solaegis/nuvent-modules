@@ -1,0 +1,53 @@
+variables:
+  code_tools_setting_id:
+    type: string
+    description: "Id of the Code Tools Setting."
+  id:
+    type: string
+    description: "Optional property for CodeToolsSetting"
+    default: null
+  labels:
+    type: object
+    description: "Labels as key value pairs.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+    default: null
+  project:
+    type: string
+    description: "Optional property for CodeToolsSetting"
+    default: null
+  enabled_tool:
+    type: list
+    description: "Nested block: enabled_tool"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:gemini:CodeToolsSetting
+    properties:
+      code_tools_setting_id: ${var.code_tools_setting_id}
+      id: ${var.id}
+      labels: ${var.labels}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        enabled_tool:
+          for_each: ${var.enabled_tool}
+          content:
+            account_connector: ${each.value.account_connector}
+            handle: ${each.value.handle}
+            tool: ${each.value.tool}
+            uri_override: ${each.value.uri_override}
+            config: ${each.value.config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,39 @@
+variables:
+  member:
+    type: string
+    description: "Required property for WebBackendServiceIamMember"
+  role:
+    type: string
+    description: "Required property for WebBackendServiceIamMember"
+  web_backend_service:
+    type: string
+    description: "Required property for WebBackendServiceIamMember"
+  id:
+    type: string
+    description: "Optional property for WebBackendServiceIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WebBackendServiceIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:iap:WebBackendServiceIamMember
+    properties:
+      member: ${var.member}
+      role: ${var.role}
+      web_backend_service: ${var.web_backend_service}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

@@ -1,0 +1,44 @@
+variables:
+  glossary_id:
+    type: string
+    description: "Required property for GlossaryIamMember"
+  member:
+    type: string
+    description: "Required property for GlossaryIamMember"
+  role:
+    type: string
+    description: "Required property for GlossaryIamMember"
+  id:
+    type: string
+    description: "Optional property for GlossaryIamMember"
+    default: null
+  location:
+    type: string
+    description: "Optional property for GlossaryIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for GlossaryIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataplex:GlossaryIamMember
+    properties:
+      glossary_id: ${var.glossary_id}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

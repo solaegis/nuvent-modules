@@ -1,0 +1,41 @@
+variables:
+  display_name:
+    type: string
+    description: "A user-assigned display name of the Fleet. When present, it must be between 4 to 30 characters. Allowed characters are: lowercase and uppercase letters, numbers, hyphen, single-quote, double-quote, space, and exclamation point."
+    default: null
+  id:
+    type: string
+    description: "Optional property for HubFleet"
+    default: null
+  project:
+    type: string
+    description: "Optional property for HubFleet"
+    default: null
+  default_cluster_config:
+    type: list
+    description: "Nested block: default_cluster_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:gke:HubFleet
+    properties:
+      display_name: ${var.display_name}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        default_cluster_config:
+          for_each: ${var.default_cluster_config}
+          content:
+            binary_authorization_config: ${each.value.binary_authorization_config}
+            security_posture_config: ${each.value.security_posture_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

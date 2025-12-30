@@ -1,0 +1,120 @@
+variables:
+  azure_region:
+    type: string
+    description: "The Azure region where the cluster runs. Each Google Cloud region supports a subset of nearby Azure regions. You can call to list all supported Azure regions within a given Google Cloud region."
+  location:
+    type: string
+    description: "The location for the resource"
+  name:
+    type: string
+    description: "The name of this resource."
+  resource_group_id:
+    type: string
+    description: "The ARM ID of the resource group where the cluster resources are deployed. For example: `/subscriptions/*/resourceGroups/*`"
+  annotations:
+    type: object
+    description: "Optional. Annotations on the cluster. This field has the same restrictions as Kubernetes annotations. The total size of all keys and values combined is limited to 256k. Keys can have 2 segments: prefix (optional) and name (required), separated by a slash (/). Prefix must be a DNS subdomain. Name must be 63 characters or less, begin and end with alphanumerics, with dashes (-), underscores (_), dots (.), and alphanumerics between.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field `effective_annotations` for all of the annotations present on the resource."
+    default: null
+  client:
+    type: string
+    description: "Name of the AzureClient. The `AzureClient` resource must reside on the same GCP project and region as the `AzureCluster`. `AzureClient` names are formatted as `projects/<project-number>/locations/<region>/azureClients/<client-id>`. See Resource Names (https:cloud.google.com/apis/design/resource_names) for more details on Google Cloud resource names."
+    default: null
+  description:
+    type: string
+    description: "Optional. A human readable description of this cluster. Cannot be longer than 255 UTF-8 encoded bytes."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AzureCluster"
+    default: null
+  project:
+    type: string
+    description: "The project for the resource"
+    default: null
+  authorization:
+    type: list
+    description: "Nested block: authorization"
+    default: []
+  azure_services_authentication:
+    type: list
+    description: "Nested block: azure_services_authentication"
+    default: []
+  control_plane:
+    type: list
+    description: "Nested block: control_plane"
+    default: []
+  fleet:
+    type: list
+    description: "Nested block: fleet"
+    default: []
+  logging_config:
+    type: list
+    description: "Nested block: logging_config"
+    default: []
+  networking:
+    type: list
+    description: "Nested block: networking"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:container:AzureCluster
+    properties:
+      azure_region: ${var.azure_region}
+      location: ${var.location}
+      name: ${var.name}
+      resource_group_id: ${var.resource_group_id}
+      annotations: ${var.annotations}
+      client: ${var.client}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        authorization:
+          for_each: ${var.authorization}
+          content:
+            admin_groups: ${each.value.admin_groups}
+            admin_users: ${each.value.admin_users}
+        azure_services_authentication:
+          for_each: ${var.azure_services_authentication}
+          content:
+            application_id: ${each.value.application_id}
+            tenant_id: ${each.value.tenant_id}
+        control_plane:
+          for_each: ${var.control_plane}
+          content:
+            subnet_id: ${each.value.subnet_id}
+            tags: ${each.value.tags}
+            version: ${each.value.version}
+            vm_size: ${each.value.vm_size}
+            database_encryption: ${each.value.database_encryption}
+            main_volume: ${each.value.main_volume}
+            proxy_config: ${each.value.proxy_config}
+            replica_placements: ${each.value.replica_placements}
+            root_volume: ${each.value.root_volume}
+            ssh_config: ${each.value.ssh_config}
+        fleet:
+          for_each: ${var.fleet}
+          content:
+            membership: ${each.value.membership}
+            project: ${each.value.project}
+        logging_config:
+          for_each: ${var.logging_config}
+          content:
+            component_config: ${each.value.component_config}
+        networking:
+          for_each: ${var.networking}
+          content:
+            pod_address_cidr_blocks: ${each.value.pod_address_cidr_blocks}
+            service_address_cidr_blocks: ${each.value.service_address_cidr_blocks}
+            virtual_network_id: ${each.value.virtual_network_id}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

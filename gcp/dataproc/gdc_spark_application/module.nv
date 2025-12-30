@@ -1,0 +1,127 @@
+variables:
+  location:
+    type: string
+    description: "The location of the spark application."
+  serviceinstance:
+    type: string
+    description: "The id of the service instance to which this spark application belongs."
+  spark_application_id:
+    type: string
+    description: "The id of the application"
+  annotations:
+    type: object
+    description: "The annotations to associate with this application. Annotations may be used to store client information, but are not used by the server.   **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  application_environment:
+    type: string
+    description: "An ApplicationEnvironment from which to inherit configuration properties."
+    default: null
+  dependency_images:
+    type: list
+    description: "List of container image uris for additional file dependencies. Dependent files are sequentially copied from each image. If a file with the same name exists in 2 images then the file from later image is used."
+    default: null
+  display_name:
+    type: string
+    description: "User-provided human-readable name to be used in user interfaces."
+    default: null
+  id:
+    type: string
+    description: "Optional property for GdcSparkApplication"
+    default: null
+  labels:
+    type: object
+    description: "The labels to associate with this application. Labels may be used for filtering and billing tracking.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  namespace:
+    type: string
+    description: "The Kubernetes namespace in which to create the application. This namespace must already exist on the cluster."
+    default: null
+  project:
+    type: string
+    description: "Optional property for GdcSparkApplication"
+    default: null
+  properties:
+    type: object
+    description: "application-specific properties."
+    default: null
+  version:
+    type: string
+    description: "The Dataproc version of this application."
+    default: null
+  pyspark_application_config:
+    type: list
+    description: "Nested block: pyspark_application_config"
+    default: []
+  spark_application_config:
+    type: list
+    description: "Nested block: spark_application_config"
+    default: []
+  spark_r_application_config:
+    type: list
+    description: "Nested block: spark_r_application_config"
+    default: []
+  spark_sql_application_config:
+    type: list
+    description: "Nested block: spark_sql_application_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataproc:GdcSparkApplication
+    properties:
+      location: ${var.location}
+      serviceinstance: ${var.serviceinstance}
+      spark_application_id: ${var.spark_application_id}
+      annotations: ${var.annotations}
+      application_environment: ${var.application_environment}
+      dependency_images: ${var.dependency_images}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      namespace: ${var.namespace}
+      project: ${var.project}
+      properties: ${var.properties}
+      version: ${var.version}
+      dynamic:
+        pyspark_application_config:
+          for_each: ${var.pyspark_application_config}
+          content:
+            archive_uris: ${each.value.archive_uris}
+            args: ${each.value.args}
+            file_uris: ${each.value.file_uris}
+            jar_file_uris: ${each.value.jar_file_uris}
+            main_python_file_uri: ${each.value.main_python_file_uri}
+            python_file_uris: ${each.value.python_file_uris}
+        spark_application_config:
+          for_each: ${var.spark_application_config}
+          content:
+            archive_uris: ${each.value.archive_uris}
+            args: ${each.value.args}
+            file_uris: ${each.value.file_uris}
+            jar_file_uris: ${each.value.jar_file_uris}
+            main_class: ${each.value.main_class}
+            main_jar_file_uri: ${each.value.main_jar_file_uri}
+        spark_r_application_config:
+          for_each: ${var.spark_r_application_config}
+          content:
+            archive_uris: ${each.value.archive_uris}
+            args: ${each.value.args}
+            file_uris: ${each.value.file_uris}
+            main_r_file_uri: ${each.value.main_r_file_uri}
+        spark_sql_application_config:
+          for_each: ${var.spark_sql_application_config}
+          content:
+            jar_file_uris: ${each.value.jar_file_uris}
+            query_file_uri: ${each.value.query_file_uri}
+            script_variables: ${each.value.script_variables}
+            query_list: ${each.value.query_list}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

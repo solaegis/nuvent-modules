@@ -1,0 +1,56 @@
+variables:
+  domain:
+    type: string
+    description: "The fully qualified domain name. e.g. mydomain.myorganization.com, with the restrictions of https://cloud.google.com/managed-microsoft-ad/reference/rest/v1/projects.locations.global.domains."
+  target_dns_ip_addresses:
+    type: list
+    description: "The target DNS server IP addresses which can resolve the remote domain involved in the trust."
+  target_domain_name:
+    type: string
+    description: "The fully qualified target domain name which will be in trust with the current domain."
+  trust_direction:
+    type: string
+    description: "The trust direction, which decides if the current domain is trusted, trusting, or both. Possible values: [\"INBOUND\", \"OUTBOUND\", \"BIDIRECTIONAL\"]"
+  trust_handshake_secret:
+    type: string
+    description: "The trust secret used for the handshake with the target domain. This will not be stored."
+  trust_type:
+    type: string
+    description: "The type of trust represented by the trust resource. Possible values: [\"FOREST\", \"EXTERNAL\"]"
+  id:
+    type: string
+    description: "Optional property for DirectoryDomainTrust"
+    default: null
+  project:
+    type: string
+    description: "Optional property for DirectoryDomainTrust"
+    default: null
+  selective_authentication:
+    type: boolean
+    description: "Whether the trusted side has forest/domain wide access or selective access to an approved set of resources."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:active:DirectoryDomainTrust
+    properties:
+      domain: ${var.domain}
+      target_dns_ip_addresses: ${var.target_dns_ip_addresses}
+      target_domain_name: ${var.target_domain_name}
+      trust_direction: ${var.trust_direction}
+      trust_handshake_secret: ${var.trust_handshake_secret}
+      trust_type: ${var.trust_type}
+      id: ${var.id}
+      project: ${var.project}
+      selective_authentication: ${var.selective_authentication}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

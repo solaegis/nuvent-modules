@@ -1,0 +1,35 @@
+variables:
+  id:
+    type: string
+    description: "Optional property for Ruleset"
+    default: null
+  project:
+    type: string
+    description: "The project for the resource"
+    default: null
+  source:
+    type: list
+    description: "Nested block: source"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:firebaserules:Ruleset
+    properties:
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        source:
+          for_each: ${var.source}
+          content:
+            language: ${each.value.language}
+            files: ${each.value.files}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

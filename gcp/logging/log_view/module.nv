@@ -1,0 +1,50 @@
+variables:
+  bucket:
+    type: string
+    description: "The bucket of the resource"
+  name:
+    type: string
+    description: "The resource name of the view. For example: \'projects/my-project/locations/global/buckets/my-bucket/views/my-view\'"
+  description:
+    type: string
+    description: "Describes this view."
+    default: null
+  filter:
+    type: string
+    description: "Filter that restricts which log entries in a bucket are visible in this view. Filters are restricted to be a logical AND of ==/!= of any of the following: - originating project/folder/organization/billing account. - resource type - log id For example: SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND LOG_ID(\"stdout\")"
+    default: null
+  id:
+    type: string
+    description: "Optional property for LogView"
+    default: null
+  location:
+    type: string
+    description: "The location of the resource. The supported locations are: global, us-central1, us-east1, us-west1, asia-east1, europe-west1."
+    default: null
+  parent:
+    type: string
+    description: "The parent of the resource."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:logging:LogView
+    properties:
+      bucket: ${var.bucket}
+      name: ${var.name}
+      description: ${var.description}
+      filter: ${var.filter}
+      id: ${var.id}
+      location: ${var.location}
+      parent: ${var.parent}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

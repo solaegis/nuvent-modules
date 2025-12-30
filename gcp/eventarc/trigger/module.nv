@@ -1,0 +1,94 @@
+variables:
+  location:
+    type: string
+    description: "The location for the resource"
+  name:
+    type: string
+    description: "Required. The resource name of the trigger. Must be unique within the location on the project."
+  channel:
+    type: string
+    description: "Optional. The name of the channel associated with the trigger in 'projects/{project}/locations/{location}/channels/{channel}' format. You must provide a channel to receive events from Eventarc SaaS partners."
+    default: null
+  event_data_content_type:
+    type: string
+    description: "Optional. EventDataContentType specifies the type of payload in MIME format that is expected from the CloudEvent data field. This is set to 'application/json' if the value is not defined."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Trigger"
+    default: null
+  labels:
+    type: object
+    description: "Optional. User labels attached to the triggers that can be used to group resources.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Trigger"
+    default: null
+  service_account:
+    type: string
+    description: "Optional. The IAM service account email associated with the trigger. The service account represents the identity of the trigger. The principal who calls this API must have 'iam.serviceAccounts.actAs' permission in the service account. See https://cloud.google.com/iam/docs/understanding-service-accounts#sa_common for more information. For Cloud Run destinations, this service account is used to generate identity tokens when invoking the service. See https://cloud.google.com/run/docs/triggering/pubsub-push#create-service-account for information on how to invoke authenticated Cloud Run services. In order to create Audit Log triggers, the service account should also have 'roles/eventarc.eventReceiver' IAM role."
+    default: null
+  destination:
+    type: list
+    description: "Nested block: destination"
+    default: []
+  matching_criteria:
+    type: list
+    description: "Nested block: matching_criteria"
+    default: []
+  retry_policy:
+    type: list
+    description: "Nested block: retry_policy"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  transport:
+    type: list
+    description: "Nested block: transport"
+    default: []
+
+resources:
+  main:
+    type: gcp:eventarc:Trigger
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      channel: ${var.channel}
+      event_data_content_type: ${var.event_data_content_type}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      service_account: ${var.service_account}
+      dynamic:
+        destination:
+          for_each: ${var.destination}
+          content:
+            cloud_function: ${each.value.cloud_function}
+            workflow: ${each.value.workflow}
+            cloud_run_service: ${each.value.cloud_run_service}
+            gke: ${each.value.gke}
+            http_endpoint: ${each.value.http_endpoint}
+            network_config: ${each.value.network_config}
+        matching_criteria:
+          for_each: ${var.matching_criteria}
+          content:
+            attribute: ${each.value.attribute}
+            operator: ${each.value.operator}
+            value: ${each.value.value}
+        retry_policy:
+          for_each: ${var.retry_policy}
+          content:
+            max_attempts: ${each.value.max_attempts}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        transport:
+          for_each: ${var.transport}
+          content:
+            pubsub: ${each.value.pubsub}

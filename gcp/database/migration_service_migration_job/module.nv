@@ -1,0 +1,111 @@
+variables:
+  destination:
+    type: string
+    description: "The name of the destination connection profile resource in the form of projects/{project}/locations/{location}/connectionProfiles/{destinationConnectionProfile}."
+  migration_job_id:
+    type: string
+    description: "The ID of the migration job."
+  source:
+    type: string
+    description: "The name of the source connection profile resource in the form of projects/{project}/locations/{location}/connectionProfiles/{sourceConnectionProfile}."
+  type:
+    type: string
+    description: "The type of the migration job. Possible values: [\"ONE_TIME\", \"CONTINUOUS\"]"
+  display_name:
+    type: string
+    description: "The migration job display name."
+    default: null
+  dump_path:
+    type: string
+    description: "The path to the dump file in Google Cloud Storage, in the format: (gs://[BUCKET_NAME]/[OBJECT_NAME]). This field and the \"dump_flags\" field are mutually exclusive."
+    default: null
+  dump_type:
+    type: string
+    description: "The type of the data dump. Supported for MySQL to CloudSQL for MySQL migrations only. Possible values: [\"LOGICAL\", \"PHYSICAL\"]"
+    default: null
+  id:
+    type: string
+    description: "Optional property for MigrationServiceMigrationJob"
+    default: null
+  labels:
+    type: object
+    description: "The resource labels for migration job to use to annotate any related underlying resources such as Compute Engine VMs.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "The location where the migration job should reside."
+    default: null
+  project:
+    type: string
+    description: "Optional property for MigrationServiceMigrationJob"
+    default: null
+  dump_flags:
+    type: list
+    description: "Nested block: dump_flags"
+    default: []
+  performance_config:
+    type: list
+    description: "Nested block: performance_config"
+    default: []
+  reverse_ssh_connectivity:
+    type: list
+    description: "Nested block: reverse_ssh_connectivity"
+    default: []
+  static_ip_connectivity:
+    type: list
+    description: "Nested block: static_ip_connectivity"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  vpc_peering_connectivity:
+    type: list
+    description: "Nested block: vpc_peering_connectivity"
+    default: []
+
+resources:
+  main:
+    type: gcp:database:MigrationServiceMigrationJob
+    properties:
+      destination: ${var.destination}
+      migration_job_id: ${var.migration_job_id}
+      source: ${var.source}
+      type: ${var.type}
+      display_name: ${var.display_name}
+      dump_path: ${var.dump_path}
+      dump_type: ${var.dump_type}
+      id: ${var.id}
+      labels: ${var.labels}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        dump_flags:
+          for_each: ${var.dump_flags}
+          content:
+            dump_flags: ${each.value.dump_flags}
+        performance_config:
+          for_each: ${var.performance_config}
+          content:
+            dump_parallel_level: ${each.value.dump_parallel_level}
+        reverse_ssh_connectivity:
+          for_each: ${var.reverse_ssh_connectivity}
+          content:
+            vm: ${each.value.vm}
+            vm_ip: ${each.value.vm_ip}
+            vm_port: ${each.value.vm_port}
+            vpc: ${each.value.vpc}
+        static_ip_connectivity:
+          for_each: ${var.static_ip_connectivity}
+          content:
+            # No specific fields found in schema for static_ip_connectivity
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        vpc_peering_connectivity:
+          for_each: ${var.vpc_peering_connectivity}
+          content:
+            vpc: ${each.value.vpc}

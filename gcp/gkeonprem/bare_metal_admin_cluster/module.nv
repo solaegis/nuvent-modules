@@ -1,0 +1,138 @@
+variables:
+  location:
+    type: string
+    description: "The location of the resource."
+  name:
+    type: string
+    description: "The bare metal admin cluster name."
+  annotations:
+    type: object
+    description: "Annotations on the Bare Metal Admin Cluster. This field has the same restrictions as Kubernetes annotations. The total size of all keys and values combined is limited to 256k. Key can have 2 segments: prefix (optional) and name (required), separated by a slash (/). Prefix must be a DNS subdomain. Name must be 63 characters or less, begin and end with alphanumerics, with dashes (-), underscores (_), dots (.), and alphanumerics between.   **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  bare_metal_version:
+    type: string
+    description: "A human readable description of this Bare Metal Admin Cluster."
+    default: null
+  description:
+    type: string
+    description: "A human readable description of this Bare Metal Admin Cluster."
+    default: null
+  id:
+    type: string
+    description: "Optional property for BareMetalAdminCluster"
+    default: null
+  project:
+    type: string
+    description: "Optional property for BareMetalAdminCluster"
+    default: null
+  cluster_operations:
+    type: list
+    description: "Nested block: cluster_operations"
+    default: []
+  control_plane:
+    type: list
+    description: "Nested block: control_plane"
+    default: []
+  load_balancer:
+    type: list
+    description: "Nested block: load_balancer"
+    default: []
+  maintenance_config:
+    type: list
+    description: "Nested block: maintenance_config"
+    default: []
+  network_config:
+    type: list
+    description: "Nested block: network_config"
+    default: []
+  node_access_config:
+    type: list
+    description: "Nested block: node_access_config"
+    default: []
+  node_config:
+    type: list
+    description: "Nested block: node_config"
+    default: []
+  proxy:
+    type: list
+    description: "Nested block: proxy"
+    default: []
+  security_config:
+    type: list
+    description: "Nested block: security_config"
+    default: []
+  storage:
+    type: list
+    description: "Nested block: storage"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:gkeonprem:BareMetalAdminCluster
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      annotations: ${var.annotations}
+      bare_metal_version: ${var.bare_metal_version}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        cluster_operations:
+          for_each: ${var.cluster_operations}
+          content:
+            enable_application_logs: ${each.value.enable_application_logs}
+        control_plane:
+          for_each: ${var.control_plane}
+          content:
+            api_server_args: ${each.value.api_server_args}
+            control_plane_node_pool_config: ${each.value.control_plane_node_pool_config}
+        load_balancer:
+          for_each: ${var.load_balancer}
+          content:
+            bgp_lb_config: ${each.value.bgp_lb_config}
+            manual_lb_config: ${each.value.manual_lb_config}
+            port_config: ${each.value.port_config}
+            vip_config: ${each.value.vip_config}
+        maintenance_config:
+          for_each: ${var.maintenance_config}
+          content:
+            maintenance_address_cidr_blocks: ${each.value.maintenance_address_cidr_blocks}
+        network_config:
+          for_each: ${var.network_config}
+          content:
+            advanced_networking: ${each.value.advanced_networking}
+            island_mode_cidr: ${each.value.island_mode_cidr}
+            multiple_network_interfaces_config: ${each.value.multiple_network_interfaces_config}
+        node_access_config:
+          for_each: ${var.node_access_config}
+          content:
+            login_user: ${each.value.login_user}
+        node_config:
+          for_each: ${var.node_config}
+          content:
+            max_pods_per_node: ${each.value.max_pods_per_node}
+        proxy:
+          for_each: ${var.proxy}
+          content:
+            no_proxy: ${each.value.no_proxy}
+            uri: ${each.value.uri}
+        security_config:
+          for_each: ${var.security_config}
+          content:
+            authorization: ${each.value.authorization}
+        storage:
+          for_each: ${var.storage}
+          content:
+            lvp_node_mounts_config: ${each.value.lvp_node_mounts_config}
+            lvp_share_config: ${each.value.lvp_share_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

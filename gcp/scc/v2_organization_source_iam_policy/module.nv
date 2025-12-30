@@ -1,0 +1,23 @@
+variables:
+  organization:
+    type: string
+    description: "Required property for V2OrganizationSourceIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for V2OrganizationSourceIamPolicy"
+  source:
+    type: string
+    description: "Required property for V2OrganizationSourceIamPolicy"
+  id:
+    type: string
+    description: "Optional property for V2OrganizationSourceIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:scc:V2OrganizationSourceIamPolicy
+    properties:
+      organization: ${var.organization}
+      policy_data: ${var.policy_data}
+      source: ${var.source}
+      id: ${var.id}

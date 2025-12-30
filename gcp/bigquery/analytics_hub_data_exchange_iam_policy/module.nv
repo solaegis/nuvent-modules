@@ -1,0 +1,29 @@
+variables:
+  data_exchange_id:
+    type: string
+    description: "Required property for AnalyticsHubDataExchangeIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for AnalyticsHubDataExchangeIamPolicy"
+  id:
+    type: string
+    description: "Optional property for AnalyticsHubDataExchangeIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for AnalyticsHubDataExchangeIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AnalyticsHubDataExchangeIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:bigquery:AnalyticsHubDataExchangeIamPolicy
+    properties:
+      data_exchange_id: ${var.data_exchange_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

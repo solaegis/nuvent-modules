@@ -1,0 +1,44 @@
+variables:
+  member:
+    type: string
+    description: "Required property for CatalogTagTemplateIamMember"
+  role:
+    type: string
+    description: "Required property for CatalogTagTemplateIamMember"
+  tag_template:
+    type: string
+    description: "Required property for CatalogTagTemplateIamMember"
+  id:
+    type: string
+    description: "Optional property for CatalogTagTemplateIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for CatalogTagTemplateIamMember"
+    default: null
+  region:
+    type: string
+    description: "Optional property for CatalogTagTemplateIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:data:CatalogTagTemplateIamMember
+    properties:
+      member: ${var.member}
+      role: ${var.role}
+      tag_template: ${var.tag_template}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

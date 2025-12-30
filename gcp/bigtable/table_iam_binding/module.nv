@@ -1,0 +1,43 @@
+variables:
+  instance_name:
+    type: string
+    description: "Required property for TableIamBinding"
+  members:
+    type: list
+    description: "Required property for TableIamBinding"
+  role:
+    type: string
+    description: "Required property for TableIamBinding"
+  table:
+    type: string
+    description: "Required property for TableIamBinding"
+  id:
+    type: string
+    description: "Optional property for TableIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TableIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigtable:TableIamBinding
+    properties:
+      instance_name: ${var.instance_name}
+      members: ${var.members}
+      role: ${var.role}
+      table: ${var.table}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

@@ -1,0 +1,38 @@
+variables:
+  consumer_project:
+    type: string
+    description: "Required property for ServiceConsumersIamMember"
+  member:
+    type: string
+    description: "Required property for ServiceConsumersIamMember"
+  role:
+    type: string
+    description: "Required property for ServiceConsumersIamMember"
+  service_name:
+    type: string
+    description: "Required property for ServiceConsumersIamMember"
+  id:
+    type: string
+    description: "Optional property for ServiceConsumersIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:endpoints:ServiceConsumersIamMember
+    properties:
+      consumer_project: ${var.consumer_project}
+      member: ${var.member}
+      role: ${var.role}
+      service_name: ${var.service_name}
+      id: ${var.id}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

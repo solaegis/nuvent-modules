@@ -1,0 +1,39 @@
+variables:
+  enabled:
+    type: boolean
+    description: "Desired VPC Service Controls state service producer VPC network, as described at the top of this page."
+  network:
+    type: string
+    description: "The network that the consumer is using to connect with services."
+  service:
+    type: string
+    description: "The service that is managing peering connectivity for a service producer's organization. For Google services that support this functionality, this value is 'servicenetworking.googleapis.com'."
+  id:
+    type: string
+    description: "Optional property for NetworkingVpcServiceControls"
+    default: null
+  project:
+    type: string
+    description: "The id of the Google Cloud project containing the consumer network."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:service:NetworkingVpcServiceControls
+    properties:
+      enabled: ${var.enabled}
+      network: ${var.network}
+      service: ${var.service}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,107 @@
+variables:
+  display_name:
+    type: string
+    description: "The human-readable name of the page, unique within the agent."
+  id:
+    type: string
+    description: "Optional property for CxPage"
+    default: null
+  language_code:
+    type: string
+    description: "The language of the following fields in page:  Page.entry_fulfillment.messages Page.entry_fulfillment.conditional_cases Page.event_handlers.trigger_fulfillment.messages Page.event_handlers.trigger_fulfillment.conditional_cases Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages Page.form.parameters.fill_behavior.initial_prompt_fulfillment.conditional_cases Page.form.parameters.fill_behavior.reprompt_event_handlers.messages Page.form.parameters.fill_behavior.reprompt_event_handlers.conditional_cases Page.transition_routes.trigger_fulfillment.messages Page.transition_routes.trigger_fulfillment.conditional_cases If not specified, the agent's default language is used. Many languages are supported. Note: languages must be enabled in the agent before they can be used."
+    default: null
+  parent:
+    type: string
+    description: "The flow to create a page for. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>."
+    default: null
+  transition_route_groups:
+    type: list
+    description: "Ordered list of TransitionRouteGroups associated with the page. Transition route groups must be unique within a page. If multiple transition routes within a page scope refer to the same intent, then the precedence order is: page's transition route -> page's transition route group -> flow's transition routes. If multiple transition route groups within a page contain the same intent, then the first group in the ordered list takes precedence. Format:projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>."
+    default: null
+  advanced_settings:
+    type: list
+    description: "Nested block: advanced_settings"
+    default: []
+  entry_fulfillment:
+    type: list
+    description: "Nested block: entry_fulfillment"
+    default: []
+  event_handlers:
+    type: list
+    description: "Nested block: event_handlers"
+    default: []
+  form:
+    type: list
+    description: "Nested block: form"
+    default: []
+  knowledge_connector_settings:
+    type: list
+    description: "Nested block: knowledge_connector_settings"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  transition_routes:
+    type: list
+    description: "Nested block: transition_routes"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:CxPage
+    properties:
+      display_name: ${var.display_name}
+      id: ${var.id}
+      language_code: ${var.language_code}
+      parent: ${var.parent}
+      transition_route_groups: ${var.transition_route_groups}
+      dynamic:
+        advanced_settings:
+          for_each: ${var.advanced_settings}
+          content:
+            dtmf_settings: ${each.value.dtmf_settings}
+        entry_fulfillment:
+          for_each: ${var.entry_fulfillment}
+          content:
+            return_partial_responses: ${each.value.return_partial_responses}
+            tag: ${each.value.tag}
+            webhook: ${each.value.webhook}
+            conditional_cases: ${each.value.conditional_cases}
+            messages: ${each.value.messages}
+            set_parameter_actions: ${each.value.set_parameter_actions}
+        event_handlers:
+          for_each: ${var.event_handlers}
+          content:
+            event: ${each.value.event}
+            name: ${each.value.name}
+            target_flow: ${each.value.target_flow}
+            target_page: ${each.value.target_page}
+            trigger_fulfillment: ${each.value.trigger_fulfillment}
+        form:
+          for_each: ${var.form}
+          content:
+            parameters: ${each.value.parameters}
+        knowledge_connector_settings:
+          for_each: ${var.knowledge_connector_settings}
+          content:
+            enabled: ${each.value.enabled}
+            target_flow: ${each.value.target_flow}
+            target_page: ${each.value.target_page}
+            data_store_connections: ${each.value.data_store_connections}
+            trigger_fulfillment: ${each.value.trigger_fulfillment}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        transition_routes:
+          for_each: ${var.transition_routes}
+          content:
+            condition: ${each.value.condition}
+            intent: ${each.value.intent}
+            name: ${each.value.name}
+            target_flow: ${each.value.target_flow}
+            target_page: ${each.value.target_page}
+            trigger_fulfillment: ${each.value.trigger_fulfillment}

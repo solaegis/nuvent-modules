@@ -1,0 +1,29 @@
+variables:
+  featurestore:
+    type: string
+    description: "Required property for AiFeaturestoreIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for AiFeaturestoreIamPolicy"
+  id:
+    type: string
+    description: "Optional property for AiFeaturestoreIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiFeaturestoreIamPolicy"
+    default: null
+  region:
+    type: string
+    description: "Optional property for AiFeaturestoreIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:vertex:AiFeaturestoreIamPolicy
+    properties:
+      featurestore: ${var.featurestore}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}

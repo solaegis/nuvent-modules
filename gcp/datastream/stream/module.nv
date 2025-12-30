@@ -1,0 +1,104 @@
+variables:
+  display_name:
+    type: string
+    description: "Display name."
+  location:
+    type: string
+    description: "The name of the location this stream is located in."
+  stream_id:
+    type: string
+    description: "The stream identifier."
+  create_without_validation:
+    type: boolean
+    description: "Create the stream without validating it."
+    default: null
+  customer_managed_encryption_key:
+    type: string
+    description: "A reference to a KMS encryption key. If provided, it will be used to encrypt the data. If left blank, data will be encrypted using an internal Stream-specific encryption key provisioned through KMS."
+    default: null
+  desired_state:
+    type: string
+    description: "Desired state of the Stream. Set this field to 'RUNNING' to start the stream, 'NOT_STARTED' to create the stream without starting and 'PAUSED' to pause the stream from a 'RUNNING' state. Possible values: NOT_STARTED, RUNNING, PAUSED. Default: NOT_STARTED"
+    default: null
+  id:
+    type: string
+    description: "Optional property for Stream"
+    default: null
+  labels:
+    type: object
+    description: "Labels.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Stream"
+    default: null
+  backfill_all:
+    type: list
+    description: "Nested block: backfill_all"
+    default: []
+  backfill_none:
+    type: list
+    description: "Nested block: backfill_none"
+    default: []
+  destination_config:
+    type: list
+    description: "Nested block: destination_config"
+    default: []
+  source_config:
+    type: list
+    description: "Nested block: source_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:datastream:Stream
+    properties:
+      display_name: ${var.display_name}
+      location: ${var.location}
+      stream_id: ${var.stream_id}
+      create_without_validation: ${var.create_without_validation}
+      customer_managed_encryption_key: ${var.customer_managed_encryption_key}
+      desired_state: ${var.desired_state}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        backfill_all:
+          for_each: ${var.backfill_all}
+          content:
+            mongodb_excluded_objects: ${each.value.mongodb_excluded_objects}
+            mysql_excluded_objects: ${each.value.mysql_excluded_objects}
+            oracle_excluded_objects: ${each.value.oracle_excluded_objects}
+            postgresql_excluded_objects: ${each.value.postgresql_excluded_objects}
+            salesforce_excluded_objects: ${each.value.salesforce_excluded_objects}
+            sql_server_excluded_objects: ${each.value.sql_server_excluded_objects}
+        backfill_none:
+          for_each: ${var.backfill_none}
+          content:
+            # No specific fields found in schema for backfill_none
+        destination_config:
+          for_each: ${var.destination_config}
+          content:
+            destination_connection_profile: ${each.value.destination_connection_profile}
+            bigquery_destination_config: ${each.value.bigquery_destination_config}
+            gcs_destination_config: ${each.value.gcs_destination_config}
+        source_config:
+          for_each: ${var.source_config}
+          content:
+            source_connection_profile: ${each.value.source_connection_profile}
+            mongodb_source_config: ${each.value.mongodb_source_config}
+            mysql_source_config: ${each.value.mysql_source_config}
+            oracle_source_config: ${each.value.oracle_source_config}
+            postgresql_source_config: ${each.value.postgresql_source_config}
+            salesforce_source_config: ${each.value.salesforce_source_config}
+            sql_server_source_config: ${each.value.sql_server_source_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

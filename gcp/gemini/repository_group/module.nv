@@ -1,0 +1,53 @@
+variables:
+  code_repository_index:
+    type: string
+    description: "Required. Id of the Code Repository Index."
+  location:
+    type: string
+    description: "The location of the Code Repository Index, for example 'us-central1'."
+  repository_group_id:
+    type: string
+    description: "Required. Id of the Repository Group."
+  id:
+    type: string
+    description: "Optional property for RepositoryGroup"
+    default: null
+  labels:
+    type: object
+    description: "Optional. Labels as key value pairs.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for RepositoryGroup"
+    default: null
+  repositories:
+    type: list
+    description: "Nested block: repositories"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:gemini:RepositoryGroup
+    properties:
+      code_repository_index: ${var.code_repository_index}
+      location: ${var.location}
+      repository_group_id: ${var.repository_group_id}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        repositories:
+          for_each: ${var.repositories}
+          content:
+            branch_pattern: ${each.value.branch_pattern}
+            resource: ${each.value.resource}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

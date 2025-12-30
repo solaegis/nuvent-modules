@@ -1,0 +1,51 @@
+variables:
+  organization:
+    type: string
+    description: "Numerical ID of the parent organization."
+  config:
+    type: string
+    description: "Config for the module. For the resident module, its config value is defined at this level. For the inherited module, its config value is inherited from the ancestor module."
+    default: null
+  display_name:
+    type: string
+    description: "The human readable name to be displayed for the module."
+    default: null
+  enablement_state:
+    type: string
+    description: "The state of enablement for the module at the given level of the hierarchy. Possible values: [\"ENABLED\", \"DISABLED\"]"
+    default: null
+  id:
+    type: string
+    description: "Optional property for ManagementOrganizationEventThreatDetectionCustomModule"
+    default: null
+  location:
+    type: string
+    description: "Location ID of the parent organization. Only global is supported at the moment."
+    default: null
+  type:
+    type: string
+    description: "Immutable. Type for the module. e.g. CONFIGURABLE_BAD_IP."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:scc:ManagementOrganizationEventThreatDetectionCustomModule
+    properties:
+      organization: ${var.organization}
+      config: ${var.config}
+      display_name: ${var.display_name}
+      enablement_state: ${var.enablement_state}
+      id: ${var.id}
+      location: ${var.location}
+      type: ${var.type}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

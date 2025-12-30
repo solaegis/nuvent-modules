@@ -1,0 +1,79 @@
+variables:
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  parent:
+    type: string
+    description: "Will be any one of these:  * 'projects/{project}' * 'folders/{folder}' * 'organizations/{organizationId}'"
+  enable_floor_setting_enforcement:
+    type: boolean
+    description: "Floor Settings enforcement status."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ArmorFloorsetting"
+    default: null
+  integrated_services:
+    type: list
+    description: "List of integrated services for which the floor setting is applicable."
+    default: null
+  ai_platform_floor_setting:
+    type: list
+    description: "Nested block: ai_platform_floor_setting"
+    default: []
+  filter_config:
+    type: list
+    description: "Nested block: filter_config"
+    default: []
+  floor_setting_metadata:
+    type: list
+    description: "Nested block: floor_setting_metadata"
+    default: []
+  google_mcp_server_floor_setting:
+    type: list
+    description: "Nested block: google_mcp_server_floor_setting"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:model:ArmorFloorsetting
+    properties:
+      location: ${var.location}
+      parent: ${var.parent}
+      enable_floor_setting_enforcement: ${var.enable_floor_setting_enforcement}
+      id: ${var.id}
+      integrated_services: ${var.integrated_services}
+      dynamic:
+        ai_platform_floor_setting:
+          for_each: ${var.ai_platform_floor_setting}
+          content:
+            enable_cloud_logging: ${each.value.enable_cloud_logging}
+            inspect_and_block: ${each.value.inspect_and_block}
+            inspect_only: ${each.value.inspect_only}
+        filter_config:
+          for_each: ${var.filter_config}
+          content:
+            malicious_uri_filter_settings: ${each.value.malicious_uri_filter_settings}
+            pi_and_jailbreak_filter_settings: ${each.value.pi_and_jailbreak_filter_settings}
+            rai_settings: ${each.value.rai_settings}
+            sdp_settings: ${each.value.sdp_settings}
+        floor_setting_metadata:
+          for_each: ${var.floor_setting_metadata}
+          content:
+            multi_language_detection: ${each.value.multi_language_detection}
+        google_mcp_server_floor_setting:
+          for_each: ${var.google_mcp_server_floor_setting}
+          content:
+            enable_cloud_logging: ${each.value.enable_cloud_logging}
+            inspect_and_block: ${each.value.inspect_and_block}
+            inspect_only: ${each.value.inspect_only}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

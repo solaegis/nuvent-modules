@@ -1,0 +1,29 @@
+variables:
+  envgroup_id:
+    type: string
+    description: "The Apigee environment group associated with the Apigee environment, in the format 'organizations/{{org_name}}/envgroups/{{envgroup_name}}'."
+  environment:
+    type: string
+    description: "The resource ID of the environment."
+  id:
+    type: string
+    description: "Optional property for EnvgroupAttachment"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:EnvgroupAttachment
+    properties:
+      envgroup_id: ${var.envgroup_id}
+      environment: ${var.environment}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

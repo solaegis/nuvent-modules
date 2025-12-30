@@ -1,0 +1,29 @@
+variables:
+  email:
+    type: string
+    description: "The email address of the owner."
+  web_resource_id:
+    type: string
+    description: "The id of the Web Resource to add this owner to, in the form \"webResource/<web-resource-id>\"."
+  id:
+    type: string
+    description: "Optional property for VerificationOwner"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:site:VerificationOwner
+    properties:
+      email: ${var.email}
+      web_resource_id: ${var.web_resource_id}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

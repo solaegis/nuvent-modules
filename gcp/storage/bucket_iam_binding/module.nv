@@ -1,0 +1,42 @@
+variables:
+  bucket:
+    type: string
+    description: "Required property for BucketIamBinding"
+  members:
+    type: list
+    description: "Required property for BucketIamBinding"
+  role:
+    type: string
+    description: "Required property for BucketIamBinding"
+  id:
+    type: string
+    description: "Optional property for BucketIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:BucketIamBinding
+    properties:
+      bucket: ${var.bucket}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}

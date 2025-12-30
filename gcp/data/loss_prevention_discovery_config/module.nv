@@ -1,0 +1,85 @@
+variables:
+  location:
+    type: string
+    description: "Location to create the discovery config in."
+  parent:
+    type: string
+    description: "The parent of the discovery config in any of the following formats:  * 'projects/{{project}}/locations/{{location}}' * 'organizations/{{organization_id}}/locations/{{location}}'"
+  display_name:
+    type: string
+    description: "Display Name (max 1000 Chars)"
+    default: null
+  id:
+    type: string
+    description: "Optional property for LossPreventionDiscoveryConfig"
+    default: null
+  inspect_templates:
+    type: list
+    description: "Detection logic for profile generation"
+    default: null
+  status:
+    type: string
+    description: "Required. A status for this configuration Possible values: [\"RUNNING\", \"PAUSED\"]"
+    default: null
+  actions:
+    type: list
+    description: "Nested block: actions"
+    default: []
+  org_config:
+    type: list
+    description: "Nested block: org_config"
+    default: []
+  other_cloud_starting_location:
+    type: list
+    description: "Nested block: other_cloud_starting_location"
+    default: []
+  targets:
+    type: list
+    description: "Nested block: targets"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:data:LossPreventionDiscoveryConfig
+    properties:
+      location: ${var.location}
+      parent: ${var.parent}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      inspect_templates: ${var.inspect_templates}
+      status: ${var.status}
+      dynamic:
+        actions:
+          for_each: ${var.actions}
+          content:
+            export_data: ${each.value.export_data}
+            pub_sub_notification: ${each.value.pub_sub_notification}
+            publish_to_dataplex_catalog: ${each.value.publish_to_dataplex_catalog}
+            tag_resources: ${each.value.tag_resources}
+        org_config:
+          for_each: ${var.org_config}
+          content:
+            project_id: ${each.value.project_id}
+            location: ${each.value.location}
+        other_cloud_starting_location:
+          for_each: ${var.other_cloud_starting_location}
+          content:
+            aws_location: ${each.value.aws_location}
+        targets:
+          for_each: ${var.targets}
+          content:
+            big_query_target: ${each.value.big_query_target}
+            cloud_sql_target: ${each.value.cloud_sql_target}
+            cloud_storage_target: ${each.value.cloud_storage_target}
+            other_cloud_target: ${each.value.other_cloud_target}
+            secrets_target: ${each.value.secrets_target}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

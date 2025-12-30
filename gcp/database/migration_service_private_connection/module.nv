@@ -1,0 +1,59 @@
+variables:
+  location:
+    type: string
+    description: "The name of the location this private connection is located in."
+  private_connection_id:
+    type: string
+    description: "The private connectivity identifier."
+  create_without_validation:
+    type: boolean
+    description: "If set to true, will skip validations."
+    default: null
+  display_name:
+    type: string
+    description: "Display name."
+    default: null
+  id:
+    type: string
+    description: "Optional property for MigrationServicePrivateConnection"
+    default: null
+  labels:
+    type: object
+    description: "Labels.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for MigrationServicePrivateConnection"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  vpc_peering_config:
+    type: list
+    description: "Nested block: vpc_peering_config"
+    default: []
+
+resources:
+  main:
+    type: gcp:database:MigrationServicePrivateConnection
+    properties:
+      location: ${var.location}
+      private_connection_id: ${var.private_connection_id}
+      create_without_validation: ${var.create_without_validation}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        vpc_peering_config:
+          for_each: ${var.vpc_peering_config}
+          content:
+            subnet: ${each.value.subnet}
+            vpc_name: ${each.value.vpc_name}

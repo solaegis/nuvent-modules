@@ -1,0 +1,44 @@
+variables:
+  global_network_endpoint_group:
+    type: string
+    description: "The global network endpoint group this endpoint is part of."
+  port:
+    type: number
+    description: "Port number of the external endpoint."
+  fqdn:
+    type: string
+    description: "Fully qualified domain name of network endpoint. This can only be specified when network_endpoint_type of the NEG is INTERNET_FQDN_PORT."
+    default: null
+  id:
+    type: string
+    description: "Optional property for GlobalNetworkEndpoint"
+    default: null
+  ip_address:
+    type: string
+    description: "IPv4 address external endpoint."
+    default: null
+  project:
+    type: string
+    description: "Optional property for GlobalNetworkEndpoint"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:GlobalNetworkEndpoint
+    properties:
+      global_network_endpoint_group: ${var.global_network_endpoint_group}
+      port: ${var.port}
+      fqdn: ${var.fqdn}
+      id: ${var.id}
+      ip_address: ${var.ip_address}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

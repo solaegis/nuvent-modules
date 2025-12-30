@@ -1,0 +1,64 @@
+variables:
+  location:
+    type: string
+    description: "The location for the resource"
+  name:
+    type: string
+    description: "The name of the gateway advertised route. Route names must be unique."
+  spoke:
+    type: string
+    description: "The name of the spoke"
+  description:
+    type: string
+    description: "An optional description of the gateway advertised route."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ConnectivityGatewayAdvertisedRoute"
+    default: null
+  ip_range:
+    type: string
+    description: "This route's advertised IP address range. Must be a valid CIDR-formatted prefix. If an IP address is provided without a subnet mask, it is interpreted as, for IPv4, a /32 singular IP address range, and, for IPv6, /128"
+    default: null
+  labels:
+    type: object
+    description: "Optional labels in key:value format. For more information about labels, see [Requirements for labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements).  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  priority:
+    type: number
+    description: "The priority of this advertised route. You can choose a value from 0 to 65335. If you don't provide a value, Google Cloud assigns a priority of 100 to the ranges."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ConnectivityGatewayAdvertisedRoute"
+    default: null
+  recipient:
+    type: string
+    description: "the recipient of this advertised route Possible values: [\"RECIPIENT_UNSPECIFIED\", \"ADVERTISE_TO_HUB\"]"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ConnectivityGatewayAdvertisedRoute
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      spoke: ${var.spoke}
+      description: ${var.description}
+      id: ${var.id}
+      ip_range: ${var.ip_range}
+      labels: ${var.labels}
+      priority: ${var.priority}
+      project: ${var.project}
+      recipient: ${var.recipient}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

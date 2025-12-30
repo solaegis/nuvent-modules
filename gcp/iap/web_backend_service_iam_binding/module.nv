@@ -1,0 +1,39 @@
+variables:
+  members:
+    type: list
+    description: "Required property for WebBackendServiceIamBinding"
+  role:
+    type: string
+    description: "Required property for WebBackendServiceIamBinding"
+  web_backend_service:
+    type: string
+    description: "Required property for WebBackendServiceIamBinding"
+  id:
+    type: string
+    description: "Optional property for WebBackendServiceIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WebBackendServiceIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:iap:WebBackendServiceIamBinding
+    properties:
+      members: ${var.members}
+      role: ${var.role}
+      web_backend_service: ${var.web_backend_service}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

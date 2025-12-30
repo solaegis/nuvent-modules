@@ -1,0 +1,45 @@
+variables:
+  workload_identity_pool_id:
+    type: string
+    description: "The ID to use for the pool, which becomes the final component of the resource name. This value should be 4-32 characters, and may contain the characters [a-z0-9-]. The prefix 'gcp-' is reserved for use by Google, and may not be specified."
+  workload_identity_pool_namespace_id:
+    type: string
+    description: "The ID to use for the namespace. This value must: * contain at most 63 characters * contain only lowercase alphanumeric characters or '-' * start with an alphanumeric character * end with an alphanumeric character   The prefix 'gcp-' will be reserved for future uses."
+  description:
+    type: string
+    description: "A description of the namespace. Cannot exceed 256 characters."
+    default: null
+  disabled:
+    type: boolean
+    description: "Whether the namespace is disabled. If disabled, credentials may no longer be issued for identities within this namespace, however existing credentials will still be accepted until they expire."
+    default: null
+  id:
+    type: string
+    description: "Optional property for WorkloadIdentityPoolNamespace"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WorkloadIdentityPoolNamespace"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:iam:WorkloadIdentityPoolNamespace
+    properties:
+      workload_identity_pool_id: ${var.workload_identity_pool_id}
+      workload_identity_pool_namespace_id: ${var.workload_identity_pool_namespace_id}
+      description: ${var.description}
+      disabled: ${var.disabled}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

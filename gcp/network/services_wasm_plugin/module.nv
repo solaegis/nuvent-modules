@@ -1,0 +1,77 @@
+variables:
+  main_version_id:
+    type: string
+    description: "The ID of the WasmPluginVersion resource that is the currently serving one. The version referred to must be a child of this WasmPlugin resource and should be listed in the \"versions\" field."
+  name:
+    type: string
+    description: "Identifier. Name of the WasmPlugin resource."
+  description:
+    type: string
+    description: "Optional. A human-readable description of the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ServicesWasmPlugin"
+    default: null
+  labels:
+    type: object
+    description: "Optional. Set of labels associated with the WasmPlugin resource.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "The location of the traffic extension"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ServicesWasmPlugin"
+    default: null
+  log_config:
+    type: list
+    description: "Nested block: log_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  versions:
+    type: list
+    description: "Nested block: versions"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ServicesWasmPlugin
+    properties:
+      main_version_id: ${var.main_version_id}
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        log_config:
+          for_each: ${var.log_config}
+          content:
+            enable: ${each.value.enable}
+            min_log_level: ${each.value.min_log_level}
+            sample_rate: ${each.value.sample_rate}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        versions:
+          for_each: ${var.versions}
+          content:
+            create_time: ${each.value.create_time}
+            description: ${each.value.description}
+            image_digest: ${each.value.image_digest}
+            image_uri: ${each.value.image_uri}
+            labels: ${each.value.labels}
+            plugin_config_data: ${each.value.plugin_config_data}
+            plugin_config_digest: ${each.value.plugin_config_digest}
+            plugin_config_uri: ${each.value.plugin_config_uri}
+            update_time: ${each.value.update_time}
+            version_name: ${each.value.version_name}

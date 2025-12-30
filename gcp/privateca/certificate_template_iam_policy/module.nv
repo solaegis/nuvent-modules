@@ -1,0 +1,29 @@
+variables:
+  certificate_template:
+    type: string
+    description: "Required property for CertificateTemplateIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for CertificateTemplateIamPolicy"
+  id:
+    type: string
+    description: "Optional property for CertificateTemplateIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for CertificateTemplateIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for CertificateTemplateIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:privateca:CertificateTemplateIamPolicy
+    properties:
+      certificate_template: ${var.certificate_template}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

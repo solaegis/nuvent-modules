@@ -1,0 +1,63 @@
+variables:
+  display_name:
+    type: string
+    description: "The human-readable name of the playbook, unique within an agent."
+  goal:
+    type: string
+    description: "High level description of the goal the playbook intend to accomplish. A goal should be concise since it's visible to other playbooks that may reference this playbook."
+  id:
+    type: string
+    description: "Optional property for CxPlaybook"
+    default: null
+  parent:
+    type: string
+    description: "The agent to create a Playbook for. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>."
+    default: null
+  playbook_type:
+    type: string
+    description: "Type of the playbook. Possible values: [\"PLAYBOOK_TYPE_UNSPECIFIED\", \"TASK\", \"ROUTINE\"]"
+    default: null
+  referenced_tools:
+    type: list
+    description: "The resource name of tools referenced by the current playbook in the instructions. If not provided explicitly, they are will be implied using the tool being referenced in goal and steps."
+    default: null
+  instruction:
+    type: list
+    description: "Nested block: instruction"
+    default: []
+  llm_model_settings:
+    type: list
+    description: "Nested block: llm_model_settings"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:CxPlaybook
+    properties:
+      display_name: ${var.display_name}
+      goal: ${var.goal}
+      id: ${var.id}
+      parent: ${var.parent}
+      playbook_type: ${var.playbook_type}
+      referenced_tools: ${var.referenced_tools}
+      dynamic:
+        instruction:
+          for_each: ${var.instruction}
+          content:
+            guidelines: ${each.value.guidelines}
+            steps: ${each.value.steps}
+        llm_model_settings:
+          for_each: ${var.llm_model_settings}
+          content:
+            model: ${each.value.model}
+            prompt_text: ${each.value.prompt_text}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

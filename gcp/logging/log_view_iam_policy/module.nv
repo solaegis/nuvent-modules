@@ -1,0 +1,32 @@
+variables:
+  bucket:
+    type: string
+    description: "Required property for LogViewIamPolicy"
+  name:
+    type: string
+    description: "Required property for LogViewIamPolicy"
+  parent:
+    type: string
+    description: "Required property for LogViewIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for LogViewIamPolicy"
+  id:
+    type: string
+    description: "Optional property for LogViewIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for LogViewIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:logging:LogViewIamPolicy
+    properties:
+      bucket: ${var.bucket}
+      name: ${var.name}
+      parent: ${var.parent}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}

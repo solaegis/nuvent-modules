@@ -1,0 +1,83 @@
+variables:
+  network:
+    type: string
+    description: "The relative resource name of the VPC network on which the instance can be accessed. It is specified in the following form: \"projects/{projectNumber}/global/networks/{network_id}\"."
+  subnetwork:
+    type: string
+    description: "Name of the Compute Engine subnetwork in which instances associated with this cluster will be created. Must be part of the subnetwork specified for this cluster."
+  workstation_cluster_id:
+    type: string
+    description: "ID to use for the workstation cluster."
+  annotations:
+    type: object
+    description: "Client-specified annotations. This is distinct from labels.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  display_name:
+    type: string
+    description: "Human-readable name for this resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for WorkstationCluster"
+    default: null
+  labels:
+    type: object
+    description: "Client-specified labels that are applied to the resource and that are also propagated to the underlying Compute Engine resources.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "The location where the workstation cluster should reside."
+    default: null
+  project:
+    type: string
+    description: "Optional property for WorkstationCluster"
+    default: null
+  tags:
+    type: object
+    description: "Resource manager tags bound to this resource. For example: \"123/environment\": \"production\", \"123/costCenter\": \"marketing\""
+    default: null
+  domain_config:
+    type: list
+    description: "Nested block: domain_config"
+    default: []
+  private_cluster_config:
+    type: list
+    description: "Nested block: private_cluster_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:workstations:WorkstationCluster
+    properties:
+      network: ${var.network}
+      subnetwork: ${var.subnetwork}
+      workstation_cluster_id: ${var.workstation_cluster_id}
+      annotations: ${var.annotations}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      location: ${var.location}
+      project: ${var.project}
+      tags: ${var.tags}
+      dynamic:
+        domain_config:
+          for_each: ${var.domain_config}
+          content:
+            domain: ${each.value.domain}
+        private_cluster_config:
+          for_each: ${var.private_cluster_config}
+          content:
+            allowed_projects: ${each.value.allowed_projects}
+            cluster_hostname: ${each.value.cluster_hostname}
+            enable_private_endpoint: ${each.value.enable_private_endpoint}
+            service_attachment_uri: ${each.value.service_attachment_uri}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

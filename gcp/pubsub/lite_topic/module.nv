@@ -1,0 +1,67 @@
+variables:
+  name:
+    type: string
+    description: "Name of the topic."
+  id:
+    type: string
+    description: "Optional property for LiteTopic"
+    default: null
+  project:
+    type: string
+    description: "Optional property for LiteTopic"
+    default: null
+  region:
+    type: string
+    description: "The region of the pubsub lite topic."
+    default: null
+  zone:
+    type: string
+    description: "The zone of the pubsub lite topic."
+    default: null
+  partition_config:
+    type: list
+    description: "Nested block: partition_config"
+    default: []
+  reservation_config:
+    type: list
+    description: "Nested block: reservation_config"
+    default: []
+  retention_config:
+    type: list
+    description: "Nested block: retention_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:pubsub:LiteTopic
+    properties:
+      name: ${var.name}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      zone: ${var.zone}
+      dynamic:
+        partition_config:
+          for_each: ${var.partition_config}
+          content:
+            count: ${each.value.count}
+            capacity: ${each.value.capacity}
+        reservation_config:
+          for_each: ${var.reservation_config}
+          content:
+            throughput_reservation: ${each.value.throughput_reservation}
+        retention_config:
+          for_each: ${var.retention_config}
+          content:
+            per_partition_bytes: ${each.value.per_partition_bytes}
+            period: ${each.value.period}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

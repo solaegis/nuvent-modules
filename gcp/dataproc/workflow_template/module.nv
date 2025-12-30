@@ -1,0 +1,97 @@
+variables:
+  location:
+    type: string
+    description: "The location for the resource"
+  name:
+    type: string
+    description: "Output only. The resource name of the workflow template, as described in https://cloud.google.com/apis/design/resource_names. * For `projects.regions.workflowTemplates`, the resource name of the template has the following format: `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}` * For `projects.locations.workflowTemplates`, the resource name of the template has the following format: `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`"
+  dag_timeout:
+    type: string
+    description: "Optional. Timeout duration for the DAG of jobs, expressed in seconds (see [JSON representation of duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). The timeout duration must be from 10 minutes (\"600s\") to 24 hours (\"86400s\"). The timer begins when the first job is submitted. If the workflow is running at the end of the timeout period, any remaining jobs are cancelled, the workflow is ended, and if the workflow was running on a [managed cluster](/dataproc/docs/concepts/workflows/using-workflows#configuring_or_selecting_a_cluster), the cluster is deleted."
+    default: null
+  id:
+    type: string
+    description: "Optional property for WorkflowTemplate"
+    default: null
+  labels:
+    type: object
+    description: "Optional. The labels to associate with this template. These labels will be propagated to all jobs and clusters created by the workflow instance. Label **keys** must contain 1 to 63 characters, and must conform to [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt). Label **values** may be empty, but, if present, must contain 1 to 63 characters, and must conform to [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt). No more than 32 labels can be associated with a template.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field `effective_labels` for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "The project for the resource"
+    default: null
+  version:
+    type: number
+    description: "Output only. The current version of this workflow template."
+    default: null
+  encryption_config:
+    type: list
+    description: "Nested block: encryption_config"
+    default: []
+  jobs:
+    type: list
+    description: "Nested block: jobs"
+    default: []
+  parameters:
+    type: list
+    description: "Nested block: parameters"
+    default: []
+  placement:
+    type: list
+    description: "Nested block: placement"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataproc:WorkflowTemplate
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      dag_timeout: ${var.dag_timeout}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      version: ${var.version}
+      dynamic:
+        encryption_config:
+          for_each: ${var.encryption_config}
+          content:
+            kms_key: ${each.value.kms_key}
+        jobs:
+          for_each: ${var.jobs}
+          content:
+            labels: ${each.value.labels}
+            prerequisite_step_ids: ${each.value.prerequisite_step_ids}
+            step_id: ${each.value.step_id}
+            hadoop_job: ${each.value.hadoop_job}
+            hive_job: ${each.value.hive_job}
+            pig_job: ${each.value.pig_job}
+            presto_job: ${each.value.presto_job}
+            pyspark_job: ${each.value.pyspark_job}
+            scheduling: ${each.value.scheduling}
+            spark_job: ${each.value.spark_job}
+            spark_r_job: ${each.value.spark_r_job}
+            spark_sql_job: ${each.value.spark_sql_job}
+        parameters:
+          for_each: ${var.parameters}
+          content:
+            description: ${each.value.description}
+            fields: ${each.value.fields}
+            name: ${each.value.name}
+            validation: ${each.value.validation}
+        placement:
+          for_each: ${var.placement}
+          content:
+            cluster_selector: ${each.value.cluster_selector}
+            managed_cluster: ${each.value.managed_cluster}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

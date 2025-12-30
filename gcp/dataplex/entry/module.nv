@@ -1,0 +1,82 @@
+variables:
+  entry_type:
+    type: string
+    description: "The relative resource name of the entry type that was used to create this entry, in the format projects/{project_number}/locations/{locationId}/entryTypes/{entryTypeId}."
+  entry_group_id:
+    type: string
+    description: "The entry group id of the entry group the entry will be created in."
+    default: null
+  entry_id:
+    type: string
+    description: "The entry id of the entry."
+    default: null
+  fully_qualified_name:
+    type: string
+    description: "A name for the entry that can be referenced by an external system. For more information, see https://cloud.google.com/dataplex/docs/fully-qualified-names. The maximum size of the field is 4000 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Entry"
+    default: null
+  location:
+    type: string
+    description: "The location where entry will be created."
+    default: null
+  parent_entry:
+    type: string
+    description: "The resource name of the parent entry, in the format projects/{project_number}/locations/{locationId}/entryGroups/{entryGroupId}/entries/{entryId}."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Entry"
+    default: null
+  aspects:
+    type: list
+    description: "Nested block: aspects"
+    default: []
+  entry_source:
+    type: list
+    description: "Nested block: entry_source"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataplex:Entry
+    properties:
+      entry_type: ${var.entry_type}
+      entry_group_id: ${var.entry_group_id}
+      entry_id: ${var.entry_id}
+      fully_qualified_name: ${var.fully_qualified_name}
+      id: ${var.id}
+      location: ${var.location}
+      parent_entry: ${var.parent_entry}
+      project: ${var.project}
+      dynamic:
+        aspects:
+          for_each: ${var.aspects}
+          content:
+            aspect_key: ${each.value.aspect_key}
+            aspect: ${each.value.aspect}
+        entry_source:
+          for_each: ${var.entry_source}
+          content:
+            create_time: ${each.value.create_time}
+            description: ${each.value.description}
+            display_name: ${each.value.display_name}
+            labels: ${each.value.labels}
+            location: ${each.value.location}
+            platform: ${each.value.platform}
+            resource: ${each.value.resource}
+            system: ${each.value.system}
+            update_time: ${each.value.update_time}
+            ancestors: ${each.value.ancestors}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

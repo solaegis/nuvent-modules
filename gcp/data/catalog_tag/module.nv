@@ -1,0 +1,51 @@
+variables:
+  template:
+    type: string
+    description: "The resource name of the tag template that this tag uses. Example: projects/{project_id}/locations/{location}/tagTemplates/{tagTemplateId} This field cannot be modified after creation."
+  column:
+    type: string
+    description: "Resources like Entry can have schemas associated with them. This scope allows users to attach tags to an individual column based on that schema.  For attaching a tag to a nested column, use '.' to separate the column names. Example: 'outer_column.inner_column'"
+    default: null
+  id:
+    type: string
+    description: "Optional property for CatalogTag"
+    default: null
+  parent:
+    type: string
+    description: "The name of the parent this tag is attached to. This can be the name of an entry or an entry group. If an entry group, the tag will be attached to all entries in that group."
+    default: null
+  fields:
+    type: list
+    description: "Nested block: fields"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:data:CatalogTag
+    properties:
+      template: ${var.template}
+      column: ${var.column}
+      id: ${var.id}
+      parent: ${var.parent}
+      dynamic:
+        fields:
+          for_each: ${var.fields}
+          content:
+            bool_value: ${each.value.bool_value}
+            display_name: ${each.value.display_name}
+            double_value: ${each.value.double_value}
+            enum_value: ${each.value.enum_value}
+            field_name: ${each.value.field_name}
+            order: ${each.value.order}
+            string_value: ${each.value.string_value}
+            timestamp_value: ${each.value.timestamp_value}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

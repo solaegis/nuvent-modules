@@ -1,0 +1,33 @@
+variables:
+  bucket:
+    type: string
+    description: "The name of the bucket."
+  payload_format:
+    type: string
+    description: "The desired content of the Payload. One of \"JSON_API_V1\" or \"NONE\"."
+  topic:
+    type: string
+    description: "The Cloud Pub/Sub topic to which this subscription publishes."
+  custom_attributes:
+    type: object
+    description: "A set of key/value attribute pairs to attach to each Cloud Pub/Sub message published for this notification subscription."
+    default: null
+  event_types:
+    type: list
+    description: "List of event type filters for this notification config. If not specified, Cloud Storage will send notifications for all event types. The valid types are: \"OBJECT_FINALIZE\", \"OBJECT_METADATA_UPDATE\", \"OBJECT_DELETE\", \"OBJECT_ARCHIVE\""
+    default: null
+  object_name_prefix:
+    type: string
+    description: "Specifies a prefix path filter for this notification config. Cloud Storage will only send notifications for objects in this bucket whose names begin with the specified prefix."
+    default: null
+
+resources:
+  main:
+    type: gcp:storage:Notification
+    properties:
+      bucket: ${var.bucket}
+      payload_format: ${var.payload_format}
+      topic: ${var.topic}
+      custom_attributes: ${var.custom_attributes}
+      event_types: ${var.event_types}
+      object_name_prefix: ${var.object_name_prefix}

@@ -1,0 +1,67 @@
+variables:
+  destination:
+    type: string
+    description: "Destination is the message bus that the GoogleApiSource is delivering to. It must be point to the full resource name of a MessageBus. Format: \"projects/{PROJECT_ID}/locations/{region}/messagesBuses/{MESSAGE_BUS_ID)"
+  google_api_source_id:
+    type: string
+    description: "The user-provided ID to be assigned to the GoogleApiSource. It should match the format '^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$'."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  annotations:
+    type: object
+    description: "Resource annotations.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  crypto_key_name:
+    type: string
+    description: "Resource name of a KMS crypto key (managed by the user) used to encrypt/decrypt their event data.  It must match the pattern 'projects/*/locations/*/keyRings/*/cryptoKeys/*'."
+    default: null
+  display_name:
+    type: string
+    description: "Resource display name."
+    default: null
+  id:
+    type: string
+    description: "Optional property for GoogleApiSource"
+    default: null
+  labels:
+    type: object
+    description: "Resource labels.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for GoogleApiSource"
+    default: null
+  logging_config:
+    type: list
+    description: "Nested block: logging_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:eventarc:GoogleApiSource
+    properties:
+      destination: ${var.destination}
+      google_api_source_id: ${var.google_api_source_id}
+      location: ${var.location}
+      annotations: ${var.annotations}
+      crypto_key_name: ${var.crypto_key_name}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        logging_config:
+          for_each: ${var.logging_config}
+          content:
+            log_severity: ${each.value.log_severity}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

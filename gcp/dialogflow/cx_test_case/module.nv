@@ -1,0 +1,60 @@
+variables:
+  display_name:
+    type: string
+    description: "The human-readable name of the test case, unique within the agent. Limit of 200 characters."
+  id:
+    type: string
+    description: "Optional property for CxTestCase"
+    default: null
+  notes:
+    type: string
+    description: "Additional freeform notes about the test case. Limit of 400 characters."
+    default: null
+  parent:
+    type: string
+    description: "The agent to create the test case for. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>."
+    default: null
+  tags:
+    type: list
+    description: "Tags are short descriptions that users may apply to test cases for organizational and filtering purposes. Each tag should start with \"#\" and has a limit of 30 characters"
+    default: null
+  test_case_conversation_turns:
+    type: list
+    description: "Nested block: test_case_conversation_turns"
+    default: []
+  test_config:
+    type: list
+    description: "Nested block: test_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:CxTestCase
+    properties:
+      display_name: ${var.display_name}
+      id: ${var.id}
+      notes: ${var.notes}
+      parent: ${var.parent}
+      tags: ${var.tags}
+      dynamic:
+        test_case_conversation_turns:
+          for_each: ${var.test_case_conversation_turns}
+          content:
+            user_input: ${each.value.user_input}
+            virtual_agent_output: ${each.value.virtual_agent_output}
+        test_config:
+          for_each: ${var.test_config}
+          content:
+            flow: ${each.value.flow}
+            page: ${each.value.page}
+            tracking_parameters: ${each.value.tracking_parameters}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

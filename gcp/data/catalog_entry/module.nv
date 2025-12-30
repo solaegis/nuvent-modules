@@ -1,0 +1,74 @@
+variables:
+  entry_group:
+    type: string
+    description: "The name of the entry group this entry is in."
+  entry_id:
+    type: string
+    description: "The id of the entry to create."
+  description:
+    type: string
+    description: "Entry description, which can consist of several sentences or paragraphs that describe entry contents."
+    default: null
+  display_name:
+    type: string
+    description: "Display information such as title and description. A short name to identify the entry, for example, \"Analytics Data - Jan 2011\"."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CatalogEntry"
+    default: null
+  linked_resource:
+    type: string
+    description: "The resource this metadata entry refers to. For Google Cloud Platform resources, linkedResource is the full name of the resource. For example, the linkedResource for a table resource from BigQuery is: //bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId Output only when Entry is of type in the EntryType enum. For entries with userSpecifiedType, this field is optional and defaults to an empty string."
+    default: null
+  schema:
+    type: string
+    description: "Schema of the entry (e.g. BigQuery, GoogleSQL, Avro schema), as a json string. An entry might not have any schema attached to it. See https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.entryGroups.entries#schema for what fields this schema can contain."
+    default: null
+  type:
+    type: string
+    description: "The type of the entry. Only used for Entries with types in the EntryType enum. Currently, only FILESET enum value is allowed. All other entries created through Data Catalog must use userSpecifiedType. Possible values: [\"FILESET\"]"
+    default: null
+  user_specified_system:
+    type: string
+    description: "This field indicates the entry's source system that Data Catalog does not integrate with. userSpecifiedSystem strings must begin with a letter or underscore and can only contain letters, numbers, and underscores; are case insensitive; must be at least 1 character and at most 64 characters long."
+    default: null
+  user_specified_type:
+    type: string
+    description: "Entry type if it does not fit any of the input-allowed values listed in EntryType enum above. When creating an entry, users should check the enum values first, if nothing matches the entry to be created, then provide a custom value, for example \"my_special_type\". userSpecifiedType strings must begin with a letter or underscore and can only contain letters, numbers, and underscores; are case insensitive; must be at least 1 character and at most 64 characters long."
+    default: null
+  gcs_fileset_spec:
+    type: list
+    description: "Nested block: gcs_fileset_spec"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:data:CatalogEntry
+    properties:
+      entry_group: ${var.entry_group}
+      entry_id: ${var.entry_id}
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      linked_resource: ${var.linked_resource}
+      schema: ${var.schema}
+      type: ${var.type}
+      user_specified_system: ${var.user_specified_system}
+      user_specified_type: ${var.user_specified_type}
+      dynamic:
+        gcs_fileset_spec:
+          for_each: ${var.gcs_fileset_spec}
+          content:
+            file_patterns: ${each.value.file_patterns}
+            sample_gcs_file_specs: ${each.value.sample_gcs_file_specs}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

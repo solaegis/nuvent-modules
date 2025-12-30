@@ -1,0 +1,50 @@
+variables:
+  endpoint_id:
+    type: string
+    description: "The Resource ID must be 1-63 characters long, including digits, lowercase letters or the hyphen character."
+  service:
+    type: string
+    description: "The resource name of the service that this endpoint provides."
+  address:
+    type: string
+    description: "IPv4 or IPv6 address of the endpoint."
+    default: null
+  id:
+    type: string
+    description: "Optional property for DirectoryEndpoint"
+    default: null
+  metadata:
+    type: object
+    description: "Metadata for the endpoint. This data can be consumed by service clients. The entire metadata dictionary may contain up to 512 characters, spread across all key-value pairs. Metadata that goes beyond any these limits will be rejected."
+    default: null
+  network:
+    type: string
+    description: "The URL to the network, such as projects/PROJECT_NUMBER/locations/global/networks/NETWORK_NAME."
+    default: null
+  port:
+    type: number
+    description: "Port that the endpoint is running on, must be in the range of [0, 65535]. If unspecified, the default is 0."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:service:DirectoryEndpoint
+    properties:
+      endpoint_id: ${var.endpoint_id}
+      service: ${var.service}
+      address: ${var.address}
+      id: ${var.id}
+      metadata: ${var.metadata}
+      network: ${var.network}
+      port: ${var.port}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

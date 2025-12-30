@@ -1,0 +1,53 @@
+variables:
+  hub:
+    type: string
+    description: "The name of the hub. Hub names must be unique. They use the following form: projects/{projectNumber}/locations/global/hubs/{hubId}"
+  name:
+    type: string
+    description: "The name of the group. Group names must be unique. Possible values: [\"default\", \"center\", \"edge\"]"
+  description:
+    type: string
+    description: "An optional description of the group."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ConnectivityGroup"
+    default: null
+  labels:
+    type: object
+    description: "Optional labels in key:value format. For more information about labels, see [Requirements for labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements).  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ConnectivityGroup"
+    default: null
+  auto_accept:
+    type: list
+    description: "Nested block: auto_accept"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ConnectivityGroup
+    properties:
+      hub: ${var.hub}
+      name: ${var.name}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        auto_accept:
+          for_each: ${var.auto_accept}
+          content:
+            auto_accept_projects: ${each.value.auto_accept_projects}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

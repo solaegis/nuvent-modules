@@ -1,0 +1,73 @@
+variables:
+  location:
+    type: string
+    description: "The location of the Policy Binding"
+  policy:
+    type: string
+    description: "Required. Immutable. The resource name of the policy to be bound. The binding parent and policy must belong to the same Organization (or Project)."
+  policy_binding_id:
+    type: string
+    description: "The Policy Binding ID."
+  annotations:
+    type: object
+    description: "Optional. User defined annotations. See https://google.aip.dev/148#annotations for more details such as format and size limitations   **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  display_name:
+    type: string
+    description: "Optional. The description of the policy binding. Must be less than or equal to 63 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ProjectsPolicyBinding"
+    default: null
+  policy_kind:
+    type: string
+    description: "Immutable. The kind of the policy to attach in this binding. This field must be one of the following:  - Left empty (will be automatically set to the policy kind) - The input policy kind   Possible values:  POLICY_KIND_UNSPECIFIED PRINCIPAL_ACCESS_BOUNDARY ACCESS"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ProjectsPolicyBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+  target:
+    type: list
+    description: "Nested block: target"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:iam:ProjectsPolicyBinding
+    properties:
+      location: ${var.location}
+      policy: ${var.policy}
+      policy_binding_id: ${var.policy_binding_id}
+      annotations: ${var.annotations}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      policy_kind: ${var.policy_kind}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            location: ${each.value.location}
+            title: ${each.value.title}
+        target:
+          for_each: ${var.target}
+          content:
+            principal_set: ${each.value.principal_set}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

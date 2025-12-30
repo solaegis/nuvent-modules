@@ -1,0 +1,35 @@
+variables:
+  bucket:
+    type: string
+    description: "The name of the bucket that contains the managed folder."
+  name:
+    type: string
+    description: "The name of the managed folder expressed as a path. Must include trailing '/'. For example, 'example_dir/example_dir2/'."
+  force_destroy:
+    type: boolean
+    description: "Allows the deletion of a managed folder even if contains objects. If a non-empty managed folder is deleted, any objects within the folder will remain in a simulated folder with the same name."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ManagedFolder"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:ManagedFolder
+    properties:
+      bucket: ${var.bucket}
+      name: ${var.name}
+      force_destroy: ${var.force_destroy}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

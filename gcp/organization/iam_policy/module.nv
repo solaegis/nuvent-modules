@@ -1,0 +1,19 @@
+variables:
+  org_id:
+    type: string
+    description: "The numeric ID of the organization in which you want to manage the audit logging config."
+  policy_data:
+    type: string
+    description: "Required property for IamPolicy"
+  id:
+    type: string
+    description: "Optional property for IamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:organization:IamPolicy
+    properties:
+      org_id: ${var.org_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}

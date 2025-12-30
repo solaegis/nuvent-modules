@@ -1,0 +1,125 @@
+variables:
+  distribution:
+    type: string
+    description: "The Kubernetes distribution of the underlying attached cluster. Supported values: \"eks\", \"aks\", \"generic\". The generic distribution provides the ability to register or migrate any CNCF conformant cluster."
+  location:
+    type: string
+    description: "The location for the resource"
+  name:
+    type: string
+    description: "The name of this resource."
+  platform_version:
+    type: string
+    description: "The platform version for the cluster (e.g. '1.23.0-gke.1')."
+  annotations:
+    type: object
+    description: "Optional. Annotations on the cluster. This field has the same restrictions as Kubernetes annotations. The total size of all keys and values combined is limited to 256k. Key can have 2 segments: prefix (optional) and name (required), separated by a slash (/). Prefix must be a DNS subdomain. Name must be 63 characters or less, begin and end with alphanumerics, with dashes (-), underscores (_), dots (.), and alphanumerics between.   **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  deletion_policy:
+    type: string
+    description: "Policy to determine what flags to send on delete. Possible values: DELETE, DELETE_IGNORE_ERRORS"
+    default: null
+  description:
+    type: string
+    description: "A human readable description of this attached cluster. Cannot be longer than 255 UTF-8 encoded bytes."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AttachedCluster"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AttachedCluster"
+    default: null
+  authorization:
+    type: list
+    description: "Nested block: authorization"
+    default: []
+  binary_authorization:
+    type: list
+    description: "Nested block: binary_authorization"
+    default: []
+  fleet:
+    type: list
+    description: "Nested block: fleet"
+    default: []
+  logging_config:
+    type: list
+    description: "Nested block: logging_config"
+    default: []
+  monitoring_config:
+    type: list
+    description: "Nested block: monitoring_config"
+    default: []
+  oidc_config:
+    type: list
+    description: "Nested block: oidc_config"
+    default: []
+  proxy_config:
+    type: list
+    description: "Nested block: proxy_config"
+    default: []
+  security_posture_config:
+    type: list
+    description: "Nested block: security_posture_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:container:AttachedCluster
+    properties:
+      distribution: ${var.distribution}
+      location: ${var.location}
+      name: ${var.name}
+      platform_version: ${var.platform_version}
+      annotations: ${var.annotations}
+      deletion_policy: ${var.deletion_policy}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        authorization:
+          for_each: ${var.authorization}
+          content:
+            admin_groups: ${each.value.admin_groups}
+            admin_users: ${each.value.admin_users}
+        binary_authorization:
+          for_each: ${var.binary_authorization}
+          content:
+            evaluation_mode: ${each.value.evaluation_mode}
+        fleet:
+          for_each: ${var.fleet}
+          content:
+            membership: ${each.value.membership}
+            project: ${each.value.project}
+        logging_config:
+          for_each: ${var.logging_config}
+          content:
+            component_config: ${each.value.component_config}
+        monitoring_config:
+          for_each: ${var.monitoring_config}
+          content:
+            managed_prometheus_config: ${each.value.managed_prometheus_config}
+        oidc_config:
+          for_each: ${var.oidc_config}
+          content:
+            issuer_url: ${each.value.issuer_url}
+            jwks: ${each.value.jwks}
+        proxy_config:
+          for_each: ${var.proxy_config}
+          content:
+            kubernetes_secret: ${each.value.kubernetes_secret}
+        security_posture_config:
+          for_each: ${var.security_posture_config}
+          content:
+            vulnerability_mode: ${each.value.vulnerability_mode}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

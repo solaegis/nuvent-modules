@@ -1,0 +1,51 @@
+variables:
+  managed_zone:
+    type: string
+    description: "The name of the zone in which this record set will reside."
+  name:
+    type: string
+    description: "The DNS name this record set will apply to."
+  type:
+    type: string
+    description: "The DNS record set type."
+  id:
+    type: string
+    description: "Optional property for RecordSet"
+    default: null
+  project:
+    type: string
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    default: null
+  rrdatas:
+    type: list
+    description: "The string data for the records in this record set whose meaning depends on the DNS type. For TXT record, if the string data contains spaces, add surrounding \\" if you don't want your string to get split on spaces. To specify a single record value longer than 255 characters such as a TXT record for DKIM, add \\"\\" inside the Terraform configuration string (e.g. \"first255characters\\"\\"morecharacters\")."
+    default: null
+  ttl:
+    type: number
+    description: "The time-to-live of this record set (seconds)."
+    default: null
+  routing_policy:
+    type: list
+    description: "Nested block: routing_policy"
+    default: []
+
+resources:
+  main:
+    type: gcp:dns:RecordSet
+    properties:
+      managed_zone: ${var.managed_zone}
+      name: ${var.name}
+      type: ${var.type}
+      id: ${var.id}
+      project: ${var.project}
+      rrdatas: ${var.rrdatas}
+      ttl: ${var.ttl}
+      dynamic:
+        routing_policy:
+          for_each: ${var.routing_policy}
+          content:
+            enable_geo_fencing: ${each.value.enable_geo_fencing}
+            health_check: ${each.value.health_check}
+            geo: ${each.value.geo}
+            primary_backup: ${each.value.primary_backup}
+            wrr: ${each.value.wrr}

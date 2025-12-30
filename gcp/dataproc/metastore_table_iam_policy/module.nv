@@ -1,0 +1,37 @@
+variables:
+  database_id:
+    type: string
+    description: "Required property for MetastoreTableIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for MetastoreTableIamPolicy"
+  service_id:
+    type: string
+    description: "Required property for MetastoreTableIamPolicy"
+  table:
+    type: string
+    description: "Required property for MetastoreTableIamPolicy"
+  id:
+    type: string
+    description: "Optional property for MetastoreTableIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for MetastoreTableIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for MetastoreTableIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:dataproc:MetastoreTableIamPolicy
+    properties:
+      database_id: ${var.database_id}
+      policy_data: ${var.policy_data}
+      service_id: ${var.service_id}
+      table: ${var.table}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

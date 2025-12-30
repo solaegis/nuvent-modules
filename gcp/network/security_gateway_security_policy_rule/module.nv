@@ -1,0 +1,70 @@
+variables:
+  basic_profile:
+    type: string
+    description: "Profile which tells what the primitive action should be. Possible values are: * ALLOW * DENY. Possible values: [\"BASIC_PROFILE_UNSPECIFIED\", \"ALLOW\", \"DENY\"]"
+  enabled:
+    type: boolean
+    description: "Whether the rule is enforced."
+  gateway_security_policy:
+    type: string
+    description: "The name of the gatewat security policy this rule belongs to."
+  location:
+    type: string
+    description: "The location of the gateway security policy."
+  name:
+    type: string
+    description: "Name of the resource. ame is the full resource name so projects/{project}/locations/{location}/gatewaySecurityPolicies/{gateway_security_policy}/rules/{rule} rule should match the pattern: (^a-z?$)."
+  priority:
+    type: number
+    description: "Priority of the rule. Lower number corresponds to higher precedence."
+  session_matcher:
+    type: string
+    description: "CEL expression for matching on session criteria."
+  application_matcher:
+    type: string
+    description: "CEL expression for matching on L7/application level criteria."
+    default: null
+  description:
+    type: string
+    description: "Free-text description of the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SecurityGatewaySecurityPolicyRule"
+    default: null
+  project:
+    type: string
+    description: "Optional property for SecurityGatewaySecurityPolicyRule"
+    default: null
+  tls_inspection_enabled:
+    type: boolean
+    description: "Flag to enable TLS inspection of traffic matching on. Can only be true if the parent GatewaySecurityPolicy references a TLSInspectionConfig."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:SecurityGatewaySecurityPolicyRule
+    properties:
+      basic_profile: ${var.basic_profile}
+      enabled: ${var.enabled}
+      gateway_security_policy: ${var.gateway_security_policy}
+      location: ${var.location}
+      name: ${var.name}
+      priority: ${var.priority}
+      session_matcher: ${var.session_matcher}
+      application_matcher: ${var.application_matcher}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      tls_inspection_enabled: ${var.tls_inspection_enabled}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

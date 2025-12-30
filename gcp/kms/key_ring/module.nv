@@ -1,0 +1,34 @@
+variables:
+  location:
+    type: string
+    description: "The location for the KeyRing. A full list of valid locations can be found by running 'gcloud kms locations list'."
+  name:
+    type: string
+    description: "The resource name for the KeyRing."
+  id:
+    type: string
+    description: "Optional property for KeyRing"
+    default: null
+  project:
+    type: string
+    description: "Optional property for KeyRing"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:kms:KeyRing
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

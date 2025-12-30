@@ -1,0 +1,87 @@
+variables:
+  display_name:
+    type: string
+    description: "The human-readable name of the intent, unique within the agent."
+  description:
+    type: string
+    description: "Human readable description for better understanding an intent like its scope, content, result etc. Maximum character limit: 140 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CxIntent"
+    default: null
+  is_default_negative_intent:
+    type: boolean
+    description: "Marks this as the [Default Negative Intent](https://cloud.google.com/dialogflow/cx/docs/concept/intent#negative) for an agent. When you create an agent, a Default Negative Intent is created automatically. The Default Negative Intent cannot be deleted; deleting the 'google_dialogflow_cx_intent' resource does nothing to the underlying GCP resources.  ~> Avoid having multiple 'google_dialogflow_cx_intent' resources linked to the same agent with 'is_default_negative_intent = true' because they will compete to control a single Default Negative Intent resource in GCP."
+    default: null
+  is_default_welcome_intent:
+    type: boolean
+    description: "Marks this as the [Default Welcome Intent](https://cloud.google.com/dialogflow/cx/docs/concept/intent#welcome) for an agent. When you create an agent, a Default Welcome Intent is created automatically. The Default Welcome Intent cannot be deleted; deleting the 'google_dialogflow_cx_intent' resource does nothing to the underlying GCP resources.  ~> Avoid having multiple 'google_dialogflow_cx_intent' resources linked to the same agent with 'is_default_welcome_intent = true' because they will compete to control a single Default Welcome Intent resource in GCP."
+    default: null
+  is_fallback:
+    type: boolean
+    description: "Indicates whether this is a fallback intent. Currently only default fallback intent is allowed in the agent, which is added upon agent creation. Adding training phrases to fallback intent is useful in the case of requests that are mistakenly matched, since training phrases assigned to fallback intents act as negative examples that triggers no-match event. To manage the fallback intent, set 'is_default_negative_intent = true'"
+    default: null
+  labels:
+    type: object
+    description: "The key/value metadata to label an intent. Labels can contain lowercase letters, digits and the symbols '-' and '_'. International characters are allowed, including letters from unicase alphabets. Keys must start with a letter. Keys and values can be no longer than 63 characters and no more than 128 bytes. Prefix \"sys-\" is reserved for Dialogflow defined labels. Currently allowed Dialogflow defined labels include: * sys-head * sys-contextual The above labels do not require value. \"sys-head\" means the intent is a head intent. \"sys.contextual\" means the intent is a contextual intent. An object containing a list of \"key\": value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  language_code:
+    type: string
+    description: "The language of the following fields in intent: Intent.training_phrases.parts.text If not specified, the agent's default language is used. Many languages are supported. Note: languages must be enabled in the agent before they can be used."
+    default: null
+  parent:
+    type: string
+    description: "The agent to create an intent for. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>."
+    default: null
+  priority:
+    type: number
+    description: "The priority of this intent. Higher numbers represent higher priorities. If the supplied value is unspecified or 0, the service translates the value to 500,000, which corresponds to the Normal priority in the console. If the supplied value is negative, the intent is ignored in runtime detect intent requests."
+    default: null
+  parameters:
+    type: list
+    description: "Nested block: parameters"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  training_phrases:
+    type: list
+    description: "Nested block: training_phrases"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:CxIntent
+    properties:
+      display_name: ${var.display_name}
+      description: ${var.description}
+      id: ${var.id}
+      is_default_negative_intent: ${var.is_default_negative_intent}
+      is_default_welcome_intent: ${var.is_default_welcome_intent}
+      is_fallback: ${var.is_fallback}
+      labels: ${var.labels}
+      language_code: ${var.language_code}
+      parent: ${var.parent}
+      priority: ${var.priority}
+      dynamic:
+        parameters:
+          for_each: ${var.parameters}
+          content:
+            entity_type: ${each.value.entity_type}
+            id: ${each.value.id}
+            is_list: ${each.value.is_list}
+            redact: ${each.value.redact}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        training_phrases:
+          for_each: ${var.training_phrases}
+          content:
+            id: ${each.value.id}
+            repeat_count: ${each.value.repeat_count}
+            parts: ${each.value.parts}

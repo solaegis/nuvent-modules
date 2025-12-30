@@ -1,0 +1,71 @@
+variables:
+  location:
+    type: string
+    description: "Location of the resource."
+  active:
+    type: boolean
+    description: "If true, apply this rule to conversations. Otherwise, this rule is inactive and saved as a draft."
+    default: null
+  analysis_percentage:
+    type: number
+    description: "Percentage of conversations that we should apply this analysis setting automatically, between [0, 1]. For example, 0.1 means 10%. Conversations are sampled in a determenestic way. The original runtime_percentage & upload percentage will be replaced by defining filters on the conversation."
+    default: null
+  conversation_filter:
+    type: string
+    description: "Filter for the conversations that should apply this analysis rule. An empty filter means this analysis rule applies to all conversations. Refer to https://cloud.google.com/contact-center/insights/docs/filtering for details."
+    default: null
+  display_name:
+    type: string
+    description: "Display Name of the analysis rule."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CenterInsightsAnalysisRule"
+    default: null
+  project:
+    type: string
+    description: "Optional property for CenterInsightsAnalysisRule"
+    default: null
+  annotator_selector:
+    type: list
+    description: "Nested block: annotator_selector"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:contact:CenterInsightsAnalysisRule
+    properties:
+      location: ${var.location}
+      active: ${var.active}
+      analysis_percentage: ${var.analysis_percentage}
+      conversation_filter: ${var.conversation_filter}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        annotator_selector:
+          for_each: ${var.annotator_selector}
+          content:
+            issue_models: ${each.value.issue_models}
+            phrase_matchers: ${each.value.phrase_matchers}
+            run_entity_annotator: ${each.value.run_entity_annotator}
+            run_intent_annotator: ${each.value.run_intent_annotator}
+            run_interruption_annotator: ${each.value.run_interruption_annotator}
+            run_issue_model_annotator: ${each.value.run_issue_model_annotator}
+            run_phrase_matcher_annotator: ${each.value.run_phrase_matcher_annotator}
+            run_qa_annotator: ${each.value.run_qa_annotator}
+            run_sentiment_annotator: ${each.value.run_sentiment_annotator}
+            run_silence_annotator: ${each.value.run_silence_annotator}
+            run_summarization_annotator: ${each.value.run_summarization_annotator}
+            qa_config: ${each.value.qa_config}
+            summarization_config: ${each.value.summarization_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

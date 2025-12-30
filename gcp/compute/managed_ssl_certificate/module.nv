@@ -1,0 +1,49 @@
+variables:
+  description:
+    type: string
+    description: "An optional description of this resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ManagedSslCertificate"
+    default: null
+  name:
+    type: string
+    description: "Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.  These are in the same namespace as the managed SSL certificates."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ManagedSslCertificate"
+    default: null
+  type:
+    type: string
+    description: "Enum field whose value is always 'MANAGED' - used to signal to the API which type this is. Default value: \"MANAGED\" Possible values: [\"MANAGED\"]"
+    default: null
+  managed:
+    type: list
+    description: "Nested block: managed"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:ManagedSslCertificate
+    properties:
+      description: ${var.description}
+      id: ${var.id}
+      name: ${var.name}
+      project: ${var.project}
+      type: ${var.type}
+      dynamic:
+        managed:
+          for_each: ${var.managed}
+          content:
+            domains: ${each.value.domains}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

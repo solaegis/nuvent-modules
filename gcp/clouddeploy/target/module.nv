@@ -1,0 +1,126 @@
+variables:
+  location:
+    type: string
+    description: "The location for the resource"
+  name:
+    type: string
+    description: "Name of the `Target`. Format is `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`."
+  annotations:
+    type: object
+    description: "Optional. User annotations. These attributes can only be set and used by the user, and not by Google Cloud Deploy. See https://google.aip.dev/128#annotations for more details such as format and size limitations.  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field `effective_annotations` for all of the annotations present on the resource."
+    default: null
+  deploy_parameters:
+    type: object
+    description: "Optional. The deploy parameters to use for this target."
+    default: null
+  description:
+    type: string
+    description: "Optional. Description of the `Target`. Max length is 255 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Target"
+    default: null
+  labels:
+    type: object
+    description: "Optional. Labels are attributes that can be set and used by both the user and by Google Cloud Deploy. Labels must meet the following constraints: * Keys and values can contain only lowercase letters, numeric characters, underscores, and dashes. * All characters must use UTF-8 encoding, and international characters are allowed. * Keys must start with a lowercase letter or international character. * Each resource is limited to a maximum of 64 labels. Both keys and values are additionally constrained to be <= 128 bytes.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field `effective_labels` for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "The project for the resource"
+    default: null
+  require_approval:
+    type: boolean
+    description: "Optional. Whether or not the `Target` requires approval."
+    default: null
+  anthos_cluster:
+    type: list
+    description: "Nested block: anthos_cluster"
+    default: []
+  associated_entities:
+    type: list
+    description: "Nested block: associated_entities"
+    default: []
+  custom_target:
+    type: list
+    description: "Nested block: custom_target"
+    default: []
+  execution_configs:
+    type: list
+    description: "Nested block: execution_configs"
+    default: []
+  gke:
+    type: list
+    description: "Nested block: gke"
+    default: []
+  multi_target:
+    type: list
+    description: "Nested block: multi_target"
+    default: []
+  run:
+    type: list
+    description: "Nested block: run"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:clouddeploy:Target
+    properties:
+      location: ${var.location}
+      name: ${var.name}
+      annotations: ${var.annotations}
+      deploy_parameters: ${var.deploy_parameters}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      require_approval: ${var.require_approval}
+      dynamic:
+        anthos_cluster:
+          for_each: ${var.anthos_cluster}
+          content:
+            membership: ${each.value.membership}
+        associated_entities:
+          for_each: ${var.associated_entities}
+          content:
+            entity_id: ${each.value.entity_id}
+            anthos_clusters: ${each.value.anthos_clusters}
+            gke_clusters: ${each.value.gke_clusters}
+        custom_target:
+          for_each: ${var.custom_target}
+          content:
+            custom_target_type: ${each.value.custom_target_type}
+        execution_configs:
+          for_each: ${var.execution_configs}
+          content:
+            artifact_storage: ${each.value.artifact_storage}
+            execution_timeout: ${each.value.execution_timeout}
+            service_account: ${each.value.service_account}
+            usages: ${each.value.usages}
+            verbose: ${each.value.verbose}
+            worker_pool: ${each.value.worker_pool}
+        gke:
+          for_each: ${var.gke}
+          content:
+            cluster: ${each.value.cluster}
+            dns_endpoint: ${each.value.dns_endpoint}
+            internal_ip: ${each.value.internal_ip}
+            proxy_url: ${each.value.proxy_url}
+        multi_target:
+          for_each: ${var.multi_target}
+          content:
+            target_ids: ${each.value.target_ids}
+        run:
+          for_each: ${var.run}
+          content:
+            location: ${each.value.location}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

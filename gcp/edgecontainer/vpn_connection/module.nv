@@ -1,0 +1,72 @@
+variables:
+  cluster:
+    type: string
+    description: "The canonical Cluster name to connect to. It is in the form of projects/{project}/locations/{location}/clusters/{cluster}."
+  location:
+    type: string
+    description: "Google Cloud Platform location."
+  name:
+    type: string
+    description: "The resource name of VPN connection"
+  enable_high_availability:
+    type: boolean
+    description: "Whether this VPN connection has HA enabled on cluster side. If enabled, when creating VPN connection we will attempt to use 2 ANG floating IPs."
+    default: null
+  id:
+    type: string
+    description: "Optional property for VpnConnection"
+    default: null
+  labels:
+    type: object
+    description: "Labels associated with this resource.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  nat_gateway_ip:
+    type: string
+    description: "NAT gateway IP, or WAN IP address. If a customer has multiple NAT IPs, the customer needs to configure NAT such that only one external IP maps to the GMEC Anthos cluster. This is empty if NAT is not used."
+    default: null
+  project:
+    type: string
+    description: "Optional property for VpnConnection"
+    default: null
+  router:
+    type: string
+    description: "The VPN connection Cloud Router name."
+    default: null
+  vpc:
+    type: string
+    description: "The network ID of VPC to connect to."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  vpc_project:
+    type: list
+    description: "Nested block: vpc_project"
+    default: []
+
+resources:
+  main:
+    type: gcp:edgecontainer:VpnConnection
+    properties:
+      cluster: ${var.cluster}
+      location: ${var.location}
+      name: ${var.name}
+      enable_high_availability: ${var.enable_high_availability}
+      id: ${var.id}
+      labels: ${var.labels}
+      nat_gateway_ip: ${var.nat_gateway_ip}
+      project: ${var.project}
+      router: ${var.router}
+      vpc: ${var.vpc}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        vpc_project:
+          for_each: ${var.vpc_project}
+          content:
+            project_id: ${each.value.project_id}

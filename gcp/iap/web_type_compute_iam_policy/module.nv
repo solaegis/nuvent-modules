@@ -1,0 +1,20 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for WebTypeComputeIamPolicy"
+  id:
+    type: string
+    description: "Optional property for WebTypeComputeIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WebTypeComputeIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:iap:WebTypeComputeIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}

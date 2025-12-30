@@ -1,0 +1,51 @@
+variables:
+  name:
+    type: string
+    description: "The resource name of the IAP protected resource. Name can have below resources: * organizations/{organization_id} * folders/{folder_id} * projects/{project_id} * projects/{project_id}/iap_web * projects/{project_id}/iap_web/compute * projects/{project_id}/iap_web/compute-{region} * projects/{project_id}/iap_web/compute/services/{service_id} * projects/{project_id}/iap_web/compute-{region}/services/{service_id} * projects/{project_id}/iap_web/appengine-{app_id} * projects/{project_id}/iap_web/appengine-{app_id}/services/{service_id} * projects/{project_id}/iap_web/appengine-{app_id}/services/{service_id}/version/{version_id}"
+  id:
+    type: string
+    description: "Optional property for Settings"
+    default: null
+  access_settings:
+    type: list
+    description: "Nested block: access_settings"
+    default: []
+  application_settings:
+    type: list
+    description: "Nested block: application_settings"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:iap:Settings
+    properties:
+      name: ${var.name}
+      id: ${var.id}
+      dynamic:
+        access_settings:
+          for_each: ${var.access_settings}
+          content:
+            identity_sources: ${each.value.identity_sources}
+            allowed_domains_settings: ${each.value.allowed_domains_settings}
+            cors_settings: ${each.value.cors_settings}
+            gcip_settings: ${each.value.gcip_settings}
+            oauth_settings: ${each.value.oauth_settings}
+            reauth_settings: ${each.value.reauth_settings}
+            workforce_identity_settings: ${each.value.workforce_identity_settings}
+        application_settings:
+          for_each: ${var.application_settings}
+          content:
+            cookie_domain: ${each.value.cookie_domain}
+            access_denied_page_settings: ${each.value.access_denied_page_settings}
+            attribute_propagation_settings: ${each.value.attribute_propagation_settings}
+            csm_settings: ${each.value.csm_settings}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

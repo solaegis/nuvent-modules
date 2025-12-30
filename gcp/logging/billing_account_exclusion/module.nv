@@ -1,0 +1,33 @@
+variables:
+  billing_account:
+    type: string
+    description: "Required property for BillingAccountExclusion"
+  filter:
+    type: string
+    description: "The filter to apply when excluding logs. Only log entries that match the filter are excluded."
+  name:
+    type: string
+    description: "The name of the logging exclusion."
+  description:
+    type: string
+    description: "A human-readable description."
+    default: null
+  disabled:
+    type: boolean
+    description: "Whether this exclusion rule should be disabled or not. This defaults to false."
+    default: null
+  id:
+    type: string
+    description: "Optional property for BillingAccountExclusion"
+    default: null
+
+resources:
+  main:
+    type: gcp:logging:BillingAccountExclusion
+    properties:
+      billing_account: ${var.billing_account}
+      filter: ${var.filter}
+      name: ${var.name}
+      description: ${var.description}
+      disabled: ${var.disabled}
+      id: ${var.id}

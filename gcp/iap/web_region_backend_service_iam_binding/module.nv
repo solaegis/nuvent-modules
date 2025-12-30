@@ -1,0 +1,44 @@
+variables:
+  members:
+    type: list
+    description: "Required property for WebRegionBackendServiceIamBinding"
+  role:
+    type: string
+    description: "Required property for WebRegionBackendServiceIamBinding"
+  web_region_backend_service:
+    type: string
+    description: "Required property for WebRegionBackendServiceIamBinding"
+  id:
+    type: string
+    description: "Optional property for WebRegionBackendServiceIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WebRegionBackendServiceIamBinding"
+    default: null
+  region:
+    type: string
+    description: "Optional property for WebRegionBackendServiceIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:iap:WebRegionBackendServiceIamBinding
+    properties:
+      members: ${var.members}
+      role: ${var.role}
+      web_region_backend_service: ${var.web_region_backend_service}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

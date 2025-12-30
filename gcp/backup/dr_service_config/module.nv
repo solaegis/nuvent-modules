@@ -1,0 +1,34 @@
+variables:
+  location:
+    type: string
+    description: "The location in which the Service config is to be initialized."
+  resource_type:
+    type: string
+    description: "The resource type to which the default service config will be applied."
+  id:
+    type: string
+    description: "Optional property for DrServiceConfig"
+    default: null
+  project:
+    type: string
+    description: "Optional property for DrServiceConfig"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:backup:DrServiceConfig
+    properties:
+      location: ${var.location}
+      resource_type: ${var.resource_type}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

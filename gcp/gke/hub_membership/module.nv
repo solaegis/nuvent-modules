@@ -1,0 +1,57 @@
+variables:
+  membership_id:
+    type: string
+    description: "The client-provided identifier of the membership."
+  id:
+    type: string
+    description: "Optional property for HubMembership"
+    default: null
+  labels:
+    type: object
+    description: "Labels to apply to this membership.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  location:
+    type: string
+    description: "Location of the membership. The default value is 'global'."
+    default: null
+  project:
+    type: string
+    description: "Optional property for HubMembership"
+    default: null
+  authority:
+    type: list
+    description: "Nested block: authority"
+    default: []
+  endpoint:
+    type: list
+    description: "Nested block: endpoint"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:gke:HubMembership
+    properties:
+      membership_id: ${var.membership_id}
+      id: ${var.id}
+      labels: ${var.labels}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        authority:
+          for_each: ${var.authority}
+          content:
+            issuer: ${each.value.issuer}
+        endpoint:
+          for_each: ${var.endpoint}
+          content:
+            gke_cluster: ${each.value.gke_cluster}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

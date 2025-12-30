@@ -1,0 +1,44 @@
+variables:
+  members:
+    type: list
+    description: "Required property for RuntimeIamBinding"
+  role:
+    type: string
+    description: "Required property for RuntimeIamBinding"
+  runtime_name:
+    type: string
+    description: "Required property for RuntimeIamBinding"
+  id:
+    type: string
+    description: "Optional property for RuntimeIamBinding"
+    default: null
+  location:
+    type: string
+    description: "Optional property for RuntimeIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RuntimeIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:notebooks:RuntimeIamBinding
+    properties:
+      members: ${var.members}
+      role: ${var.role}
+      runtime_name: ${var.runtime_name}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

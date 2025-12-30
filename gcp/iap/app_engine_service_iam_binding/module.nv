@@ -1,0 +1,43 @@
+variables:
+  app_id:
+    type: string
+    description: "Required property for AppEngineServiceIamBinding"
+  members:
+    type: list
+    description: "Required property for AppEngineServiceIamBinding"
+  role:
+    type: string
+    description: "Required property for AppEngineServiceIamBinding"
+  service:
+    type: string
+    description: "Required property for AppEngineServiceIamBinding"
+  id:
+    type: string
+    description: "Optional property for AppEngineServiceIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AppEngineServiceIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:iap:AppEngineServiceIamBinding
+    properties:
+      app_id: ${var.app_id}
+      members: ${var.members}
+      role: ${var.role}
+      service: ${var.service}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

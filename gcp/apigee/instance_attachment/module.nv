@@ -1,0 +1,29 @@
+variables:
+  environment:
+    type: string
+    description: "The resource ID of the environment."
+  instance_id:
+    type: string
+    description: "The Apigee instance associated with the Apigee environment, in the format 'organizations/{{org_name}}/instances/{{instance_name}}'."
+  id:
+    type: string
+    description: "Optional property for InstanceAttachment"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:InstanceAttachment
+    properties:
+      environment: ${var.environment}
+      instance_id: ${var.instance_id}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

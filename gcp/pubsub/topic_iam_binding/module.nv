@@ -1,0 +1,39 @@
+variables:
+  members:
+    type: list
+    description: "Required property for TopicIamBinding"
+  role:
+    type: string
+    description: "Required property for TopicIamBinding"
+  topic:
+    type: string
+    description: "Required property for TopicIamBinding"
+  id:
+    type: string
+    description: "Optional property for TopicIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TopicIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:pubsub:TopicIamBinding
+    properties:
+      members: ${var.members}
+      role: ${var.role}
+      topic: ${var.topic}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

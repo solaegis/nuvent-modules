@@ -1,0 +1,38 @@
+variables:
+  bucket:
+    type: string
+    description: "Required property for ManagedFolderIamBinding"
+  managed_folder:
+    type: string
+    description: "Required property for ManagedFolderIamBinding"
+  members:
+    type: list
+    description: "Required property for ManagedFolderIamBinding"
+  role:
+    type: string
+    description: "Required property for ManagedFolderIamBinding"
+  id:
+    type: string
+    description: "Optional property for ManagedFolderIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:ManagedFolderIamBinding
+    properties:
+      bucket: ${var.bucket}
+      managed_folder: ${var.managed_folder}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

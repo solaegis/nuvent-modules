@@ -1,0 +1,89 @@
+variables:
+  cloud_exadata_infrastructure_id:
+    type: string
+    description: "The ID of the Exadata Infrastructure to create. This value is restricted to (^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$) and must be a maximum of 63 characters in length. The value must start with a letter and end with a letter or a number."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. See documentation for resource type 'oracledatabase.googleapis.com/DbServer'."
+  deletion_protection:
+    type: boolean
+    description: "Whether or not to allow Terraform to destroy the instance. Unless this field is set to false in Terraform state, a terraform destroy or terraform apply that would delete the instance will fail."
+    default: null
+  display_name:
+    type: string
+    description: "User friendly name for this resource."
+    default: null
+  gcp_oracle_zone:
+    type: string
+    description: "GCP location where Oracle Exadata is hosted."
+    default: null
+  id:
+    type: string
+    description: "Optional property for DatabaseCloudExadataInfrastructure"
+    default: null
+  labels:
+    type: object
+    description: "Labels or tags associated with the resource.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for DatabaseCloudExadataInfrastructure"
+    default: null
+  properties:
+    type: list
+    description: "Nested block: properties"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:oracle:DatabaseCloudExadataInfrastructure
+    properties:
+      cloud_exadata_infrastructure_id: ${var.cloud_exadata_infrastructure_id}
+      location: ${var.location}
+      deletion_protection: ${var.deletion_protection}
+      display_name: ${var.display_name}
+      gcp_oracle_zone: ${var.gcp_oracle_zone}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        properties:
+          for_each: ${var.properties}
+          content:
+            activated_storage_count: ${each.value.activated_storage_count}
+            additional_storage_count: ${each.value.additional_storage_count}
+            available_storage_size_gb: ${each.value.available_storage_size_gb}
+            compute_count: ${each.value.compute_count}
+            cpu_count: ${each.value.cpu_count}
+            data_storage_size_tb: ${each.value.data_storage_size_tb}
+            db_node_storage_size_gb: ${each.value.db_node_storage_size_gb}
+            db_server_version: ${each.value.db_server_version}
+            max_cpu_count: ${each.value.max_cpu_count}
+            max_data_storage_tb: ${each.value.max_data_storage_tb}
+            max_db_node_storage_size_gb: ${each.value.max_db_node_storage_size_gb}
+            max_memory_gb: ${each.value.max_memory_gb}
+            memory_size_gb: ${each.value.memory_size_gb}
+            monthly_db_server_version: ${each.value.monthly_db_server_version}
+            monthly_storage_server_version: ${each.value.monthly_storage_server_version}
+            next_maintenance_run_id: ${each.value.next_maintenance_run_id}
+            next_maintenance_run_time: ${each.value.next_maintenance_run_time}
+            next_security_maintenance_run_time: ${each.value.next_security_maintenance_run_time}
+            oci_url: ${each.value.oci_url}
+            ocid: ${each.value.ocid}
+            shape: ${each.value.shape}
+            state: ${each.value.state}
+            storage_count: ${each.value.storage_count}
+            storage_server_version: ${each.value.storage_server_version}
+            total_storage_size_gb: ${each.value.total_storage_size_gb}
+            customer_contacts: ${each.value.customer_contacts}
+            maintenance_window: ${each.value.maintenance_window}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

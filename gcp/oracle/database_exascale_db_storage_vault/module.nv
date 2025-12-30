@@ -1,0 +1,71 @@
+variables:
+  display_name:
+    type: string
+    description: "The display name for the ExascaleDbStorageVault. The name does not have to be unique within your project. The name must be 1-255 characters long and can only contain alphanumeric characters."
+  exascale_db_storage_vault_id:
+    type: string
+    description: "The ID of the ExascaleDbStorageVault to create. This value is restricted to (^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$) and must be a maximum of 63 characters in length. The value must start with a letter and end with a letter or a number."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  deletion_protection:
+    type: boolean
+    description: "Whether or not to allow Terraform to destroy the instance. Unless this field is set to false in Terraform state, a terraform destroy or terraform apply that would delete the instance will fail."
+    default: null
+  gcp_oracle_zone:
+    type: string
+    description: "The GCP Oracle zone where Oracle ExascaleDbStorageVault is hosted. Example: us-east4-b-r2. If not specified, the system will pick a zone based on availability."
+    default: null
+  id:
+    type: string
+    description: "Optional property for DatabaseExascaleDbStorageVault"
+    default: null
+  labels:
+    type: object
+    description: "The labels or tags associated with the ExascaleDbStorageVault.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for DatabaseExascaleDbStorageVault"
+    default: null
+  properties:
+    type: list
+    description: "Nested block: properties"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:oracle:DatabaseExascaleDbStorageVault
+    properties:
+      display_name: ${var.display_name}
+      exascale_db_storage_vault_id: ${var.exascale_db_storage_vault_id}
+      location: ${var.location}
+      deletion_protection: ${var.deletion_protection}
+      gcp_oracle_zone: ${var.gcp_oracle_zone}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        properties:
+          for_each: ${var.properties}
+          content:
+            additional_flash_cache_percent: ${each.value.additional_flash_cache_percent}
+            attached_shape_attributes: ${each.value.attached_shape_attributes}
+            available_shape_attributes: ${each.value.available_shape_attributes}
+            oci_uri: ${each.value.oci_uri}
+            ocid: ${each.value.ocid}
+            state: ${each.value.state}
+            vm_cluster_count: ${each.value.vm_cluster_count}
+            vm_cluster_ids: ${each.value.vm_cluster_ids}
+            exascale_db_storage_details: ${each.value.exascale_db_storage_details}
+            time_zone: ${each.value.time_zone}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

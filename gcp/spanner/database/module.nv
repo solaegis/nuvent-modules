@@ -1,0 +1,74 @@
+variables:
+  instance:
+    type: string
+    description: "The instance to create the database on."
+  name:
+    type: string
+    description: "A unique identifier for the database, which cannot be changed after the instance is created. Values are of the form '[a-z][-_a-z0-9]*[a-z0-9]'."
+  database_dialect:
+    type: string
+    description: "The dialect of the Cloud Spanner Database. If it is not provided, \"GOOGLE_STANDARD_SQL\" will be used. Possible values: [\"GOOGLE_STANDARD_SQL\", \"POSTGRESQL\"]"
+    default: null
+  ddl:
+    type: list
+    description: "An optional list of DDL statements to run inside the database. Statements can create tables, indexes, etc.  During creation these statements execute atomically with the creation of the database and if there is an error in any statement, the database is not created.  Terraform does not perform drift detection on this field and assumes that the values recorded in state are accurate. Limited updates to this field are supported, and newly appended DDL statements can be executed in an update. However, modifications to prior statements will create a plan that marks the resource for recreation."
+    default: null
+  default_time_zone:
+    type: string
+    description: "The default time zone for the database. The default time zone must be a valid name from the tz database. Default value is \"America/Los_angeles\"."
+    default: null
+  deletion_protection:
+    type: boolean
+    description: "Whether Terraform will be prevented from destroying the database. Defaults to true. When a'terraform destroy' or 'terraform apply' would delete the database, the command will fail if this field is not set to false in Terraform state. When the field is set to true or unset in Terraform state, a 'terraform apply' or 'terraform destroy' that would delete the database will fail. When the field is set to false, deleting the database is allowed."
+    default: null
+  enable_drop_protection:
+    type: boolean
+    description: "Whether drop protection is enabled for this database. Defaults to false. Drop protection is different from the \"deletion_protection\" attribute in the following ways: (1) \"deletion_protection\" only protects the database from deletions in Terraform. whereas setting “enableDropProtection” to true protects the database from deletions in all interfaces. (2) Setting \"enableDropProtection\" to true also prevents the deletion of the parent instance containing the database. \"deletion_protection\" attribute does not provide protection against the deletion of the parent instance."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Database"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Database"
+    default: null
+  version_retention_period:
+    type: string
+    description: "The retention period for the database. The retention period must be between 1 hour and 7 days, and can be specified in days, hours, minutes, or seconds. For example, the values 1d, 24h, 1440m, and 86400s are equivalent. Default value is 1h. If this property is used, you must avoid adding new DDL statements to 'ddl' that update the database's version_retention_period."
+    default: null
+  encryption_config:
+    type: list
+    description: "Nested block: encryption_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:spanner:Database
+    properties:
+      instance: ${var.instance}
+      name: ${var.name}
+      database_dialect: ${var.database_dialect}
+      ddl: ${var.ddl}
+      default_time_zone: ${var.default_time_zone}
+      deletion_protection: ${var.deletion_protection}
+      enable_drop_protection: ${var.enable_drop_protection}
+      id: ${var.id}
+      project: ${var.project}
+      version_retention_period: ${var.version_retention_period}
+      dynamic:
+        encryption_config:
+          for_each: ${var.encryption_config}
+          content:
+            kms_key_name: ${each.value.kms_key_name}
+            kms_key_names: ${each.value.kms_key_names}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

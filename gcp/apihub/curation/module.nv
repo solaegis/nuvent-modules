@@ -1,0 +1,52 @@
+variables:
+  curation_id:
+    type: string
+    description: "The ID to use for the curation resource, which will become the final component of the curations's resource name. This field is optional.  * If provided, the same will be used. The service will throw an error if the specified ID is already used by another curation resource in the API hub. * If not provided, a system generated ID will be used.  This value should be 4-500 characters, and valid characters are /a-z[0-9]-_/."
+  display_name:
+    type: string
+    description: "The display name of the curation."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  description:
+    type: string
+    description: "The description of the curation."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Curation"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Curation"
+    default: null
+  endpoint:
+    type: list
+    description: "Nested block: endpoint"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apihub:Curation
+    properties:
+      curation_id: ${var.curation_id}
+      display_name: ${var.display_name}
+      location: ${var.location}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        endpoint:
+          for_each: ${var.endpoint}
+          content:
+            application_integration_endpoint_details: ${each.value.application_integration_endpoint_details}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

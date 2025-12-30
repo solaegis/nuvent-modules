@@ -1,0 +1,73 @@
+variables:
+  data_access_scope_id:
+    type: string
+    description: "Required. The user provided scope id which will become the last part of the name of the scope resource. Needs to be compliant with https://google.aip.dev/122"
+  instance:
+    type: string
+    description: "The unique identifier for the Chronicle instance, which is the same as the customer ID."
+  location:
+    type: string
+    description: "The location of the resource. This is the geographical region where the Chronicle instance resides, such as \"us\" or \"europe-west2\"."
+  allow_all:
+    type: boolean
+    description: "Optional. Whether or not the scope allows all labels, allow_all and allowed_data_access_labels are mutually exclusive and one of them must be present. denied_data_access_labels can still be used along with allow_all. When combined with denied_data_access_labels, access will be granted to all data that doesn't have labels mentioned in denied_data_access_labels. E.g.: A customer with scope with denied labels A and B and allow_all will be able to see all data except data labeled with A and data labeled with B and data with labels A and B."
+    default: null
+  description:
+    type: string
+    description: "Optional. A description of the data access scope for a human reader."
+    default: null
+  id:
+    type: string
+    description: "Optional property for DataAccessScope"
+    default: null
+  project:
+    type: string
+    description: "Optional property for DataAccessScope"
+    default: null
+  allowed_data_access_labels:
+    type: list
+    description: "Nested block: allowed_data_access_labels"
+    default: []
+  denied_data_access_labels:
+    type: list
+    description: "Nested block: denied_data_access_labels"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:chronicle:DataAccessScope
+    properties:
+      data_access_scope_id: ${var.data_access_scope_id}
+      instance: ${var.instance}
+      location: ${var.location}
+      allow_all: ${var.allow_all}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        allowed_data_access_labels:
+          for_each: ${var.allowed_data_access_labels}
+          content:
+            asset_namespace: ${each.value.asset_namespace}
+            data_access_label: ${each.value.data_access_label}
+            display_name: ${each.value.display_name}
+            log_type: ${each.value.log_type}
+            ingestion_label: ${each.value.ingestion_label}
+        denied_data_access_labels:
+          for_each: ${var.denied_data_access_labels}
+          content:
+            asset_namespace: ${each.value.asset_namespace}
+            data_access_label: ${each.value.data_access_label}
+            display_name: ${each.value.display_name}
+            log_type: ${each.value.log_type}
+            ingestion_label: ${each.value.ingestion_label}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

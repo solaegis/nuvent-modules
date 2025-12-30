@@ -1,0 +1,44 @@
+variables:
+  forwarding_rule_region_service_name:
+    type: string
+    description: "Required property for WebRegionForwardingRuleServiceIamBinding"
+  members:
+    type: list
+    description: "Required property for WebRegionForwardingRuleServiceIamBinding"
+  role:
+    type: string
+    description: "Required property for WebRegionForwardingRuleServiceIamBinding"
+  id:
+    type: string
+    description: "Optional property for WebRegionForwardingRuleServiceIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WebRegionForwardingRuleServiceIamBinding"
+    default: null
+  region:
+    type: string
+    description: "Optional property for WebRegionForwardingRuleServiceIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:iap:WebRegionForwardingRuleServiceIamBinding
+    properties:
+      forwarding_rule_region_service_name: ${var.forwarding_rule_region_service_name}
+      members: ${var.members}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

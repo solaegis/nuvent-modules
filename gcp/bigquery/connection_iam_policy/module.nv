@@ -1,0 +1,29 @@
+variables:
+  connection_id:
+    type: string
+    description: "Required property for ConnectionIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for ConnectionIamPolicy"
+  id:
+    type: string
+    description: "Optional property for ConnectionIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for ConnectionIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ConnectionIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:bigquery:ConnectionIamPolicy
+    properties:
+      connection_id: ${var.connection_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

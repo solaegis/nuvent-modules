@@ -1,0 +1,51 @@
+variables:
+  name:
+    type: string
+    description: "The ID of the Cluster."
+  parent:
+    type: string
+    description: "The resource name of the private cloud to create a new cluster in. Resource names are schemeless URIs that follow the conventions in https://cloud.google.com/apis/design/resource_names. For example: projects/my-project/locations/us-west1-a/privateClouds/my-cloud"
+  id:
+    type: string
+    description: "Optional property for Cluster"
+    default: null
+  autoscaling_settings:
+    type: list
+    description: "Nested block: autoscaling_settings"
+    default: []
+  node_type_configs:
+    type: list
+    description: "Nested block: node_type_configs"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vmwareengine:Cluster
+    properties:
+      name: ${var.name}
+      parent: ${var.parent}
+      id: ${var.id}
+      dynamic:
+        autoscaling_settings:
+          for_each: ${var.autoscaling_settings}
+          content:
+            cool_down_period: ${each.value.cool_down_period}
+            max_cluster_node_count: ${each.value.max_cluster_node_count}
+            min_cluster_node_count: ${each.value.min_cluster_node_count}
+            autoscaling_policies: ${each.value.autoscaling_policies}
+        node_type_configs:
+          for_each: ${var.node_type_configs}
+          content:
+            custom_core_count: ${each.value.custom_core_count}
+            node_count: ${each.value.node_count}
+            node_type_id: ${each.value.node_type_id}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

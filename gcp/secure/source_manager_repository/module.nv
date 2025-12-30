@@ -1,0 +1,60 @@
+variables:
+  instance:
+    type: string
+    description: "The name of the instance in which the repository is hosted."
+  location:
+    type: string
+    description: "The location for the Repository."
+  repository_id:
+    type: string
+    description: "The ID for the Repository."
+  deletion_policy:
+    type: string
+    description: "The deletion policy for the repository. Setting 'ABANDON' allows the resource to be abandoned, rather than deleted. Setting 'DELETE' deletes the resource and all its contents. Setting 'PREVENT' prevents the resource from accidental deletion by erroring out during plan. Default is 'PREVENT'.  Possible values are:   * DELETE   * PREVENT   * ABANDON"
+    default: null
+  description:
+    type: string
+    description: "Description of the repository, which cannot exceed 500 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SourceManagerRepository"
+    default: null
+  project:
+    type: string
+    description: "Optional property for SourceManagerRepository"
+    default: null
+  initial_config:
+    type: list
+    description: "Nested block: initial_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:secure:SourceManagerRepository
+    properties:
+      instance: ${var.instance}
+      location: ${var.location}
+      repository_id: ${var.repository_id}
+      deletion_policy: ${var.deletion_policy}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        initial_config:
+          for_each: ${var.initial_config}
+          content:
+            default_branch: ${each.value.default_branch}
+            gitignores: ${each.value.gitignores}
+            license: ${each.value.license}
+            readme: ${each.value.readme}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

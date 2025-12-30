@@ -1,0 +1,69 @@
+variables:
+  destination:
+    type: string
+    description: "The destination of the sink (or, in other words, where logs are written to). Can be a Cloud Storage bucket, a PubSub topic, or a BigQuery dataset. Examples: \"storage.googleapis.com/[GCS_BUCKET]\" \"bigquery.googleapis.com/projects/[PROJECT_ID]/datasets/[DATASET]\" \"pubsub.googleapis.com/projects/[PROJECT_ID]/topics/[TOPIC_ID]\" The writer associated with the sink must have access to write to the above resource."
+  name:
+    type: string
+    description: "The name of the logging sink."
+  custom_writer_identity:
+    type: string
+    description: "A service account provided by the caller that will be used to write the log entries. The format must be serviceAccount:some@email. This field can only be specified if you are routing logs to a destination outside this sink's project. If not specified, a Logging service account will automatically be generated."
+    default: null
+  description:
+    type: string
+    description: "A description of this sink. The maximum length of the description is 8000 characters."
+    default: null
+  disabled:
+    type: boolean
+    description: "If set to True, then this sink is disabled and it does not export any log entries."
+    default: null
+  filter:
+    type: string
+    description: "The filter to apply when exporting logs. Only log entries that match the filter are exported."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ProjectSink"
+    default: null
+  project:
+    type: string
+    description: "The ID of the project to create the sink in. If omitted, the project associated with the provider is used."
+    default: null
+  unique_writer_identity:
+    type: boolean
+    description: "Whether or not to create a unique identity associated with this sink. If false (the legacy behavior), then the writer_identity used is serviceAccount:cloud-logs@system.gserviceaccount.com. If true (default), then a unique service account is created and used for this sink. If you wish to publish logs across projects, you must set unique_writer_identity to true."
+    default: null
+  bigquery_options:
+    type: list
+    description: "Nested block: bigquery_options"
+    default: []
+  exclusions:
+    type: list
+    description: "Nested block: exclusions"
+    default: []
+
+resources:
+  main:
+    type: gcp:logging:ProjectSink
+    properties:
+      destination: ${var.destination}
+      name: ${var.name}
+      custom_writer_identity: ${var.custom_writer_identity}
+      description: ${var.description}
+      disabled: ${var.disabled}
+      filter: ${var.filter}
+      id: ${var.id}
+      project: ${var.project}
+      unique_writer_identity: ${var.unique_writer_identity}
+      dynamic:
+        bigquery_options:
+          for_each: ${var.bigquery_options}
+          content:
+            use_partitioned_tables: ${each.value.use_partitioned_tables}
+        exclusions:
+          for_each: ${var.exclusions}
+          content:
+            description: ${each.value.description}
+            disabled: ${each.value.disabled}
+            filter: ${each.value.filter}
+            name: ${each.value.name}

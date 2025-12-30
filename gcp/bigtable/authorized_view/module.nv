@@ -1,0 +1,52 @@
+variables:
+  instance_name:
+    type: string
+    description: "The name of the Bigtable instance in which the authorized view belongs."
+  name:
+    type: string
+    description: "The name of the authorized view. Must be 1-50 characters and must only contain hyphens, underscores, periods, letters and numbers."
+  table_name:
+    type: string
+    description: "The name of the Bigtable table in which the authorized view belongs."
+  deletion_protection:
+    type: string
+    description: "A field to make the authorized view protected against data loss i.e. when set to PROTECTED, deleting the authorized view, the table containing the authorized view, and the instance containing the authorized view would be prohibited. If not provided, currently deletion protection will be set to UNPROTECTED as it is the API default value. Note this field configs the deletion protection provided by the API in the backend, and should not be confused with Terraform-side deletion protection."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AuthorizedView"
+    default: null
+  project:
+    type: string
+    description: "The ID of the project in which the resource belongs. If it is not provided, the provider project is used."
+    default: null
+  subset_view:
+    type: list
+    description: "Nested block: subset_view"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigtable:AuthorizedView
+    properties:
+      instance_name: ${var.instance_name}
+      name: ${var.name}
+      table_name: ${var.table_name}
+      deletion_protection: ${var.deletion_protection}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        subset_view:
+          for_each: ${var.subset_view}
+          content:
+            row_prefixes: ${each.value.row_prefixes}
+            family_subsets: ${each.value.family_subsets}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            update: ${each.value.update}

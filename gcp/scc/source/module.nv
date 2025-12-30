@@ -1,0 +1,35 @@
+variables:
+  display_name:
+    type: string
+    description: "The source’s display name. A source’s display name must be unique amongst its siblings, for example, two sources with the same parent can't share the same display name. The display name must start and end with a letter or digit, may contain letters, digits, spaces, hyphens, and underscores, and can be no longer than 32 characters."
+  organization:
+    type: string
+    description: "The organization whose Cloud Security Command Center the Source lives in."
+  description:
+    type: string
+    description: "The description of the source (max of 1024 characters)."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Source"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:scc:Source
+    properties:
+      display_name: ${var.display_name}
+      organization: ${var.organization}
+      description: ${var.description}
+      id: ${var.id}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

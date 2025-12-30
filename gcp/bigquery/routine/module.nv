@@ -1,0 +1,143 @@
+variables:
+  dataset_id:
+    type: string
+    description: "The ID of the dataset containing this routine"
+  definition_body:
+    type: string
+    description: "The body of the routine. For functions, this is the expression in the AS clause. If language=SQL, it is the substring inside (but excluding) the parentheses."
+  routine_id:
+    type: string
+    description: "The ID of the the routine. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 256 characters."
+  routine_type:
+    type: string
+    description: "The type of routine. Possible values: [\"SCALAR_FUNCTION\", \"PROCEDURE\", \"TABLE_VALUED_FUNCTION\"]"
+  data_governance_type:
+    type: string
+    description: "If set to DATA_MASKING, the function is validated and made available as a masking function. For more information, see https://cloud.google.com/bigquery/docs/user-defined-functions#custom-mask Possible values: [\"DATA_MASKING\"]"
+    default: null
+  description:
+    type: string
+    description: "The description of the routine if defined."
+    default: null
+  determinism_level:
+    type: string
+    description: "The determinism level of the JavaScript UDF if defined. Possible values: [\"DETERMINISM_LEVEL_UNSPECIFIED\", \"DETERMINISTIC\", \"NOT_DETERMINISTIC\"]"
+    default: null
+  id:
+    type: string
+    description: "Optional property for Routine"
+    default: null
+  imported_libraries:
+    type: list
+    description: "Optional. If language = \"JAVASCRIPT\", this field stores the path of the imported JAVASCRIPT libraries."
+    default: null
+  language:
+    type: string
+    description: "The language of the routine. Possible values: [\"SQL\", \"JAVASCRIPT\", \"PYTHON\", \"JAVA\", \"SCALA\"]"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Routine"
+    default: null
+  return_table_type:
+    type: string
+    description: "Optional. Can be set only if routineType = \"TABLE_VALUED_FUNCTION\".  If absent, the return table type is inferred from definitionBody at query time in each query that references this routine. If present, then the columns in the evaluated table result will be cast to match the column types specificed in return table type, at query time."
+    default: null
+  return_type:
+    type: string
+    description: "A JSON schema for the return type. Optional if language = \"SQL\"; required otherwise. If absent, the return type is inferred from definitionBody at query time in each query that references this routine. If present, then the evaluated result will be cast to the specified returned type at query time. ~>**NOTE**: Because this field expects a JSON string, any changes to the string will create a diff, even if the JSON itself hasn't changed. If the API returns a different value for the same schema, e.g. it switche d the order of values or replaced STRUCT field type with RECORD field type, we currently cannot suppress the recurring diff this causes. As a workaround, we recommend using the schema as returned by the API."
+    default: null
+  security_mode:
+    type: string
+    description: "Optional. The security mode of the routine, if defined. If not defined, the security mode is automatically determined from the routine's configuration. Possible values: [\"DEFINER\", \"INVOKER\"]"
+    default: null
+  arguments:
+    type: list
+    description: "Nested block: arguments"
+    default: []
+  external_runtime_options:
+    type: list
+    description: "Nested block: external_runtime_options"
+    default: []
+  python_options:
+    type: list
+    description: "Nested block: python_options"
+    default: []
+  remote_function_options:
+    type: list
+    description: "Nested block: remote_function_options"
+    default: []
+  spark_options:
+    type: list
+    description: "Nested block: spark_options"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigquery:Routine
+    properties:
+      dataset_id: ${var.dataset_id}
+      definition_body: ${var.definition_body}
+      routine_id: ${var.routine_id}
+      routine_type: ${var.routine_type}
+      data_governance_type: ${var.data_governance_type}
+      description: ${var.description}
+      determinism_level: ${var.determinism_level}
+      id: ${var.id}
+      imported_libraries: ${var.imported_libraries}
+      language: ${var.language}
+      project: ${var.project}
+      return_table_type: ${var.return_table_type}
+      return_type: ${var.return_type}
+      security_mode: ${var.security_mode}
+      dynamic:
+        arguments:
+          for_each: ${var.arguments}
+          content:
+            argument_kind: ${each.value.argument_kind}
+            data_type: ${each.value.data_type}
+            mode: ${each.value.mode}
+            name: ${each.value.name}
+        external_runtime_options:
+          for_each: ${var.external_runtime_options}
+          content:
+            container_cpu: ${each.value.container_cpu}
+            container_memory: ${each.value.container_memory}
+            max_batching_rows: ${each.value.max_batching_rows}
+            runtime_connection: ${each.value.runtime_connection}
+            runtime_version: ${each.value.runtime_version}
+        python_options:
+          for_each: ${var.python_options}
+          content:
+            entry_point: ${each.value.entry_point}
+            packages: ${each.value.packages}
+        remote_function_options:
+          for_each: ${var.remote_function_options}
+          content:
+            connection: ${each.value.connection}
+            endpoint: ${each.value.endpoint}
+            max_batching_rows: ${each.value.max_batching_rows}
+            user_defined_context: ${each.value.user_defined_context}
+        spark_options:
+          for_each: ${var.spark_options}
+          content:
+            archive_uris: ${each.value.archive_uris}
+            connection: ${each.value.connection}
+            container_image: ${each.value.container_image}
+            file_uris: ${each.value.file_uris}
+            jar_uris: ${each.value.jar_uris}
+            main_class: ${each.value.main_class}
+            main_file_uri: ${each.value.main_file_uri}
+            properties: ${each.value.properties}
+            py_file_uris: ${each.value.py_file_uris}
+            runtime_version: ${each.value.runtime_version}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

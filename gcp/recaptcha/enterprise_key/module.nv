@@ -1,0 +1,84 @@
+variables:
+  display_name:
+    type: string
+    description: "Human-readable display name of this key. Modifiable by user."
+  id:
+    type: string
+    description: "Optional property for EnterpriseKey"
+    default: null
+  labels:
+    type: object
+    description: "See [Creating and managing labels](https://cloud.google.com/recaptcha-enterprise/docs/labels).  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field `effective_labels` for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "The project for the resource"
+    default: null
+  android_settings:
+    type: list
+    description: "Nested block: android_settings"
+    default: []
+  ios_settings:
+    type: list
+    description: "Nested block: ios_settings"
+    default: []
+  testing_options:
+    type: list
+    description: "Nested block: testing_options"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  waf_settings:
+    type: list
+    description: "Nested block: waf_settings"
+    default: []
+  web_settings:
+    type: list
+    description: "Nested block: web_settings"
+    default: []
+
+resources:
+  main:
+    type: gcp:recaptcha:EnterpriseKey
+    properties:
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        android_settings:
+          for_each: ${var.android_settings}
+          content:
+            allow_all_package_names: ${each.value.allow_all_package_names}
+            allowed_package_names: ${each.value.allowed_package_names}
+        ios_settings:
+          for_each: ${var.ios_settings}
+          content:
+            allow_all_bundle_ids: ${each.value.allow_all_bundle_ids}
+            allowed_bundle_ids: ${each.value.allowed_bundle_ids}
+        testing_options:
+          for_each: ${var.testing_options}
+          content:
+            testing_challenge: ${each.value.testing_challenge}
+            testing_score: ${each.value.testing_score}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        waf_settings:
+          for_each: ${var.waf_settings}
+          content:
+            waf_feature: ${each.value.waf_feature}
+            waf_service: ${each.value.waf_service}
+        web_settings:
+          for_each: ${var.web_settings}
+          content:
+            allow_all_domains: ${each.value.allow_all_domains}
+            allow_amp_traffic: ${each.value.allow_amp_traffic}
+            allowed_domains: ${each.value.allowed_domains}
+            challenge_security_preference: ${each.value.challenge_security_preference}
+            integration_type: ${each.value.integration_type}

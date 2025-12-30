@@ -1,0 +1,44 @@
+variables:
+  collection:
+    type: string
+    description: "The collection ID, relative to database. For example: chatrooms or chatrooms/my-document/private-messages."
+  document_id:
+    type: string
+    description: "The client-assigned document ID to use for this document during creation."
+  fields:
+    type: string
+    description: "The document's [fields](https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases.documents) formated as a json string."
+  database:
+    type: string
+    description: "The Firestore database id. Defaults to '\"(default)\"'."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Document"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Document"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:firestore:Document
+    properties:
+      collection: ${var.collection}
+      document_id: ${var.document_id}
+      fields: ${var.fields}
+      database: ${var.database}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,24 @@
+variables:
+  display_name:
+    type: string
+    description: "Required property for Subaccount"
+  master_billing_account:
+    type: string
+    description: "Required property for Subaccount"
+  deletion_policy:
+    type: string
+    description: "Optional property for Subaccount"
+    default: null
+  id:
+    type: string
+    description: "Optional property for Subaccount"
+    default: null
+
+resources:
+  main:
+    type: gcp:billing:Subaccount
+    properties:
+      display_name: ${var.display_name}
+      master_billing_account: ${var.master_billing_account}
+      deletion_policy: ${var.deletion_policy}
+      id: ${var.id}

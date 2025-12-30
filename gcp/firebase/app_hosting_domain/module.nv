@@ -1,0 +1,47 @@
+variables:
+  backend:
+    type: string
+    description: "The ID of the Backend that this Domain is associated with"
+  domain_id:
+    type: string
+    description: "Id of the domain to create. Must be a valid domain name, such as \"foo.com\""
+  location:
+    type: string
+    description: "The location of the Backend that this Domain is associated with"
+  id:
+    type: string
+    description: "Optional property for AppHostingDomain"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AppHostingDomain"
+    default: null
+  serve:
+    type: list
+    description: "Nested block: serve"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:firebase:AppHostingDomain
+    properties:
+      backend: ${var.backend}
+      domain_id: ${var.domain_id}
+      location: ${var.location}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        serve:
+          for_each: ${var.serve}
+          content:
+            redirect: ${each.value.redirect}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

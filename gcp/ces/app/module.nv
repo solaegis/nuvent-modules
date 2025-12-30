@@ -1,0 +1,169 @@
+variables:
+  app_id:
+    type: string
+    description: "The ID to use for the app, which will become the final component of the app's resource name. If not provided, a unique ID will be automatically assigned for the app."
+  display_name:
+    type: string
+    description: "Display name of the app."
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  description:
+    type: string
+    description: "Human-readable description of the app."
+    default: null
+  global_instruction:
+    type: string
+    description: "Instructions for all the agents in the app. You can use this instruction to set up a stable identity or personality across all the agents."
+    default: null
+  guardrails:
+    type: list
+    description: "List of guardrails for the app. Format: 'projects/{project}/locations/{location}/apps/{app}/guardrails/{guardrail}'"
+    default: null
+  id:
+    type: string
+    description: "Optional property for App"
+    default: null
+  metadata:
+    type: object
+    description: "Metadata about the app. This field can be used to store additional information relevant to the app's details or intended usages."
+    default: null
+  pinned:
+    type: boolean
+    description: "Whether the app is pinned in the app list."
+    default: null
+  project:
+    type: string
+    description: "Optional property for App"
+    default: null
+  root_agent:
+    type: string
+    description: "The root agent is the entry point of the app. Format: 'projects/{project}/locations/{location}/apps/{app}/agents/{agent}'"
+    default: null
+  audio_processing_config:
+    type: list
+    description: "Nested block: audio_processing_config"
+    default: []
+  client_certificate_settings:
+    type: list
+    description: "Nested block: client_certificate_settings"
+    default: []
+  data_store_settings:
+    type: list
+    description: "Nested block: data_store_settings"
+    default: []
+  default_channel_profile:
+    type: list
+    description: "Nested block: default_channel_profile"
+    default: []
+  evaluation_metrics_thresholds:
+    type: list
+    description: "Nested block: evaluation_metrics_thresholds"
+    default: []
+  language_settings:
+    type: list
+    description: "Nested block: language_settings"
+    default: []
+  logging_settings:
+    type: list
+    description: "Nested block: logging_settings"
+    default: []
+  model_settings:
+    type: list
+    description: "Nested block: model_settings"
+    default: []
+  time_zone_settings:
+    type: list
+    description: "Nested block: time_zone_settings"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  variable_declarations:
+    type: list
+    description: "Nested block: variable_declarations"
+    default: []
+
+resources:
+  main:
+    type: gcp:ces:App
+    properties:
+      app_id: ${var.app_id}
+      display_name: ${var.display_name}
+      location: ${var.location}
+      description: ${var.description}
+      global_instruction: ${var.global_instruction}
+      guardrails: ${var.guardrails}
+      id: ${var.id}
+      metadata: ${var.metadata}
+      pinned: ${var.pinned}
+      project: ${var.project}
+      root_agent: ${var.root_agent}
+      dynamic:
+        audio_processing_config:
+          for_each: ${var.audio_processing_config}
+          content:
+            inactivity_timeout: ${each.value.inactivity_timeout}
+            ambient_sound_config: ${each.value.ambient_sound_config}
+            barge_in_config: ${each.value.barge_in_config}
+            synthesize_speech_configs: ${each.value.synthesize_speech_configs}
+        client_certificate_settings:
+          for_each: ${var.client_certificate_settings}
+          content:
+            passphrase: ${each.value.passphrase}
+            private_key: ${each.value.private_key}
+            tls_certificate: ${each.value.tls_certificate}
+        data_store_settings:
+          for_each: ${var.data_store_settings}
+          content:
+            engines: ${each.value.engines}
+        default_channel_profile:
+          for_each: ${var.default_channel_profile}
+          content:
+            channel_type: ${each.value.channel_type}
+            disable_barge_in_control: ${each.value.disable_barge_in_control}
+            disable_dtmf: ${each.value.disable_dtmf}
+            profile_id: ${each.value.profile_id}
+            persona_property: ${each.value.persona_property}
+            web_widget_config: ${each.value.web_widget_config}
+        evaluation_metrics_thresholds:
+          for_each: ${var.evaluation_metrics_thresholds}
+          content:
+            golden_evaluation_metrics_thresholds: ${each.value.golden_evaluation_metrics_thresholds}
+        language_settings:
+          for_each: ${var.language_settings}
+          content:
+            default_language_code: ${each.value.default_language_code}
+            enable_multilingual_support: ${each.value.enable_multilingual_support}
+            fallback_action: ${each.value.fallback_action}
+            supported_language_codes: ${each.value.supported_language_codes}
+        logging_settings:
+          for_each: ${var.logging_settings}
+          content:
+            audio_recording_config: ${each.value.audio_recording_config}
+            bigquery_export_settings: ${each.value.bigquery_export_settings}
+            cloud_logging_settings: ${each.value.cloud_logging_settings}
+            conversation_logging_settings: ${each.value.conversation_logging_settings}
+            redaction_config: ${each.value.redaction_config}
+        model_settings:
+          for_each: ${var.model_settings}
+          content:
+            model: ${each.value.model}
+            temperature: ${each.value.temperature}
+        time_zone_settings:
+          for_each: ${var.time_zone_settings}
+          content:
+            time_zone: ${each.value.time_zone}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        variable_declarations:
+          for_each: ${var.variable_declarations}
+          content:
+            description: ${each.value.description}
+            name: ${each.value.name}
+            schema: ${each.value.schema}

@@ -1,0 +1,83 @@
+variables:
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  saas:
+    type: string
+    description: "A reference to the Saas that defines the product (managed service) that the producer wants to manage with SaaS Runtime. Part of the SaaS Runtime common data model. Immutable once set."
+  unit_kind_id:
+    type: string
+    description: "The ID value for the new unit kind."
+  annotations:
+    type: object
+    description: "Annotations is an unstructured key-value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects.  More info: https://kubernetes.io/docs/user-guide/annotations  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  default_release:
+    type: string
+    description: "A reference to the Release object to use as default for creating new units of this UnitKind. If not specified, a new unit must explicitly reference which release to use for its creation."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RuntimeUnitKind"
+    default: null
+  labels:
+    type: object
+    description: "The labels on the resource, which can be used for categorization. similar to Kubernetes resource labels.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for RuntimeUnitKind"
+    default: null
+  dependencies:
+    type: list
+    description: "Nested block: dependencies"
+    default: []
+  input_variable_mappings:
+    type: list
+    description: "Nested block: input_variable_mappings"
+    default: []
+  output_variable_mappings:
+    type: list
+    description: "Nested block: output_variable_mappings"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:saas:RuntimeUnitKind
+    properties:
+      location: ${var.location}
+      saas: ${var.saas}
+      unit_kind_id: ${var.unit_kind_id}
+      annotations: ${var.annotations}
+      default_release: ${var.default_release}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        dependencies:
+          for_each: ${var.dependencies}
+          content:
+            alias: ${each.value.alias}
+            unit_kind: ${each.value.unit_kind}
+        input_variable_mappings:
+          for_each: ${var.input_variable_mappings}
+          content:
+            variable: ${each.value.variable}
+            from: ${each.value.from}
+            to: ${each.value.to}
+        output_variable_mappings:
+          for_each: ${var.output_variable_mappings}
+          content:
+            variable: ${each.value.variable}
+            from: ${each.value.from}
+            to: ${each.value.to}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

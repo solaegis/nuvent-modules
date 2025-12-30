@@ -1,0 +1,38 @@
+variables:
+  members:
+    type: list
+    description: "Required property for SourceIamBinding"
+  organization:
+    type: string
+    description: "Required property for SourceIamBinding"
+  role:
+    type: string
+    description: "Required property for SourceIamBinding"
+  source:
+    type: string
+    description: "Required property for SourceIamBinding"
+  id:
+    type: string
+    description: "Optional property for SourceIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:scc:SourceIamBinding
+    properties:
+      members: ${var.members}
+      organization: ${var.organization}
+      role: ${var.role}
+      source: ${var.source}
+      id: ${var.id}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

@@ -1,0 +1,26 @@
+variables:
+  id:
+    type: string
+    description: "Optional property for Project"
+    default: null
+  project:
+    type: string
+    description: "Optional property for Project"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:firebase:Project
+    properties:
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

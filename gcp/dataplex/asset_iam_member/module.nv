@@ -1,0 +1,52 @@
+variables:
+  asset:
+    type: string
+    description: "Required property for AssetIamMember"
+  dataplex_zone:
+    type: string
+    description: "Required property for AssetIamMember"
+  lake:
+    type: string
+    description: "Required property for AssetIamMember"
+  member:
+    type: string
+    description: "Required property for AssetIamMember"
+  role:
+    type: string
+    description: "Required property for AssetIamMember"
+  id:
+    type: string
+    description: "Optional property for AssetIamMember"
+    default: null
+  location:
+    type: string
+    description: "Optional property for AssetIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AssetIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataplex:AssetIamMember
+    properties:
+      asset: ${var.asset}
+      dataplex_zone: ${var.dataplex_zone}
+      lake: ${var.lake}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

@@ -1,0 +1,47 @@
+variables:
+  bucket:
+    type: string
+    description: "Required property for LogViewIamBinding"
+  members:
+    type: list
+    description: "Required property for LogViewIamBinding"
+  name:
+    type: string
+    description: "Required property for LogViewIamBinding"
+  parent:
+    type: string
+    description: "Required property for LogViewIamBinding"
+  role:
+    type: string
+    description: "Required property for LogViewIamBinding"
+  id:
+    type: string
+    description: "Optional property for LogViewIamBinding"
+    default: null
+  location:
+    type: string
+    description: "Optional property for LogViewIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:logging:LogViewIamBinding
+    properties:
+      bucket: ${var.bucket}
+      members: ${var.members}
+      name: ${var.name}
+      parent: ${var.parent}
+      role: ${var.role}
+      id: ${var.id}
+      location: ${var.location}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

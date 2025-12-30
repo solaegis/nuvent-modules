@@ -1,0 +1,77 @@
+variables:
+  location:
+    type: string
+    description: "Resource ID segment making up resource 'name'. It identifies the resource within its parent collection as described in https://google.aip.dev/122."
+  release_id:
+    type: string
+    description: "The ID value for the new release."
+  unit_kind:
+    type: string
+    description: "Reference to the UnitKind this Release corresponds to (required and immutable once created)."
+  annotations:
+    type: object
+    description: "Annotations is an unstructured key-value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects.  More info: https://kubernetes.io/docs/user-guide/annotations  **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RuntimeRelease"
+    default: null
+  labels:
+    type: object
+    description: "The labels on the resource, which can be used for categorization. similar to Kubernetes resource labels.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for RuntimeRelease"
+    default: null
+  blueprint:
+    type: list
+    description: "Nested block: blueprint"
+    default: []
+  input_variable_defaults:
+    type: list
+    description: "Nested block: input_variable_defaults"
+    default: []
+  release_requirements:
+    type: list
+    description: "Nested block: release_requirements"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:saas:RuntimeRelease
+    properties:
+      location: ${var.location}
+      release_id: ${var.release_id}
+      unit_kind: ${var.unit_kind}
+      annotations: ${var.annotations}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      dynamic:
+        blueprint:
+          for_each: ${var.blueprint}
+          content:
+            engine: ${each.value.engine}
+            package: ${each.value.package}
+            version: ${each.value.version}
+        input_variable_defaults:
+          for_each: ${var.input_variable_defaults}
+          content:
+            type: ${each.value.type}
+            value: ${each.value.value}
+            variable: ${each.value.variable}
+        release_requirements:
+          for_each: ${var.release_requirements}
+          content:
+            upgradeable_from_releases: ${each.value.upgradeable_from_releases}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

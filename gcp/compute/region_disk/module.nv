@@ -1,0 +1,147 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  replica_zones:
+    type: list
+    description: "URLs of the zones where the disk should be replicated to."
+  access_mode:
+    type: string
+    description: "The access mode of the disk. For example:   * READ_WRITE_SINGLE: The default AccessMode, means the disk can be attached to single instance in RW mode.   * READ_WRITE_MANY: The AccessMode means the disk can be attached to multiple instances in RW mode.   * READ_ONLY_SINGLE: The AccessMode means the disk can be attached to multiple instances in RO mode. The AccessMode is only valid for Hyperdisk disk types."
+    default: null
+  create_snapshot_before_destroy:
+    type: boolean
+    description: "If set to true, a snapshot of the disk will be created before it is destroyed. If your disk is encrypted with customer managed encryption keys these will be reused for the snapshot creation. The name of the snapshot by default will be '{{disk-name}}-YYYYMMDD-HHmm'"
+    default: null
+  create_snapshot_before_destroy_prefix:
+    type: string
+    description: "This will set a custom name prefix for the snapshot that's created when the disk is deleted."
+    default: null
+  description:
+    type: string
+    description: "An optional description of this resource. Provide this property when you create the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RegionDisk"
+    default: null
+  interface:
+    type: string
+    description: "Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI."
+    default: null
+  labels:
+    type: object
+    description: "Labels to apply to this disk.  A list of key->value pairs.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  licenses:
+    type: list
+    description: "Any applicable license URI."
+    default: null
+  physical_block_size_bytes:
+    type: number
+    description: "Physical block size of the persistent disk, in bytes. If not present in a request, a default value is used. Currently supported sizes are 4096 and 16384, other sizes may be added in the future. If an unsupported value is requested, the error message will list the supported values for the caller's project."
+    default: null
+  project:
+    type: string
+    description: "Optional property for RegionDisk"
+    default: null
+  provisioned_iops:
+    type: number
+    description: "Indicates how many IOPS to provision for the disk. This sets the number of I/O operations per second that the disk can handle. Values must be between 10,000 and 120,000. For more details, see the Extreme persistent disk [documentation](https://cloud.google.com/compute/docs/disks/extreme-persistent-disk)."
+    default: null
+  provisioned_throughput:
+    type: number
+    description: "Indicates how much throughput to provision for the disk. This sets the number of throughput mb per second that the disk can handle. Values must be greater than or equal to 1."
+    default: null
+  region:
+    type: string
+    description: "A reference to the region where the disk resides."
+    default: null
+  size:
+    type: number
+    description: "Size of the persistent disk, specified in GB. You can specify this field when creating a persistent disk using the sourceImage or sourceSnapshot parameter, or specify it alone to create an empty persistent disk.  If you specify this field along with sourceImage or sourceSnapshot, the value of sizeGb must not be less than the size of the sourceImage or the size of the snapshot."
+    default: null
+  snapshot:
+    type: string
+    description: "The source snapshot used to create this disk. You can provide this as a partial or full URL to the resource. For example, the following are valid values:  * 'https://www.googleapis.com/compute/v1/projects/project/global/snapshots/snapshot' * 'projects/project/global/snapshots/snapshot' * 'global/snapshots/snapshot' * 'snapshot'"
+    default: null
+  source_disk:
+    type: string
+    description: "The source disk used to create this disk. You can provide this as a partial or full URL to the resource. For example, the following are valid values:  * https://www.googleapis.com/compute/v1/projects/{project}/zones/{zone}/disks/{disk} * https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/disks/{disk} * projects/{project}/zones/{zone}/disks/{disk} * projects/{project}/regions/{region}/disks/{disk} * zones/{zone}/disks/{disk} * regions/{region}/disks/{disk}"
+    default: null
+  type:
+    type: string
+    description: "URL of the disk type resource describing which disk type to use to create the disk. Provide this when creating the disk."
+    default: null
+  async_primary_disk:
+    type: list
+    description: "Nested block: async_primary_disk"
+    default: []
+  disk_encryption_key:
+    type: list
+    description: "Nested block: disk_encryption_key"
+    default: []
+  guest_os_features:
+    type: list
+    description: "Nested block: guest_os_features"
+    default: []
+  source_snapshot_encryption_key:
+    type: list
+    description: "Nested block: source_snapshot_encryption_key"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:RegionDisk
+    properties:
+      name: ${var.name}
+      replica_zones: ${var.replica_zones}
+      access_mode: ${var.access_mode}
+      create_snapshot_before_destroy: ${var.create_snapshot_before_destroy}
+      create_snapshot_before_destroy_prefix: ${var.create_snapshot_before_destroy_prefix}
+      description: ${var.description}
+      id: ${var.id}
+      interface: ${var.interface}
+      labels: ${var.labels}
+      licenses: ${var.licenses}
+      physical_block_size_bytes: ${var.physical_block_size_bytes}
+      project: ${var.project}
+      provisioned_iops: ${var.provisioned_iops}
+      provisioned_throughput: ${var.provisioned_throughput}
+      region: ${var.region}
+      size: ${var.size}
+      snapshot: ${var.snapshot}
+      source_disk: ${var.source_disk}
+      type: ${var.type}
+      dynamic:
+        async_primary_disk:
+          for_each: ${var.async_primary_disk}
+          content:
+            disk: ${each.value.disk}
+        disk_encryption_key:
+          for_each: ${var.disk_encryption_key}
+          content:
+            kms_key_name: ${each.value.kms_key_name}
+            raw_key: ${each.value.raw_key}
+            rsa_encrypted_key: ${each.value.rsa_encrypted_key}
+            sha256: ${each.value.sha256}
+        guest_os_features:
+          for_each: ${var.guest_os_features}
+          content:
+            type: ${each.value.type}
+        source_snapshot_encryption_key:
+          for_each: ${var.source_snapshot_encryption_key}
+          content:
+            kms_key_name: ${each.value.kms_key_name}
+            raw_key: ${each.value.raw_key}
+            sha256: ${each.value.sha256}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

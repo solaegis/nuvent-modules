@@ -1,0 +1,74 @@
+variables:
+  description:
+    type: string
+    description: "High level description of the Tool and its usage."
+  display_name:
+    type: string
+    description: "The human-readable name of the tool, unique within the agent."
+  id:
+    type: string
+    description: "Optional property for CxTool"
+    default: null
+  parent:
+    type: string
+    description: "The agent to create a Tool for. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>."
+    default: null
+  connector_spec:
+    type: list
+    description: "Nested block: connector_spec"
+    default: []
+  data_store_spec:
+    type: list
+    description: "Nested block: data_store_spec"
+    default: []
+  function_spec:
+    type: list
+    description: "Nested block: function_spec"
+    default: []
+  open_api_spec:
+    type: list
+    description: "Nested block: open_api_spec"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:CxTool
+    properties:
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      parent: ${var.parent}
+      dynamic:
+        connector_spec:
+          for_each: ${var.connector_spec}
+          content:
+            name: ${each.value.name}
+            actions: ${each.value.actions}
+            end_user_auth_config: ${each.value.end_user_auth_config}
+        data_store_spec:
+          for_each: ${var.data_store_spec}
+          content:
+            data_store_connections: ${each.value.data_store_connections}
+            fallback_prompt: ${each.value.fallback_prompt}
+        function_spec:
+          for_each: ${var.function_spec}
+          content:
+            input_schema: ${each.value.input_schema}
+            output_schema: ${each.value.output_schema}
+        open_api_spec:
+          for_each: ${var.open_api_spec}
+          content:
+            text_schema: ${each.value.text_schema}
+            authentication: ${each.value.authentication}
+            service_directory_config: ${each.value.service_directory_config}
+            tls_config: ${each.value.tls_config}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

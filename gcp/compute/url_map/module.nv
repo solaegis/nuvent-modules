@@ -1,0 +1,129 @@
+variables:
+  name:
+    type: string
+    description: "Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  default_service:
+    type: string
+    description: "The backend service or backend bucket to use when none of the given rules match."
+    default: null
+  description:
+    type: string
+    description: "An optional description of this resource. Provide this property when you create the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for UrlMap"
+    default: null
+  project:
+    type: string
+    description: "Optional property for UrlMap"
+    default: null
+  default_custom_error_response_policy:
+    type: list
+    description: "Nested block: default_custom_error_response_policy"
+    default: []
+  default_route_action:
+    type: list
+    description: "Nested block: default_route_action"
+    default: []
+  default_url_redirect:
+    type: list
+    description: "Nested block: default_url_redirect"
+    default: []
+  header_action:
+    type: list
+    description: "Nested block: header_action"
+    default: []
+  host_rule:
+    type: list
+    description: "Nested block: host_rule"
+    default: []
+  path_matcher:
+    type: list
+    description: "Nested block: path_matcher"
+    default: []
+  test:
+    type: list
+    description: "Nested block: test"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:UrlMap
+    properties:
+      name: ${var.name}
+      default_service: ${var.default_service}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        default_custom_error_response_policy:
+          for_each: ${var.default_custom_error_response_policy}
+          content:
+            error_service: ${each.value.error_service}
+            error_response_rule: ${each.value.error_response_rule}
+        default_route_action:
+          for_each: ${var.default_route_action}
+          content:
+            cors_policy: ${each.value.cors_policy}
+            fault_injection_policy: ${each.value.fault_injection_policy}
+            max_stream_duration: ${each.value.max_stream_duration}
+            request_mirror_policy: ${each.value.request_mirror_policy}
+            retry_policy: ${each.value.retry_policy}
+            timeout: ${each.value.timeout}
+            url_rewrite: ${each.value.url_rewrite}
+            weighted_backend_services: ${each.value.weighted_backend_services}
+        default_url_redirect:
+          for_each: ${var.default_url_redirect}
+          content:
+            host_redirect: ${each.value.host_redirect}
+            https_redirect: ${each.value.https_redirect}
+            path_redirect: ${each.value.path_redirect}
+            prefix_redirect: ${each.value.prefix_redirect}
+            redirect_response_code: ${each.value.redirect_response_code}
+            strip_query: ${each.value.strip_query}
+        header_action:
+          for_each: ${var.header_action}
+          content:
+            request_headers_to_remove: ${each.value.request_headers_to_remove}
+            response_headers_to_remove: ${each.value.response_headers_to_remove}
+            request_headers_to_add: ${each.value.request_headers_to_add}
+            response_headers_to_add: ${each.value.response_headers_to_add}
+        host_rule:
+          for_each: ${var.host_rule}
+          content:
+            description: ${each.value.description}
+            hosts: ${each.value.hosts}
+            path_matcher: ${each.value.path_matcher}
+        path_matcher:
+          for_each: ${var.path_matcher}
+          content:
+            default_service: ${each.value.default_service}
+            description: ${each.value.description}
+            name: ${each.value.name}
+            default_custom_error_response_policy: ${each.value.default_custom_error_response_policy}
+            default_route_action: ${each.value.default_route_action}
+            default_url_redirect: ${each.value.default_url_redirect}
+            header_action: ${each.value.header_action}
+            path_rule: ${each.value.path_rule}
+            route_rules: ${each.value.route_rules}
+        test:
+          for_each: ${var.test}
+          content:
+            description: ${each.value.description}
+            expected_output_url: ${each.value.expected_output_url}
+            expected_redirect_response_code: ${each.value.expected_redirect_response_code}
+            host: ${each.value.host}
+            path: ${each.value.path}
+            service: ${each.value.service}
+            headers: ${each.value.headers}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

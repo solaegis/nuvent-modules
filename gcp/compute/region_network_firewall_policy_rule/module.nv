@@ -1,0 +1,114 @@
+variables:
+  action:
+    type: string
+    description: "The Action to perform when the client connection triggers the rule. Valid actions are \"allow\", \"deny\", \"goto_next\" and \"apply_security_profile_group\"."
+  direction:
+    type: string
+    description: "The direction in which this rule applies. Possible values: [\"INGRESS\", \"EGRESS\"]"
+  firewall_policy:
+    type: string
+    description: "The firewall policy of the resource."
+  priority:
+    type: number
+    description: "An integer indicating the priority of a rule in the list. The priority must be a positive value between 0 and 2147483647. Rules are evaluated from highest to lowest priority where 0 is the highest priority and 2147483647 is the lowest prority."
+  description:
+    type: string
+    description: "An optional description for this resource."
+    default: null
+  disabled:
+    type: boolean
+    description: "Denotes whether the firewall policy rule is disabled. When set to true, the firewall policy rule is not enforced and traffic behaves as if it did not exist. If this is unspecified, the firewall policy rule will be enabled."
+    default: null
+  enable_logging:
+    type: boolean
+    description: "Denotes whether to enable logging for a particular rule. If logging is enabled, logs will be exported to the configured export destination in Stackdriver. Logs may be exported to BigQuery or Pub/Sub. Note: you cannot enable logging on \"goto_next\" rules."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RegionNetworkFirewallPolicyRule"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RegionNetworkFirewallPolicyRule"
+    default: null
+  region:
+    type: string
+    description: "The location of this resource."
+    default: null
+  rule_name:
+    type: string
+    description: "An optional name for the rule. This field is not a unique identifier and can be updated."
+    default: null
+  security_profile_group:
+    type: string
+    description: "A fully-qualified URL of a SecurityProfile resource instance. Example: https://networksecurity.googleapis.com/v1/projects/{project}/locations/{location}/securityProfileGroups/my-security-profile-group Must be specified if action = 'apply_security_profile_group' and cannot be specified for other actions.  Security Profile Group and Firewall Policy Rule must be in the same scope."
+    default: null
+  target_service_accounts:
+    type: list
+    description: "A list of service accounts indicating the sets of instances that are applied with this rule."
+    default: null
+  tls_inspect:
+    type: boolean
+    description: "Boolean flag indicating if the traffic should be TLS decrypted. Can be set only if action = 'apply_security_profile_group' and cannot be set for other actions."
+    default: null
+  match:
+    type: list
+    description: "Nested block: match"
+    default: []
+  target_secure_tags:
+    type: list
+    description: "Nested block: target_secure_tags"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:RegionNetworkFirewallPolicyRule
+    properties:
+      action: ${var.action}
+      direction: ${var.direction}
+      firewall_policy: ${var.firewall_policy}
+      priority: ${var.priority}
+      description: ${var.description}
+      disabled: ${var.disabled}
+      enable_logging: ${var.enable_logging}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      rule_name: ${var.rule_name}
+      security_profile_group: ${var.security_profile_group}
+      target_service_accounts: ${var.target_service_accounts}
+      tls_inspect: ${var.tls_inspect}
+      dynamic:
+        match:
+          for_each: ${var.match}
+          content:
+            dest_address_groups: ${each.value.dest_address_groups}
+            dest_fqdns: ${each.value.dest_fqdns}
+            dest_ip_ranges: ${each.value.dest_ip_ranges}
+            dest_network_scope: ${each.value.dest_network_scope}
+            dest_region_codes: ${each.value.dest_region_codes}
+            dest_threat_intelligences: ${each.value.dest_threat_intelligences}
+            src_address_groups: ${each.value.src_address_groups}
+            src_fqdns: ${each.value.src_fqdns}
+            src_ip_ranges: ${each.value.src_ip_ranges}
+            src_network_scope: ${each.value.src_network_scope}
+            src_networks: ${each.value.src_networks}
+            src_region_codes: ${each.value.src_region_codes}
+            src_threat_intelligences: ${each.value.src_threat_intelligences}
+            layer4_configs: ${each.value.layer4_configs}
+            src_secure_tags: ${each.value.src_secure_tags}
+        target_secure_tags:
+          for_each: ${var.target_secure_tags}
+          content:
+            name: ${each.value.name}
+            state: ${each.value.state}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

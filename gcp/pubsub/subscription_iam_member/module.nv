@@ -1,0 +1,39 @@
+variables:
+  member:
+    type: string
+    description: "Required property for SubscriptionIamMember"
+  role:
+    type: string
+    description: "Required property for SubscriptionIamMember"
+  subscription:
+    type: string
+    description: "Required property for SubscriptionIamMember"
+  id:
+    type: string
+    description: "Optional property for SubscriptionIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for SubscriptionIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:pubsub:SubscriptionIamMember
+    properties:
+      member: ${var.member}
+      role: ${var.role}
+      subscription: ${var.subscription}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

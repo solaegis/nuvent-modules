@@ -1,0 +1,80 @@
+variables:
+  name:
+    type: string
+    description: "The resource name of the Feature Online Store. This value may be up to 60 characters, and valid characters are [a-z0-9_]. The first character cannot be a number."
+  force_destroy:
+    type: boolean
+    description: "If set to true, any FeatureViews and Features for this FeatureOnlineStore will also be deleted."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AiFeatureOnlineStore"
+    default: null
+  labels:
+    type: object
+    description: "The labels with user-defined metadata to organize your feature online stores.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiFeatureOnlineStore"
+    default: null
+  region:
+    type: string
+    description: "The region of feature online store. eg us-central1"
+    default: null
+  bigtable:
+    type: list
+    description: "Nested block: bigtable"
+    default: []
+  dedicated_serving_endpoint:
+    type: list
+    description: "Nested block: dedicated_serving_endpoint"
+    default: []
+  embedding_management:
+    type: list
+    description: "Nested block: embedding_management"
+    default: []
+  optimized:
+    type: list
+    description: "Nested block: optimized"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vertex:AiFeatureOnlineStore
+    properties:
+      name: ${var.name}
+      force_destroy: ${var.force_destroy}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        bigtable:
+          for_each: ${var.bigtable}
+          content:
+            auto_scaling: ${each.value.auto_scaling}
+        dedicated_serving_endpoint:
+          for_each: ${var.dedicated_serving_endpoint}
+          content:
+            public_endpoint_domain_name: ${each.value.public_endpoint_domain_name}
+            service_attachment: ${each.value.service_attachment}
+            private_service_connect_config: ${each.value.private_service_connect_config}
+        embedding_management:
+          for_each: ${var.embedding_management}
+          content:
+            enabled: ${each.value.enabled}
+        optimized:
+          for_each: ${var.optimized}
+          content:
+            # No specific fields found in schema for optimized
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

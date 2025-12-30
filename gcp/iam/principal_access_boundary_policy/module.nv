@@ -1,0 +1,53 @@
+variables:
+  location:
+    type: string
+    description: "The location the principal access boundary policy is in."
+  organization:
+    type: string
+    description: "The parent organization of the principal access boundary policy."
+  principal_access_boundary_policy_id:
+    type: string
+    description: "The ID to use to create the principal access boundary policy. This value must start with a lowercase letter followed by up to 62 lowercase letters, numbers, hyphens, or dots. Pattern, /a-z{2,62}/."
+  annotations:
+    type: object
+    description: "User defined annotations. See https://google.aip.dev/148#annotations for more details such as format and size limitations   **Note**: This field is non-authoritative, and will only manage the annotations present in your configuration. Please refer to the field 'effective_annotations' for all of the annotations present on the resource."
+    default: null
+  display_name:
+    type: string
+    description: "The description of the principal access boundary policy. Must be less than or equal to 63 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for PrincipalAccessBoundaryPolicy"
+    default: null
+  details:
+    type: list
+    description: "Nested block: details"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:iam:PrincipalAccessBoundaryPolicy
+    properties:
+      location: ${var.location}
+      organization: ${var.organization}
+      principal_access_boundary_policy_id: ${var.principal_access_boundary_policy_id}
+      annotations: ${var.annotations}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      dynamic:
+        details:
+          for_each: ${var.details}
+          content:
+            enforcement_version: ${each.value.enforcement_version}
+            rules: ${each.value.rules}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

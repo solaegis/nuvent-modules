@@ -1,0 +1,32 @@
+variables:
+  description:
+    type: string
+    description: "The developer-provided description of this version."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Version"
+    default: null
+  parent:
+    type: string
+    description: "The Flow to create an Version for. Format: projects/<Project ID>/agent."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:Version
+    properties:
+      description: ${var.description}
+      id: ${var.id}
+      parent: ${var.parent}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

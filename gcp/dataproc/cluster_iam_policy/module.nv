@@ -1,0 +1,29 @@
+variables:
+  cluster:
+    type: string
+    description: "Required property for ClusterIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for ClusterIamPolicy"
+  id:
+    type: string
+    description: "Optional property for ClusterIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ClusterIamPolicy"
+    default: null
+  region:
+    type: string
+    description: "Optional property for ClusterIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:dataproc:ClusterIamPolicy
+    properties:
+      cluster: ${var.cluster}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}

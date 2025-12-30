@@ -1,0 +1,50 @@
+variables:
+  perimeter:
+    type: string
+    description: "The name of the Service Perimeter to add this resource to."
+  id:
+    type: string
+    description: "Optional property for ContextManagerServicePerimeterIngressPolicy"
+    default: null
+  title:
+    type: string
+    description: "Human readable title. Must be unique within the perimeter. Does not affect behavior."
+    default: null
+  ingress_from:
+    type: list
+    description: "Nested block: ingress_from"
+    default: []
+  ingress_to:
+    type: list
+    description: "Nested block: ingress_to"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:access:ContextManagerServicePerimeterIngressPolicy
+    properties:
+      perimeter: ${var.perimeter}
+      id: ${var.id}
+      title: ${var.title}
+      dynamic:
+        ingress_from:
+          for_each: ${var.ingress_from}
+          content:
+            identities: ${each.value.identities}
+            identity_type: ${each.value.identity_type}
+            sources: ${each.value.sources}
+        ingress_to:
+          for_each: ${var.ingress_to}
+          content:
+            resources: ${each.value.resources}
+            roles: ${each.value.roles}
+            operations: ${each.value.operations}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

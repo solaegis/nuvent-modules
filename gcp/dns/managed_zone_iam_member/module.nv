@@ -1,0 +1,39 @@
+variables:
+  managed_zone:
+    type: string
+    description: "Required property for ManagedZoneIamMember"
+  member:
+    type: string
+    description: "Required property for ManagedZoneIamMember"
+  role:
+    type: string
+    description: "Required property for ManagedZoneIamMember"
+  id:
+    type: string
+    description: "Optional property for ManagedZoneIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for ManagedZoneIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:dns:ManagedZoneIamMember
+    properties:
+      managed_zone: ${var.managed_zone}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

@@ -1,0 +1,33 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for WorkstationConfigIamPolicy"
+  workstation_cluster_id:
+    type: string
+    description: "Required property for WorkstationConfigIamPolicy"
+  workstation_config_id:
+    type: string
+    description: "Required property for WorkstationConfigIamPolicy"
+  id:
+    type: string
+    description: "Optional property for WorkstationConfigIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for WorkstationConfigIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for WorkstationConfigIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:workstations:WorkstationConfigIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      workstation_cluster_id: ${var.workstation_cluster_id}
+      workstation_config_id: ${var.workstation_config_id}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

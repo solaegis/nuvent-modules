@@ -1,0 +1,54 @@
+variables:
+  display_name:
+    type: string
+    description: "User provided name of this Tensorboard."
+  description:
+    type: string
+    description: "Description of this Tensorboard."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AiTensorboard"
+    default: null
+  labels:
+    type: object
+    description: "The labels with user-defined metadata to organize your Tensorboards.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiTensorboard"
+    default: null
+  region:
+    type: string
+    description: "The region of the tensorboard. eg us-central1"
+    default: null
+  encryption_spec:
+    type: list
+    description: "Nested block: encryption_spec"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vertex:AiTensorboard
+    properties:
+      display_name: ${var.display_name}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        encryption_spec:
+          for_each: ${var.encryption_spec}
+          content:
+            kms_key_name: ${each.value.kms_key_name}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,44 @@
+variables:
+  client_id:
+    type: string
+    description: "OAuth client ID"
+  client_secret:
+    type: string
+    description: "OAuth client secret"
+  idp_id:
+    type: string
+    description: "ID of the IDP. Possible values include:  * 'apple.com'  * 'facebook.com'  * 'gc.apple.com'  * 'github.com'  * 'google.com'  * 'linkedin.com'  * 'microsoft.com'  * 'playgames.google.com'  * 'twitter.com'  * 'yahoo.com'"
+  enabled:
+    type: boolean
+    description: "If this IDP allows the user to sign in"
+    default: null
+  id:
+    type: string
+    description: "Optional property for PlatformDefaultSupportedIdpConfig"
+    default: null
+  project:
+    type: string
+    description: "Optional property for PlatformDefaultSupportedIdpConfig"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:identity:PlatformDefaultSupportedIdpConfig
+    properties:
+      client_id: ${var.client_id}
+      client_secret: ${var.client_secret}
+      idp_id: ${var.idp_id}
+      enabled: ${var.enabled}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

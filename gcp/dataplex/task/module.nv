@@ -1,0 +1,107 @@
+variables:
+  description:
+    type: string
+    description: "User-provided description of the task."
+    default: null
+  display_name:
+    type: string
+    description: "User friendly display name."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Task"
+    default: null
+  labels:
+    type: object
+    description: "User-defined labels for the task.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  lake:
+    type: string
+    description: "The lake in which the task will be created in."
+    default: null
+  location:
+    type: string
+    description: "The location in which the task will be created in."
+    default: null
+  project:
+    type: string
+    description: "Optional property for Task"
+    default: null
+  task_id:
+    type: string
+    description: "The task Id of the task."
+    default: null
+  execution_spec:
+    type: list
+    description: "Nested block: execution_spec"
+    default: []
+  notebook:
+    type: list
+    description: "Nested block: notebook"
+    default: []
+  spark:
+    type: list
+    description: "Nested block: spark"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  trigger_spec:
+    type: list
+    description: "Nested block: trigger_spec"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataplex:Task
+    properties:
+      description: ${var.description}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      lake: ${var.lake}
+      location: ${var.location}
+      project: ${var.project}
+      task_id: ${var.task_id}
+      dynamic:
+        execution_spec:
+          for_each: ${var.execution_spec}
+          content:
+            args: ${each.value.args}
+            kms_key: ${each.value.kms_key}
+            max_job_execution_lifetime: ${each.value.max_job_execution_lifetime}
+            project: ${each.value.project}
+            service_account: ${each.value.service_account}
+        notebook:
+          for_each: ${var.notebook}
+          content:
+            archive_uris: ${each.value.archive_uris}
+            file_uris: ${each.value.file_uris}
+            notebook: ${each.value.notebook}
+            infrastructure_spec: ${each.value.infrastructure_spec}
+        spark:
+          for_each: ${var.spark}
+          content:
+            archive_uris: ${each.value.archive_uris}
+            file_uris: ${each.value.file_uris}
+            main_class: ${each.value.main_class}
+            main_jar_file_uri: ${each.value.main_jar_file_uri}
+            python_script_file: ${each.value.python_script_file}
+            sql_script: ${each.value.sql_script}
+            sql_script_file: ${each.value.sql_script_file}
+            infrastructure_spec: ${each.value.infrastructure_spec}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        trigger_spec:
+          for_each: ${var.trigger_spec}
+          content:
+            disabled: ${each.value.disabled}
+            max_retries: ${each.value.max_retries}
+            schedule: ${each.value.schedule}
+            start_time: ${each.value.start_time}
+            type: ${each.value.type}

@@ -1,0 +1,91 @@
+variables:
+  bucket_name:
+    type: string
+    description: "Cloud Storage bucket name."
+  name:
+    type: string
+    description: "Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035.  Specifically, the name must be 1-63 characters long and match the regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash."
+  compression_mode:
+    type: string
+    description: "Compress text responses using Brotli or gzip compression, based on the client's Accept-Encoding header. Possible values: [\"AUTOMATIC\", \"DISABLED\"]"
+    default: null
+  custom_response_headers:
+    type: list
+    description: "Headers that the HTTP/S load balancer should add to proxied responses."
+    default: null
+  description:
+    type: string
+    description: "An optional textual description of the resource; provided by the client when the resource is created."
+    default: null
+  edge_security_policy:
+    type: string
+    description: "The security policy associated with this backend bucket."
+    default: null
+  enable_cdn:
+    type: boolean
+    description: "If true, enable Cloud CDN for this BackendBucket. Note: This cannot be set to true when loadBalancingScheme is set to INTERNAL_MANAGED."
+    default: null
+  id:
+    type: string
+    description: "Optional property for BackendBucket"
+    default: null
+  load_balancing_scheme:
+    type: string
+    description: "The value can only be INTERNAL_MANAGED for cross-region internal layer 7 load balancer. If loadBalancingScheme is not specified, the backend bucket can be used by classic global external load balancers, or global application external load balancers, or both. Important: CDN cannot be enabled (enableCdn cannot be set to true) when loadBalancingScheme is set to INTERNAL_MANAGED. Possible values: [\"INTERNAL_MANAGED\"]"
+    default: null
+  project:
+    type: string
+    description: "Optional property for BackendBucket"
+    default: null
+  cdn_policy:
+    type: list
+    description: "Nested block: cdn_policy"
+    default: []
+  params:
+    type: list
+    description: "Nested block: params"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:BackendBucket
+    properties:
+      bucket_name: ${var.bucket_name}
+      name: ${var.name}
+      compression_mode: ${var.compression_mode}
+      custom_response_headers: ${var.custom_response_headers}
+      description: ${var.description}
+      edge_security_policy: ${var.edge_security_policy}
+      enable_cdn: ${var.enable_cdn}
+      id: ${var.id}
+      load_balancing_scheme: ${var.load_balancing_scheme}
+      project: ${var.project}
+      dynamic:
+        cdn_policy:
+          for_each: ${var.cdn_policy}
+          content:
+            cache_mode: ${each.value.cache_mode}
+            client_ttl: ${each.value.client_ttl}
+            default_ttl: ${each.value.default_ttl}
+            max_ttl: ${each.value.max_ttl}
+            negative_caching: ${each.value.negative_caching}
+            request_coalescing: ${each.value.request_coalescing}
+            serve_while_stale: ${each.value.serve_while_stale}
+            signed_url_cache_max_age_sec: ${each.value.signed_url_cache_max_age_sec}
+            bypass_cache_on_request_headers: ${each.value.bypass_cache_on_request_headers}
+            cache_key_policy: ${each.value.cache_key_policy}
+            negative_caching_policy: ${each.value.negative_caching_policy}
+        params:
+          for_each: ${var.params}
+          content:
+            resource_manager_tags: ${each.value.resource_manager_tags}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

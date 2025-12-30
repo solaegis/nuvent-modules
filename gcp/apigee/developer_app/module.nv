@@ -1,0 +1,72 @@
+variables:
+  callback_url:
+    type: string
+    description: "Callback URL used by OAuth 2.0 authorization servers to communicate authorization codes back to developer apps."
+  developer_email:
+    type: string
+    description: "Email address of the developer. This value is used to uniquely identify the developer in Apigee hybrid. Note that the email address has to be in lowercase only."
+  name:
+    type: string
+    description: "Name of the developer app."
+  org_id:
+    type: string
+    description: "The Apigee Organization associated with the Apigee instance, in the format 'organizations/{{org_name}}'."
+  api_products:
+    type: list
+    description: "List of API products associated with the developer app."
+    default: null
+  app_family:
+    type: string
+    description: "Developer app family."
+    default: null
+  id:
+    type: string
+    description: "Optional property for DeveloperApp"
+    default: null
+  key_expires_in:
+    type: string
+    description: "Expiration time, in milliseconds, for the consumer key that is generated for the developer app. If not set or left to the default value of -1, the API key never expires. The expiration time can't be updated after it is set."
+    default: null
+  scopes:
+    type: list
+    description: "Scopes to apply to the developer app. The specified scopes must already exist for the API product that you associate with the developer app."
+    default: null
+  status:
+    type: string
+    description: "Status of the credential. Valid values include approved or revoked."
+    default: null
+  attributes:
+    type: list
+    description: "Nested block: attributes"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:apigee:DeveloperApp
+    properties:
+      callback_url: ${var.callback_url}
+      developer_email: ${var.developer_email}
+      name: ${var.name}
+      org_id: ${var.org_id}
+      api_products: ${var.api_products}
+      app_family: ${var.app_family}
+      id: ${var.id}
+      key_expires_in: ${var.key_expires_in}
+      scopes: ${var.scopes}
+      status: ${var.status}
+      dynamic:
+        attributes:
+          for_each: ${var.attributes}
+          content:
+            name: ${each.value.name}
+            value: ${each.value.value}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

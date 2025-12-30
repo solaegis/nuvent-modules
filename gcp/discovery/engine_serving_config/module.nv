@@ -1,0 +1,70 @@
+variables:
+  engine_id:
+    type: string
+    description: "The ID of the engine associated with the serving config."
+  location:
+    type: string
+    description: "The geographic location where the data store should reside. The value can only be one of \"global\", \"us\" and \"eu\"."
+  boost_control_ids:
+    type: list
+    description: "The resource IDs of the boost controls to be applied."
+    default: null
+  collection_id:
+    type: string
+    description: "The collection ID. Currently only accepts \"default_collection\"."
+    default: null
+  filter_control_ids:
+    type: list
+    description: "The resource IDs of the filter controls to be applied."
+    default: null
+  id:
+    type: string
+    description: "Optional property for EngineServingConfig"
+    default: null
+  project:
+    type: string
+    description: "Optional property for EngineServingConfig"
+    default: null
+  promote_control_ids:
+    type: list
+    description: "The resource IDs of the promote controls to be applied."
+    default: null
+  redirect_control_ids:
+    type: list
+    description: "The resource IDs of the redirect controls to be applied."
+    default: null
+  serving_config_id:
+    type: string
+    description: "'The unique ID of the serving config. Currently only accepts \"default_search\".'"
+    default: null
+  synonyms_control_ids:
+    type: list
+    description: "The resource IDs of the synonyms controls to be applied."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:discovery:EngineServingConfig
+    properties:
+      engine_id: ${var.engine_id}
+      location: ${var.location}
+      boost_control_ids: ${var.boost_control_ids}
+      collection_id: ${var.collection_id}
+      filter_control_ids: ${var.filter_control_ids}
+      id: ${var.id}
+      project: ${var.project}
+      promote_control_ids: ${var.promote_control_ids}
+      redirect_control_ids: ${var.redirect_control_ids}
+      serving_config_id: ${var.serving_config_id}
+      synonyms_control_ids: ${var.synonyms_control_ids}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

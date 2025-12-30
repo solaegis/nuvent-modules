@@ -1,0 +1,24 @@
+variables:
+  policy_data:
+    type: string
+    description: "Required property for TopicIamPolicy"
+  topic:
+    type: string
+    description: "Required property for TopicIamPolicy"
+  id:
+    type: string
+    description: "Optional property for TopicIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for TopicIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:pubsub:TopicIamPolicy
+    properties:
+      policy_data: ${var.policy_data}
+      topic: ${var.topic}
+      id: ${var.id}
+      project: ${var.project}

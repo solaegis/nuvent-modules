@@ -1,0 +1,29 @@
+variables:
+  entry_type_id:
+    type: string
+    description: "Required property for EntryTypeIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for EntryTypeIamPolicy"
+  id:
+    type: string
+    description: "Optional property for EntryTypeIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for EntryTypeIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for EntryTypeIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:dataplex:EntryTypeIamPolicy
+    properties:
+      entry_type_id: ${var.entry_type_id}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

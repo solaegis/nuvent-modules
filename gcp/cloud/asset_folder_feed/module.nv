@@ -1,0 +1,68 @@
+variables:
+  billing_project:
+    type: string
+    description: "The project whose identity will be used when sending messages to the destination pubsub topic. It also specifies the project for API enablement check, quota, and billing."
+  feed_id:
+    type: string
+    description: "This is the client-assigned asset feed identifier and it needs to be unique under a specific parent."
+  folder:
+    type: string
+    description: "The folder this feed should be created in."
+  asset_names:
+    type: list
+    description: "A list of the full names of the assets to receive updates. You must specify either or both of assetNames and assetTypes. Only asset updates matching specified assetNames and assetTypes are exported to the feed. For example: //compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1. See https://cloud.google.com/apis/design/resourceNames#fullResourceName for more info."
+    default: null
+  asset_types:
+    type: list
+    description: "A list of types of the assets to receive updates. You must specify either or both of assetNames and assetTypes. Only asset updates matching specified assetNames and assetTypes are exported to the feed. For example: \"compute.googleapis.com/Disk\" See https://cloud.google.com/asset-inventory/docs/supported-asset-types for a list of all supported asset types."
+    default: null
+  content_type:
+    type: string
+    description: "Asset content type. If not specified, no content but the asset name and type will be returned. Possible values: [\"CONTENT_TYPE_UNSPECIFIED\", \"RESOURCE\", \"IAM_POLICY\", \"ORG_POLICY\", \"OS_INVENTORY\", \"ACCESS_POLICY\"]"
+    default: null
+  id:
+    type: string
+    description: "Optional property for AssetFolderFeed"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+  feed_output_config:
+    type: list
+    description: "Nested block: feed_output_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:cloud:AssetFolderFeed
+    properties:
+      billing_project: ${var.billing_project}
+      feed_id: ${var.feed_id}
+      folder: ${var.folder}
+      asset_names: ${var.asset_names}
+      asset_types: ${var.asset_types}
+      content_type: ${var.content_type}
+      id: ${var.id}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            location: ${each.value.location}
+            title: ${each.value.title}
+        feed_output_config:
+          for_each: ${var.feed_output_config}
+          content:
+            pubsub_destination: ${each.value.pubsub_destination}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

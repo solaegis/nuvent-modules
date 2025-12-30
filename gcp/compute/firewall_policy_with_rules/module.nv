@@ -1,0 +1,55 @@
+variables:
+  parent:
+    type: string
+    description: "The parent of this FirewallPolicy in the Cloud Resource Hierarchy. Format: organizations/{organization_id} or folders/{folder_id}"
+  short_name:
+    type: string
+    description: "A textual name of the security policy."
+  description:
+    type: string
+    description: "An optional description of this resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for FirewallPolicyWithRules"
+    default: null
+  rule:
+    type: list
+    description: "Nested block: rule"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:compute:FirewallPolicyWithRules
+    properties:
+      parent: ${var.parent}
+      short_name: ${var.short_name}
+      description: ${var.description}
+      id: ${var.id}
+      dynamic:
+        rule:
+          for_each: ${var.rule}
+          content:
+            action: ${each.value.action}
+            description: ${each.value.description}
+            direction: ${each.value.direction}
+            disabled: ${each.value.disabled}
+            enable_logging: ${each.value.enable_logging}
+            priority: ${each.value.priority}
+            rule_name: ${each.value.rule_name}
+            security_profile_group: ${each.value.security_profile_group}
+            target_resources: ${each.value.target_resources}
+            target_service_accounts: ${each.value.target_service_accounts}
+            tls_inspect: ${each.value.tls_inspect}
+            match: ${each.value.match}
+            target_secure_tag: ${each.value.target_secure_tag}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

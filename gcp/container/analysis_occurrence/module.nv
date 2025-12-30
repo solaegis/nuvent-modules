@@ -1,0 +1,49 @@
+variables:
+  note_name:
+    type: string
+    description: "The analysis note associated with this occurrence, in the form of projects/[PROJECT]/notes/[NOTE_ID]. This field can be used as a filter in list requests."
+  resource_uri:
+    type: string
+    description: "Required. Immutable. A URI that represents the resource for which the occurrence applies. For example, https://gcr.io/project/image@sha256:123abc for a Docker image."
+  id:
+    type: string
+    description: "Optional property for AnalysisOccurrence"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AnalysisOccurrence"
+    default: null
+  remediation:
+    type: string
+    description: "A description of actions that can be taken to remedy the note."
+    default: null
+  attestation:
+    type: list
+    description: "Nested block: attestation"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:container:AnalysisOccurrence
+    properties:
+      note_name: ${var.note_name}
+      resource_uri: ${var.resource_uri}
+      id: ${var.id}
+      project: ${var.project}
+      remediation: ${var.remediation}
+      dynamic:
+        attestation:
+          for_each: ${var.attestation}
+          content:
+            serialized_payload: ${each.value.serialized_payload}
+            signatures: ${each.value.signatures}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

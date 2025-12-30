@@ -1,0 +1,63 @@
+variables:
+  capacity:
+    type: number
+    description: "Capacity of the Address Group."
+  location:
+    type: string
+    description: "The location of the gateway security policy. The default value is 'global'."
+  name:
+    type: string
+    description: "Name of the AddressGroup resource."
+  type:
+    type: string
+    description: "The type of the Address Group. Possible values are \"IPV4\" or \"IPV6\". Possible values: [\"IPV4\", \"IPV6\"]"
+  description:
+    type: string
+    description: "Free-text description of the resource."
+    default: null
+  id:
+    type: string
+    description: "Optional property for SecurityAddressGroup"
+    default: null
+  items:
+    type: list
+    description: "List of items."
+    default: null
+  labels:
+    type: object
+    description: "Set of label tags associated with the AddressGroup resource. An object containing a list of \"key\": value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  parent:
+    type: string
+    description: "The name of the parent this address group belongs to. Format: organizations/{organization_id} or projects/{project_id}."
+    default: null
+  purpose:
+    type: list
+    description: "List of supported purposes of the Address Group. Possible values: [\"DEFAULT\", \"CLOUD_ARMOR\"]"
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:SecurityAddressGroup
+    properties:
+      capacity: ${var.capacity}
+      location: ${var.location}
+      name: ${var.name}
+      type: ${var.type}
+      description: ${var.description}
+      id: ${var.id}
+      items: ${var.items}
+      labels: ${var.labels}
+      parent: ${var.parent}
+      purpose: ${var.purpose}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

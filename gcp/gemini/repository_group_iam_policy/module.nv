@@ -1,0 +1,33 @@
+variables:
+  code_repository_index:
+    type: string
+    description: "Required property for RepositoryGroupIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for RepositoryGroupIamPolicy"
+  repository_group_id:
+    type: string
+    description: "Required property for RepositoryGroupIamPolicy"
+  id:
+    type: string
+    description: "Optional property for RepositoryGroupIamPolicy"
+    default: null
+  location:
+    type: string
+    description: "Optional property for RepositoryGroupIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RepositoryGroupIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:gemini:RepositoryGroupIamPolicy
+    properties:
+      code_repository_index: ${var.code_repository_index}
+      policy_data: ${var.policy_data}
+      repository_group_id: ${var.repository_group_id}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}

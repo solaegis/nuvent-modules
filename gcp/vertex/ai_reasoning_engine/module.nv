@@ -1,0 +1,62 @@
+variables:
+  display_name:
+    type: string
+    description: "The display name of the ReasoningEngine."
+  description:
+    type: string
+    description: "The description of the ReasoningEngine."
+    default: null
+  id:
+    type: string
+    description: "Optional property for AiReasoningEngine"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AiReasoningEngine"
+    default: null
+  region:
+    type: string
+    description: "The region of the reasoning engine. eg us-central1"
+    default: null
+  encryption_spec:
+    type: list
+    description: "Nested block: encryption_spec"
+    default: []
+  spec:
+    type: list
+    description: "Nested block: spec"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vertex:AiReasoningEngine
+    properties:
+      display_name: ${var.display_name}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      dynamic:
+        encryption_spec:
+          for_each: ${var.encryption_spec}
+          content:
+            kms_key_name: ${each.value.kms_key_name}
+        spec:
+          for_each: ${var.spec}
+          content:
+            agent_framework: ${each.value.agent_framework}
+            class_methods: ${each.value.class_methods}
+            service_account: ${each.value.service_account}
+            deployment_spec: ${each.value.deployment_spec}
+            package_spec: ${each.value.package_spec}
+            source_code_spec: ${each.value.source_code_spec}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

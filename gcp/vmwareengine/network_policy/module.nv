@@ -1,0 +1,66 @@
+variables:
+  edge_services_cidr:
+    type: string
+    description: "IP address range in CIDR notation used to create internet access and external IP access. An RFC 1918 CIDR block, with a \"/26\" prefix, is required. The range cannot overlap with any prefixes either in the consumer VPC network or in use by the private clouds attached to that VPC network."
+  location:
+    type: string
+    description: "The resource name of the location (region) to create the new network policy in. Resource names are schemeless URIs that follow the conventions in https://cloud.google.com/apis/design/resource_names. For example: projects/my-project/locations/us-central1"
+  name:
+    type: string
+    description: "The ID of the Network Policy."
+  vmware_engine_network:
+    type: string
+    description: "The relative resource name of the VMware Engine network. Specify the name in the following form: projects/{project}/locations/{location}/vmwareEngineNetworks/{vmwareEngineNetworkId} where {project} can either be a project number or a project ID."
+  description:
+    type: string
+    description: "User-provided description for this network policy."
+    default: null
+  id:
+    type: string
+    description: "Optional property for NetworkPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for NetworkPolicy"
+    default: null
+  external_ip:
+    type: list
+    description: "Nested block: external_ip"
+    default: []
+  internet_access:
+    type: list
+    description: "Nested block: internet_access"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:vmwareengine:NetworkPolicy
+    properties:
+      edge_services_cidr: ${var.edge_services_cidr}
+      location: ${var.location}
+      name: ${var.name}
+      vmware_engine_network: ${var.vmware_engine_network}
+      description: ${var.description}
+      id: ${var.id}
+      project: ${var.project}
+      dynamic:
+        external_ip:
+          for_each: ${var.external_ip}
+          content:
+            enabled: ${each.value.enabled}
+            state: ${each.value.state}
+        internet_access:
+          for_each: ${var.internet_access}
+          content:
+            enabled: ${each.value.enabled}
+            state: ${each.value.state}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

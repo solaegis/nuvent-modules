@@ -1,0 +1,34 @@
+variables:
+  verification_method:
+    type: string
+    description: "The verification method for the Site Verification system to use to verify this site or domain. Possible values: [\"ANALYTICS\", \"DNS_CNAME\", \"DNS_TXT\", \"FILE\", \"META\", \"TAG_MANAGER\"]"
+  id:
+    type: string
+    description: "Optional property for VerificationWebResource"
+    default: null
+  site:
+    type: list
+    description: "Nested block: site"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:site:VerificationWebResource
+    properties:
+      verification_method: ${var.verification_method}
+      id: ${var.id}
+      dynamic:
+        site:
+          for_each: ${var.site}
+          content:
+            identifier: ${each.value.identifier}
+            type: ${each.value.type}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}

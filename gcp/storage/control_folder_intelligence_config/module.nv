@@ -1,0 +1,42 @@
+variables:
+  name:
+    type: string
+    description: "Identifier of the GCP Folder. For GCP Folder, this field can be folder number."
+  edition_config:
+    type: string
+    description: "Edition configuration of the Storage Intelligence resource. Valid values are INHERIT, TRIAL, DISABLED and STANDARD."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ControlFolderIntelligenceConfig"
+    default: null
+  filter:
+    type: list
+    description: "Nested block: filter"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:storage:ControlFolderIntelligenceConfig
+    properties:
+      name: ${var.name}
+      edition_config: ${var.edition_config}
+      id: ${var.id}
+      dynamic:
+        filter:
+          for_each: ${var.filter}
+          content:
+            excluded_cloud_storage_buckets: ${each.value.excluded_cloud_storage_buckets}
+            excluded_cloud_storage_locations: ${each.value.excluded_cloud_storage_locations}
+            included_cloud_storage_buckets: ${each.value.included_cloud_storage_buckets}
+            included_cloud_storage_locations: ${each.value.included_cloud_storage_locations}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

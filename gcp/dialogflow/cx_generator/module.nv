@@ -1,0 +1,73 @@
+variables:
+  display_name:
+    type: string
+    description: "The human-readable name of the generator, unique within the agent."
+  id:
+    type: string
+    description: "Optional property for CxGenerator"
+    default: null
+  language_code:
+    type: string
+    description: "The language to create generators for the following fields: * Generator.prompt_text.text If not specified, the agent's default language is used."
+    default: null
+  parent:
+    type: string
+    description: "The agent to create a Generator for. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>."
+    default: null
+  llm_model_settings:
+    type: list
+    description: "Nested block: llm_model_settings"
+    default: []
+  model_parameter:
+    type: list
+    description: "Nested block: model_parameter"
+    default: []
+  placeholders:
+    type: list
+    description: "Nested block: placeholders"
+    default: []
+  prompt_text:
+    type: list
+    description: "Nested block: prompt_text"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:CxGenerator
+    properties:
+      display_name: ${var.display_name}
+      id: ${var.id}
+      language_code: ${var.language_code}
+      parent: ${var.parent}
+      dynamic:
+        llm_model_settings:
+          for_each: ${var.llm_model_settings}
+          content:
+            model: ${each.value.model}
+            prompt_text: ${each.value.prompt_text}
+        model_parameter:
+          for_each: ${var.model_parameter}
+          content:
+            max_decode_steps: ${each.value.max_decode_steps}
+            temperature: ${each.value.temperature}
+            top_k: ${each.value.top_k}
+            top_p: ${each.value.top_p}
+        placeholders:
+          for_each: ${var.placeholders}
+          content:
+            id: ${each.value.id}
+            name: ${each.value.name}
+        prompt_text:
+          for_each: ${var.prompt_text}
+          content:
+            text: ${each.value.text}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

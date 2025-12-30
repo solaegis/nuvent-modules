@@ -1,0 +1,36 @@
+variables:
+  display_name:
+    type: string
+    description: "The human-readable name of the version. Limit of 64 characters."
+  description:
+    type: string
+    description: "The description of the version. The maximum length is 500 characters. If exceeded, the request is rejected."
+    default: null
+  id:
+    type: string
+    description: "Optional property for CxVersion"
+    default: null
+  parent:
+    type: string
+    description: "The Flow to create an Version for. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>."
+    default: null
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dialogflow:CxVersion
+    properties:
+      display_name: ${var.display_name}
+      description: ${var.description}
+      id: ${var.id}
+      parent: ${var.parent}
+      dynamic:
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

@@ -1,0 +1,66 @@
+variables:
+  location:
+    type: string
+    description: "Location of the resource."
+  service_instance_id:
+    type: string
+    description: "Id of the service instance."
+  display_name:
+    type: string
+    description: "User-provided human-readable name to be used in user interfaces."
+    default: null
+  id:
+    type: string
+    description: "Optional property for GdcServiceInstance"
+    default: null
+  labels:
+    type: object
+    description: "The labels to associate with this service instance. Labels may be used for filtering and billing tracking.   **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for GdcServiceInstance"
+    default: null
+  service_account:
+    type: string
+    description: "Requested service account to associate with ServiceInstance."
+    default: null
+  gdce_cluster:
+    type: list
+    description: "Nested block: gdce_cluster"
+    default: []
+  spark_service_instance_config:
+    type: list
+    description: "Nested block: spark_service_instance_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataproc:GdcServiceInstance
+    properties:
+      location: ${var.location}
+      service_instance_id: ${var.service_instance_id}
+      display_name: ${var.display_name}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      service_account: ${var.service_account}
+      dynamic:
+        gdce_cluster:
+          for_each: ${var.gdce_cluster}
+          content:
+            gdce_cluster: ${each.value.gdce_cluster}
+        spark_service_instance_config:
+          for_each: ${var.spark_service_instance_config}
+          content:
+            # No specific fields found in schema for spark_service_instance_config
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

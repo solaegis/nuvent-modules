@@ -1,0 +1,76 @@
+variables:
+  name:
+    type: string
+    description: "Name of the EndpointPolicy resource."
+  type:
+    type: string
+    description: "The type of endpoint policy. This is primarily used to validate the configuration. Possible values: [\"SIDECAR_PROXY\", \"GRPC_SERVER\"]"
+  authorization_policy:
+    type: string
+    description: "This field specifies the URL of AuthorizationPolicy resource that applies authorization policies to the inbound traffic at the matched endpoints."
+    default: null
+  client_tls_policy:
+    type: string
+    description: "A URL referring to a ClientTlsPolicy resource. ClientTlsPolicy can be set to specify the authentication for traffic from the proxy to the actual endpoints."
+    default: null
+  description:
+    type: string
+    description: "A free-text description of the resource. Max length 1024 characters."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ServicesEndpointPolicy"
+    default: null
+  labels:
+    type: object
+    description: "Set of label tags associated with the TcpRoute resource.  **Note**: This field is non-authoritative, and will only manage the labels present in your configuration. Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  project:
+    type: string
+    description: "Optional property for ServicesEndpointPolicy"
+    default: null
+  server_tls_policy:
+    type: string
+    description: "A URL referring to ServerTlsPolicy resource. ServerTlsPolicy is used to determine the authentication policy to be applied to terminate the inbound traffic at the identified backends."
+    default: null
+  endpoint_matcher:
+    type: list
+    description: "Nested block: endpoint_matcher"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+  traffic_port_selector:
+    type: list
+    description: "Nested block: traffic_port_selector"
+    default: []
+
+resources:
+  main:
+    type: gcp:network:ServicesEndpointPolicy
+    properties:
+      name: ${var.name}
+      type: ${var.type}
+      authorization_policy: ${var.authorization_policy}
+      client_tls_policy: ${var.client_tls_policy}
+      description: ${var.description}
+      id: ${var.id}
+      labels: ${var.labels}
+      project: ${var.project}
+      server_tls_policy: ${var.server_tls_policy}
+      dynamic:
+        endpoint_matcher:
+          for_each: ${var.endpoint_matcher}
+          content:
+            metadata_label_matcher: ${each.value.metadata_label_matcher}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}
+        traffic_port_selector:
+          for_each: ${var.traffic_port_selector}
+          content:
+            ports: ${each.value.ports}

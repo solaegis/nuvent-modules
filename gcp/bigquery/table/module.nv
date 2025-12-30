@@ -1,0 +1,216 @@
+variables:
+  dataset_id:
+    type: string
+    description: "The dataset ID to create the table in. Changing this forces a new resource to be created."
+  table_id:
+    type: string
+    description: "A unique ID for the resource. Changing this forces a new resource to be created."
+  clustering:
+    type: list
+    description: "Specifies column names to use for data clustering. Up to four top-level columns are allowed, and should be specified in descending priority order."
+    default: null
+  deletion_protection:
+    type: boolean
+    description: "Whether Terraform will be prevented from destroying the instance. When the field is set to true or unset in Terraform state, a terraform apply or terraform destroy that would delete the table will fail. When the field is set to false, deleting the table is allowed."
+    default: null
+  description:
+    type: string
+    description: "The field description."
+    default: null
+  expiration_time:
+    type: number
+    description: "The time when this table expires, in milliseconds since the epoch. If not present, the table will persist indefinitely. Expired tables will be deleted and their storage reclaimed."
+    default: null
+  friendly_name:
+    type: string
+    description: "A descriptive name for the table."
+    default: null
+  id:
+    type: string
+    description: "Optional property for Table"
+    default: null
+  ignore_auto_generated_schema:
+    type: boolean
+    description: "Whether Terraform will prevent implicitly added columns in schema from showing diff."
+    default: null
+  ignore_schema_changes:
+    type: list
+    description: "Mention which fields in schema are to be ignored"
+    default: null
+  labels:
+    type: object
+    description: "A mapping of labels to assign to the resource.  				**Note**: This field is non-authoritative, and will only manage the labels present in your configuration. 				Please refer to the field 'effective_labels' for all of the labels present on the resource."
+    default: null
+  max_staleness:
+    type: string
+    description: "The maximum staleness of data that could be returned when the table (or stale MV) is queried. Staleness encoded as a string encoding of [SQL IntervalValue type](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#interval_type)."
+    default: null
+  project:
+    type: string
+    description: "The ID of the project in which the resource belongs."
+    default: null
+  require_partition_filter:
+    type: boolean
+    description: "If set to true, queries over this table require a partition filter that can be used for partition elimination to be specified."
+    default: null
+  resource_tags:
+    type: object
+    description: "The tags attached to this table. Tag keys are globally unique. Tag key is expected to be in the namespaced format, for example \"123456789012/environment\" where 123456789012 is the ID of the parent organization or project resource for this tag key. Tag value is expected to be the short name, for example \"Production\"."
+    default: null
+  schema:
+    type: string
+    description: "A JSON schema for the table."
+    default: null
+  table_metadata_view:
+    type: string
+    description: "View sets the optional parameter \"view\": Specifies the view that determines which table information is returned. By default, basic table information and storage statistics (STORAGE_STATS) are returned. Possible values: TABLE_METADATA_VIEW_UNSPECIFIED, BASIC, STORAGE_STATS, FULL"
+    default: null
+  biglake_configuration:
+    type: list
+    description: "Nested block: biglake_configuration"
+    default: []
+  encryption_configuration:
+    type: list
+    description: "Nested block: encryption_configuration"
+    default: []
+  external_catalog_table_options:
+    type: list
+    description: "Nested block: external_catalog_table_options"
+    default: []
+  external_data_configuration:
+    type: list
+    description: "Nested block: external_data_configuration"
+    default: []
+  materialized_view:
+    type: list
+    description: "Nested block: materialized_view"
+    default: []
+  range_partitioning:
+    type: list
+    description: "Nested block: range_partitioning"
+    default: []
+  schema_foreign_type_info:
+    type: list
+    description: "Nested block: schema_foreign_type_info"
+    default: []
+  table_constraints:
+    type: list
+    description: "Nested block: table_constraints"
+    default: []
+  table_replication_info:
+    type: list
+    description: "Nested block: table_replication_info"
+    default: []
+  time_partitioning:
+    type: list
+    description: "Nested block: time_partitioning"
+    default: []
+  view:
+    type: list
+    description: "Nested block: view"
+    default: []
+
+resources:
+  main:
+    type: gcp:bigquery:Table
+    properties:
+      dataset_id: ${var.dataset_id}
+      table_id: ${var.table_id}
+      clustering: ${var.clustering}
+      deletion_protection: ${var.deletion_protection}
+      description: ${var.description}
+      expiration_time: ${var.expiration_time}
+      friendly_name: ${var.friendly_name}
+      id: ${var.id}
+      ignore_auto_generated_schema: ${var.ignore_auto_generated_schema}
+      ignore_schema_changes: ${var.ignore_schema_changes}
+      labels: ${var.labels}
+      max_staleness: ${var.max_staleness}
+      project: ${var.project}
+      require_partition_filter: ${var.require_partition_filter}
+      resource_tags: ${var.resource_tags}
+      schema: ${var.schema}
+      table_metadata_view: ${var.table_metadata_view}
+      dynamic:
+        biglake_configuration:
+          for_each: ${var.biglake_configuration}
+          content:
+            connection_id: ${each.value.connection_id}
+            file_format: ${each.value.file_format}
+            storage_uri: ${each.value.storage_uri}
+            table_format: ${each.value.table_format}
+        encryption_configuration:
+          for_each: ${var.encryption_configuration}
+          content:
+            kms_key_name: ${each.value.kms_key_name}
+            kms_key_version: ${each.value.kms_key_version}
+        external_catalog_table_options:
+          for_each: ${var.external_catalog_table_options}
+          content:
+            connection_id: ${each.value.connection_id}
+            parameters: ${each.value.parameters}
+            storage_descriptor: ${each.value.storage_descriptor}
+        external_data_configuration:
+          for_each: ${var.external_data_configuration}
+          content:
+            autodetect: ${each.value.autodetect}
+            compression: ${each.value.compression}
+            connection_id: ${each.value.connection_id}
+            decimal_target_types: ${each.value.decimal_target_types}
+            file_set_spec_type: ${each.value.file_set_spec_type}
+            ignore_unknown_values: ${each.value.ignore_unknown_values}
+            json_extension: ${each.value.json_extension}
+            max_bad_records: ${each.value.max_bad_records}
+            metadata_cache_mode: ${each.value.metadata_cache_mode}
+            object_metadata: ${each.value.object_metadata}
+            reference_file_schema_uri: ${each.value.reference_file_schema_uri}
+            schema: ${each.value.schema}
+            source_format: ${each.value.source_format}
+            source_uris: ${each.value.source_uris}
+            avro_options: ${each.value.avro_options}
+            bigtable_options: ${each.value.bigtable_options}
+            csv_options: ${each.value.csv_options}
+            google_sheets_options: ${each.value.google_sheets_options}
+            hive_partitioning_options: ${each.value.hive_partitioning_options}
+            json_options: ${each.value.json_options}
+            parquet_options: ${each.value.parquet_options}
+        materialized_view:
+          for_each: ${var.materialized_view}
+          content:
+            allow_non_incremental_definition: ${each.value.allow_non_incremental_definition}
+            enable_refresh: ${each.value.enable_refresh}
+            query: ${each.value.query}
+            refresh_interval_ms: ${each.value.refresh_interval_ms}
+        range_partitioning:
+          for_each: ${var.range_partitioning}
+          content:
+            field: ${each.value.field}
+            range: ${each.value.range}
+        schema_foreign_type_info:
+          for_each: ${var.schema_foreign_type_info}
+          content:
+            type_system: ${each.value.type_system}
+        table_constraints:
+          for_each: ${var.table_constraints}
+          content:
+            foreign_keys: ${each.value.foreign_keys}
+            primary_key: ${each.value.primary_key}
+        table_replication_info:
+          for_each: ${var.table_replication_info}
+          content:
+            replication_interval_ms: ${each.value.replication_interval_ms}
+            source_dataset_id: ${each.value.source_dataset_id}
+            source_project_id: ${each.value.source_project_id}
+            source_table_id: ${each.value.source_table_id}
+        time_partitioning:
+          for_each: ${var.time_partitioning}
+          content:
+            expiration_ms: ${each.value.expiration_ms}
+            field: ${each.value.field}
+            require_partition_filter: ${each.value.require_partition_filter}
+            type: ${each.value.type}
+        view:
+          for_each: ${var.view}
+          content:
+            query: ${each.value.query}
+            use_legacy_sql: ${each.value.use_legacy_sql}

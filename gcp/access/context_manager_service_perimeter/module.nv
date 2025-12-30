@@ -1,0 +1,75 @@
+variables:
+  name:
+    type: string
+    description: "Resource name for the ServicePerimeter. The short_name component must begin with a letter and only include alphanumeric and '_'. Format: accessPolicies/{policy_id}/servicePerimeters/{short_name}"
+  parent:
+    type: string
+    description: "The AccessPolicy this ServicePerimeter lives in. Format: accessPolicies/{policy_id}"
+  title:
+    type: string
+    description: "Human readable title. Must be unique within the Policy."
+  description:
+    type: string
+    description: "Description of the ServicePerimeter and its use. Does not affect behavior."
+    default: null
+  id:
+    type: string
+    description: "Optional property for ContextManagerServicePerimeter"
+    default: null
+  perimeter_type:
+    type: string
+    description: "Specifies the type of the Perimeter. There are two types: regular and bridge. Regular Service Perimeter contains resources, access levels, and restricted services. Every resource can be in at most ONE regular Service Perimeter.  In addition to being in a regular service perimeter, a resource can also be in zero or more perimeter bridges. A perimeter bridge only contains resources. Cross project operations are permitted if all effected resources share some perimeter (whether bridge or regular). Perimeter Bridge does not contain access levels or services: those are governed entirely by the regular perimeter that resource is in.  Perimeter Bridges are typically useful when building more complex topologies with many independent perimeters that need to share some data with a common perimeter, but should not be able to share data among themselves. Default value: \"PERIMETER_TYPE_REGULAR\" Possible values: [\"PERIMETER_TYPE_REGULAR\", \"PERIMETER_TYPE_BRIDGE\"]"
+    default: null
+  use_explicit_dry_run_spec:
+    type: boolean
+    description: "Use explicit dry run spec flag. Ordinarily, a dry-run spec implicitly exists for all Service Perimeters, and that spec is identical to the status for those Service Perimeters. When this flag is set, it inhibits the generation of the implicit spec, thereby allowing the user to explicitly provide a configuration (\"spec\") to use in a dry-run version of the Service Perimeter. This allows the user to test changes to the enforced config (\"status\") without actually enforcing them. This testing is done through analyzing the differences between currently enforced and suggested restrictions. useExplicitDryRunSpec must bet set to True if any of the fields in the spec are set to non-default values."
+    default: null
+  spec:
+    type: list
+    description: "Nested block: spec"
+    default: []
+  status:
+    type: list
+    description: "Nested block: status"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:access:ContextManagerServicePerimeter
+    properties:
+      name: ${var.name}
+      parent: ${var.parent}
+      title: ${var.title}
+      description: ${var.description}
+      id: ${var.id}
+      perimeter_type: ${var.perimeter_type}
+      use_explicit_dry_run_spec: ${var.use_explicit_dry_run_spec}
+      dynamic:
+        spec:
+          for_each: ${var.spec}
+          content:
+            access_levels: ${each.value.access_levels}
+            resources: ${each.value.resources}
+            restricted_services: ${each.value.restricted_services}
+            egress_policies: ${each.value.egress_policies}
+            ingress_policies: ${each.value.ingress_policies}
+            vpc_accessible_services: ${each.value.vpc_accessible_services}
+        status:
+          for_each: ${var.status}
+          content:
+            access_levels: ${each.value.access_levels}
+            resources: ${each.value.resources}
+            restricted_services: ${each.value.restricted_services}
+            egress_policies: ${each.value.egress_policies}
+            ingress_policies: ${each.value.ingress_policies}
+            vpc_accessible_services: ${each.value.vpc_accessible_services}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

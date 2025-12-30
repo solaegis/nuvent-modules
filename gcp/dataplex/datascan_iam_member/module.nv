@@ -1,0 +1,44 @@
+variables:
+  data_scan_id:
+    type: string
+    description: "Required property for DatascanIamMember"
+  member:
+    type: string
+    description: "Required property for DatascanIamMember"
+  role:
+    type: string
+    description: "Required property for DatascanIamMember"
+  id:
+    type: string
+    description: "Optional property for DatascanIamMember"
+    default: null
+  location:
+    type: string
+    description: "Optional property for DatascanIamMember"
+    default: null
+  project:
+    type: string
+    description: "Optional property for DatascanIamMember"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataplex:DatascanIamMember
+    properties:
+      data_scan_id: ${var.data_scan_id}
+      member: ${var.member}
+      role: ${var.role}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

@@ -1,0 +1,68 @@
+variables:
+  name:
+    type: string
+    description: "The workflow's name."
+  release_config:
+    type: string
+    description: "The name of the release config whose releaseCompilationResult should be executed. Must be in the format projects/*/locations/*/repositories/*/releaseConfigs/*."
+  cron_schedule:
+    type: string
+    description: "Optional. Optional schedule (in cron format) for automatic creation of compilation results."
+    default: null
+  id:
+    type: string
+    description: "Optional property for RepositoryWorkflowConfig"
+    default: null
+  project:
+    type: string
+    description: "Optional property for RepositoryWorkflowConfig"
+    default: null
+  region:
+    type: string
+    description: "A reference to the region"
+    default: null
+  repository:
+    type: string
+    description: "A reference to the Dataform repository"
+    default: null
+  time_zone:
+    type: string
+    description: "Optional. Specifies the time zone to be used when interpreting cronSchedule. Must be a time zone name from the time zone database (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). If left unspecified, the default is UTC."
+    default: null
+  invocation_config:
+    type: list
+    description: "Nested block: invocation_config"
+    default: []
+  timeouts:
+    type: list
+    description: "Nested block: timeouts"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataform:RepositoryWorkflowConfig
+    properties:
+      name: ${var.name}
+      release_config: ${var.release_config}
+      cron_schedule: ${var.cron_schedule}
+      id: ${var.id}
+      project: ${var.project}
+      region: ${var.region}
+      repository: ${var.repository}
+      time_zone: ${var.time_zone}
+      dynamic:
+        invocation_config:
+          for_each: ${var.invocation_config}
+          content:
+            fully_refresh_incremental_tables_enabled: ${each.value.fully_refresh_incremental_tables_enabled}
+            included_tags: ${each.value.included_tags}
+            service_account: ${each.value.service_account}
+            transitive_dependencies_included: ${each.value.transitive_dependencies_included}
+            transitive_dependents_included: ${each.value.transitive_dependents_included}
+            included_targets: ${each.value.included_targets}
+        timeouts:
+          for_each: ${var.timeouts}
+          content:
+            create: ${each.value.create}
+            delete: ${each.value.delete}
+            update: ${each.value.update}

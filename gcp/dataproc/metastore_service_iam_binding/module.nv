@@ -1,0 +1,44 @@
+variables:
+  members:
+    type: list
+    description: "Required property for MetastoreServiceIamBinding"
+  role:
+    type: string
+    description: "Required property for MetastoreServiceIamBinding"
+  service_id:
+    type: string
+    description: "Required property for MetastoreServiceIamBinding"
+  id:
+    type: string
+    description: "Optional property for MetastoreServiceIamBinding"
+    default: null
+  location:
+    type: string
+    description: "Optional property for MetastoreServiceIamBinding"
+    default: null
+  project:
+    type: string
+    description: "Optional property for MetastoreServiceIamBinding"
+    default: null
+  condition:
+    type: list
+    description: "Nested block: condition"
+    default: []
+
+resources:
+  main:
+    type: gcp:dataproc:MetastoreServiceIamBinding
+    properties:
+      members: ${var.members}
+      role: ${var.role}
+      service_id: ${var.service_id}
+      id: ${var.id}
+      location: ${var.location}
+      project: ${var.project}
+      dynamic:
+        condition:
+          for_each: ${var.condition}
+          content:
+            description: ${each.value.description}
+            expression: ${each.value.expression}
+            title: ${each.value.title}

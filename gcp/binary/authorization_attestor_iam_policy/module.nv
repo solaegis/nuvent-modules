@@ -1,0 +1,24 @@
+variables:
+  attestor:
+    type: string
+    description: "Required property for AuthorizationAttestorIamPolicy"
+  policy_data:
+    type: string
+    description: "Required property for AuthorizationAttestorIamPolicy"
+  id:
+    type: string
+    description: "Optional property for AuthorizationAttestorIamPolicy"
+    default: null
+  project:
+    type: string
+    description: "Optional property for AuthorizationAttestorIamPolicy"
+    default: null
+
+resources:
+  main:
+    type: gcp:binary:AuthorizationAttestorIamPolicy
+    properties:
+      attestor: ${var.attestor}
+      policy_data: ${var.policy_data}
+      id: ${var.id}
+      project: ${var.project}
