@@ -1,0 +1,92 @@
+#------------------------------------------------------------------------------
+# github/managed_repository/module.nv
+# yaml-language-server: $schema=https://raw.githubusercontent.com/solaegis/nuvent/refs/heads/main/tools/vscode-extension/schemas/nuvent-manifest.schema.json?token=GHSAT0AAAAAADJBKTZJYHQDWBGJPIP6TMBS2KUJZ3A
+#------------------------------------------------------------------------------
+
+variables:
+  name:
+    type: string
+    description: "The name of the repository."
+  description:
+    type: string
+    description: "A description of the repository."
+    default: null
+  visibility:
+    type: string
+    description: "Can be 'public' or 'private'. Defaults to 'private'."
+    default: "private"
+  auto_init:
+    type: boolean
+    description: "Set to 'true' to produce an initial commit in the repository. Required for branch protection on creation."
+    default: true
+  gitignore_template:
+    type: string
+    description: "Use the name of the template without the extension. For example, 'Haskell'."
+    default: null
+  license_template:
+    type: string
+    description: "Use the name of the template without the extension. For example, 'mit' or 'mpl-2.0'."
+    default: null
+  
+  # Branch Protection variables
+  protection_pattern:
+    type: string
+    description: "Identifies the protection rule pattern. Defaults to 'main'."
+    default: "main"
+  enforce_admins:
+    type: boolean
+    description: "Setting this to 'true' enforces status checks for repository administrators."
+    default: true
+  require_signed_commits:
+    type: boolean
+    description: "Setting this to 'true' requires all commits to be signed with GPG."
+    default: false
+  required_approving_review_count:
+    type: number
+    description: "Number of approving reviews required. Set to 0 to disable."
+    default: 1
+  dismiss_stale_reviews:
+    type: boolean
+    description: "Dismiss approved reviews automatically when a new commit is pushed."
+    default: true
+  require_code_owner_reviews:
+    type: boolean
+    description: "Require an approved review in pull requests including files with a designated Code Owner."
+    default: false
+
+resources:
+  repo:
+    source: ../repository
+    properties:
+      name: ${var.name}
+      description: ${var.description}
+      visibility: ${var.visibility}
+      auto_init: ${var.auto_init}
+      gitignore_template: ${var.gitignore_template}
+      license_template: ${var.license_template}
+
+  protection:
+    source: ../branch/protection
+    properties:
+      repository_id: ${resources.repo.node_id}
+      pattern: ${var.protection_pattern}
+      enforce_admins: ${var.enforce_admins}
+      require_signed_commits: ${var.require_signed_commits}
+      required_pull_request_reviews:
+        - required_approving_review_count: ${var.required_approving_review_count}
+          dismiss_stale_reviews: ${var.dismiss_stale_reviews}
+          require_code_owner_reviews: ${var.require_code_owner_reviews}
+
+outputs:
+  name:
+    value: ${resources.repo.name}
+  full_name:
+    value: ${resources.repo.full_name}
+  html_url:
+    value: ${resources.repo.html_url}
+  git_clone_url:
+    value: ${resources.repo.git_clone_url}
+  ssh_clone_url:
+    value: ${resources.repo.ssh_clone_url}
+  node_id:
+    value: ${resources.repo.node_id}
