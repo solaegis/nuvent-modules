@@ -172,7 +172,7 @@ resources:
       allow_update_branch: ${var.allow_update_branch}
       archive_on_destroy: ${var.archive_on_destroy}
       archived: ${var.archived}
-      auto_init: ${var.auto_init}
+      auto_init: ${length(var.template) > 0 ? false : var.auto_init}
       default_branch: ${var.default_branch}
       delete_branch_on_merge: ${var.delete_branch_on_merge}
       description: ${var.description}
@@ -191,7 +191,7 @@ resources:
       license_template: ${var.license_template}
       merge_commit_message: ${var.merge_commit_message}
       merge_commit_title: ${var.merge_commit_title}
-      private: ${var.private}
+      private: ${var.visibility == "public" ? false : (var.visibility == "private" ? true : var.private)}
       source_owner: ${var.source_owner}
       source_repo: ${var.source_repo}
       squash_merge_commit_message: ${var.squash_merge_commit_message}
