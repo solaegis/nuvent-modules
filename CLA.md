@@ -1,6 +1,6 @@
 # Nuvent Contributor License Agreement (CLA)
 
-Thank you for your interest in Nuvent! This Contributor License Agreement ("Agreement") is between you ("Contributor") and Lewis Vavasour (solaegis) ("Maintainer").
+Thank you for your interest in Nuvent! This Contributor License Agreement ("Agreement") is between you ("Contributor") and Lewis Vavasour (aka solaegis) ("Maintainer").
 
 To clarify the intellectual property license granted with Contributions from any person or entity, the Maintainer must have a Contributed License Agreement on file that has been signed by each Contributor, indicating agreement to the license terms below.
 
