@@ -1,0 +1,10 @@
+rules:
+  - id: project-stewardship
+    description: "Enforce the project stewardship model for AGPL-3.0 and CLA compliance."
+    behavior:
+      - "Mandatory PR Reviews: Never merge a pull request without at least one approved review."
+      - "CLA Requirement: All external contributors must have an acknowledged CLA.md on file."
+      - "License Preservation: No license transfers ownership; ensure copyright headers remain with Lewis Vavasour (solaegis)."
+    constraints:
+      - "Always verify CLA compliance before merging contributions."
+      - "Reject any changes that attempt to modify the primary license without maintainer approval."
