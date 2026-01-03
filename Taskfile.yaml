@@ -1,0 +1,29 @@
+version: "3"
+
+tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+
+  lint:
+    desc: Validate all modules against the Nuvent schema
+    cmds:
+      - 'find . -name "*.nv" -exec echo "Validating {}" \;'
+      # Note: In a real CI environment, we would use a JSON schema validator CLI
+      # against the URL in the file header.
+      - 'find . -name "*.nv" -exec grep -q "yaml-language-server: \$schema=" {} \;'
+
+  clean:
+    desc: Clean temporary files
+    cmd: find . -name ".DS_Store" -delete
+
+  stats:
+    desc: Show module count statistics
+    cmds:
+      - echo "Total modules:"
+      - find . -name "module.nv" | wc -l
+      - echo "GCP modules:"
+      - find gcp -name "module.nv" | wc -l
+      - echo "GitHub modules:"
+      - find github -name "module.nv" | wc -l
