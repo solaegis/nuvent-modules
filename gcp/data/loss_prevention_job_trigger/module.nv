@@ -1,3 +1,4 @@
+---
 #------------------------------------------------------------------------------
 # gcp/data/loss_prevention_job_trigger/module.nv
 # yaml-language-server: $schema=https://raw.githubusercontent.com/solaegis/nuvent/refs/heads/main/tools/vscode-extension/schemas/nuvent-manifest.schema.json
@@ -21,11 +22,11 @@ variables:
     default: null
   status:
     type: string
-    description: "Whether the trigger is currently active. Default value: \"HEALTHY\" Possible values: [\"PAUSED\", \"HEALTHY\", \"CANCELLED\"]"
+    description: 'Whether the trigger is currently active. Default value: "HEALTHY" Possible values: ["PAUSED", "HEALTHY", "CANCELLED"]'
     default: null
   trigger_id:
     type: string
-    description: "The trigger id can contain uppercase and lowercase letters, numbers, and hyphens; that is, it must match the regular expression: [a-zA-Z\d-_]+. The maximum length is 100 characters. Can be empty to allow the system to generate one."
+    description: "The trigger id can contain uppercase and lowercase letters, numbers, and hyphens; that is, it must match the regular expression: [a-zA-Z\\d-_]+. The maximum length is 100 characters. Can be empty to allow the system to generate one."
     default: null
   inspect_job:
     type: list
@@ -84,7 +85,7 @@ outputs:
     description: "The resource name of the job trigger. Set by the server."
     value: ${resources.main.name}
   trigger_id:
-    description: "The trigger id can contain uppercase and lowercase letters, numbers, and hyphens; that is, it must match the regular expression: [a-zA-Z\d-_]+. The maximum length is 100 characters. Can be empty to allow the system to generate one."
+    description: "The trigger id can contain uppercase and lowercase letters, numbers, and hyphens; that is, it must match the regular expression: [a-zA-Z\\d-_]+. The maximum length is 100 characters. Can be empty to allow the system to generate one."
     value: ${resources.main.trigger_id}
   update_time:
     description: "The last update timestamp of an inspectTemplate. Set by the server."

@@ -1,3 +1,4 @@
+---
 #------------------------------------------------------------------------------
 # gcp/network/management_organization_vpc_flow_logs_config/module.nv
 # yaml-language-server: $schema=https://raw.githubusercontent.com/solaegis/nuvent/refs/heads/main/tools/vscode-extension/schemas/nuvent-manifest.schema.json
@@ -19,7 +20,7 @@ variables:
     default: null
   cross_project_metadata:
     type: string
-    description: "Determines whether to include cross project annotations in the logs. This field is available only for organization configurations. If not specified in org configs will be set to CROSS_PROJECT_METADATA_ENABLED. Possible values: CROSS_PROJECT_METADATA_ENABLED CROSS_PROJECT_METADATA_DISABLED Possible values: [\"CROSS_PROJECT_METADATA_ENABLED\", \"CROSS_PROJECT_METADATA_DISABLED\"]"
+    description: 'Determines whether to include cross project annotations in the logs. This field is available only for organization configurations. If not specified in org configs will be set to CROSS_PROJECT_METADATA_ENABLED. Possible values: CROSS_PROJECT_METADATA_ENABLED CROSS_PROJECT_METADATA_DISABLED Possible values: ["CROSS_PROJECT_METADATA_ENABLED", "CROSS_PROJECT_METADATA_DISABLED"]'
     default: null
   description:
     type: string
@@ -47,7 +48,7 @@ variables:
     default: null
   metadata_fields:
     type: list
-    description: "Optional. Custom metadata fields to include in the reported VPC flow logs. Can only be specified if \\"metadata\\" was set to CUSTOM_METADATA."
+    description: 'Optional. Custom metadata fields to include in the reported VPC flow logs. Can only be specified if "metadata" was set to CUSTOM_METADATA.'
     default: null
   state:
     type: string
@@ -91,7 +92,7 @@ outputs:
     description: "Output only. The time the config was created."
     value: ${resources.main.create_time}
   cross_project_metadata:
-    description: "Determines whether to include cross project annotations in the logs. This field is available only for organization configurations. If not specified in org configs will be set to CROSS_PROJECT_METADATA_ENABLED. Possible values: CROSS_PROJECT_METADATA_ENABLED CROSS_PROJECT_METADATA_DISABLED Possible values: [\"CROSS_PROJECT_METADATA_ENABLED\", \"CROSS_PROJECT_METADATA_DISABLED\"]"
+    description: 'Determines whether to include cross project annotations in the logs. This field is available only for organization configurations. If not specified in org configs will be set to CROSS_PROJECT_METADATA_ENABLED. Possible values: CROSS_PROJECT_METADATA_ENABLED CROSS_PROJECT_METADATA_DISABLED Possible values: ["CROSS_PROJECT_METADATA_ENABLED", "CROSS_PROJECT_METADATA_DISABLED"]'
     value: ${resources.main.cross_project_metadata}
   effective_labels:
     description: "All of labels (key/value pairs) present on the resource in GCP, including the labels configured through Terraform, other clients and services."

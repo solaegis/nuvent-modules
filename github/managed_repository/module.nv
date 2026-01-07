@@ -1,3 +1,4 @@
+---
 #------------------------------------------------------------------------------
 # github/managed_repository/module.nv
 # yaml-language-server: $schema=https://raw.githubusercontent.com/solaegis/nuvent/refs/heads/main/tools/vscode-extension/schemas/nuvent-manifest.schema.json
@@ -27,7 +28,7 @@ variables:
     type: string
     description: "Use the name of the template without the extension. For example, 'mit' or 'mpl-2.0'."
     default: null
-  
+
   # Branch Protection variables
   protection_pattern:
     type: string
@@ -54,10 +55,10 @@ variables:
     description: "Require an approved review in pull requests including files with a designated Code Owner."
     default: false
 
-resources:
+modules:
   repo:
     source: ../repository
-    properties:
+    parameters:
       name: ${var.name}
       description: ${var.description}
       visibility: ${var.visibility}
@@ -67,8 +68,8 @@ resources:
 
   protection:
     source: ../branch/protection
-    properties:
-      repository_id: ${resources.repo.node_id}
+    parameters:
+      repository_id: ${modules.repo.node_id}
       pattern: ${var.protection_pattern}
       enforce_admins: ${var.enforce_admins}
       require_signed_commits: ${var.require_signed_commits}

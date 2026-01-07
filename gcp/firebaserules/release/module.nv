@@ -1,3 +1,4 @@
+---
 #------------------------------------------------------------------------------
 # gcp/firebaserules/release/module.nv
 # yaml-language-server: $schema=https://raw.githubusercontent.com/solaegis/nuvent/refs/heads/main/tools/vscode-extension/schemas/nuvent-manifest.schema.json
@@ -6,7 +7,7 @@
 variables:
   name:
     type: string
-    description: "Format: `projects/{project_id}/releases/{release_id}`\Firestore Rules Releases will **always** have the name 'cloud.firestore'"
+    description: "Format: `projects/{project_id}/releases/{release_id}` Firestore Rules Releases will **always** have the name 'cloud.firestore'"
   ruleset_name:
     type: string
     description: "Name of the `Ruleset` referred to by this `Release`. The `Ruleset` must exist for the `Release` to be created."

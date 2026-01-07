@@ -1,3 +1,4 @@
+---
 #------------------------------------------------------------------------------
 # gcp/logging/log_view/module.nv
 # yaml-language-server: $schema=https://raw.githubusercontent.com/solaegis/nuvent/refs/heads/main/tools/vscode-extension/schemas/nuvent-manifest.schema.json
@@ -9,14 +10,14 @@ variables:
     description: "The bucket of the resource"
   name:
     type: string
-    description: "The resource name of the view. For example: \'projects/my-project/locations/global/buckets/my-bucket/views/my-view\'"
+    description: "The resource name of the view. For example: 'projects/my-project/locations/global/buckets/my-bucket/views/my-view'"
   description:
     type: string
     description: "Describes this view."
     default: null
   filter:
     type: string
-    description: "Filter that restricts which log entries in a bucket are visible in this view. Filters are restricted to be a logical AND of ==/!= of any of the following: - originating project/folder/organization/billing account. - resource type - log id For example: SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND LOG_ID(\"stdout\")"
+    description: 'Filter that restricts which log entries in a bucket are visible in this view. Filters are restricted to be a logical AND of ==/!= of any of the following: - originating project/folder/organization/billing account. - resource type - log id For example: SOURCE("projects/myproject") AND resource.type = "gce_instance" AND LOG_ID("stdout")'
     default: null
   id:
     type: string

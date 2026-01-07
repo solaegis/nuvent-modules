@@ -1,3 +1,4 @@
+---
 #------------------------------------------------------------------------------
 # gcp/network/management_vpc_flow_logs_config/module.nv
 # yaml-language-server: $schema=https://raw.githubusercontent.com/solaegis/nuvent/refs/heads/main/tools/vscode-extension/schemas/nuvent-manifest.schema.json
@@ -44,7 +45,7 @@ variables:
     default: null
   metadata_fields:
     type: list
-    description: "Optional. Custom metadata fields to include in the reported VPC flow logs. Can only be specified if \\"metadata\\" was set to CUSTOM_METADATA."
+    description: 'Optional. Custom metadata fields to include in the reported VPC flow logs. Can only be specified if "metadata" was set to CUSTOM_METADATA.'
     default: null
   network:
     type: string

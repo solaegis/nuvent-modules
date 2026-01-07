@@ -1,3 +1,4 @@
+---
 #------------------------------------------------------------------------------
 # gcp/apigee/keystores_aliases_self_signed_cert/module.nv
 # yaml-language-server: $schema=https://raw.githubusercontent.com/solaegis/nuvent/refs/heads/main/tools/vscode-extension/schemas/nuvent-manifest.schema.json
@@ -6,7 +7,7 @@
 variables:
   alias:
     type: string
-    description: "Alias for the key/certificate pair. Values must match the regular expression [\w\s-.]{1,255}. This must be provided for all formats except selfsignedcert; self-signed certs may specify the alias in either this parameter or the JSON body."
+    description: 'Alias for the key/certificate pair. Values must match the regular expression [\w\s-.]{1,255}. This must be provided for all formats except selfsignedcert; self-signed certs may specify the alias in either this parameter or the JSON body.'
   environment:
     type: string
     description: "The Apigee environment name"

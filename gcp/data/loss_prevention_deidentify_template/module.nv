@@ -1,3 +1,4 @@
+---
 #------------------------------------------------------------------------------
 # gcp/data/loss_prevention_deidentify_template/module.nv
 # yaml-language-server: $schema=https://raw.githubusercontent.com/solaegis/nuvent/refs/heads/main/tools/vscode-extension/schemas/nuvent-manifest.schema.json
@@ -21,7 +22,7 @@ variables:
     default: null
   template_id:
     type: string
-    description: "The template id can contain uppercase and lowercase letters, numbers, and hyphens; that is, it must match the regular expression: [a-zA-Z\d-_]+. The maximum length is 100 characters. Can be empty to allow the system to generate one."
+    description: "The template id can contain uppercase and lowercase letters, numbers, and hyphens; that is, it must match the regular expression: [a-zA-Z\\d-_]+. The maximum length is 100 characters. Can be empty to allow the system to generate one."
     default: null
   deidentify_config:
     type: list
@@ -66,7 +67,7 @@ outputs:
     description: "The resource name of the template. Set by the server."
     value: ${resources.main.name}
   template_id:
-    description: "The template id can contain uppercase and lowercase letters, numbers, and hyphens; that is, it must match the regular expression: [a-zA-Z\d-_]+. The maximum length is 100 characters. Can be empty to allow the system to generate one."
+    description: "The template id can contain uppercase and lowercase letters, numbers, and hyphens; that is, it must match the regular expression: [a-zA-Z\\d-_]+. The maximum length is 100 characters. Can be empty to allow the system to generate one."
     value: ${resources.main.template_id}
   update_time:
     description: "The last update timestamp of an deidentifyTemplate. Set by the server."
